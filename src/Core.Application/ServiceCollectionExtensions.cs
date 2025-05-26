@@ -1,4 +1,4 @@
-﻿using Core.Infrastructure.MockData;
+﻿using Core.Infrastructure;
 using MediatR.Behaviors.Authorization.Extensions.DependencyInjection;
 using MediatR.Extensions.FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;

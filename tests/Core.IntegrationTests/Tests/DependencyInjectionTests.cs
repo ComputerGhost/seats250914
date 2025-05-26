@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Core.IntegrationTests;
+namespace Core.IntegrationTests.Tests;
 
 [TestClass]
 public class DependencyInjectionTests
@@ -11,19 +11,17 @@ public class DependencyInjectionTests
     public void Startup_WhenComplete_AllServicesAreImplemented()
     {
         // Arrange
-        var services = new ServiceCollection();
         var dependencies = GetQueryHandlerTypes()
             .SelectMany(GetConstructorParametersTypes)
             .Distinct();
 
         // Act
-        services.AddCore((_) => { });
+        var app = MinimalApplication.Create();
 
         // Assert
-        var serviceProvider = services.BuildServiceProvider();
         foreach (var dependency in dependencies)
         {
-            var resolvedService = serviceProvider.GetService(dependency);
+            var resolvedService = app.ServiceProvider.GetService(dependency);
             Assert.IsNotNull(resolvedService);
         }
     }

@@ -5,25 +5,8 @@ using System.Reflection;
 namespace Core.Domain.UnitTests.DependencyInjection;
 
 [TestClass]
-[DoNotParallelize]
 public class ServiceCollectionExtensionsTests
 {
-    private struct TestServices
-    {
-        public interface IUnregistered { };
-        public class Unregistered : IUnregistered { }
-
-        public interface IRegistered { }
-        [ServiceImplementation]
-        public class Registered : IRegistered { }
-
-        public interface IFirst { }
-        public interface ISecond { }
-        [ServiceImplementation(Interface = typeof(IFirst))]
-        [ServiceImplementation(Interface = typeof(ISecond))]
-        public class RegisteredTwice : IFirst, ISecond { }
-    }
-
     // Cached so we don't have to keep assembly scanning.
     private static IServiceProvider? _cachedServiceProvider;
     private IServiceProvider _serviceProvider = null!;
@@ -79,5 +62,21 @@ public class ServiceCollectionExtensionsTests
         // Assert
         Assert.IsInstanceOfType(firstImplementation, implementationType);
         Assert.IsInstanceOfType(secondImplementation, implementationType);
+    }
+
+    private struct TestServices
+    {
+        public interface IUnregistered { };
+        public class Unregistered : IUnregistered { }
+
+        public interface IRegistered { }
+        [ServiceImplementation]
+        public class Registered : IRegistered { }
+
+        public interface IFirst { }
+        public interface ISecond { }
+        [ServiceImplementation(Interface = typeof(IFirst))]
+        [ServiceImplementation(Interface = typeof(ISecond))]
+        public class RegisteredTwice : IFirst, ISecond { }
     }
 }
