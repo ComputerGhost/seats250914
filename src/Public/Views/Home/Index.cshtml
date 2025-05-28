@@ -1,15 +1,15 @@
-﻿@model TestDatabaseViewModel;
-
+﻿@inject IViewLocalizer Localizer;
+@model TestDatabaseViewModel;
 <div class="container">
-    <h1>Test of Public Website</h1>
+    <h1>@Localizer["This is a test."]</h1>
 
     <div class="card">
         <div class="card-body">
-            <h2 class="h5 card-title">Database</h2>
-            <p>Database connected: @Model.Success</p>
+            <h2 class="h5 card-title">@Localizer["Database"]</h2>
+            <p>@Localizer["Database connected"]: <code>@Model.Success</code></p>
             @if (!Model.Success)
             {
-                <p>Error: @Model.Error</p>
+                <p>@Localizer["Error"]: <code>@Model.Error</code></p>
             }
         </div>
     </div>
