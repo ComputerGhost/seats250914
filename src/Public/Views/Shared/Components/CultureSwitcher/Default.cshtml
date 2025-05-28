@@ -1,0 +1,40 @@
+﻿@using Public.Features.Localization.Models
+@model CultureSwitcherModel
+
+<div>
+    <form id="culture-switcher">
+        <select name="culture" id="culture-options">
+            @foreach (var culture in Model.SupportedCultures)
+            {
+                <option value="@culture.Name" selected="@(Model.CurrentUICulture.Name == culture.Name)">@culture.NativeName</option>
+            }
+        </select>
+    </form>
+</div>
+
+@* We can't use jQuery here because it's not loaded yet.
+(It should be loaded at the end of the body tag, right?) *@
+@if (Model.UseRouteCulture)
+{
+    <script>
+        var element = document.getElementById("culture-options");
+        element.addEventListener("change", () => {
+            var culture = element.options[element.selectedIndex].value;
+            var segments = location.pathname.split('/');
+            if (segments.length > 2) {
+                segments[1] = culture;
+                location.href = segments.join('/');
+            } else {
+                location.href = '/' + culture + location.pathname;
+            }
+        });
+    </script>
+}
+else
+{
+    <script>
+        document.getElementById("culture-options").addEventListener("change", () => {
+            document.getElementById("culture-switcher").submit();
+        });
+    </script>
+}
