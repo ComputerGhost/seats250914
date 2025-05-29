@@ -6,10 +6,10 @@
     <div class="card">
         <div class="card-body">
             <h2 class="h5 card-title">Database</h2>
-            <p>Database connected: @Model.Success</p>
+            <p>Database connected: <code>@Model.Success</code></p>
             @if (!Model.Success)
             {
-                <p>Error: @Model.Error</p>
+                <p>Error: <code>@Model.Error</code></p>
             }
         </div>
     </div>
