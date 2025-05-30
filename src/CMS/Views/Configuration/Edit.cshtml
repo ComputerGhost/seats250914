@@ -1,0 +1,79 @@
+﻿<div class="container">
+    <header class="mb-3">
+        <h1>Configuration</h1>
+    </header>
+
+    <form method="post">
+
+        <section>
+            <h2 class="h5">Schedule</h2>
+
+            <div class="mb-3">
+                <label class="form-label" for="scheduledOpenDate">Scheduled open time</label>
+                <div class="input-group">
+                    <input class="form-control" type="date" id="scheduledOpenDate" aria-label="Scheduled open date" required>
+                    <input class="form-control" type="time" id="scheduledOpenTime" aria-label="Scheduled open time" required>
+                    <select class="form-select" type="text" id="scheduledOpenTimeZone" aria-label="Scheduled open time zone" required>
+                        <option value="" />
+                        @foreach (var timezone in TimeZoneInfo.GetSystemTimeZones())
+                        {
+                            <option value="@timezone.StandardName">@timezone.DisplayName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <fieldset class="border rounded-3 p-3 mb-3">
+                <legend class="float-none w-auto m-0 px-3 fs-6">Override schedule</legend>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="overrideSchedule" id="overrideSchedule-open">
+                    <label class="form-check-label" for="overrideSchedule-open">Force open reservations</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="overrideSchedule" id="overrideSchedule-closed">
+                    <label class="form-check-label" for="overrideSchedule-closed">Force close reservations</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="overrideSchedule" id="overrideSchedule-none">
+                    <label class="form-check-label" for="overrideSchedule-none">Use schedule</label>
+                </div>
+            </fieldset>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2 class="h5">Visitor limits</h2>
+
+            <div class="mb-3">
+                <label class="form-label" for="limitNumberOfSeatsPerUser">Maximum seats per person</label>
+                <input class="form-control w-auto" type="number" id="limitNumberOfSeatsPerUser" step="1" max="1" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="limitNumberOfSeatsPerIPAddress">Maximum seats per IP address</label>
+                <input class="form-control w-auto" type="number" id="limitNumberOfSeatsPerIPAddress" step="1" required aria-describedby="limitNumberOfSeatsPerIPAddress-help">
+                <div id="limitNumberOfSeatsPerIPAddress-help" class="form-text">
+                    This prevents a user from faking who they are to bypass the maximum seats per person, 
+                    but it should be set high enough to allow users to share a public IP address (such as at a school or workplace).
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="limitTimeToConfirmSeat">Maximum time (in seconds) to confirm seat</label>
+                <input class="form-control w-auto" type="number" id="limitTimeToConfirmSeat" step="1" required aria-describedby="limitTimeToConfirmSeat-help">
+                <div id="limitTimeToConfirmSeat-help" class="form-text">
+                    When a user clicks on a seat, that seat is placed on hold until they cancel or confirm their selection.
+                    If the user does nothing, then we need to release the hold after some time.
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <button type="submit" class="btn btn-primary">Save configuration</button>
+        </section>
+
+    </form>
+</div>
