@@ -3,7 +3,6 @@ using Core.Application.Accounts;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
 
 namespace CMS.Controllers;
 
@@ -84,5 +83,23 @@ public class AccountsController : Controller
         }
 
         return RedirectToAction(nameof(Details), new { Login = login });
+    }
+
+    [HttpGet("sign-in")]
+    public IActionResult SignIn()
+    {
+        return View();
+    }
+
+    [HttpPost("sign-in")]
+    public IActionResult SignIn([FromBody] string username, [FromBody] string password)
+    {
+        return Redirect("/");
+    }
+
+    [HttpGet("sign-out")]
+    public new IActionResult SignOut()
+    {
+        return RedirectToAction(nameof(SignIn));
     }
 }

@@ -25,8 +25,8 @@
 <body class="two-column-layout">
     <div class="app-sidebar shadow-sm">
         <div class="header">
-            <img src="~/images/icon.png" width="48" height="48" alt="Icon">
-            <h1 class="h5 ms-3 hide-on-mobile">Hyelin Fanmeeting 2025</h1>
+            <img src="~/images/icon.png" width="48" height="48" alt="Logo" aria-labelledby="app-title">
+            <h1 id="app-title" class="h5 ms-3 hide-on-mobile">Hyelin Fanmeeting 2025</h1>
         </div>
 
         <nav class="nav">
@@ -59,7 +59,7 @@
                         <i class="bi bi-person" aria-hidden="true"></i>
                         Edit account
                     </a>
-                    <a href="#" class="dropdown-item">
+                    <a asp-controller="Accounts" asp-action="SignOut" class="dropdown-item">
                         <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
                         Log out
                     </a>

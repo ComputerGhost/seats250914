@@ -1,0 +1,21 @@
+﻿body {
+    font-family: Inter, sans-serif;
+    font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: Montserrat, sans-serif;
+}
+
+.app-header {
+    border-bottom: 1px solid #dee2e6;
+    padding: 1rem;
+}
+
+.app-header-content {
+    display: flex;
+}
+
+.app-main {
+    padding: 1rem;
+}

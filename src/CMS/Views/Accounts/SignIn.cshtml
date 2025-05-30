@@ -1,0 +1,27 @@
+﻿@{
+    Layout = "_PlainLayout";
+}
+
+<div class="container d-flex justify-content-center">
+    <div class="border rounded p-3 shadow-sm">
+        <header class="mb-3">
+            <h1>Sign in</h1>
+        </header>
+
+        <section>
+            <form method="post">
+                <div class="mb-3">
+                    <label for="login" class="form-label">Login</label>
+                    <input type="text" id="login" class="form-control" maxlength="8" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" maxlength="50" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </form>
+        </section>
+    </div>
+</div>
