@@ -49,7 +49,7 @@ public class AccountsController : Controller
         return View(accounts);
     }
 
-    [HttpGet("{login}/view")]
+    [HttpGet("{login}/details")]
     public async Task<IActionResult> Details(string login)
     {
         var result = await _mediator.Send(new FetchAccountQuery(login));

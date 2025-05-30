@@ -34,7 +34,7 @@
                 <i class="icon bi bi-bar-chart-line" aria-hidden="true"></i>
                 <span class="hide-on-mobile">Dashboard</span>
             </a>
-            <a class="nav-link" href="#">
+            <a asp-controller="Reservations" asp-action="Index" class="nav-link">
                 <i class="icon bi bi-ticket" aria-hidden="true"></i>
                 <span class="hide-on-mobile">Reservations</span>
             </a>
@@ -72,9 +72,42 @@
         @RenderBody()
     </main>
 
+    <!-- Time zone converter modal -->
+    <div class="modal fade" id="timezone-converter-modal" tabindex="-1" aria-hidden="true" aria-labelledby="timezone-converter-modal-label">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="timezone-converter-modal-label">Convert timezone</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <dl class="row">
+                        <dt class="col-sm-5">Timestamp:</dt>
+                        <dd class="col-sm-7" id="timezone-converter-timestamp"></dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="col-sm-5">Converted time:</dt>
+                        <dd class="col-sm-7" id="timezone-converter-zonedtime"></dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="col-sm-5">Timezone:</dt>
+                        <dd class="col-sm-7">
+                            <select id="timezone-converter-timezone" class="form-select"></select>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.6.1/build/global/luxon.min.js"></script>
+    <script src="/scripts/global.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -2,14 +2,21 @@
 @model ListAccountsQueryResponse;
 
 <div class="container">
-    <h1>Staff accounts</h1>
+    <header class="mb-3">
+        <h1>Staff accounts</h1>
+    </header>
 
     <table class="table table-hover">
         <thead>
             <tr>
                 <th scope="col">Login</th>
                 <th scope="col">Status</th>
-                <th></th>
+                <th scope="col"></th>
+            </tr>
+            <tr>
+                <th colspan="3">
+                    <a asp-action="Create" class="btn btn-outline-primary w-100">Create a new account</a>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -38,11 +45,6 @@
                     </td>
                 </tr>
             }
-            <tr>
-                <td colspan="4">
-                    <a asp-action="Create" class="btn btn-outline-primary w-100">Create new account</a>
-                </td>
-            </tr>
         </tbody>
     </table>
 </div>

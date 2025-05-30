@@ -1,0 +1,87 @@
+﻿<div class="container">
+    <header class="mb-3">
+        <h1>Reservations</h1>
+    </header>
+
+    <section>
+        <p>This page is not updated in real-time, so refresh the page to get the latest data.</p>
+        <p></p>
+    </section>
+
+    <hr>
+
+    <section>
+
+        <div class="input-group">
+            <span class="input-group-text">
+                <i id="search-label" class="bi bi-search" role="img" aria-label="Search"></i>
+            </span>
+            <input class="form-control" type="search" id="search" aria-labelledby="search-label">
+        </div>
+
+        <table class="table table-hover" id="index-table">
+            <thead>
+                <tr>
+                    <th scope="col">Seat</th>
+                    <th scope="col">Time requested</th>
+                    <th class="col">Status</th>
+                    <th scope="col">Name</th>
+                    <th scope="col" data-dt-order="disable"></th>
+                </tr>
+                <tr>
+                    <th colspan="7" data-dt-order="disable">
+                        <a asp-action="Create" class="btn btn-outline-primary w-100">Reserve a seat</a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="row">
+                        (seat id}
+                    </td>
+                    <td>
+                        <time datetime="2015-05-30T15:20:32">2015-05-30T15:20:32</time>
+                    </td>
+                    <td>
+                        Pending approval
+                    </td>
+                    <td>
+                        John Doe
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-seat="seat_id">View details</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</div>
+
+@section Styles
+{
+    <link rel="stylesheet" href="//cdn.datatables.net/2.3.1/css/dataTables.dataTables.min.css">
+}
+
+@section Scripts
+{
+    <script src="//cdn.datatables.net/2.3.1/js/dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var table = new DataTable("#index-table", {
+                layout: {
+                    topStart: null,
+                    topEnd: null,
+                    bottomStart: null,
+                    bottomEnd: null,
+                },
+                ordering: {
+                    indicators: false,
+                },
+            });
+
+            $("#search").on("keyup", function () {
+                table.search(this.value).draw();
+            });
+        });
+    </script>
+}

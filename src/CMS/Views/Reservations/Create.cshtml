@@ -1,0 +1,34 @@
+﻿<div class="container">
+    <header class="mb-3">
+        <h1>Create reservation</h1>
+    </header>
+
+    <section>
+        <form method="post">
+            <div class="mb-3">
+                <label for="seat" class="form-label">Seat</label>
+                <select class="form-select" id="seat" required>
+                    <option value=""></option>
+                    <option value="1">TBD</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" maxlength="50" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" maxlength="255" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone number</label>
+                <input type="tel" class="form-control" id="phone" maxlength="50" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </section>
+</div>

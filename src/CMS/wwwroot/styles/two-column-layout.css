@@ -53,8 +53,11 @@ h1, h2, h3, h4, h5 {
             text-decoration: none;
         }
 
-@media screen and (max-width: 768px) {
+.convert-time-button {
+    margin-left: 1rem;
+}
 
+@media screen and (max-width: 768px) {
     .two-column-layout {
         flex-direction: column;
     }
