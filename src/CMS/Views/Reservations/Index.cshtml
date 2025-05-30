@@ -2,59 +2,100 @@
     <header class="mb-3">
         <h1>Reservations</h1>
     </header>
+    
+    <p>This page is not updated in real-time, so refresh the page to get the latest data.</p>
 
-    <section>
-        <p>This page is not updated in real-time, so refresh the page to get the latest data.</p>
-        <p></p>
-    </section>
+    <ul class="nav nav-tabs" id="tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button
+                class="nav-link active"
+                id="seats-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#seats-tab-pane"
+                type="button"
+                role="tab"
+                aria-controls="seats-tab-pane"
+                aria-selected="true"
+            >Seats</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button
+                class="nav-link"
+                id="map-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#map-tab-pane"
+                type="button"
+                role="tab"
+                aria-controls="map-tab-pane"
+                aria-selected="false"
+            >Seat map</button>
+        </li>
+    </ul>
 
-    <hr>
+    <div class="tab-content border border-top-0 p-3">
 
-    <section>
+        <section
+            class="tab-pane fade show active"
+            id="seats-tab-pane"
+            role="tabpanel"
+            aria-labelledby="seats-tab"
+            tabindex="0"
+        >
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i id="search-label" class="bi bi-search" role="img" aria-label="Search"></i>
+                </span>
+                <input class="form-control" type="search" id="search" aria-labelledby="search-label">
+            </div>
 
-        <div class="input-group">
-            <span class="input-group-text">
-                <i id="search-label" class="bi bi-search" role="img" aria-label="Search"></i>
-            </span>
-            <input class="form-control" type="search" id="search" aria-labelledby="search-label">
-        </div>
+            <table class="table table-hover" id="index-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Seat</th>
+                        <th scope="col">Time requested</th>
+                        <th class="col">Status</th>
+                        <th scope="col">Name</th>
+                        <th scope="col" data-dt-order="disable"></th>
+                    </tr>
+                    <tr>
+                        <th colspan="7" data-dt-order="disable">
+                            <a asp-action="Create" class="btn btn-outline-primary w-100">Reserve a seat</a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td scope="row">
+                            (seat id}
+                        </td>
+                        <td>
+                            <time datetime="2015-05-30T15:20:32">2015-05-30T15:20:32</time>
+                        </td>
+                        <td>
+                            Pending approval
+                        </td>
+                        <td>
+                            John Doe
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-seat="seat_id">View details</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
-        <table class="table table-hover" id="index-table">
-            <thead>
-                <tr>
-                    <th scope="col">Seat</th>
-                    <th scope="col">Time requested</th>
-                    <th class="col">Status</th>
-                    <th scope="col">Name</th>
-                    <th scope="col" data-dt-order="disable"></th>
-                </tr>
-                <tr>
-                    <th colspan="7" data-dt-order="disable">
-                        <a asp-action="Create" class="btn btn-outline-primary w-100">Reserve a seat</a>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td scope="row">
-                        (seat id}
-                    </td>
-                    <td>
-                        <time datetime="2015-05-30T15:20:32">2015-05-30T15:20:32</time>
-                    </td>
-                    <td>
-                        Pending approval
-                    </td>
-                    <td>
-                        John Doe
-                    </td>
-                    <td>
-                        <a asp-action="Details" asp-route-seat="seat_id">View details</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+        <section
+            class="tab-pane fade"
+            id="map-tab-pane"
+            role="tabpanel"
+            aria-labelledby="map-tab"
+            tabindex="0"
+        >
+            <img class="img-fluid" src="~/images/seat-map.webp" alt="Map of seats" aria-label="Map of seats">
+        </section>
+
+    </div>
 </div>
 
 @section Styles

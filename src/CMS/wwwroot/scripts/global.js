@@ -7,6 +7,9 @@ const CONVERT_TIME_TEXT = "Convert time";
 var DateTime = luxon.DateTime;
 var createModal = (id) => new bootstrap.Modal(document.getElementById(id));
 
+/*
+ * Time conversion feature
+ */
 $(document).ready(() => {
     var timezoneModal = createModal("timezone-converter-modal");
     var $timestampDisplay = $("#timezone-converter-timestamp");
@@ -52,3 +55,4 @@ $(document).ready(() => {
         $subject.after($convertButton);
     });
 });
+
