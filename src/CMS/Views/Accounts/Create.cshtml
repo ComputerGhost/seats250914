@@ -1,0 +1,39 @@
+﻿<div class="container">
+    <header class="mb-3">
+        <h1>Create staff account</h1>
+    </header>
+
+    <section>
+        <form method="post">
+            <div class="row mb-3">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <label for="login" class="form-label">Login</label>
+                    <input type="text" id="login" class="form-control" maxlength="8" required>
+                </div>
+                
+                <div class="col-md-6">
+                    <!-- alignment -->
+                    <div class="form-label d-none d-md-block">&nbsp;</div>
+
+                    <input type="checkbox" class="form-check-input" id="isEnabled">
+                    <label class="form-check-label" form="isEnabled">Is enabled</label>
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" maxlength="50" required>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" id="confirmPassword" class="form-control" maxlength="50" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </section>
+
+</div>

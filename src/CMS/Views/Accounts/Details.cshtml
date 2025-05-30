@@ -1,0 +1,45 @@
+﻿@model ViewAccountViewModel;
+
+<div class="container">
+    <header class="mb-3">
+        <h1>Staff account</h1>
+    </header>
+
+    <section>
+        <div class="card shadow-sm mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4 border-end p-3">
+                    <img src="~/images/lego.png" class="img-fluid rounded" alt="LEGGO profile picture">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <header class="d-flex justify-content-between">
+                            <h2 class="h5 card-title">Staff account info</h2>
+                            <a asp-controller="Accounts" asp-action="Edit" asp-route-login="@Model.Login">Edit</a>
+                        </header>
+                        <dl class="row">
+                            <dt class="col-sm-5">Login:</dt>
+                            <dd class="col-sm-7">@Model.Login</dd>
+
+                            <dt class="col-sm-5">Status:</dt>
+                            <dd class="col-sm-7">
+                                @if (@Model.IsEnabled)
+                                {
+                                    <span>
+                                        <i class='bi bi-check-circle-fill text-success'></i> Enabled
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span>
+                                        <i class='bi bi-ban-fill text-danger'></i> Disabled
+                                    </span>
+                                }
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

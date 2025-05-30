@@ -1,0 +1,66 @@
+﻿@model ViewAccountViewModel;
+
+<div class="container">
+    <header class="mb-3">
+        <h1>Edit staff account</h1>
+    </header>
+
+    <section class="mb-3">
+        <form method="post">
+            <div class="row mb-3">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <label for="login" class="form-label">Login</label>
+                    <input type="text" id="login" value="@Model.Login" class="form-control" disabled>
+                </div>
+
+                <div class="col-md-6">
+                    <!-- alignment -->
+                    <div class="form-label d-none d-md-block">&nbsp;</div>
+
+                    <input type="checkbox" class="form-check-input" id="isEnabled">
+                    <label class="form-check-label" form="isEnabled">Is enabled</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </section>
+
+    <hr>
+
+    <section>
+        <h2 class="h4">Change password</h2>
+
+        <form id="change-password-form" asp-action="ChangePassword" method="post">
+            <input type="hidden" name="login" value="@Model.Login">
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" maxlength="50" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" id="confirmPassword" class="form-control" maxlength="50" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-secondary">Change password</button>
+        </form>
+    </section>
+
+</div>
+
+@section Scripts
+{
+    <script>
+        $("#change-password-form").submit(function(e) {
+            e.preventDefault();
+            // TODO:
+            // 1. Intercept change password submit.
+            // 2. Use ajax to submit instead.
+            // 3. Show feedback on form.
+        });
+    </script>
+}

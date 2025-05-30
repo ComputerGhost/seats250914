@@ -1,4 +1,11 @@
-﻿/* Layout */
+﻿body {
+    font-family: Inter, sans-serif;
+    font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: Montserrat, sans-serif;
+}
 
 .two-column-layout {
     display: flex;
@@ -12,6 +19,7 @@
 }
 
 .app-sidebar {
+    border-right: 1px solid #dee2e6;
     display: flex;
     flex: 1 1 20%;
     flex-direction: column;
@@ -20,15 +28,17 @@
     padding: 1rem;
 }
     .app-sidebar .header {
+        border-bottom: 1px solid #dee2e6;
         display: flex;
         padding-bottom: 1rem;
         margin-bottom: 1rem;
     }
     .app-sidebar .nav {
+        margin-bottom: 1rem;
         flex: 0 1 100%;
         flex-direction: column;
     }
-        .app-sidebar .nav .bi {
+        .app-sidebar .nav .icon {
             margin-right: 0.25em;
         }
     .app-sidebar .user-menu {
@@ -50,12 +60,23 @@
     }
 
     .app-sidebar {
-        flex-direction: unset;
+        border: none;
+        border-bottom: 1px solid #dee2e6;
+        flex-direction: row;
+        justify-content: space-between;
         overflow-y: unset;
         padding: 1rem;
     }
+        .app-sidebar .header {
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
         .app-sidebar .nav {
+            flex: unset;
             flex-direction: unset;
+            margin: 0;
+            padding: 0;
         }
 
     .app-main {
@@ -63,13 +84,14 @@
         overflow-y: unset;
     }
 
+    /* This is clearer than 'd-none d-md-inline' or whatever. */
+    .hide-on-mobile {
+        display: none;
+    }
 }
 
-/* Colors and styling */
-
-html {
-    font-family: "Roboto", sans-serif;
-}
-
-.app-sidebar .header {
+@media screen and (max-width: 576) {
+    .hide-on-tiny-screen {
+        display: none;
+    }
 }
