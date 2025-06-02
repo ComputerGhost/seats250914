@@ -1,0 +1,16 @@
+@import "../lib/bootstrap/scss/bootstrap";
+
+$color-orange: #e84;
+$color-purple: #315;
+
+.bg-purple {
+    background-color: $color-purple;
+}
+
+.btn-orange {
+    @include button-variant($color-orange, $color-orange);
+}
+
+.btn-purple {
+    @include button-variant($color-purple, $color-purple);
+}

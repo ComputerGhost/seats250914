@@ -1,0 +1,10 @@
+
+.map-widget {
+    .root_daum_roughmap {
+        width: 100%;
+
+        &>.cont {
+            display: none;
+        }
+    }
+}

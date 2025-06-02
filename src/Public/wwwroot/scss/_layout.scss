@@ -1,0 +1,13 @@
+@import "_global";
+
+.navbar {
+    .nav-link {
+        border-radius: 1em;
+        color: var(--bs-white);
+
+        &.active {
+            color: var(--bs-black);
+            background-color: $color-orange;
+        }
+    }
+}

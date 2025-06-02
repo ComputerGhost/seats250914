@@ -19,7 +19,10 @@ public class AccountsController : Controller
     [HttpPost("{login}/change-password")]
     public async Task<IActionResult> ChangePassword(string login, [FromBody] string password)
     {
-        var result = await _mediator.Send(new UpdatePasswordCommand(login, password));
+        var result = await _mediator.Send(new UpdatePasswordCommand {
+            Login = login,
+            Password = password
+        });
         return result.IsError ? NotFound() : Ok();
     }
 
@@ -29,7 +32,7 @@ public class AccountsController : Controller
         return View();
     }
 
-    [HttpPost]
+    [HttpPost("new")]
     public async Task<IActionResult> Create(CreateAccountCommand command)
     {
         var result = await _mediator.Send(command);
