@@ -9,20 +9,29 @@ Payments and notifications will be handled externally. The payment statuses will
 
 ## Running the website
 
-The database needs to be created first. While creating the database, reference the development connection strings in an 'appsettings.json' file. To populate or update the database, use the scripts in 'database/'.
-
-The two websites of this project are the CMS and Public projects (both in 'src/'). They can be run independently or together.
+ 1. Clone the repository.
+ 1. Set up a local SQL Express database. If needed, override the connection string.
+	* The default connection string is `Server=localhost;Database=Hyelin2025;User Id=sa;Password=Passw0rd;Trust Server Certificate=True`.
+	* A custom connection string can be specified with the `InfrastructureOptions__DatabaseConnectionString` environment variable.
+ 1. Populate or update the database. (Ignore this step until I set up the scripts in "database/".)
+ 1. Run one or both of the website projects--"CMS" and "Public" in "src/".
 
 
 ## Deploying
 
-The web server is already configured. Just publish both website projects and copy/paste.
+Nathan will do these steps. He's the only one with the server password...
 
-The database may need updated between releases. Nathan has the production database password if needed.
-
-Verify the website works at <https://hyelinfanmeeting2025.com/>.
+ 1. Run the automated tests, then do the manual tests locally.
+ 1. Publish both website projects.
+ 1. Copy/paste files to web server.
+ 1. Update database. (How? Just do it manually for now.)
+ 1. Restart the website processes.
+ 1. Do the manual tests on the live websites.
 
 
 ## Contributing
 
-Just make a PR with the changes and Nathan will merge them in.
+ 1. Make your changes in a new branch.
+ 2. Run the automated tests. (Ignore the manual tests.)
+ 3. Make a PR, and link the issue number.
+ 4. Nathan will merge it in.
