@@ -1,5 +1,9 @@
 @import "_global";
 
+body {
+    padding-top: $header-height;
+}
+
 .navbar {
     .nav-link {
         border-radius: 1em;

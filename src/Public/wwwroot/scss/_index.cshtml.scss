@@ -4,6 +4,7 @@
     background: url('/images/hyelin-fire.jpg') top center no-repeat;
     background-size: cover;
     height: 100vh;
+    padding: -$header-height;
     position: relative;
 
     .hero-content {

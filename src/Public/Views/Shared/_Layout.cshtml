@@ -16,7 +16,7 @@
     <partial name="_LocalizedStyles" />
     @RenderSection("Styles", required: false)
 </head>
-<body class="h-100 text-bg-dark">
+<body class="h-100">
 
     <header class="navbar navbar-expand bg-dark fixed-top">
         <div class="container-fluid">
@@ -54,9 +54,10 @@
     </main>
 
     <footer>
-        <div class="container py-2 text-center">
-            We collect some personal information in order to provide quality service. You can read more about that in our <a href="">Privacy Policy</a>.
-        </div>
+        <p class="container m-0 py-2 text-center">
+            We collect some personal information in order to provide quality service.
+            You can read more about that in our <a asp-controller="Legal" asp-action="PrivacyPolicy">Privacy Policy</a>.
+        </p>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
