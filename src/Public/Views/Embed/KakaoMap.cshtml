@@ -1,0 +1,36 @@
+﻿@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<!--
+The Kakao Maps loading scripts are synchronous, so they block the page load 
+until they finish running. They can't be made `async` or `defer`, because that 
+causes the code to run in the wrong order, breaking the map.
+
+This page is meant to be run in an iframe. The iframe scripts will block, but 
+that's okay, because the iframe itself can be executed parallel to the main 
+page, fixing the problem that I'm trying to solve.
+
+Now if only there were an easy way to fix the mime type of the map data...
+-->
+<html>
+	<head>
+		<meta charset="utf-8">
+	</head>
+	<style>
+		html, body { height: 100%; margin: 0; }
+		.cont, .wrap_controllers { display: none; }
+		body .root_daum_roughmap, body .root_daum_roughmap .wrap_map { height: 100%; width: 100% }
+		body { background: #ccc; }
+	</style>
+</html>
+<body>
+	<div id="daumRoughmapContainer1748889872591" class="root_daum_roughmap root_daum_roughmap_landing"></div>
+	<script type="text/javascript" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
+	<script>
+		new daum.roughmap.Lander({
+			"timestamp" : "1748889872591",
+			"key" : "2vibz2b4ba7",
+		}).render()
+	</script>
+</body>

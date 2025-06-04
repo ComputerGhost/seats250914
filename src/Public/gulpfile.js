@@ -19,9 +19,13 @@ paths.scss = paths.webroot + "scss/**/*.scss";
 paths.cssOutput = paths.webroot + "css/";
 
 async function buildStyles() {
+    const sassOptions = {
+        quietDeps: true,
+        loadPaths: paths.webroot + "scss/lib",
+    };
     return gulp
         .src(paths.scss)
-        .pipe(sass().on("error", sass.logError))
+        .pipe(sass(sassOptions).on("error", sass.logError))
         .pipe(cssmin())
         .pipe(rename({ suffix: ".min" }))
         .pipe(gulp.dest(paths.cssOutput));

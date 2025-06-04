@@ -2,7 +2,7 @@
 
 namespace Public.Controllers;
 
-[Route("/legal/")]
+[Route("legal")]
 public class LegalController : Controller
 {
     [HttpGet("privacy-policy")]

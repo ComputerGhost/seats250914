@@ -1,0 +1,26 @@
+@use "sass:map";
+@use "../bootstrap";
+
+$header-height: 56px;
+
+body {
+    padding-top: $header-height;
+}
+
+body > footer {
+    background: bootstrap.$light;
+    border-top: 1px solid bootstrap.$border-color;
+    color: bootstrap.$dark;
+    font-size: map.get(bootstrap.$font-sizes, "6");
+}
+
+.navbar {
+    .nav-link {
+        border-radius: 1em;
+        color: var(--bs-white);
+
+        &.active {
+            @extend .text-bg-primary;
+        }
+    }
+}
