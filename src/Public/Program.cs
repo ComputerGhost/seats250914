@@ -16,9 +16,6 @@ builder.Services.AddMyLocalization(options =>
         new CultureInfo("ko"),
     ];
     options.DefaultCulture = new CultureInfo("en");
-    options.UseRouteCulture = false;
-    options.UseLocalizationResources = true;
-    options.UseViewLocalization = true;
 });
 
 var app = builder.Build();

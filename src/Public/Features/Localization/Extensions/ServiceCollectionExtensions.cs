@@ -13,21 +13,14 @@ public static class ServiceCollectionExtensions
         var options = new LocalizationOptions();
         configure(options);
 
-        if (options.UseViewLocalization)
-        {
-            // It's fine if AddMvc has already been called. We'll call it again.
-            services.AddMvc().AddViewLocalization();
-        }
+        // It's fine if AddMvc has already been called. We'll call it again.
+        services.AddMvc().AddViewLocalization();
 
-        if (options.UseLocalizationResources)
+        services.AddLocalization(options =>
         {
-            services.AddMvc().AddViewLocalization(); // For IHtmlLocalizer
-            services.AddLocalization(options =>
-            {
-                // It's pretty much standard to put resource files here.
-                options.ResourcesPath = "Resources";
-            });
-        }
+            // It's pretty much standard to put resource files here.
+            options.ResourcesPath = "Resources";
+        });
 
         return services;
     }

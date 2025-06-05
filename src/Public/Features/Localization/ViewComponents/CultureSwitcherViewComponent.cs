@@ -29,7 +29,6 @@ public class CultureSwitcherViewComponent : ViewComponent
         {
             SupportedCultures = supportedCultures,
             CurrentUICulture = HttpContext.GetRequestCulture(),
-            UseRouteCulture = _localizationOptions.UseRouteCulture,
         };
 
         return View(model);

@@ -12,7 +12,7 @@
             <li>
                 <button
                     class="@((Model.CurrentUICulture.Name == culture.Name) ? "dropdown-item active" : "dropdown-item")"
-                    data-id="@culture.Name"
+                    data-cookie-value="@Model.GetCookieValue(culture.Name)"
                     type="button"
                 >@culture.NativeName</button>
             </li>
@@ -20,30 +20,16 @@
     </ul>
 </div>
 
-@* We can't use jQuery here because it's not loaded yet.
-(It should be loaded at the end of the body tag, right?) *@
-@* @if (Model.UseRouteCulture)
-{
-    <script>
-        var element = document.getElementById("culture-options");
-        element.addEventListener("change", () => {
-            var culture = element.options[element.selectedIndex].value;
-            var segments = location.pathname.split('/');
-            if (segments.length > 2) {
-                segments[1] = culture;
-                location.href = segments.join('/');
-            } else {
-                location.href = '/' + culture + location.pathname;
-            }
+<script>
+    // We can't use jQuery here because it's not loaded yet.
+    (function() {
+        const CULTURE_COOKIE_NAME = "@(CultureSwitcherModel.CULTURE_COOKIE_NAME)";
+        document.querySelectorAll(".dropdown-menu button").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const cookieValue = btn.getAttribute("data-cookie-value");
+                document.cookie = `${CULTURE_COOKIE_NAME}=${cookieValue}; max-age=31536000; path=/; samesite=lax; secure`;
+                location.reload();
+            });
         });
-    </script>
-}
-else
-{
-    <script>
-        document.getElementById("culture-options").addEventListener("change", () => {
-            document.getElementById("culture-switcher").submit();
-        });
-    </script>
-}
- *@
+    })();
+</script>
