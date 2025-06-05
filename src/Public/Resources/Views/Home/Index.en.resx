@@ -117,16 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Database" xml:space="preserve">
-    <value>Database</value>
+  <data name="&lt;!--venue address--&gt;" xml:space="preserve">
+    <value>Floor B2, 97 Wausan-ro, Mapo-gu, Seoul</value>
   </data>
-  <data name="Database connected" xml:space="preserve">
-    <value>Database connected</value>
+  <data name="&lt;!--venue directions--&gt;" xml:space="preserve">
+    <value>H-STAGE is located on the second basement floor of the Hana Bank building in front of the main gate of Hongik University. Look for the "H-STAGE" sign next to the parking entrance, then take the stairs down two flights to the external rest area and entrance.</value>
   </data>
-  <data name="Error" xml:space="preserve">
-    <value>Error</value>
+  <data name="&lt;!--venue picture credit--&gt;" xml:space="preserve">
+    <value>Front of H-STAGE Building. Photo from &lt;a href="https://theplay.or.kr/소극장/"&gt;H-STAGE webpage&lt;/a&gt;.</value>
   </data>
-  <data name="This is a test." xml:space="preserve">
-    <value>This is a test.</value>
+  <data name="Address:" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="Event Information" xml:space="preserve">
+    <value>Event Information</value>
+  </data>
+  <data name="Reserve a Seat" xml:space="preserve">
+    <value>Reserve a Seat</value>
+  </data>
+  <data name="Venue Information" xml:space="preserve">
+    <value>Venue Information</value>
+  </data>
+  <data name="Website:" xml:space="preserve">
+    <value>Website:</value>
   </data>
 </root>

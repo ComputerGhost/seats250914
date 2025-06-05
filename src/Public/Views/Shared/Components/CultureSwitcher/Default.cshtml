@@ -1,20 +1,28 @@
 ﻿@using Public.Features.Localization.Models
 @model CultureSwitcherModel
 
-<div>
-    <form id="culture-switcher">
-        <select name="culture" id="culture-options">
-            @foreach (var culture in Model.SupportedCultures)
-            {
-                <option value="@culture.Name" selected="@(Model.CurrentUICulture.Name == culture.Name)">@culture.NativeName</option>
-            }
-        </select>
-    </form>
+<div class="dropdown">
+    <button class="dropdown-toggle btn btn-outline-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-globe"></i>
+        <span class="visually-hidden">Change the language</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end">
+        @foreach (var culture in Model.SupportedCultures)
+        {
+            <li>
+                <button
+                    class="@((Model.CurrentUICulture.Name == culture.Name) ? "dropdown-item active" : "dropdown-item")"
+                    data-id="@culture.Name"
+                    type="button"
+                >@culture.NativeName</button>
+            </li>
+        }
+    </ul>
 </div>
 
 @* We can't use jQuery here because it's not loaded yet.
 (It should be loaded at the end of the body tag, right?) *@
-@if (Model.UseRouteCulture)
+@* @if (Model.UseRouteCulture)
 {
     <script>
         var element = document.getElementById("culture-options");
@@ -38,3 +46,4 @@ else
         });
     </script>
 }
+ *@
