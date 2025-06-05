@@ -1,41 +1,39 @@
 ﻿@use "bootstrap";
 @use "layout.cshtml" as layout;
 @use "sass:color";
+@use "sass:map";
 
 .hero {
-    background-color: color.mix(bootstrap.$primary, #fff);
-    color: bootstrap.$dark;
     height: 100vh;
+    max-height: 60vw; // Otherwise it can get unreasonable.
+    overflow-y: hidden;
     margin-top: -(layout.$header-height);
     padding-top: layout.$header-height;
-    display: flex;
-    align-items: stretch;
+    background-color: color.mix(bootstrap.$primary, #fff);
+    color: bootstrap.$dark;
 
-    .hero-image-container {
+    .hero-adaptive-layout {
+        display: flex;
+        align-items: stretch;
+        height: 100%;
         padding: 3rem;
-        aspect-ratio: 1020/1440;
     }
 
     .hero-image {
         border-radius: 1rem;
-        height: 100%;
+        max-height: 100%;
         width: auto;
-        aspect-ratio: 1020/1440;
+        max-width: 100%;
     }
 
     .hero-content {
-        flex-grow: 2;
         padding: 1rem 2rem;
         text-align: center;
+        flex-grow: 100;
+        // Vertical center
         display: flex;
         flex-direction: column;
         justify-content: center;
-    }
-}
-
-@supports (height: 100dvh) {
-    .hero {
-        height: 100dvh;
     }
 }
 
@@ -46,4 +44,48 @@
     height: 300px;
     text-align: center;
     padding: 3rem;
+}
+
+%hero-vertical {
+    display: block;
+    height: auto;
+
+    .hero-image-container {
+        padding: 1rem 3rem;
+        aspect-ratio: initial;
+    }
+
+    .hero-image {
+        width: 100%;
+        height: auto;
+    }
+}
+
+@supports (height: 100dvh) {
+    .hero {
+        height: 100dvh;
+        max-height: 60dvw;
+    }
+}
+
+@media screen and (max-width: map.get(bootstrap.$grid-breakpoints, "md")) {
+    .hero {
+        height: initial;
+        max-height: initial;
+
+        .hero-adaptive-layout {
+            display: block;
+            height: auto;
+        }
+
+        .hero-image-container {
+            padding: 1rem 3rem;
+            aspect-ratio: initial;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: auto;
+        }
+    }
 }
