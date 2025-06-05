@@ -21,6 +21,8 @@ builder.Services.AddMyLocalization(options =>
 var app = builder.Build();
 app.MapControllers();
 app.UseStaticFiles();
+app.UseExceptionHandler("/Error");
+app.UseStatusCodePagesWithReExecute("/Error/{0}");
 app.UseMyLocalization();
 app.Run();
 
