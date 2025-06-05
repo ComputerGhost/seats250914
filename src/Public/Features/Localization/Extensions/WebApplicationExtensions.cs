@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Localization.Routing;
-using Microsoft.AspNetCore.Localization;
+﻿using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Public.Features.Localization.Models;
 
@@ -20,21 +19,11 @@ public static class WebApplicationExtensions
         var netOptions = new RequestLocalizationOptions
         {
             DefaultRequestCulture = new RequestCulture(myOptions.DefaultCulture),
+
             // In almost every situation, these should be set to the same thing.
             SupportedCultures = myOptions.SupportedCultures, // Parsing and rendering data like numbers and currency
             SupportedUICultures = myOptions.SupportedCultures, // Language to use
         };
-
-        if (myOptions.UseLocalizationResources)
-        {
-            // Nothing to do here.
-            // We only needed this in the service extensions.
-        }
-
-        if (myOptions.UseRouteCulture)
-        {
-            netOptions.RequestCultureProviders.Insert(0, new RouteDataRequestCultureProvider());
-        }
 
         app.UseRequestLocalization(netOptions);
 
