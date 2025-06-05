@@ -1,81 +1,89 @@
-﻿<section id="top" class="hero">
+﻿@inject IViewLocalizer Localizer;
+
+<section id="top" class="hero">
+
+    <div class="hero-image-container">
+        <img src="~/images/poster.png" class="hero-image">
+    </div>
 
     <div class="hero-content">
         <h1 class="display-3">"Fall in Hyelin"</h1>
-        <p class="lead">
-            Fall in love with Hyelin this fall&mdash;September 14, 2025
+        <p>
+            You are invited to Hyelin's party on September 14, 2025.
         </p>
-        <a href="#" class="btn btn-primary">Reserve Your Seat</a>
+        <p>
+            &ldquo;I want this to be a little party between you and me,
+            where we can interact with one another.&rdquo;
+        </p>
+        <p class="mb-3">
+            Fall in love with Hyelin this fall.
+        </p>
+        <div>
+            <a href="#reserve-a-seat" class="btn btn-primary">Reserve Your Seat</a>
+        </div>
     </div>
 
 </section>
 
 <section id="venue-info">
     <div class="container py-5">
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-8">
-                <h2>Venue Information</h2>
+                <h2>@Localizer["Venue Information"]</h2>
 
                 <address>
                     <strong>H-STAGE</strong><br>
-                    <!-- Korean: 서울특별시 마포구 와우산로 97 지하 2층 -->
-                    Address: Floor B2, 97 Wausan-ro, Mapo-gu, Seoul<br>
-                    Website: &lt;<a href="https://theplay.or.kr/소극장/">https://theplay.or.kr/소극장/</a>&gt;
+                    @Localizer["Address:"] @Localizer["<!--venue address-->"]<br>
+                    @Localizer["Website:"] &lt;<a href="https://theplay.or.kr/소극장/">https://theplay.or.kr/소극장/</a>&gt;
                 </address>
 
-                <p>
-                    H-STAGE is located on the second basement floor of the Hana Bank building in front of the main gate of Hongik University.
-                    Look for the "H-STAGE" sign next to the parking entrance, then take the stairs down two flights to the external rest area and entrance.
-                </p>
+                <p>@Localizer["<!--venue directions-->"]</p>
             </div>
+
             <div class="col-4">
                 <figure class="figure">
                     <img src="~/images/h-stage-building.jpg" class="figure-img img-fluid rounded" />
-                    <figcaption class="figure-caption text-light">
-                        Front of H-STAGE Building.
-                        Photo from <a href="https://theplay.or.kr/소극장/">H-STAGE webpage</a>.
-                    </figcaption>
+                    <figcaption class="figure-caption">@Localizer["<!--venue picture credit-->"]</figcaption>
                 </figure>
             </div>
         </div>
+
         <partial name="_MapWidget" />
     </div>
 </section>
 
-<section id="event-info" class="container-fluid text-bg-secondary py-5">
-    <div class="row">
-        <div class="col-3"></div>
+<section id="event-info" class="container-fluid text-bg-light py-5">
+    <div class="row justify-content-center">
         <div class="col-6">
-            <h2>Event Information</h2>
+            <h2>@Localizer["Event Information"]</h2>
             <p>
-                Fall in love with Hyelin at her "Fall in Hyelin" fanmeeting event this September 14, 2025 at H-STAGE in Mapo.
+                Fall in love with Hyelin at her "Fall in Hyelin" fanmeeting event this September 14, 2025 at <span class="text-nowrap">H-STAGE</span> in Mapo.
                 Doors open at 14:00 KST, and the event starts at 15:00 KST.
             </p>
             <p>
                 A reservation is required to attend the event.
             </p>
         </div>
-        <div class="col-3"></div>
-
     </div>
 </section>
 
 <section id="reserve-a-seat" class="container-fluid py-5">
-    <div class="row">
-        <div class="col-3"></div>
+    <div class="row justify-content-center">
         <div class="col-6">
-            <h2>Reserve a Seat</h2>
+            <h2>@Localizer["Reserve a Seat"]</h2>
             <p>
                 Please select your seat and make your payment.
                 When reserving a seat, you must agree to our <a asp-controller="Legal" asp-action="TermsOfService">Terms of Service</a>.
                 Your reservation will be confirmed within 24 hours.
             </p>
         </div>
-        <div class="col-3"></div>
 
         <div class="col-12">
             <div class="seat-selection-placeholder">
                 This is a placeholder for the seat selection widget. / 좌석 선택 위젯의 자리 표시자입니다.
+                <br>
+                <br>
+                <a asp-controller="Reservation" asp-action="ReserveSeat">Click here to simulate a seat selection.</a>
             </div>
         </div>
     </div>

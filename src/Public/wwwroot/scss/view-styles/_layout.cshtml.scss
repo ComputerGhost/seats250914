@@ -15,9 +15,10 @@ body > footer {
 }
 
 .navbar {
+    @extend .text-bg-light;
+
     .nav-link {
         border-radius: 1em;
-        color: var(--bs-white);
 
         &.active {
             @extend .text-bg-primary;

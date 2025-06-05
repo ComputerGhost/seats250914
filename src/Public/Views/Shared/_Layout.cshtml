@@ -1,5 +1,4 @@
-﻿@using Public.Views.Shared
-@inject IStringLocalizer<_Layout> Localizer;
+﻿@inject IStringLocalizer<LayoutViewModel> Localizer;
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,29 +18,30 @@
     <script defer src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    @RenderSection("Scripts", required: false)
 </head>
 <body class="h-100">
 
-    <header class="navbar navbar-expand bg-dark fixed-top">
+    <header class="navbar navbar-expand fixed-top">
         <div class="container-fluid">
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbar-menu" aria-expanded="false" aria-label="@Localizer["Toggle navigation"]">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <nav id="navbar-menu" class="collapse navbar-collapse">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a asp-controller="Home" asp-action="Index" asp-fragment="top" class="nav-link">Home</a>
+                        <a asp-controller="Home" asp-action="Index" asp-fragment="top" class="nav-link">@Localizer["Home"]</a>
                     </li>
                     <li class="nav-item">
-                        <a asp-controller="Home" asp-action="Index" asp-fragment="venue-info" class="nav-link">Venue</a>
+                        <a asp-controller="Home" asp-action="Index" asp-fragment="venue-info" class="nav-link">@Localizer["Venue"]</a>
                     </li>
                     <li class="nav-item">
-                        <a asp-controller="Home" asp-action="Index" asp-fragment="event-info" class="nav-link">Event</a>
+                        <a asp-controller="Home" asp-action="Index" asp-fragment="event-info" class="nav-link">@Localizer["Event"]</a>
                     </li>
                     <li class="nav-item">
-                        <a asp-controller="Home" asp-action="Index" asp-fragment="reserve-a-seat" class="nav-link">Reserve a Seat</a>
+                        <a asp-controller="Home" asp-action="Index" asp-fragment="reserve-a-seat" class="nav-link">@Localizer["Reserve a Seat"]</a>
                     </li>
                 </ul>
             </nav>
@@ -58,12 +58,9 @@
     </main>
 
     <footer class="py-2 text-center">
-        <p class="container m-0">
-            We collect some personal information in order to provide quality service.
-            You can read more about that in our <a asp-controller="Legal" asp-action="PrivacyPolicy">Privacy Policy</a>.
-        </p>
+        <a asp-controller="Legal" asp-action="PrivacyPolicy">@Localizer["Privacy Policy"]</a>
+        &centerdot;
+        <a asp-controller="Legal" asp-action="TermsOfService">@Localizer["Terms of Service"]</a>
     </footer>
-
-    @RenderSection("Scripts", required: false)
 </body>
 </html>

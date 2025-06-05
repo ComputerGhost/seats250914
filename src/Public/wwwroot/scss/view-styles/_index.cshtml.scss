@@ -1,22 +1,35 @@
 ﻿@use "bootstrap";
 @use "layout.cshtml" as layout;
+@use "sass:color";
 
 .hero {
-    background: url('/images/hyelin-official.jpg') top center no-repeat;
-    background-size: cover;
+    background-color: color.mix(bootstrap.$primary, #fff);
+    color: bootstrap.$dark;
     height: 100vh;
-    padding: -(layout.$header-height);
-    position: relative;
+    margin-top: -(layout.$header-height);
+    padding-top: layout.$header-height;
+    display: flex;
+    align-items: stretch;
+
+    .hero-image-container {
+        padding: 3rem;
+        aspect-ratio: 1020/1440;
+    }
+
+    .hero-image {
+        border-radius: 1rem;
+        height: 100%;
+        width: auto;
+        aspect-ratio: 1020/1440;
+    }
 
     .hero-content {
-        background: rgba(bootstrap.$gray-500, 0.38);
-        border-radius: 1rem;
-        color: #fff;
-        padding: 1rem;
-        position: absolute;
-        top: 5rem;
-        right: 3rem;
-        max-width: 16cm;
+        flex-grow: 2;
+        padding: 1rem 2rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 }
 
