@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "Layouts/_BareLayout";
+    var statusCode = Context.Response.StatusCode;
+}
+
+<div class="container py-3 text-center">
+    <div class="display-1">@statusCode</div>
+    <h1>Error</h1>
+    <p>This error isn't expected. We'll look into it.</p>
+    <div>
+        <a href="/">Return to Home</a>
+    </div>
+</div>

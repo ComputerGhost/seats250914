@@ -1,7 +1,6 @@
 ﻿@{
-	Layout = null;
+	Layout = "Layouts/_NakedLayout";
 }
-<!DOCTYPE html>
 <!--
 The Kakao Maps loading scripts are synchronous, so they block the page load 
 until they finish running. They can't be made `async` or `defer`, because that 
@@ -13,19 +12,24 @@ page, fixing the problem that I'm trying to solve.
 
 Now if only there were an easy way to fix the mime type of the map data...
 -->
-<html>
-	<head>
-		<meta charset="utf-8">
-	</head>
+
+@section Styles
+{
 	<style>
-		html, body { height: 100%; margin: 0; }
+		html, body, .map-container { height: 100%;  }
 		.cont, .wrap_controllers { display: none; }
-		body .root_daum_roughmap, body .root_daum_roughmap .wrap_map { height: 100%; width: 100% }
-		body { background: #ccc; }
+
+		.map-container .root_daum_roughmap,
+		.map-container .root_daum_roughmap .wrap_map {
+			height: 100%;
+			width: 100%
+		}
 	</style>
-</html>
-<body>
+}
+
+<div class="map-container">
 	<div id="daumRoughmapContainer1748889872591" class="root_daum_roughmap root_daum_roughmap_landing"></div>
+
 	<script type="text/javascript" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
 	<script>
 		new daum.roughmap.Lander({
@@ -33,4 +37,4 @@ Now if only there were an easy way to fix the mime type of the map data...
 			"key" : "2vibz2b4ba7",
 		}).render()
 	</script>
-</body>
+</div>
