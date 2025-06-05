@@ -18,7 +18,7 @@ internal class MinimalApplication
     {
         ConfigurationManager = new ConfigurationManager();
         ConfigurationManager
-            .AddJsonFile("appsettings.json")
+            .AddJsonFile("testsettings.json")
             .AddEnvironmentVariables();
 
         ServiceCollection = new ServiceCollection();

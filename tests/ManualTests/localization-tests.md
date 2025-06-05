@@ -6,13 +6,8 @@ The following tests pertain to the website at <https://hyelinfanmeeting2025.com>
 
 Language tests:
 
- * When the query string contains 'culture=en': the website renders in English.
- * When the query string contains 'culture=ko': the website renders in Korean.
- * When the user's primary language is English, and they are visiting the website for the first time: the website renders in English.
- * When the user's primary language is Korean, and they are visiting the website for the first time: the website renders in Korean.
- * When the user's primary language is English, but they have selected to use Korean: the website renders in Korean.
- * When the user's primary language is Korean, but they have selected to use English: the website renders in English.
- * When the user has selected to use a language, and the user navigates to another webpage: both the starting and ending webpage render in the selected language.
+ * When the user's language is English: the website renders in English.
+ * When the user's langauge is Korean: the website renders in Korean.
 
 DateTime tests:
 
