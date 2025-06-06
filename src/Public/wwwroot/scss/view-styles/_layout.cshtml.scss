@@ -25,3 +25,19 @@ body > footer {
         }
     }
 }
+
+#culture-switcher {
+    position: absolute;
+    top: 0;
+    right: bootstrap.$container-padding-x * 0.5;
+}
+
+@media screen and (max-width: map.get(bootstrap.$grid-breakpoints, "sm")) {
+    #navbar-menu {
+        margin-top: 1rem;
+
+        a {
+            padding-left: 1rem;
+        }
+    }
+}

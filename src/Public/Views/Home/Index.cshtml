@@ -1,34 +1,34 @@
 ﻿@inject IViewLocalizer Localizer;
 
 <section id="top" class="hero">
+    <div class="hero-adaptive-layout">
 
-    <div class="hero-image-container">
-        <img src="~/images/poster.png" class="hero-image">
-    </div>
+        <img src="~/images/poster.png" class="hero-image" alt="Event poster with a smiling Hyelin">
 
-    <div class="hero-content">
-        <h1 class="display-3">"Fall in Hyelin"</h1>
-        <p>
-            You are invited to Hyelin's party on September 14, 2025.
-        </p>
-        <p>
-            &ldquo;I want this to be a little party between you and me,
-            where we can interact with one another.&rdquo;
-        </p>
-        <p class="mb-3">
-            Fall in love with Hyelin this fall.
-        </p>
-        <div>
-            <a href="#reserve-a-seat" class="btn btn-primary">Reserve Your Seat</a>
+        <div class="hero-content">
+            <h1 class="display-3">"Fall in Hyelin"</h1>
+            <p>
+                You are invited to Hyelin's party on September 14, 2025.
+            </p>
+            <p>
+                &ldquo;I want this to be a little party between you and me,
+                where we can interact with one another.&rdquo;
+            </p>
+            <p class="mb-3">
+                Fall in love with Hyelin this fall.
+            </p>
+            <div>
+                <a href="#reserve-a-seat" class="btn btn-primary">Reserve Your Seat</a>
+            </div>
         </div>
-    </div>
 
+    </div>
 </section>
 
 <section id="venue-info">
     <div class="container py-5">
         <div class="row mb-3">
-            <div class="col-8">
+            <div class="col-sm-8">
                 <h2>@Localizer["Venue Information"]</h2>
 
                 <address>
@@ -40,9 +40,9 @@
                 <p>@Localizer["<!--venue directions-->"]</p>
             </div>
 
-            <div class="col-4">
+            <div class="col-sm-4">
                 <figure class="figure">
-                    <img src="~/images/h-stage-building.jpg" class="figure-img img-fluid rounded" />
+                    <img src="~/images/h-stage-building.jpg" class="figure-img img-fluid rounded" alt="Front of event building"/>
                     <figcaption class="figure-caption">@Localizer["<!--venue picture credit-->"]</figcaption>
                 </figure>
             </div>
@@ -54,7 +54,7 @@
 
 <section id="event-info" class="container-fluid text-bg-light py-5">
     <div class="row justify-content-center">
-        <div class="col-6">
+        <div class="col-lg-6">
             <h2>@Localizer["Event Information"]</h2>
             <p>
                 Fall in love with Hyelin at her "Fall in Hyelin" fanmeeting event this September 14, 2025 at <span class="text-nowrap">H-STAGE</span> in Mapo.
@@ -69,7 +69,7 @@
 
 <section id="reserve-a-seat" class="container-fluid py-5">
     <div class="row justify-content-center">
-        <div class="col-6">
+        <div class="col-lg-6">
             <h2>@Localizer["Reserve a Seat"]</h2>
             <p>
                 Please select your seat and make your payment.
