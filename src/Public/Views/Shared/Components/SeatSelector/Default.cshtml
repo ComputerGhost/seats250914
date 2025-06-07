@@ -1,7 +1,11 @@
 ﻿@functions {
     private void RenderSeat(int number, string status)
     {
-        <div class="seat @status" data-index="@(number - 1)" data-status="@status">@number</div>
+        <button
+            class="seat @status"
+            data-index="@(number - 1)"
+            data-status="@status"
+        >@number</button>
     }
 }
 

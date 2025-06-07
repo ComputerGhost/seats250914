@@ -102,10 +102,8 @@ $section-overlap: $top-minus-bottom-seats / 2;
     .seat {
         @extend .border;
         background: $available-background;
-        cursor: pointer;
         line-height: $seat-size;
         text-align: center;
-        user-select: none;
         vertical-align: middle;
         width: $seat-size;
 

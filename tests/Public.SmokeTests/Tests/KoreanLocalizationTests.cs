@@ -3,6 +3,7 @@
 namespace Public.SmokeTests.Tests;
 
 [TestClass]
+[Ignore("These tests require a complex environment setup, so they will be triggered manually.")]
 public sealed class KoreanLocalizationTests : TestBase
 {
     private IWebDriver Driver { get; set; } = null!;

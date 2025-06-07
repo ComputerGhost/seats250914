@@ -2,15 +2,13 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
-namespace Public.SmokeTests;
+namespace Public.SmokeTests.Tests;
 
-[TestClass]
 public class TestBase
 {
     protected static string TargetUrl { get; private set; } = null!;
 
-    [AssemblyInitialize]
-    public static void InitializeAssembly(TestContext context)
+    static TestBase()
     {
         var environment = Environment.GetEnvironmentVariable("TEST_ENVIRONMENT") ?? "Development";
         var configuration = new ConfigurationBuilder()
