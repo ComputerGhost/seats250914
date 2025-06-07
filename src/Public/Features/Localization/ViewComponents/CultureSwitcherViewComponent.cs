@@ -9,7 +9,7 @@ namespace Public.Features.Localization.ViewComponents;
 /// Dropdown menu to select a culture.
 /// </summary>
 /// <remarks>
-/// See Views/Shared/Components/CultureSwitcher for associated view.
+/// See Views/Shared/Components/CultureSwitcher for the associated view.
 /// </remarks>
 public class CultureSwitcherViewComponent : ViewComponent
 {
