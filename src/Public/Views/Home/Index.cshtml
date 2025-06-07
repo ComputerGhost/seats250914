@@ -67,7 +67,7 @@
     </div>
 </section>
 
-<section id="reserve-a-seat" class="container-fluid py-5">
+<section id="reserve-a-seat" class="container-xxl py-5">
     <div class="row justify-content-center">
         <div class="col-lg-6">
             <h2>@Localizer["Reserve a Seat"]</h2>
@@ -79,12 +79,7 @@
         </div>
 
         <div class="col-12">
-            <div class="seat-selection-placeholder">
-                This is a placeholder for the seat selection widget. / 좌석 선택 위젯의 자리 표시자입니다.
-                <br>
-                <br>
-                <a asp-controller="Reservation" asp-action="ReserveSeat">Click here to simulate a seat selection.</a>
-            </div>
+            <vc:seat-selector />
         </div>
     </div>
 </section>

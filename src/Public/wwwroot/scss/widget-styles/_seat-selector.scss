@@ -1,0 +1,160 @@
+@use "bootstrap";
+
+/*
+    Undo conflicting Bootstrap styles.
+*/
+.interactive-seat-selector {
+    .row {
+        --bs-gutter-x: 0;
+        display: block;
+        margin: 0;
+    }
+    .row > * {
+        width: auto;
+        padding: 0;
+        margin: 0;
+    }
+}
+
+/*
+    Now set our styles for the interactive seat layout.
+*/
+
+// The main scale must be in units of pixels for the JS resizing to work.
+$main-scale: 14.4px;
+
+// Use "em" for all of the rest of the size units in this file.
+$seat-size: 2em;
+$stage-depth: $seat-size * 4;
+$stage-width: $seat-size * 30;
+$stage-radius: $seat-size * 50;
+$top-minus-bottom-seats: 2;
+
+// Colors to set
+$available-background: bootstrap.$gray-200;
+$reserved-background: bootstrap.$red-200;
+$on-hold-background: repeating-linear-gradient(
+    135deg,
+    $available-background, 
+    $available-background 0.2em, 
+    $reserved-background 0.2em, 
+    $reserved-background 0.4em);
+$selected-background: bootstrap.$green-200;
+
+// Calculated
+$isle-width: $seat-size * 2;
+$section-overlap: $top-minus-bottom-seats / 2;
+
+// Widget styles
+.interactive-seat-selector {
+    align-items: center;
+    background: bootstrap.$light;
+    display: flex;
+    flex-direction: column;
+    font-size: $main-scale;
+    padding: 1rem;
+
+    .audience {
+        display: flex;
+        justify-content: center;
+    }
+
+    .legend {
+        display: flex;
+
+        .key {
+            margin: 0.5em;
+
+            &:before {
+                @extend .border;
+                content: '';
+                display: inline-block;
+                height: 1em;
+                margin-right: 0.25em;
+                width: 1em;
+            }
+        }
+
+        .available:before {
+            background: $available-background;
+        }
+
+        .reserved:before {
+            background: $reserved-background;
+        }
+
+        .on-hold:before {
+            background: $on-hold-background;
+        }
+
+        .selected:before {
+            background: $selected-background;
+        }
+    }
+
+    .row {
+        display: flex;
+        height: $seat-size;
+        flex-wrap: nowrap;
+        margin-bottom: $seat-size;
+    }
+
+    .seat {
+        @extend .border;
+        background: $available-background;
+        cursor: pointer;
+        line-height: $seat-size;
+        text-align: center;
+        user-select: none;
+        vertical-align: middle;
+        width: $seat-size;
+
+        &.reserved {
+            background: $reserved-background;
+        }
+
+        &.on-hold {
+            background: $on-hold-background;
+        }
+
+        &.selected {
+            background: $selected-background;
+        }
+    }
+
+    .section {
+        &.left {
+            & > .row {
+                justify-content: left;
+            }
+        }
+
+        &.center {
+            margin: 0 ($isle-width - $section-overlap);
+
+            & > .row {
+                justify-content: center;
+            }
+        }
+
+        &.right {
+            & > .row {
+                justify-content: right;
+            }
+        }
+    }
+
+    .stage {
+        @extend .text-bg-secondary;
+        height: $stage-depth;
+        padding: 1em;
+        text-align: center;
+        width: $stage-width;
+    }
+    // To set width in html: `style="font-size: {seat-widths}em"`.
+    .wall, .empty-space {
+        height: $seat-size;
+        width: $seat-size;
+    }
+}
+

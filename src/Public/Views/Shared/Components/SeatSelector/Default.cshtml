@@ -1,0 +1,188 @@
+﻿@functions {
+    private void RenderSeat(int number, string status)
+    {
+        <div class="seat @status" data-index="@(number - 1)" data-status="@status">@number</div>
+    }
+}
+
+<div class="row">
+    <div class="col-lg-10 col-md-9 mb-3 d-flex justify-content-center">
+        <div id="seat-map" data-scaled-for-parent-width="1100" class="interactive-seat-selector" aria-hidden="true">
+
+            <div class="legend">
+                <div class="key available">Available</div>
+                <div class="key on-hold">On hold</div>
+                <div class="key reserved">Reserved</div>
+                <div class="key selected">Selected</div>
+            </div>
+
+            <div class="audience">
+                <div class="section left">
+                    <div class="row">
+                        <div class="wall" style="font-size: 1em"></div>
+                        <div class="empty-space" style="font-size: 4em"></div>
+                        @{RenderSeat(90, "available");}
+                        @{RenderSeat(91, "available");}
+                        @{RenderSeat(92, "available");}
+                        @{RenderSeat(93, "available");}
+                    </div>
+                    <div class="row">
+                        <div class="wall" style="font-size: 0.3em"></div>
+                        <div class="empty-space" style="font-size: 2em"></div>
+                        @{RenderSeat(61, "available");}
+                        @{RenderSeat(62, "available");}
+                        @{RenderSeat(63, "available");}
+                        @{RenderSeat(64, "available");}
+                        @{RenderSeat(65, "available");}
+                        @{RenderSeat(66, "available");}
+                        @{RenderSeat(67, "available");}
+                    </div>
+                    <div class="row">
+                        <div class="empty-space" style="font-size: 0.6em"></div>
+                        @{RenderSeat(31, "available");}
+                        @{RenderSeat(32, "available");}
+                        @{RenderSeat(33, "available");}
+                        @{RenderSeat(34, "available");}
+                        @{RenderSeat(35, "available");}
+                        @{RenderSeat(36, "available");}
+                        @{RenderSeat(37, "available");}
+                        @{RenderSeat(38, "available");}
+                        @{RenderSeat(39, "available");}
+                    </div>
+                    <div class="row">
+                        <div class="empty-space" style="font-size: 1em"></div>
+                        @{RenderSeat(1, "available");}
+                        @{RenderSeat(2, "available");}
+                        @{RenderSeat(3, "available");}
+                        @{RenderSeat(4, "available");}
+                        @{RenderSeat(5, "available");}
+                        @{RenderSeat(6, "available");}
+                        @{RenderSeat(7, "available");}
+                        @{RenderSeat(8, "available");}
+                        @{RenderSeat(9, "on-hold");}
+                    </div>
+                </div>
+
+                <div class="section center">
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                        @{RenderSeat(68, "available");}
+                        @{RenderSeat(69, "available");}
+                        @{RenderSeat(70, "available");}
+                        @{RenderSeat(71, "available");}
+                        @{RenderSeat(72, "available");}
+                        @{RenderSeat(73, "available");}
+                        @{RenderSeat(74, "available");}
+                        @{RenderSeat(75, "available");}
+                        @{RenderSeat(76, "available");}
+                        @{RenderSeat(77, "available");}
+                        @{RenderSeat(78, "available");}
+                        @{RenderSeat(79, "available");}
+                        @{RenderSeat(80, "available");}
+                        @{RenderSeat(81, "available");}
+                    </div>
+                    <div class="row">
+                        @{RenderSeat(40, "available");}
+                        @{RenderSeat(41, "available");}
+                        @{RenderSeat(42, "available");}
+                        @{RenderSeat(43, "available");}
+                        @{RenderSeat(44, "available");}
+                        @{RenderSeat(45, "available");}
+                        @{RenderSeat(46, "available");}
+                        @{RenderSeat(47, "available");}
+                        @{RenderSeat(48, "available");}
+                        @{RenderSeat(49, "available");}
+                        @{RenderSeat(50, "available");}
+                        @{RenderSeat(51, "available");}
+                        @{RenderSeat(52, "available");}
+                    </div>
+                    <div class="row">
+                        @{RenderSeat(10, "reserved");}
+                        @{RenderSeat(11, "reserved");}
+                        @{RenderSeat(12, "reserved");}
+                        @{RenderSeat(13, "reserved");}
+                        @{RenderSeat(14, "reserved");}
+                        @{RenderSeat(15, "reserved");}
+                        @{RenderSeat(16, "reserved");}
+                        @{RenderSeat(17, "reserved");}
+                        @{RenderSeat(18, "reserved");}
+                        @{RenderSeat(19, "reserved");}
+                        @{RenderSeat(20, "reserved");}
+                        @{RenderSeat(21, "reserved");}
+                    </div>
+                </div>
+
+                <div class="section right">
+                    <div class="row">
+                        @{RenderSeat(94, "available");}
+                        @{RenderSeat(95, "available");}
+                        @{RenderSeat(96, "available");}
+                        @{RenderSeat(97, "available");}
+                        @{RenderSeat(98, "available");}
+                        @{RenderSeat(99, "available");}
+                        @{RenderSeat(100, "available");}
+                        <div class="empty-space" style="font-size: 0.6em"></div>
+                        <div class="wall" style="font-size: 1.4em"></div>
+                    </div>
+                    <div class="row">
+                        @{RenderSeat(82, "available");}
+                        @{RenderSeat(83, "available");}
+                        @{RenderSeat(84, "available");}
+                        @{RenderSeat(85, "available");}
+                        @{RenderSeat(86, "available");}
+                        @{RenderSeat(87, "available");}
+                        @{RenderSeat(88, "available");}
+                        @{RenderSeat(89, "available");}
+                        <div class="empty-space" style="font-size: 0.6em"></div>
+                        <div class="wall" style="font-size: 0.7em"></div>
+                    </div>
+                    <div class="row">
+                        @{RenderSeat(53, "available");}
+                        @{RenderSeat(54, "available");}
+                        @{RenderSeat(55, "available");}
+                        @{RenderSeat(56, "available");}
+                        @{RenderSeat(57, "available");}
+                        @{RenderSeat(58, "available");}
+                        @{RenderSeat(59, "available");}
+                        @{RenderSeat(60, "available");}
+                        <div class="empty-space" style="font-size: 1.6em"></div>
+                    </div>
+                    <div class="row">
+                        @{RenderSeat(22, "available");}
+                        @{RenderSeat(23, "available");}
+                        @{RenderSeat(24, "available");}
+                        @{RenderSeat(25, "available");}
+                        @{RenderSeat(26, "available");}
+                        @{RenderSeat(27, "available");}
+                        @{RenderSeat(28, "available");}
+                        @{RenderSeat(29, "available");}
+                        @{RenderSeat(30, "available");}
+                        <div class="empty-space" style="font-size: 1em"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="empty-space" style="font-size: 3em"></div>
+
+            <div class="stage">
+                Stage
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-3">
+        <form>
+            <div class="d-flex flex-column">
+                <div class="mb-3">
+                    <label for="seat" class="form-label">Seat</label>
+                    <select class="form-select" id="seat">
+                        <option></option>
+                    </select>
+                </div>
+                <button class="btn btn-primary">Reserve Seat</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script defer src="~/js/seat-selector.js"></script>
