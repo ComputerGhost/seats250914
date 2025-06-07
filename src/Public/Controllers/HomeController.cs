@@ -1,7 +1,5 @@
-﻿using Core.Application.Configuration;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Public.ViewModels;
 
 namespace Public.Controllers;
 
@@ -18,11 +16,6 @@ public class HomeController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var test = await _mediator.Send(new TestDatabaseQuery());
-        return View(new TestDatabaseViewModel
-        {
-            Success = !test.IsError,
-            Error = test.IsError ? test.Errors.FirstOrDefault().Description : null,
-        });
+        return View();
     }
 }
