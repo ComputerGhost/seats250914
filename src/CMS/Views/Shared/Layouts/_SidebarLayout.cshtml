@@ -78,36 +78,5 @@
     <main class="app-main">
         @RenderBody()
     </main>
-
-    <!-- Time zone converter modal -->
-    <div class="modal fade" id="timezone-converter-modal" tabindex="-1" aria-hidden="true" aria-labelledby="timezone-converter-modal-label">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="timezone-converter-modal-label">Convert timezone</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <dl class="row">
-                        <dt class="col-sm-5">Timestamp:</dt>
-                        <dd class="col-sm-7" id="timezone-converter-timestamp"></dd>
-                    </dl>
-                    <dl class="row">
-                        <dt class="col-sm-5">Converted time:</dt>
-                        <dd class="col-sm-7" id="timezone-converter-zonedtime"></dd>
-                    </dl>
-                    <dl class="row">
-                        <dt class="col-sm-5">Timezone:</dt>
-                        <dd class="col-sm-7">
-                            <select id="timezone-converter-timezone" class="form-select"></select>
-                        </dd>
-                    </dl>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
