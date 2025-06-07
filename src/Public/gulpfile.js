@@ -1,4 +1,4 @@
-/// <binding />
+/// <binding BeforeBuild='buildStyles' Clean='cleanStyles' />
 /**
  * My stylesheets need preprocessing, but my script files are simple enough to just include as-is.
  * Therefore, this gulpfile configuration only includes tasks for processing stylesheets.

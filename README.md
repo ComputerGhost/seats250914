@@ -17,6 +17,17 @@ Payments and notifications will be handled externally. The payment statuses will
  1. Run one or both of the website projects--"CMS" and "Public" in "src/".
 
 
+## Automated tests
+
+The project contains unit tests, integration tests, smoke tests, and manual tests.
+
+The unit tests and integration tests can be run automatically from Visual Studio.
+
+The smoke tests can be run automatically from Visual Studio, but they require the website to be running at the same time. Running the website "without debugging" or configuring the tests to target Production will set up the required test environment. This is complicated, so they are optional for PR's.
+
+The manual tests are only required for Production deployment. They are not a requirement for PR's.
+
+
 ## Deploying
 
 Nathan will do these steps. He's the only one with the server password...
@@ -32,6 +43,6 @@ Nathan will do these steps. He's the only one with the server password...
 ## Contributing
 
  1. Make your changes in a new branch.
- 2. Run the automated tests. (Ignore the manual tests.)
+ 2. Run the unit tests and integration tests. (Ignore the manual tests and smoke tests.)
  3. Make a PR, and link the issue number.
  4. Nathan will merge it in.

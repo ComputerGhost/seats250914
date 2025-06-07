@@ -1,5 +1,4 @@
-﻿function SeatSelector ($mapElement)
-{
+﻿function SeatSelector($mapElement) {
     var that = this;
     this.maxSeats = 1;
     this.onInitialized = null;
@@ -39,6 +38,7 @@
         that._scaleToFit();
 
         that.onInitialized && that.onInitialized(that._seats);
+        that._$mapElement.addClass("initialized");
     };
 
     this.selectSeat = function (index) {
