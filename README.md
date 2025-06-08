@@ -13,7 +13,7 @@ Payments and notifications will be handled externally. The payment statuses will
  1. Set up a local SQL Express database. If needed, override the connection string.
 	* The default connection string is `Server=localhost;Database=Hyelin2025;User Id=sa;Password=Passw0rd;Trust Server Certificate=True`.
 	* A custom connection string can be specified with the `InfrastructureOptions__DatabaseConnectionString` environment variable.
- 1. Populate or update the database. (Ignore this step until I set up the scripts in "database/".)
+ 1. Run the "DatabaseMigrator" project in "database/".
  1. Run one or both of the website projects--"CMS" and "Public" in "src/".
 
 
