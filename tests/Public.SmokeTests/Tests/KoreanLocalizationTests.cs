@@ -22,7 +22,7 @@ public sealed class KoreanLocalizationTests : TestBase
     }
 
     [TestMethod]
-    public void WhenVisitingWebsiteForFirstTime_WebsiteRendersInEnglish()
+    public void WhenVisitingWebsiteForFirstTime_WebsiteRendersInKorean()
     {
         // Arrange
 
@@ -34,15 +34,15 @@ public sealed class KoreanLocalizationTests : TestBase
     }
 
     [TestMethod]
-    public void WhenKoreanSelected_WebsiteRendersInKorean()
+    public void WhenEnglishSelected_WebsiteRendersInKorean()
     {
         // Arrange
         Driver.Navigate().GoToUrl(TargetUrl);
         var switcher = Driver.FindElement(By.Id("culture-switcher"));
         var dropdown = switcher.FindElement(By.ClassName("dropdown-toggle"));
         dropdown.Click();
-        var koreanButton = switcher.FindElement(By.XPath(".//button[text()='English']"));
-        koreanButton.Click();
+        var englishButton = switcher.FindElement(By.XPath(".//button[text()='English']"));
+        englishButton.Click();
 
         // Act
         Driver.Navigate().GoToUrl(TargetUrl);

@@ -1,6 +1,5 @@
 ﻿using OpenQA.Selenium;
 using Public.SmokeTests.Utilities;
-using System.Net;
 
 namespace Public.SmokeTests.Tests;
 
@@ -63,10 +62,10 @@ public class HostingTests : TestBase
 
         // Act
         using var client = new HttpClient();
-        var response = await client.GetAsync(invalidSubdomain);
+        var action = async () => await client.GetAsync(invalidSubdomain);
 
         // Assert
-        Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+        await Assert.ThrowsAsync<HttpRequestException>(action);
     }
 
     [TestMethod]

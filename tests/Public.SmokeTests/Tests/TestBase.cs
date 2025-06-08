@@ -21,7 +21,7 @@ public class TestBase
     protected static IWebDriver CreateDriver(string languageId)
     {
         var options = new ChromeOptions();
-        options.AddArgument($"--lang=${languageId}");
+        options.AddArgument($"--accept-lang={languageId}");
         return new ChromeDriver(options);
     }
 }
