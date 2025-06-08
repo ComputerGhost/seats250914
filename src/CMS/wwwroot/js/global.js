@@ -1,5 +1,8 @@
 ﻿/* This file requires Bootstrap, jQuery, and Luxon. */
 
+// Strings to be translated:
+const CHANGE_DISPLAYED_TIME_ZONE = "Change displayed time zone.";
+
 // Moving library access to the top so all of VS' false errors are in one place.
 const DateTime = luxon.DateTime;
 const createModal = (id) => new bootstrap.Modal(document.getElementById(id));
@@ -19,7 +22,7 @@ $(document).ready(() => {
         const $time = $(this);
         const $select = $("<select>")
             .addClass("form-select")
-            .attr("aria-label", "Change displayed time zone.");
+            .attr("aria-label", CHANGE_DISPLAYED_TIME_ZONE);
 
         options.forEach((option) => $select.append(option.clone()));
 
