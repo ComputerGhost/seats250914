@@ -1,10 +1,11 @@
 ﻿@using Public.Features.Localization.Models
+@inject IStringLocalizer<CultureSwitcherModel> Localizer;
 @model CultureSwitcherModel
 
 <div class="dropdown">
     <button class="dropdown-toggle btn btn-outline-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         <i class="bi bi-globe"></i>
-        <span class="visually-hidden">Change the language</span>
+        <span class="visually-hidden">@Localizer["Change the language"]</span>
     </button>
     <ul class="dropdown-menu dropdown-menu-end">
         @foreach (var culture in Model.SupportedCultures)

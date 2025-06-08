@@ -6,19 +6,12 @@
         <img src="~/images/poster.png" class="hero-image" alt="Event poster with a smiling Hyelin">
 
         <div class="hero-content">
-            <h1 class="display-3">"Fall in Hyelin"</h1>
-            <p>
-                You are invited to Hyelin's party on September 14, 2025.
-            </p>
-            <p>
-                &ldquo;I want this to be a little party between you and me,
-                where we can interact with one another.&rdquo;
-            </p>
-            <p class="mb-3">
-                Fall in love with Hyelin this fall.
-            </p>
+            <h1 class="display-3"><q>@Localizer["Fall in Hyelin"]</q></h1>
+            <div class="mb-3">
+                @Localizer["<!-- hero content -->"]
+            </div>
             <div>
-                <a href="#reserve-a-seat" class="btn btn-primary">Reserve Your Seat</a>
+                <a href="#reserve-a-seat" class="btn btn-primary">@Localizer["Reserve Your Seat"]</a>
             </div>
         </div>
 
@@ -56,13 +49,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-6">
             <h2>@Localizer["Event Information"]</h2>
-            <p>
-                Fall in love with Hyelin at her "Fall in Hyelin" fanmeeting event this September 14, 2025 at <span class="text-nowrap">H-STAGE</span> in Mapo.
-                Doors open at 14:00 KST, and the event starts at 15:00 KST.
-            </p>
-            <p>
-                A reservation is required to attend the event.
-            </p>
+            @Localizer["<!-- event information -->"]
         </div>
     </div>
 </section>
@@ -71,11 +58,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-6">
             <h2>@Localizer["Reserve a Seat"]</h2>
-            <p>
-                Please select your seat and make your payment.
-                When reserving a seat, you must agree to our <a asp-controller="Legal" asp-action="TermsOfService">Terms of Service</a>.
-                Your reservation will be confirmed within 24 hours.
-            </p>
+            @Localizer["<!-- seat instructions -->"]
         </div>
 
         <div class="col-12">

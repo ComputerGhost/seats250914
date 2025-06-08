@@ -1,68 +1,52 @@
-﻿<div class="container">
-    <h1>Seat Reservation</h1>
+﻿@inject IViewLocalizer Localizer;
+
+<div class="container py-3">
+    <h1>@Localizer["Seat Reservation"]</h1>
 
     <section>
-        <p>
-            You have selected seat {seat-id}.
-            Please fill out this form then proceed to the payment page.
-            Your reservation will be confirmed within 24 hours after your payment is processed.
-        </p>
-
-        <p>
-            If this form is not completed within the specified time,
-            then your seat will be made available for another fan to claim it.
-            The time left to complete this form is <time>00:00</time>.
-        </p>
+        @Localizer["<!-- seat instructions -->"]
     </section>
     
     <form method="post">
         <section>
             <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
+                <label for="name" class="form-label">@Localizer["Name"]</label>
                 <input type="text" id="name" class="form-control" maxlength="50" required>
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
+                <label for="email" class="form-label">@Localizer["Email"]</label>
                 <input type="email" id="email" class="form-control" maxlength="255" required>
             </div>
             <div class="mb-3">
-                <label for="phone" class="form-label">Phone</label>
+                <label for="phone" class="form-label">@Localizer["Phone number"]</label>
                 <input type="tel" id="phone" class="form-control" maxlength="10" aria-describedby="phoneHelp">
                 <div id="phoneHelp" class="form-text">
-                    Please provide a Korean phone number if possible.
+                    @Localizer["Please provide a Korean phone number if possible."]
                 </div>
             </div>
             <div class="mb-3">
-                <label for="language" class="form-label">Preferred language</label>
+                <label for="language" class="form-label">@Localizer["Preferred language"]</label>
                 <select id="language" class="form-select" required>
                     <option value="English">English</option>
-                    <option value="Korean">Korean</option>
+                    <option value="Korean">한국어</option>
                 </select>
             </div>
         </section>
 
         <section>
-            <p>
-                When you submit this form, we will save and use your data in order to provide quality service.
-                For details about that, read our
-                <a asp-controller="Legal" asp-action="PrivacyPolicy">Privacy Policy</a>.
-            </p>
-            <p>
-                Submitting this form creates a bindable contract between you and us.
-                For details about that, read our 
-                <a asp-controller="Legal" asp-action="TermsOfService">Terms of Service</a>
-            </p>
+            @Localizer["<!-- form disclosures -->"]
+
             <div class="form-check mb-3">
                 <input class="form-check-input" type="checkbox" value="" id="agree" required>
                 <label class="form-check-label" for="agree">
-                    I accept the terms of service and privacy policy linked above.
+                    @Localizer["I accept the terms of service and privacy policy linked above."]
                 </label>
             </div>
         </section>
 
         <section class="mb-3">
-            <button type="submit" class="btn btn-secondary">Cancel</button>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-secondary">@Localizer["Cancel"]</button>
+            <button type="submit" class="btn btn-primary">@Localizer["Submit"]</button>
         </section>
     </form>
 </div>

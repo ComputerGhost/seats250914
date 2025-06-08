@@ -117,6 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="&lt;!-- event information --&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Fall in love with Hyelin at her "Fall in Hyelin" fanmeeting event this September 14, 2025 at &lt;span class="text-nowrap"&gt;H-STAGE&lt;/span&gt; in Mapo. Doors open at 14:00 KST, and the event starts at 15:00 KST.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;!-- hero content --&gt;" xml:space="preserve">
+    <value>&lt;p&gt;You are invited to Hyelin's party on September 14, 2025.&lt;/p&gt;
+&lt;p&gt;&lt;q&gt;I want this to be a little party between you and me, where we can interact with one another.&lt;/q&gt;&lt;/p&gt;
+&lt;p&gt;Fall in love with Hyelin this fall.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;!-- seat instructions --&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Please select your seat and make your payment. When reserving a seat, you must agree to our &lt;a asp-controller="Legal" asp-action="TermsOfService"&gt;Terms of Service&lt;/a&gt;. Your reservation will be confirmed within 24 hours.&lt;/p&gt;</value>
+  </data>
   <data name="&lt;!--venue address--&gt;" xml:space="preserve">
     <value>서울특별시 마포구 와우산로 97 지하 2층</value>
   </data>
@@ -132,8 +143,14 @@
   <data name="Event Information" xml:space="preserve">
     <value>Event Information</value>
   </data>
+  <data name="Fall in Hyelin" xml:space="preserve">
+    <value>Fall in Hyelin</value>
+  </data>
   <data name="Reserve a Seat" xml:space="preserve">
     <value>Reserve a Seat</value>
+  </data>
+  <data name="Reserve Your Seat" xml:space="preserve">
+    <value>Reserve Your Seat</value>
   </data>
   <data name="Venue Information" xml:space="preserve">
     <value>Venue Information</value>
