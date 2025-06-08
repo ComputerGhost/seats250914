@@ -117,45 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="&lt;!-- event information --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;Fall in love with Hyelin at her "Fall in Hyelin" fanmeeting event this September 14, 2025 at &lt;span class="text-nowrap"&gt;H-STAGE&lt;/span&gt; in Mapo. Doors open at 14:00 KST, and the event starts at 15:00 KST.&lt;/p&gt;</value>
+  <data name="&lt;!-- form disclosures --&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Submitting this form creates a bindable contract between you and us. Additionally, we will save and use your data in order to provide quality service. For more information, please read our &lt;a href="~/legal/terms-of-service"&gt;Terms of Service&lt;/a&gt; and &lt;a href="~/legal/privacy-policy"&gt;Privacy Policy&lt;/a&gt;.&lt;/p&gt;</value>
   </data>
-  <data name="&lt;!-- hero content --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;You are invited to Hyelin's party on September 14, 2025.&lt;/p&gt;
-&lt;p&gt;&lt;q&gt;I want this to be a little party between you and me, where we can interact with one another.&lt;/q&gt;&lt;/p&gt;
-&lt;p&gt;Fall in love with Hyelin this fall.&lt;/p&gt;</value>
+  <data name="&lt;!-- seat information --&gt;" xml:space="preserve">
+    <value>&lt;p&gt;You have selected seat {seat-id}. Please fill out this form then proceed to the payment page. Your reservation will be confirmed within 24 hours after your payment is processed.&lt;/p&gt;
+&lt;p&gt;If this form is not completed in {countdown-timer}, then your seat will be made available for another fan to claim it.&lt;/p&gt;</value>
   </data>
-  <data name="&lt;!-- seat instructions --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;Please select your seat and make your payment. When reserving a seat, you must agree to our &lt;a asp-controller="Legal" asp-action="TermsOfService"&gt;Terms of Service&lt;/a&gt;. Your reservation will be confirmed within 24 hours.&lt;/p&gt;</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="&lt;!--venue address--&gt;" xml:space="preserve">
-    <value>Floor B2, 97 Wausan-ro, Mapo-gu, Seoul</value>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
   </data>
-  <data name="&lt;!--venue directions--&gt;" xml:space="preserve">
-    <value>H-STAGE is located on the second basement floor of the Hana Bank building in front of the main gate of Hongik University. Look for the "H-STAGE" sign next to the parking entrance, then take the stairs down two flights to the external rest area and entrance.</value>
+  <data name="I accept the terms of service and privacy policy linked above." xml:space="preserve">
+    <value>I accept the terms of service and privacy policy linked above.</value>
   </data>
-  <data name="&lt;!--venue picture credit--&gt;" xml:space="preserve">
-    <value>Front of H-STAGE Building. Photo from &lt;a href="https://theplay.or.kr/소극장/"&gt;H-STAGE webpage&lt;/a&gt;.</value>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
   </data>
-  <data name="Address:" xml:space="preserve">
-    <value>Address:</value>
+  <data name="Phone number" xml:space="preserve">
+    <value>Phone number</value>
   </data>
-  <data name="Event Information" xml:space="preserve">
-    <value>Event Information</value>
+  <data name="Please provide a Korean phone number if possible." xml:space="preserve">
+    <value>Please provide a Korean phone number if possible.</value>
   </data>
-  <data name="Fall in Hyelin" xml:space="preserve">
-    <value>Fall in Hyelin</value>
+  <data name="Preferred language" xml:space="preserve">
+    <value>Preferred language</value>
   </data>
-  <data name="Reserve a Seat" xml:space="preserve">
-    <value>Reserve a Seat</value>
+  <data name="Seat Reservation" xml:space="preserve">
+    <value>Seat Reservation</value>
   </data>
-  <data name="Reserve Your Seat" xml:space="preserve">
-    <value>Reserve Your Seat</value>
-  </data>
-  <data name="Venue Information" xml:space="preserve">
-    <value>Venue Information</value>
-  </data>
-  <data name="Website:" xml:space="preserve">
-    <value>Website:</value>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
   </data>
 </root>

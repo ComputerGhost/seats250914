@@ -1,4 +1,6 @@
-﻿@functions {
+﻿@using Public.Features.SeatSelection.Models
+@inject IStringLocalizer<SeatSelectorModel> Localizer;
+@functions {
     private void RenderSeat(int number, string status)
     {
         <button
@@ -14,10 +16,10 @@
         <div id="seat-map" data-scaled-for-parent-width="1100" class="interactive-seat-selector" aria-hidden="true">
 
             <div class="legend">
-                <div class="key available">Available</div>
-                <div class="key on-hold">On hold</div>
-                <div class="key reserved">Reserved</div>
-                <div class="key selected">Selected</div>
+                <div class="key available">@Localizer["Available"]</div>
+                <div class="key on-hold">@Localizer["On hold"]</div>
+                <div class="key reserved">@Localizer["Reserved"]</div>
+                <div class="key selected">@Localizer["Selected"]</div>
             </div>
 
             <div class="audience">
@@ -178,12 +180,12 @@
         <form>
             <div class="d-flex flex-column">
                 <div class="mb-3">
-                    <label for="seat" class="form-label">Seat</label>
+                    <label for="seat" class="form-label">@Localizer["Seat"]</label>
                     <select class="form-select" id="seat">
                         <option></option>
                     </select>
                 </div>
-                <button class="btn btn-primary">Reserve Seat</button>
+                <button class="btn btn-primary">@Localizer["Reserve Seat"]</button>
             </div>
         </form>
     </div>
