@@ -49,23 +49,10 @@ internal class AccountsDatabase : IAccountsDatabase
         return Task.FromResult<AccountEntityModel?>(user);
     }
 
-    public Task<IEnumerable<AccountEntityModel>> ListAccounts()
+    public async Task<IEnumerable<AccountEntityModel>> ListAccounts()
     {
-        IEnumerable<AccountEntityModel> mock = [
-            new AccountEntityModel {
-                IsEnabled = true,
-                Login = "한글 테스트",
-            },
-            new AccountEntityModel {
-                IsEnabled = true,
-                Login = "test2",
-            },
-            new AccountEntityModel {
-                IsEnabled = false,
-                Login = "<script>alert('JS injection test')</script>",
-            },
-        ];
-        return Task.FromResult(mock);
+        var sql = "SELECT Login, IsEnabled FROM [Users] ORDER BY Login";
+        return await _connection.QueryAsync<AccountEntityModel>(sql);
     }
 
     public Task<bool> UpdateAccount(AccountEntityModel account)
