@@ -1,6 +1,9 @@
-﻿using Core.Domain.Common.Models;
+﻿using Core.Domain.Common.Exceptions;
+using Core.Domain.Common.Models;
 using Core.Domain.Common.Ports;
 using Core.Domain.DependencyInjection;
+using Dapper;
+using Microsoft.Data.SqlClient;
 using System.Data;
 
 namespace Core.Infrastructure.Adapters;
@@ -15,9 +18,25 @@ internal class AccountsDatabase : IAccountsDatabase
         _connection = connection;
     }
 
-    public Task<bool> CreateAccount(AccountEntityModel account, string passwordHash)
+    public async Task<bool> CreateAccount(AccountEntityModel account, string passwordHash)
     {
-        return Task.FromResult(true);
+        try
+        {
+            var sql = """
+                INSERT INTO [Users] (Login, PasswordHash, IsEnabled)
+                VALUES (@Login, @PasswordHash, @IsEnabled);
+                """;
+            return await _connection.ExecuteAsync(sql, new
+            {
+                account.Login,
+                account.IsEnabled,
+                PasswordHash = passwordHash,
+            }) > 0;
+        }
+        catch (SqlException ex) when (ex.Number == 2601) // Duplicate error
+        {
+            throw new AccountAlreadyExistsException(account.Login);
+        }
     }
 
     public Task<AccountEntityModel?> FetchAccount(string login)

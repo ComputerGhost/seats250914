@@ -30,7 +30,7 @@ public class CreateAccountCommandHandlerTests
         // Arrange
         MockAccountsDatabase
             .Setup(m => m.CreateAccount(It.IsAny<AccountEntityModel>(), It.IsAny<string>()))
-            .ThrowsAsync(new AccountAlreadyExistsException());
+            .ThrowsAsync(new AccountAlreadyExistsException("login"));
 
         // Act
         var result = await Subject.Handle(MinimalValidCommand, CancellationToken.None);

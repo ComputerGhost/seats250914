@@ -3,6 +3,7 @@ using Core.Application.Accounts;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace CMS.Controllers;
 
@@ -29,20 +30,32 @@ public class AccountsController : Controller
     [HttpGet("new")]
     public IActionResult Create()
     {
-        return View();
+        var model = new AccountCreateViewModel();
+        return View(model);
     }
 
     [HttpPost("new")]
-    public async Task<IActionResult> Create(CreateAccountCommand command)
+    public async Task<IActionResult> Create(AccountCreateViewModel model)
     {
-        var result = await _mediator.Send(command);
-        if (result.IsError && result.FirstError.Type == ErrorType.Conflict)
+        if (!ModelState.IsValid)
         {
-            ModelState.AddModelError(nameof(CreateAccountCommand.Login), $"The account '{command.Login}' already exists.");
-            return View(command);
+            return View(model);
         }
 
-        return RedirectToAction(nameof(Details), new { command.Login });
+        var result = await _mediator.Send(new CreateAccountCommand
+        {
+            Login = model.Login,
+            Password = model.Password,
+            IsEnabled = model.IsEnabled,
+        });
+
+        if (result.IsError && result.FirstError.Type == ErrorType.Conflict)
+        {
+            ModelState.AddModelError(nameof(AccountCreateViewModel.Login), $"The account '{model.Login}' already exists.");
+            return View(model);
+        }
+
+        return RedirectToAction(nameof(Details), new { model.Login });
     }
 
     [HttpGet]
