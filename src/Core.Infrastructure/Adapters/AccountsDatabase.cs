@@ -39,14 +39,13 @@ internal class AccountsDatabase : IAccountsDatabase
         }
     }
 
-    public Task<AccountEntityModel?> FetchAccount(string login)
+    public async Task<AccountEntityModel?> FetchAccount(string login)
     {
-        var user = new AccountEntityModel
+        var sql = "SELECT Login, IsEnabled FROM [Users] WHERE Login = @login";
+        return await _connection.QuerySingleOrDefaultAsync<AccountEntityModel>(sql, new
         {
-            IsEnabled = false,
-            Login = "<script>alert('해킹 테스트')</script>",
-        };
-        return Task.FromResult<AccountEntityModel?>(user);
+            Login = login,
+        });
     }
 
     public async Task<IEnumerable<AccountEntityModel>> ListAccounts()
@@ -55,13 +54,23 @@ internal class AccountsDatabase : IAccountsDatabase
         return await _connection.QueryAsync<AccountEntityModel>(sql);
     }
 
-    public Task<bool> UpdateAccount(AccountEntityModel account)
+    public async Task<bool> UpdateAccount(AccountEntityModel account)
     {
-        return Task.FromResult(true);
+        var sql = "UPDATE [Users] SET IsEnabled = @isEnabled WHERE Login = @login";
+        return await _connection.ExecuteAsync(sql, new
+        {
+            isEnabled = account.IsEnabled,
+            login = account.Login,
+        }) > 0;
     }
 
-    public Task<bool> UpdatePassword(string login, string passwordHash)
+    public async Task<bool> UpdatePassword(string login, string passwordHash)
     {
-        return Task.FromResult(true);
+        var sql = "UPDATE [Users] SET PasswordHash = @passwordHash WHERE Login = @login";
+        return await _connection.ExecuteAsync(sql, new
+        {
+            login,
+            passwordHash,
+        }) > 0;
     }
 }

@@ -2,9 +2,9 @@
 
 namespace CMS.ViewModels;
 
-public class ViewAccountViewModel
+public class AccountViewViewModel
 {
-    public ViewAccountViewModel(FetchAccountQueryResponse fetchAccountQueryResponse)
+    public AccountViewViewModel(FetchAccountQueryResponse fetchAccountQueryResponse)
     {
         IsEnabled = fetchAccountQueryResponse.IsEnabled;
         Login = fetchAccountQueryResponse.Login;

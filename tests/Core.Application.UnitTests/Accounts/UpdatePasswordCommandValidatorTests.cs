@@ -3,19 +3,18 @@
 namespace Core.Application.UnitTests.Accounts;
 
 [TestClass]
-public class CreateAccountCommandValidatorTests
+public class UpdatePasswordCommandValidatorTests
 {
-    private CreateAccountCommand Command { get; set; } = null!;
-    private CreateAccountCommandValidator Subject { get; set; } = null!;
+    private UpdatePasswordCommand Command { get; set; } = null!;
+    private UpdatePasswordCommandValidator Subject { get; set; } = null!;
 
     [TestInitialize]
     public void Initialize()
     {
-        Command = new CreateAccountCommand
+        Command = new UpdatePasswordCommand
         {
-            Login = "Valid",
+            Login = "Valid login",
             Password = "Valid password",
-            IsEnabled = true,
         };
 
         Subject = new();
@@ -54,20 +53,6 @@ public class CreateAccountCommandValidatorTests
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         Command.Login = null;
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
-
-        // Act
-        var result = Subject.Validate(Command);
-
-        // Assert
-        Assert.IsFalse(result.IsValid);
-    }
-
-    [TestMethod]
-    public void Login_WhenTooLong_Fails()
-    {
-        // Arrange
-        const int LENGTH = 100;
-        Command.Login = new string('a', LENGTH);
 
         // Act
         var result = Subject.Validate(Command);
