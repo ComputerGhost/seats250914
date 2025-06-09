@@ -1,6 +1,9 @@
-﻿using Core.Domain.Common.Models;
+﻿using Core.Domain.Common.Exceptions;
+using Core.Domain.Common.Models;
 using Core.Domain.Common.Ports;
 using Core.Domain.DependencyInjection;
+using Dapper;
+using Microsoft.Data.SqlClient;
 using System.Data;
 
 namespace Core.Infrastructure.Adapters;
@@ -15,47 +18,59 @@ internal class AccountsDatabase : IAccountsDatabase
         _connection = connection;
     }
 
-    public Task<bool> CreateAccount(AccountEntityModel account, string passwordHash)
+    public async Task<bool> CreateAccount(AccountEntityModel account, string passwordHash)
     {
-        return Task.FromResult(true);
-    }
-
-    public Task<AccountEntityModel?> FetchAccount(string login)
-    {
-        var user = new AccountEntityModel
+        try
         {
-            IsEnabled = false,
-            Login = "<script>alert('해킹 테스트')</script>",
-        };
-        return Task.FromResult<AccountEntityModel?>(user);
+            var sql = """
+                INSERT INTO [Users] (Login, PasswordHash, IsEnabled)
+                VALUES (@Login, @PasswordHash, @IsEnabled);
+                """;
+            return await _connection.ExecuteAsync(sql, new
+            {
+                account.Login,
+                account.IsEnabled,
+                PasswordHash = passwordHash,
+            }) > 0;
+        }
+        catch (SqlException ex) when (ex.Number == 2601) // Duplicate error
+        {
+            throw new AccountAlreadyExistsException(account.Login);
+        }
     }
 
-    public Task<IEnumerable<AccountEntityModel>> ListAccounts()
+    public async Task<AccountEntityModel?> FetchAccount(string login)
     {
-        IEnumerable<AccountEntityModel> mock = [
-            new AccountEntityModel {
-                IsEnabled = true,
-                Login = "한글 테스트",
-            },
-            new AccountEntityModel {
-                IsEnabled = true,
-                Login = "test2",
-            },
-            new AccountEntityModel {
-                IsEnabled = false,
-                Login = "<script>alert('JS injection test')</script>",
-            },
-        ];
-        return Task.FromResult(mock);
+        var sql = "SELECT Login, IsEnabled FROM [Users] WHERE Login = @login";
+        return await _connection.QuerySingleOrDefaultAsync<AccountEntityModel>(sql, new
+        {
+            Login = login,
+        });
     }
 
-    public Task<bool> UpdateAccount(AccountEntityModel account)
+    public async Task<IEnumerable<AccountEntityModel>> ListAccounts()
     {
-        return Task.FromResult(true);
+        var sql = "SELECT Login, IsEnabled FROM [Users] ORDER BY Login";
+        return await _connection.QueryAsync<AccountEntityModel>(sql);
     }
 
-    public Task<bool> UpdatePassword(string login, string passwordHash)
+    public async Task<bool> UpdateAccount(AccountEntityModel account)
     {
-        return Task.FromResult(true);
+        var sql = "UPDATE [Users] SET IsEnabled = @isEnabled WHERE Login = @login";
+        return await _connection.ExecuteAsync(sql, new
+        {
+            isEnabled = account.IsEnabled,
+            login = account.Login,
+        }) > 0;
+    }
+
+    public async Task<bool> UpdatePassword(string login, string passwordHash)
+    {
+        var sql = "UPDATE [Users] SET PasswordHash = @passwordHash WHERE Login = @login";
+        return await _connection.ExecuteAsync(sql, new
+        {
+            login,
+            passwordHash,
+        }) > 0;
     }
 }

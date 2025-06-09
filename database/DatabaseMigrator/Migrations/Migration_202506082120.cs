@@ -13,7 +13,7 @@ public class Migration_202506082120 : Migration
     public override void Up()
     {
         Create.Table("Configuration")
-            .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
+            .WithColumn("Id").AsInt32().PrimaryKey().Identity()
             .WithColumn("ForceCloseReservations").AsBoolean()
             .WithColumn("ForceOpenReservations").AsBoolean()
             .WithColumn("GracePeriodSeconds").AsInt32()

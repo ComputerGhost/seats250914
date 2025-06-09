@@ -3,89 +3,97 @@ using Core.Application.Accounts;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace CMS.Controllers;
 
 [Route("/accounts/")]
-public class AccountsController : Controller
+public class AccountsController(IMediator mediator) : Controller
 {
-    private readonly IMediator _mediator;
-
-    public AccountsController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
-    [HttpPost("{login}/change-password")]
-    public async Task<IActionResult> ChangePassword(string login, [FromBody] string password)
-    {
-        var result = await _mediator.Send(new UpdatePasswordCommand {
-            Login = login,
-            Password = password
-        });
-        return result.IsError ? NotFound() : Ok();
-    }
-
     [HttpGet("new")]
     public IActionResult Create()
     {
-        return View();
+        var model = new AccountCreateViewModel();
+        return View(model);
     }
 
     [HttpPost("new")]
-    public async Task<IActionResult> Create(CreateAccountCommand command)
+    public async Task<IActionResult> Create(AccountCreateViewModel model)
     {
-        var result = await _mediator.Send(command);
-        if (result.IsError && result.FirstError.Type == ErrorType.Conflict)
+        if (!ModelState.IsValid)
         {
-            ModelState.AddModelError(nameof(CreateAccountCommand.Login), $"The account '{command.Login}' already exists.");
-            return View(command);
+            return View(model);
         }
 
-        return RedirectToAction(nameof(Details), new { command.Login });
+        var result = await mediator.Send(new CreateAccountCommand
+        {
+            Login = model.Login,
+            Password = model.Password,
+            IsEnabled = model.IsEnabled,
+        });
+
+        return CheckForError(result) ?? RedirectToAction(nameof(Details), new { model.Login });
     }
 
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var accounts = await _mediator.Send(new ListAccountsQuery());
+        var accounts = await mediator.Send(new ListAccountsQuery());
         return View(accounts);
     }
 
     [HttpGet("{login}/details")]
     public async Task<IActionResult> Details(string login)
     {
-        var result = await _mediator.Send(new FetchAccountQuery(login));
-        if (result.IsError && result.FirstError.Type == ErrorType.NotFound)
-        {
-            return NotFound();
-        }
-
-        return View(new ViewAccountViewModel(result.Value));
+        var result = await mediator.Send(new FetchAccountQuery(login));
+        return CheckForError(result) ?? View(new AccountViewViewModel(result.Value));
     }
 
     [HttpGet("{login}/edit")]
     public async Task<IActionResult> Edit(string login)
     {
-        var result = await _mediator.Send(new FetchAccountQuery(login));
-        if (result.IsError && result.FirstError.Type == ErrorType.NotFound)
-        {
-            return NotFound();
-        }
-
-        return View(new ViewAccountViewModel(result.Value));
+        var result = await mediator.Send(new FetchAccountQuery(login));
+        return CheckForError(result) ?? View(new AccountEditViewModel(result.Value));
     }
 
     [HttpPost("{login}/edit")]
-    public async Task<IActionResult> Edit(string login, UpdateAccountCommand command)
+    public async Task<IActionResult> Edit(string login, AccountEditViewModel model)
     {
-        var result = await _mediator.Send(command);
-        if (result.IsError && result.FirstError.Type == ErrorType.NotFound)
+        if (login != model.Login)
         {
-            return NotFound();
+            return BadRequest("The route parameter `login` and the view model's `Login` are not equal.");
         }
 
-        return RedirectToAction(nameof(Details), new { Login = login });
+        return model.Action switch
+        {
+            "UpdateAccount" => await UpdateAccount(),
+            "ChangePassword" => await ChangePassword(),
+            _ => BadRequest($"The form property `Action` has the invalid value '{model.Action}'.")
+        };
+
+        async Task<IActionResult> ChangePassword()
+        {
+            var result = await mediator.Send(new UpdatePasswordCommand
+            {
+                Login = login,
+                Password = model.Password,
+            });
+
+            model.IsPasswordChangeSuccessful = !result.IsError;
+
+            return CheckForError(result) ?? View(model);
+        }
+
+        async Task<IActionResult> UpdateAccount()
+        {
+            var result = await mediator.Send(new UpdateAccountCommand
+            {
+                Login = login,
+                IsEnabled = model.IsEnabled,
+            });
+
+            return CheckForError(result) ?? RedirectToAction(nameof(Details), new { Login = login });
+        }
     }
 
     [HttpGet("sign-in")]
@@ -104,5 +112,29 @@ public class AccountsController : Controller
     public new IActionResult SignOut()
     {
         return RedirectToAction(nameof(SignIn));
+    }
+
+    private IActionResult? CheckForError(IErrorOr errorOr)
+    {
+        if (!errorOr.IsError)
+        {
+            return null;
+        }
+
+        var firstError = errorOr.Errors![0];
+
+        if (firstError.Type == ErrorType.NotFound)
+        {
+            return NotFound();
+        }
+        else if (firstError.Type == ErrorType.Conflict)
+        {
+            ModelState.AddModelError(nameof(AccountCreateViewModel.Login), firstError.Description);
+            return null;
+        }
+        else
+        {
+            throw new Exception(firstError.Description);
+        }
     }
 }
