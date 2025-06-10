@@ -1,9 +1,10 @@
-﻿using CMS.ViewModels;
+﻿using CMS.Features.Authentication;
+using CMS.ViewModels;
 using Core.Application.Accounts;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
+using System.Diagnostics;
 
 namespace CMS.Controllers;
 
@@ -18,7 +19,7 @@ public class AccountsController(IMediator mediator) : Controller
     }
 
     [HttpPost("new")]
-    public async Task<IActionResult> Create(AccountCreateViewModel model)
+    public async Task<IActionResult> Create([FromForm] AccountCreateViewModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -57,7 +58,7 @@ public class AccountsController(IMediator mediator) : Controller
     }
 
     [HttpPost("{login}/edit")]
-    public async Task<IActionResult> Edit(string login, AccountEditViewModel model)
+    public async Task<IActionResult> Edit(string login, [FromForm] AccountEditViewModel model)
     {
         if (login != model.Login)
         {
@@ -99,13 +100,41 @@ public class AccountsController(IMediator mediator) : Controller
     [HttpGet("sign-in")]
     public IActionResult SignIn()
     {
-        return View();
+        return View(new AccountSignInViewModel());
     }
 
     [HttpPost("sign-in")]
-    public IActionResult SignIn([FromBody] string username, [FromBody] string password)
+    public async Task<IActionResult> SignIn([FromForm] AccountSignInViewModel model, [FromQuery] string? returnUrl)
     {
-        return Redirect("/");
+        if (!ModelState.IsValid)
+        {
+            model.Password = "";
+            return View(model);
+        }
+
+        var result = await mediator.Send(new VerifyPasswordCommand
+        {
+            Login = model.Login,
+            Password = model.Password,
+        });
+
+        if (result.IsError)
+        {
+            ModelState.AddModelError("", "The credentials that you entered are incorrect.");
+            return View(model);
+        }
+
+        var authService = new AuthenticationService(HttpContext);
+        await authService.SignIn(model.Login);
+
+        if (Uri.TryCreate(returnUrl, UriKind.Relative, out var validatedReturnUri))
+        {
+            return Redirect(validatedReturnUri.ToString());
+        }
+        else
+        {
+            return Redirect("/");
+        }
     }
 
     [HttpGet("sign-out")]

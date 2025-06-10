@@ -48,6 +48,15 @@ internal class AccountsDatabase : IAccountsDatabase
         });
     }
 
+    public async Task<string?> FetchPasswordhash(string login)
+    {
+        var sql = "SELECT PasswordHash from [Users] WHERE Login = @login";
+        return await _connection.QuerySingleOrDefaultAsync<string>(sql, new
+        {
+            Login = login,
+        });
+    }
+
     public async Task<IEnumerable<AccountEntityModel>> ListAccounts()
     {
         var sql = "SELECT Login, IsEnabled FROM [Users] ORDER BY Login";
