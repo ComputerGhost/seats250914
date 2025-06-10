@@ -11,7 +11,9 @@ public class VerifyPasswordCommandValidatorTests
     [TestInitialize]
     public void Initialize()
     {
-        Command = new VerifyPasswordCommand
+        Subject = new();
+
+        Command = new()
         {
             Login = "Valid",
             Password = "Valid password",

@@ -6,7 +6,7 @@ using MediatR;
 namespace Core.Application.Accounts;
 internal class VerifyPasswordCommandHandler : IRequestHandler<VerifyPasswordCommand, ErrorOr<Success>>
 {
-    const string FAILURE_MESSAGE = "The password for {0} not be verified.";
+    const string FAILURE_MESSAGE = "The password for {0} could not be verified.";
 
     private readonly IAccountsDatabase _accountsDatabase;
 

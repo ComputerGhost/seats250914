@@ -4,7 +4,7 @@ using Public.SmokeTests.Utilities;
 namespace Public.SmokeTests.Tests;
 
 [TestClass]
-[Ignore("These tests will only work on production.")]
+[SmokeTest("These tests will only work on production.")]
 public class HostingTests : TestBase
 {
     private static IWebDriver Driver { get; set; } = null!;

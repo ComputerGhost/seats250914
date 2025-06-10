@@ -12,11 +12,19 @@ public class VerifyPasswordCommandHandlerTests
     private Mock<IAccountsDatabase> MockAccountsDatabase { get; set; } = null!;
     private VerifyPasswordCommandHandler Subject { get; set; } = null!;
 
+    private VerifyPasswordCommand MinimalValidCommand { get; set; } = null!;
+
     [TestInitialize]
     public void Initialize()
     {
         MockAccountsDatabase = new();
         Subject = new(MockAccountsDatabase.Object);
+
+        MinimalValidCommand = new()
+        {
+            Login = "login",
+            Password = "password",
+        };
     }
 
     [TestMethod]
@@ -29,10 +37,9 @@ public class VerifyPasswordCommandHandlerTests
             .ReturnsAsync(HashPassword(PASSWORD));
 
         // Act
-        var result = await Subject.Handle(new VerifyPasswordCommand
-        {
-            Password = PASSWORD
-        }, CancellationToken.None);
+        var command = MinimalValidCommand;
+        command.Password = PASSWORD;
+        var result = await Subject.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(Result.Success, result);
@@ -47,10 +54,10 @@ public class VerifyPasswordCommandHandlerTests
             .ReturnsAsync((string?)null);
 
         // Act
-        var result = await Subject.Handle(new VerifyPasswordCommand(), CancellationToken.None);
+        var result = await Subject.Handle(MinimalValidCommand, CancellationToken.None);
 
         // Assert
-        Assert.AreEqual(Error.Failure().Code, result.FirstError.Code);
+        Assert.AreEqual(ErrorType.Failure, result.FirstError.Type);
     }
 
     [TestMethod]
@@ -64,13 +71,12 @@ public class VerifyPasswordCommandHandlerTests
             .ReturnsAsync(HashPassword(RIGHT_PASSWORD));
 
         // Act
-        var result = await Subject.Handle(new VerifyPasswordCommand
-        {
-            Password = WRONG_PASSWORD,
-        }, CancellationToken.None);
+        var command = MinimalValidCommand;
+        command.Password = WRONG_PASSWORD;
+        var result = await Subject.Handle(command, CancellationToken.None);
 
         // Assert
-        Assert.AreEqual(Error.Failure().Code, result.FirstError.Code);
+        Assert.AreEqual(ErrorType.Failure, result.FirstError.Type);
     }
 
     private string HashPassword(string password)

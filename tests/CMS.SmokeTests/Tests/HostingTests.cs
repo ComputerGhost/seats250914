@@ -4,7 +4,7 @@ using OpenQA.Selenium;
 namespace CMS.SmokeTests.Tests;
 
 [TestClass]
-[Ignore("These tests will only work on production.")]
+[SmokeTest("These tests will only work on production.")]
 public class HostingTests : TestBase
 {
     private static IWebDriver Driver { get; set; } = null!;
@@ -25,13 +25,14 @@ public class HostingTests : TestBase
     [TestMethod]
     public void CmsSubdomain_RendersCMSWebsite()
     {
+        // Precondition
+        var targetUrlHost = new MyUriBuilder(TargetUrl).Host;
+        Assert.AreEqual("cms.", targetUrlHost[..4]);
+
         // Arrange
-        var cmsSubdomain = new MyUriBuilder(TargetUrl)
-            .WithSubdomain("cms")
-            .ToString();
 
         // Act
-        Driver.Navigate().GoToUrl(cmsSubdomain);
+        Driver.Navigate().GoToUrl(TargetUrl);
 
         // Assert
         Assert.AreEqual("혜린 팬미팅 2025 CMS", Driver.Title);

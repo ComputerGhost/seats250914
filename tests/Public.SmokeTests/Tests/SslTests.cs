@@ -4,7 +4,7 @@ using System.Net;
 namespace Public.SmokeTests.Tests;
 
 [TestClass]
-[Ignore("These tests will only work on production.")]
+[SmokeTest("These tests will only work on production.")]
 public class SslTests : TestBase
 {
     public static IEnumerable<string[]> GetInsecureUrls =>
