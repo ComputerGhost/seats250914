@@ -6,7 +6,7 @@ using MediatR;
 using System.Diagnostics;
 
 namespace Core.Application.Accounts;
-internal class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, ErrorOr<Success>>
+internal class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, ErrorOr<Created>>
 {
     private readonly IAccountsDatabase _accountsDatabase;
 
@@ -15,13 +15,13 @@ internal class CreateAccountCommandHandler : IRequestHandler<CreateAccountComman
         _accountsDatabase = accountsDatabase;
     }
 
-    public async Task<ErrorOr<Success>> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Created>> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
     {
         try
         {
             var hashedPassword = HashPassword(request.Password);
             await CreateAccount(request, hashedPassword);
-            return Result.Success;
+            return Result.Created;
         }
         catch (AccountAlreadyExistsException)
         {

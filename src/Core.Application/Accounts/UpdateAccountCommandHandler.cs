@@ -3,7 +3,7 @@ using ErrorOr;
 using MediatR;
 
 namespace Core.Application.Accounts;
-internal class UpdateAccountCommandHandler : IRequestHandler<UpdateAccountCommand, ErrorOr<Success>>
+internal class UpdateAccountCommandHandler : IRequestHandler<UpdateAccountCommand, ErrorOr<Updated>>
 {
     private readonly IAccountsDatabase _accountsDatabase;
 
@@ -12,10 +12,10 @@ internal class UpdateAccountCommandHandler : IRequestHandler<UpdateAccountComman
         _accountsDatabase = accountsDatabase;
     }
 
-    public async Task<ErrorOr<Success>> Handle(UpdateAccountCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Updated>> Handle(UpdateAccountCommand request, CancellationToken cancellationToken)
     {
         var accountEntity = request.ToAccountEntityModel();
         return (await _accountsDatabase.UpdateAccount(accountEntity))
-            ? Result.Success : Error.NotFound();
+            ? Result.Updated : Error.NotFound();
     }
 }
