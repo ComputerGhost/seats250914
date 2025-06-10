@@ -2,10 +2,12 @@
 using Core.Application.Accounts;
 using ErrorOr;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CMS.Controllers;
 
+[Authorize]
 [Route("/accounts/")]
 public class AccountsController(IMediator mediator) : Controller
 {
