@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using CMS.Features.Authentication
+@{
+    var username = new AuthenticationService(Context).Username;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -58,15 +62,15 @@
         <div class="user-menu dropdown">
             <a href="#" class="dropdown-toggle link-body-emphasis" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="~/images/lego.png" width="20" height="20" alt="" role="presentation">
-                <strong class="hide-on-mobile">(username)</strong>
+                <strong class="hide-on-mobile">@username</strong>
             </a>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="#" class="dropdown-item">
+                    <a asp-controller="Accounts" asp-action="Edit" asp-route-login="@username" class="dropdown-item">
                         <i class="bi bi-person" aria-hidden="true"></i>
                         Edit account
                     </a>
-                    <a asp-controller="Accounts" asp-action="SignOut" class="dropdown-item">
+                    <a asp-controller="Auth" asp-action="SignOut" class="dropdown-item">
                         <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
                         Sign out
                     </a>

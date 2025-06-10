@@ -1,23 +1,37 @@
-﻿@{
+﻿@model AccountSignInViewModel;
+@{
     Layout = "Layouts/_HeaderLayout";
+
+    var topError = ViewData.ModelState[""]?.Errors.FirstOrDefault()?.ErrorMessage;
 }
 
-<div class="container d-flex justify-content-center">
-    <div class="border rounded p-3 shadow-sm">
+<div class="container flex">
+    <div class="mx-auto border rounded p-3 shadow-sm" style="max-width: 10cm">
         <header class="mb-3">
             <h1>Sign in</h1>
         </header>
 
+        @if (topError != null)
+        {
+            <div id="error-display" class="alert alert-danger alert-dismissible" role="alert">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                @topError
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
         <section>
             <form method="post">
                 <div class="mb-3">
-                    <label for="login" class="form-label">Login</label>
-                    <input type="text" id="login" class="form-control" maxlength="8" required>
+                    <label asp-for="Login" class="form-label">Login</label>
+                    <input asp-for="Login" class="form-control" autofocus>
+                    <span asp-validation-for="Login" class="form-text text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" id="password" class="form-control" maxlength="50" required>
+                    <label asp-for="Password" class="form-label">Password</label>
+                    <input asp-for="Password" class="form-control">
+                    <span asp-validation-for="Password" class="form-text text-danger"></span>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Sign in</button>

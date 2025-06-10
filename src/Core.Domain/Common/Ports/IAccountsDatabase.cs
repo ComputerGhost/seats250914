@@ -19,6 +19,12 @@ public interface IAccountsDatabase
     Task<AccountEntityModel?> FetchAccount(string login);
 
     /// <summary>
+    /// Fetch an account's password hash.
+    /// </summary>
+    /// <returns>The hashed password of the account, or null if not found.</returns>
+    Task<string?> FetchPasswordhash(string login);
+
+    /// <summary>
     /// List all accounts. The password is not included.
     /// </summary>
     Task<IEnumerable<AccountEntityModel>> ListAccounts();

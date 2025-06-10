@@ -1,10 +1,12 @@
 ﻿using CMS.ViewModels;
 using Core.Application.Configuration;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CMS.Controllers;
 
+[Authorize]
 [Route("/")]
 public class HomeController : Controller
 {

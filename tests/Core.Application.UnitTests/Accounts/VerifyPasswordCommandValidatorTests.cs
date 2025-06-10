@@ -3,21 +3,21 @@
 namespace Core.Application.UnitTests.Accounts;
 
 [TestClass]
-public class UpdatePasswordCommandValidatorTests
+public class VerifyPasswordCommandValidatorTests
 {
-    private UpdatePasswordCommand Command { get; set; } = null!;
-    private UpdatePasswordCommandValidator Subject { get; set; } = null!;
+    private VerifyPasswordCommand Command { get; set; } = null!;
+    private VerifyPasswordCommandValidator Subject { get; set; } = null!;
 
     [TestInitialize]
     public void Initialize()
     {
-        Command = new UpdatePasswordCommand
+        Subject = new();
+
+        Command = new()
         {
             Login = "Valid",
             Password = "Valid password",
         };
-
-        Subject = new();
     }
 
     [TestMethod]
@@ -25,6 +25,21 @@ public class UpdatePasswordCommandValidatorTests
     {
         // Arrange
         Command.Login = "Valid";
+
+        // Act
+        var result = Subject.Validate(Command);
+
+        // Assert
+        Assert.IsTrue(result.IsValid);
+    }
+
+    [TestMethod]
+    // We don't want to give hints about username requirements.
+    public void Login_TooLongEmpty_Passes()
+    {
+        // Arrange
+        const int TOO_LONG_LENGTH = 1000;
+        Command.Login = new string('a', TOO_LONG_LENGTH);
 
         // Act
         var result = Subject.Validate(Command);

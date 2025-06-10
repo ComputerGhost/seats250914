@@ -1,11 +1,12 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using Public.SmokeTests.Extensions;
+using Public.SmokeTests.Utilities;
 
 namespace Public.SmokeTests.Tests;
 
 [TestClass]
-[Ignore("These tests require a complex environment setup, so they will be triggered manually.")]
+[SmokeTest("These tests will work on in any environment on a running website instance.")]
 public class SeatSelectorTests : TestBase
 {
     private IWebDriver Driver { get; set; } = null!;

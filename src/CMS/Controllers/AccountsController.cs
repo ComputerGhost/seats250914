@@ -2,11 +2,12 @@
 using Core.Application.Accounts;
 using ErrorOr;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
 
 namespace CMS.Controllers;
 
+[Authorize]
 [Route("/accounts/")]
 public class AccountsController(IMediator mediator) : Controller
 {
@@ -18,7 +19,7 @@ public class AccountsController(IMediator mediator) : Controller
     }
 
     [HttpPost("new")]
-    public async Task<IActionResult> Create(AccountCreateViewModel model)
+    public async Task<IActionResult> Create([FromForm] AccountCreateViewModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -57,7 +58,7 @@ public class AccountsController(IMediator mediator) : Controller
     }
 
     [HttpPost("{login}/edit")]
-    public async Task<IActionResult> Edit(string login, AccountEditViewModel model)
+    public async Task<IActionResult> Edit(string login, [FromForm] AccountEditViewModel model)
     {
         if (login != model.Login)
         {
@@ -94,24 +95,6 @@ public class AccountsController(IMediator mediator) : Controller
 
             return CheckForError(result) ?? RedirectToAction(nameof(Details), new { Login = login });
         }
-    }
-
-    [HttpGet("sign-in")]
-    public IActionResult SignIn()
-    {
-        return View();
-    }
-
-    [HttpPost("sign-in")]
-    public IActionResult SignIn([FromBody] string username, [FromBody] string password)
-    {
-        return Redirect("/");
-    }
-
-    [HttpGet("sign-out")]
-    public new IActionResult SignOut()
-    {
-        return RedirectToAction(nameof(SignIn));
     }
 
     private IActionResult? CheckForError(IErrorOr errorOr)

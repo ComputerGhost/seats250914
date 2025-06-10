@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CMS.Controllers;
 
+[Authorize]
 [Route("/reservations/")]
 public class ReservationsController : Controller
 {

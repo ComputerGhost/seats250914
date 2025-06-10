@@ -26,4 +26,16 @@ public class TestBase
         options.AddArgument($"--lang=${languageId}");
         return new ChromeDriver(options);
     }
+
+    protected Task WaitForPageLoad()
+    {
+        /**
+         * I could do this better... this is what I did at work:
+         *  1. Check page URL right before last navigate.
+         *  2. Wait until the URL changes from that state.
+         * 
+         * But it's complicated. A simple time delay will suffice for this project.
+         */
+        return Task.Delay(TimeSpan.FromSeconds(1));
+    }
 }

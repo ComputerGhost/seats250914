@@ -1,7 +1,13 @@
+using CMS.Features.Authentication;
 using Core.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMvc();
+builder.Services.AddMyAuthentication(options =>
+{
+    builder.Configuration.Bind("AuthenticationOptions", options);
+    options.LoginPath = "/auth/sign-in";
+});
 builder.Services.AddCore(options =>
 {
     builder.Configuration.Bind("InfrastructureOptions", options);
