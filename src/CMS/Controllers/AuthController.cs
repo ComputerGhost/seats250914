@@ -4,6 +4,7 @@ using Core.Application.Accounts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
 
 namespace CMS.Controllers;
 
@@ -84,8 +85,11 @@ public class AuthController(IMediator mediator) : Controller
     }
 
     [HttpGet("sign-out")]
-    public new IActionResult SignOut()
+    public new async Task<IActionResult> SignOut()
     {
+        var authService = new AuthenticationService(HttpContext);
+        await authService.SignOut();
+
         return RedirectToAction(nameof(SignIn));
     }
 }

@@ -24,4 +24,9 @@ public class AuthenticationService
         var principal = new ClaimsPrincipal(identity);
         return _httpContext.SignInAsync(principal);
     }
+
+    public Task SignOut()
+    {
+        return _httpContext.SignOutAsync();
+    }
 }
