@@ -5,7 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMvc();
 builder.Services.AddMyAuthentication(options =>
 {
-    options.LoginPath = "/accounts/sign-in";
+    builder.Configuration.Bind("AuthenticationOptions", options);
+    options.LoginPath = "/auth/sign-in";
 });
 builder.Services.AddCore(options =>
 {

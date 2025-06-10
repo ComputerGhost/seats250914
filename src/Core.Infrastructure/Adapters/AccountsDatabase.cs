@@ -50,7 +50,7 @@ internal class AccountsDatabase : IAccountsDatabase
 
     public async Task<string?> FetchPasswordhash(string login)
     {
-        var sql = "SELECT PasswordHash from [Users] WHERE Login = @login";
+        var sql = "SELECT PasswordHash from [Users] WHERE Login = @login AND IsEnabled = 1";
         return await _connection.QuerySingleOrDefaultAsync<string>(sql, new
         {
             Login = login,

@@ -1,10 +1,8 @@
-﻿using CMS.Features.Authentication;
-using CMS.ViewModels;
+﻿using CMS.ViewModels;
 using Core.Application.Accounts;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace CMS.Controllers;
 
@@ -95,52 +93,6 @@ public class AccountsController(IMediator mediator) : Controller
 
             return CheckForError(result) ?? RedirectToAction(nameof(Details), new { Login = login });
         }
-    }
-
-    [HttpGet("sign-in")]
-    public IActionResult SignIn()
-    {
-        return View(new AccountSignInViewModel());
-    }
-
-    [HttpPost("sign-in")]
-    public async Task<IActionResult> SignIn([FromForm] AccountSignInViewModel model, [FromQuery] string? returnUrl)
-    {
-        if (!ModelState.IsValid)
-        {
-            model.Password = "";
-            return View(model);
-        }
-
-        var result = await mediator.Send(new VerifyPasswordCommand
-        {
-            Login = model.Login,
-            Password = model.Password,
-        });
-
-        if (result.IsError)
-        {
-            ModelState.AddModelError("", "The credentials that you entered are incorrect.");
-            return View(model);
-        }
-
-        var authService = new AuthenticationService(HttpContext);
-        await authService.SignIn(model.Login);
-
-        if (Uri.TryCreate(returnUrl, UriKind.Relative, out var validatedReturnUri))
-        {
-            return Redirect(validatedReturnUri.ToString());
-        }
-        else
-        {
-            return Redirect("/");
-        }
-    }
-
-    [HttpGet("sign-out")]
-    public new IActionResult SignOut()
-    {
-        return RedirectToAction(nameof(SignIn));
     }
 
     private IActionResult? CheckForError(IErrorOr errorOr)
