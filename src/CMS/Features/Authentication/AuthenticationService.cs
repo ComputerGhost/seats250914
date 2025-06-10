@@ -15,6 +15,8 @@ public class AuthenticationService
         _httpContext = httpContext;
     }
 
+    public string? Username => _httpContext.User.Identity?.Name;
+
     public Task SignIn(string name)
     {
         IEnumerable<Claim> claims = [
