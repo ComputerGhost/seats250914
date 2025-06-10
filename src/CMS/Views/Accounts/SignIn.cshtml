@@ -6,7 +6,7 @@
 }
 
 <div class="container flex">
-    <div class="mx-auto col-3 border rounded p-3 shadow-sm">
+    <div class="mx-auto border rounded p-3 shadow-sm" style="max-width: 10cm">
         <header class="mb-3">
             <h1>Sign in</h1>
         </header>
@@ -24,7 +24,7 @@
             <form method="post">
                 <div class="mb-3">
                     <label asp-for="Login" class="form-label">Login</label>
-                    <input asp-for="Login" class="form-control">
+                    <input asp-for="Login" class="form-control" autofocus>
                     <span asp-validation-for="Login" class="form-text text-danger"></span>
                 </div>
 
