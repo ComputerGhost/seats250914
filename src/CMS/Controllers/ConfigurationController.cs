@@ -1,15 +1,32 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using CMS.ViewModels;
+using Core.Application.Configuration;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CMS.Controllers;
 
 [Authorize]
 [Route("/configuration/")]
-public class ConfigurationController : Controller
+public class ConfigurationController(IMediator mediator) : Controller
 {
     [HttpGet]
-    public IActionResult Edit()
+    public async Task<IActionResult> Edit()
     {
-        return View();
+        var result = await mediator.Send(new FetchConfigurationQuery());
+        return View(new ConfigurationEditViewModel(result));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(ConfigurationEditViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        await mediator.Send(model.ToSaveCommand());
+
+        return View(model);
     }
 }

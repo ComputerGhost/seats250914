@@ -3,7 +3,7 @@ using ErrorOr;
 using MediatR;
 
 namespace Core.Application.Accounts;
-public class CreateAccountCommand : IRequest<ErrorOr<Success>>
+public class CreateAccountCommand : IRequest<ErrorOr<Created>>
 {
     /// <summary>
     /// Login of the user to create. Must be unique.

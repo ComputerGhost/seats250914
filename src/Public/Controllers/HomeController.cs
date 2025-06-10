@@ -4,17 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace Public.Controllers;
 
 [Route("/")]
-public class HomeController : Controller
+public class HomeController(IMediator mediator) : Controller
 {
-    private readonly IMediator _mediator;
-
-    public HomeController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         return View();
     }

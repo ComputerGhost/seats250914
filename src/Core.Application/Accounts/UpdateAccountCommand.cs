@@ -3,7 +3,7 @@ using ErrorOr;
 using MediatR;
 
 namespace Core.Application.Accounts;
-public class UpdateAccountCommand : IRequest<ErrorOr<Success>>
+public class UpdateAccountCommand : IRequest<ErrorOr<Updated>>
 {
     /// <summary>
     /// Login of the user to update.
