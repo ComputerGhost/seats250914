@@ -1,5 +1,6 @@
 {
   "InfrastructureOptions": {
+    // Please don't run this on Production. It does alter data while testing.
     "DatabaseConnectionString": "Server=localhost;Database=Hyelin2025;User Id=sa;Password=Passw0rd;Trust Server Certificate=True"
   }
 }

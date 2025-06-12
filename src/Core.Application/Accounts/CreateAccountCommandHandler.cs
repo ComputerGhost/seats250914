@@ -3,7 +3,6 @@ using Core.Domain.Common.Exceptions;
 using Core.Domain.Common.Ports;
 using ErrorOr;
 using MediatR;
-using System.Diagnostics;
 
 namespace Core.Application.Accounts;
 internal class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, ErrorOr<Created>>
@@ -32,8 +31,7 @@ internal class CreateAccountCommandHandler : IRequestHandler<CreateAccountComman
     private async Task CreateAccount(CreateAccountCommand request, string hashedPassword)
     {
         var accountEntity = request.ToAccountEntityModel();
-        var isSuccess = await _accountsDatabase.CreateAccount(accountEntity, hashedPassword);
-        Debug.Assert(isSuccess, "Account creation should not have a non-exceptional failure.");
+        await _accountsDatabase.CreateAccount(accountEntity, hashedPassword);
     }
 
     private static string HashPassword(string password)

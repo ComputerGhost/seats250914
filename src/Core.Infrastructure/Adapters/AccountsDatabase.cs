@@ -18,7 +18,7 @@ internal class AccountsDatabase : IAccountsDatabase
         _connection = connection;
     }
 
-    public async Task<bool> CreateAccount(AccountEntityModel account, string passwordHash)
+    public async Task CreateAccount(AccountEntityModel account, string passwordHash)
     {
         try
         {
@@ -26,12 +26,12 @@ internal class AccountsDatabase : IAccountsDatabase
                 INSERT INTO [Users] (Login, PasswordHash, IsEnabled)
                 VALUES (@Login, @PasswordHash, @IsEnabled);
                 """;
-            return await _connection.ExecuteAsync(sql, new
+            await _connection.ExecuteAsync(sql, new
             {
                 account.Login,
                 account.IsEnabled,
                 PasswordHash = passwordHash,
-            }) > 0;
+            });
         }
         catch (SqlException ex) when (ex.Number == 2601) // Duplicate error
         {

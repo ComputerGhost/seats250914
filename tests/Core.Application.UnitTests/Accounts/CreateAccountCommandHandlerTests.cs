@@ -44,9 +44,6 @@ public class CreateAccountCommandHandlerTests
     public async Task Handle_WhenAccountDoesNotExist_ReturnsSuccess()
     {
         // Arrange
-        MockAccountsDatabase
-            .Setup(m => m.CreateAccount(It.IsAny<AccountEntityModel>(), It.IsAny<string>()))
-            .ReturnsAsync(true);
 
         // Act
         var result = await Subject.Handle(MinimalValidCommand, CancellationToken.None);
@@ -62,9 +59,6 @@ public class CreateAccountCommandHandlerTests
         // Arrange
         var command = MinimalValidCommand;
         command.Password = "password";
-        MockAccountsDatabase
-            .Setup(m => m.CreateAccount(It.IsAny<AccountEntityModel>(), It.IsAny<string>()))
-            .ReturnsAsync(true);
 
         // Act
         await Subject.Handle(command, CancellationToken.None);
