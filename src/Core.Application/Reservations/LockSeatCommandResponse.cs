@@ -1,6 +1,9 @@
 ﻿namespace Core.Application.Reservations;
 public class LockSeatCommandResponse
 {
+    /// <summary>
+    /// The number of the seat that was locked.
+    /// </summary>
     public int SeatNumber { get; set; }
 
     /// <summary>

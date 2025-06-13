@@ -14,7 +14,7 @@ public class FetchReservationQueryHandler : IRequestHandler<FetchReservationQuer
 
     public async Task<ErrorOr<FetchReservationQueryResponse>> Handle(FetchReservationQuery request, CancellationToken cancellationToken)
     {
-        var reservationEntity = await _reservationsDatabase.FetchReservation(request.SeatNumber);
+        var reservationEntity = await _reservationsDatabase.FetchReservation(request.ReservationId);
         if (reservationEntity == null)
         {
             return Error.NotFound();

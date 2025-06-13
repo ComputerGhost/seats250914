@@ -1,4 +1,4 @@
-﻿using Core.Application.Seats.Enumerations;
+﻿using Core.Application.Common.Enumerations;
 using Core.Domain.Authorization;
 using Core.Domain.Common.Models;
 using Core.Domain.Common.Ports;
@@ -9,18 +9,18 @@ using System.Diagnostics;
 namespace Core.Application.Reservations;
 public class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, ErrorOr<Success>>
 {
-    private readonly IReservationAuthorizationChecker _authorizationCheck;
+    private readonly IAuthorizationChecker _authorizationChecker;
     private readonly IReservationsDatabase _reservationsDatabase;
     private readonly ISeatLocksDatabase _seatLocksDatabase;
     private readonly ISeatsDatabase _seatsDatabase;
 
     public ReserveSeatCommandHandler(
-        IReservationAuthorizationChecker authorizationCheck,
+        IAuthorizationChecker authorizationCheck,
         IReservationsDatabase reservationsDatabase,
         ISeatLocksDatabase seatLocksDatabase,
         ISeatsDatabase seatsDatabase)
     {
-        _authorizationCheck = authorizationCheck;
+        _authorizationChecker = authorizationCheck;
         _reservationsDatabase = reservationsDatabase;
         _seatLocksDatabase = seatLocksDatabase;
         _seatsDatabase = seatsDatabase;
@@ -30,12 +30,10 @@ public class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, Err
     {
         var unauthorizedMessage = $"User is not authorized to reserve seat {request.SeatNumber}.";
 
-        if (!await _authorizationCheck.CanReserveSeat(request.SeatNumber, request.SeatKey))
+        if (!await CanReserveSeat(request))
         {
             return Error.Failure(unauthorizedMessage);
         }
-
-        // maybe add a sql scope here???
 
         await _seatLocksDatabase.ClearLockExpiration(request.SeatNumber);
 
@@ -52,9 +50,16 @@ public class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, Err
         return Result.Success;
     }
 
-    private Task CreateReservation(ReserveSeatCommand request)
+    private async Task<bool> CanReserveSeat(ReserveSeatCommand request)
     {
-        return _reservationsDatabase.CreateReservation(new ReservationEntityModel
+        _authorizationChecker.SetUserIdentity(request.IsStaff, request.Email, request.IpAddress);
+        var result = await _authorizationChecker.GetReserveSeatAuthorization(request.SeatNumber, request.SeatKey);
+        return result.IsAuthorized;
+    }
+
+    private async Task CreateReservation(ReserveSeatCommand request)
+    {
+        var entityModel = new ReservationEntityModel
         {
             ReservedAt = DateTimeOffset.UtcNow,
             SeatNumber = request.SeatNumber,
@@ -62,7 +67,10 @@ public class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, Err
             Email = request.Email,
             PhoneNumber = request.PhoneNumber,
             PreferredLanguage = request.PreferredLanguage,
-        });
+            Status = ReservationStatus.AwaitingPayment.ToString(),
+        };
+        var result = await _reservationsDatabase.CreateReservation(entityModel);
+        Debug.Assert(result, "The reservation could not be created, possibly due to bad data.");
     }
 
     private async Task<bool> DoesLockStillExist(int seatNumber)

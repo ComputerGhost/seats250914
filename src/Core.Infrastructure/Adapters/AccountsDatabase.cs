@@ -9,15 +9,8 @@ using System.Data;
 namespace Core.Infrastructure.Adapters;
 
 [ServiceImplementation]
-internal class AccountsDatabase : IAccountsDatabase
+internal class AccountsDatabase(IDbConnection connection) : IAccountsDatabase
 {
-    private readonly IDbConnection _connection;
-
-    public AccountsDatabase(IDbConnection connection)
-    {
-        _connection = connection;
-    }
-
     public async Task CreateAccount(AccountEntityModel account, string passwordHash)
     {
         try
@@ -26,14 +19,15 @@ internal class AccountsDatabase : IAccountsDatabase
                 INSERT INTO [Users] (Login, PasswordHash, IsEnabled)
                 VALUES (@Login, @PasswordHash, @IsEnabled);
                 """;
-            await _connection.ExecuteAsync(sql, new
+            await connection.ExecuteAsync(sql, new
             {
                 account.Login,
                 account.IsEnabled,
                 PasswordHash = passwordHash,
             });
         }
-        catch (SqlException ex) when (ex.Number == 2601) // Duplicate error
+        // Catch unique constraint violations.
+        catch (SqlException ex) when (ex.Number is 2601 or 2627)
         {
             throw new AccountAlreadyExistsException(account.Login);
         }
@@ -42,7 +36,7 @@ internal class AccountsDatabase : IAccountsDatabase
     public async Task<AccountEntityModel?> FetchAccount(string login)
     {
         var sql = "SELECT Login, IsEnabled FROM [Users] WHERE Login = @login";
-        return await _connection.QuerySingleOrDefaultAsync<AccountEntityModel>(sql, new
+        return await connection.QuerySingleOrDefaultAsync<AccountEntityModel>(sql, new
         {
             Login = login,
         });
@@ -51,7 +45,7 @@ internal class AccountsDatabase : IAccountsDatabase
     public async Task<string?> FetchPasswordhash(string login)
     {
         var sql = "SELECT PasswordHash from [Users] WHERE Login = @login AND IsEnabled = 1";
-        return await _connection.QuerySingleOrDefaultAsync<string>(sql, new
+        return await connection.QuerySingleOrDefaultAsync<string>(sql, new
         {
             Login = login,
         });
@@ -60,13 +54,13 @@ internal class AccountsDatabase : IAccountsDatabase
     public async Task<IEnumerable<AccountEntityModel>> ListAccounts()
     {
         var sql = "SELECT Login, IsEnabled FROM [Users] ORDER BY Login";
-        return await _connection.QueryAsync<AccountEntityModel>(sql);
+        return await connection.QueryAsync<AccountEntityModel>(sql);
     }
 
     public async Task<bool> UpdateAccount(AccountEntityModel account)
     {
         var sql = "UPDATE [Users] SET IsEnabled = @isEnabled WHERE Login = @login";
-        return await _connection.ExecuteAsync(sql, new
+        return await connection.ExecuteAsync(sql, new
         {
             isEnabled = account.IsEnabled,
             login = account.Login,
@@ -76,7 +70,7 @@ internal class AccountsDatabase : IAccountsDatabase
     public async Task<bool> UpdatePassword(string login, string passwordHash)
     {
         var sql = "UPDATE [Users] SET PasswordHash = @passwordHash WHERE Login = @login";
-        return await _connection.ExecuteAsync(sql, new
+        return await connection.ExecuteAsync(sql, new
         {
             login,
             passwordHash,

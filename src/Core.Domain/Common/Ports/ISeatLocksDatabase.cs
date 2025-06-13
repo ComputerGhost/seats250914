@@ -31,14 +31,25 @@ public interface ISeatLocksDatabase
     Task ClearLockExpiration(int seatNumber);
 
     /// <summary>
+    /// Count the number of locks active for the IP address.
+    /// </summary>
+    public Task<int> CountLocksForIpAddress(string ipAddress);
+
+    /// <summary>
+    /// Deletes a seat lock.
+    /// If there is an associated reservation: the reservation remains, but its reference to the lock is removed.
+    /// </summary>
+    /// <param name="seatNumber">The seat number of the lock to delete.</param>
+    /// <returns>True if successful; false if the lock was not found.</returns>
+    Task<bool> DeleteLock(int seatNumber);
+
+    /// <summary>
     /// Applies a lock to a seat. Only one lock per seat is possible, which 
     /// makes it impossible for multiple people to lock the same seat.
     /// </summary>
-    /// <param name="seatNumber">Seat number to lock.</param>
-    /// <param name="expiration">Expiration of the lock before the seat is available to others.</param>
-    /// <param name="key">Key that must be used to reserve the seat.</param>
+    /// <param name="seatLockEntity">Information for the lock to create.</param>
     /// <returns>True if successful; false if the seat doesn't exist or is already locked.</returns>
-    Task<bool> LockSeat(int seatNumber, DateTimeOffset expiration, string key);
+    Task<bool> LockSeat(SeatLockEntityModel seatLockEntity);
 
     /// <summary>
     /// Returns the lock assigned to the locked seat.

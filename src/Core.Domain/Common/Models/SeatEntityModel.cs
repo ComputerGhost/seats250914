@@ -14,8 +14,5 @@ public class SeatEntityModel
     /// <summary>
     /// Status of the seat.
     /// </summary>
-    /// <remarks>
-    /// Can be one of: "Available", "On hold", "Reserved"
-    /// </remarks>
     public string Status { get; set; } = null!;
 }

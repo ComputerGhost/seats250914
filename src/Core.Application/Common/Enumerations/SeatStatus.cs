@@ -1,4 +1,4 @@
-﻿namespace Core.Application.Seats.Enumerations;
+﻿namespace Core.Application.Common.Enumerations;
 public enum SeatStatus
 {
     /// <summary>

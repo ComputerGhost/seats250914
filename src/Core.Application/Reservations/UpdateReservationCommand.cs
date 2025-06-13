@@ -5,6 +5,11 @@ namespace Core.Application.Reservations;
 public class UpdateReservationCommand : IRequest<ErrorOr<Success>>
 {
     /// <summary>
+    /// The primary key of the reservation.
+    /// </summary>
+    public int ReservationId { get; set; }
+
+    /// <summary>
     /// Number of the seat reserved.
     /// </summary>
     public int SeatNumber { get; set; }

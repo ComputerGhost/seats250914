@@ -55,7 +55,7 @@ public class ConfigurationEntityModel
     public DateTimeOffset ScheduledOpenDateTime { get; set; }
 
     /// <summary>
-    /// Timezone to be used to display <see cref="ScheduledOpenDateTime"/>.
+    /// Display only. Timezone to be used to display <see cref="ScheduledOpenDateTime"/>.
     /// </summary>
     public string ScheduledOpenTimeZone { get; set; } = null!;
 }

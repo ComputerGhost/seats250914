@@ -13,6 +13,16 @@ namespace Core.Application.Reservations;
 public class ReserveSeatCommand : IRequest<ErrorOr<Success>>
 {
     /// <summary>
+    /// Ip address of the one reserving the seat.
+    /// </summary>
+    public string IpAddress { get; set; } = null!;
+
+    /// <summary>
+    /// Whether the seat is being reserved by staff instead of by the user.
+    /// </summary>
+    public bool IsStaff { get; set; }
+
+    /// <summary>
     /// The number identifier of the seat to reserve.
     /// </summary>
     public int SeatNumber { get; set; }

@@ -1,11 +1,11 @@
-﻿using Core.Application.Configuration;
-using Core.Application.Reservations;
+﻿using Core.Application.Reservations;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 
 namespace Core.IntegrationTests.Tests;
 
+[Ignore("This is ignored because it modifies the database.")]
 [TestClass]
 public class ReservationStressTests
 {
@@ -16,17 +16,10 @@ public class ReservationStressTests
     private IMediator _mediator = null!;
 
     [TestInitialize]
-    public async Task Initialize()
+    public void Initialize()
     {
         var app = MinimalApplication.Create();
         _mediator = app.ServiceProvider.GetRequiredService<IMediator>();
-        await RejectAllReservations();
-    }
-
-    [TestCleanup]
-    public async Task CleanUp()
-    {
-        await RejectAllReservations();
     }
 
     [TestMethod]
@@ -55,11 +48,6 @@ public class ReservationStressTests
         }
     }
 
-    private Task RejectAllReservations()
-    {
-        // TODO
-    }
-
     private class Actor
     {
         private readonly IMediator _mediator;
@@ -71,12 +59,35 @@ public class ReservationStressTests
 
         public async Task ReserveSeat()
         {
-            var result = await _mediator.Send(new LockSeatCommand { SeatNumber = 1 });
+            var seatLock = await SelectSeat();
+            if (seatLock == null)
+            {
+                // No seats available
+                return;
+            }
 
-            // I'll replace this with the actual calls later.
-            await _mediator.Send(new TestDatabaseQuery()); // Get available
-            await _mediator.Send(new TestDatabaseQuery()); // Attempt reservation
-            await _mediator.Send(new TestDatabaseQuery()); // Another got it, try again.
+            await _mediator.Send(new ReserveSeatCommand
+            {
+                Email = $"Email{seatLock.SeatNumber}@test.com",
+                Name = $"Name {seatLock.SeatNumber}",
+                PreferredLanguage = "English",
+                SeatKey = seatLock.SeatKey,
+                SeatNumber = seatLock.SeatNumber,
+            });
+        }
+
+        private async Task<LockSeatCommandResponse?> SelectSeat()
+        {
+            for (int i = 1; i <= SEAT_COUNT; ++i)
+            {
+                var result = await _mediator.Send(new LockSeatCommand { SeatNumber = i });
+                if (!result.IsError)
+                {
+                    return result.Value;
+                }
+            }
+
+            return null;
         }
     }
 }

@@ -12,5 +12,18 @@ namespace Core.Application.Reservations;
 /// </remarks>
 public class LockSeatCommand : IRequest<ErrorOr<LockSeatCommandResponse>>
 {
+    /// <summary>
+    /// Ip address of the one reserving the seat.
+    /// </summary>
+    public string IpAddress { get; set; } = null!;
+
+    /// <summary>
+    /// Whether the seat is being locked by staff instead of by the user.
+    /// </summary>
+    public bool IsStaff { get; set; }
+
+    /// <summary>
+    /// The number of the seat to be locked.
+    /// </summary>
     public int SeatNumber { get; set; }
 }

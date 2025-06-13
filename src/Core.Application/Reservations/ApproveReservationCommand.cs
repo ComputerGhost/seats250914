@@ -2,7 +2,11 @@
 using MediatR;
 
 namespace Core.Application.Reservations;
-public class FetchReservationQuery : IRequest<ErrorOr<FetchReservationQueryResponse>>
+
+/// <summary>
+/// Approves a reservation and removes it from the 'pending' statuses.
+/// </summary>
+public class ApproveReservationCommand : IRequest<ErrorOr<Success>>
 {
     /// <summary>
     /// The primary key of the reservation.

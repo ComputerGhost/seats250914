@@ -1,5 +1,5 @@
-﻿using Core.Application.Reservations;
-using Core.Application.Seats.Enumerations;
+﻿using Core.Application.Common.Enumerations;
+using Core.Application.Reservations;
 using Core.Domain.Authorization;
 using Core.Domain.Common.Models;
 using Core.Domain.Common.Ports;
@@ -12,12 +12,12 @@ namespace Core.Application.UnitTests.Reservations;
 public class LockSeatCommandHandlerTests
 {
     private Mock<IConfigurationDatabase> MockConfigurationDatabase { get; set; } = null!;
-    private Mock<IReservationAuthorizationChecker> MockReservationAuthorizationChecker { get; set; } = null!;
+    private Mock<IAuthorizationChecker> MockReservationAuthorizationChecker { get; set; } = null!;
     private Mock<ISeatLocksDatabase> MockSeatLocksDatabase { get; set; } = null!;
     private Mock<ISeatsDatabase> MockSeatsDatabase { get; set; } = null!;
     private LockSeatCommandHandler Subject { get; set; } = null!;
 
-    private LockSeatCommand MinimalValidCommand { get; set; } = null!;
+    private LockSeatCommand Command { get; set; } = null!;
 
     [TestInitialize]
     public void Initialize()
@@ -29,12 +29,12 @@ public class LockSeatCommandHandlerTests
 
         MockReservationAuthorizationChecker = new();
         MockReservationAuthorizationChecker
-            .Setup(m => m.CanMakeReservation(It.IsAny<ConfigurationEntityModel>()))
-            .Returns(true);
+            .Setup(m => m.GetLockSeatAuthorization(It.IsAny<ConfigurationEntityModel>()))
+            .ReturnsAsync(AuthorizationResult.Success);
 
         MockSeatLocksDatabase = new();
         MockSeatLocksDatabase
-            .Setup(m => m.LockSeat(It.IsAny<int>(), It.IsAny<DateTimeOffset>(), It.IsAny<string>()))
+            .Setup(m => m.LockSeat(It.IsAny<SeatLockEntityModel>()))
             .ReturnsAsync(true);
 
         MockSeatsDatabase = new();
@@ -51,11 +51,11 @@ public class LockSeatCommandHandlerTests
             MockSeatLocksDatabase.Object, 
             MockSeatsDatabase.Object);
 
-        MinimalValidCommand = new() { SeatNumber = 1, };
+        Command = new() { SeatNumber = 1, };
     }
 
     [TestMethod]
-    public async Task Handle_WhenSuccessful_LocksSeat()
+    public async Task Handle_WhenSuccessful_LocksSeatWithExpiration()
     {
         // Arrange
         const int SEAT_NUMBER = 1;
@@ -63,21 +63,20 @@ public class LockSeatCommandHandlerTests
         MockConfigurationDatabase
             .Setup(m => m.FetchConfiguration())
             .ReturnsAsync(new ConfigurationEntityModel { MaxSecondsToConfirmSeat = EXPIRATION_SECONDS });
-        var command = MinimalValidCommand;
-        command.SeatNumber = SEAT_NUMBER;
+        Command.SeatNumber = SEAT_NUMBER;
 
         // Act
         var startTime = DateTime.UtcNow;
-        await Subject.Handle(command, CancellationToken.None);
+        await Subject.Handle(Command, CancellationToken.None);
         var endTime = DateTime.UtcNow;
 
         // Assert
         var minExpectedExpiration = startTime.AddSeconds(EXPIRATION_SECONDS);
         var maxExpectedExpiration = endTime.AddSeconds(EXPIRATION_SECONDS);
-        MockSeatLocksDatabase.Verify(m => m.LockSeat(
-            It.Is<int>(p => p == SEAT_NUMBER),
-            It.Is<DateTimeOffset>(p => minExpectedExpiration < p && p < maxExpectedExpiration),
-            It.IsAny<string>()));
+        MockSeatLocksDatabase.Verify(m => m.LockSeat(It.Is<SeatLockEntityModel>(p =>
+            p.SeatNumber == SEAT_NUMBER &&
+            minExpectedExpiration < p.Expiration && p.Expiration < maxExpectedExpiration
+        )));
     }
 
     [TestMethod]
@@ -85,11 +84,10 @@ public class LockSeatCommandHandlerTests
     {
         // Arrange
         const int SEAT_NUMBER = 1;
-        var command = MinimalValidCommand;
-        command.SeatNumber = SEAT_NUMBER;
+        Command.SeatNumber = SEAT_NUMBER;
 
         // Act
-        var result = await Subject.Handle(command, CancellationToken.None);
+        var result = await Subject.Handle(Command, CancellationToken.None);
 
         // Assert
         MockSeatsDatabase.Verify(m => m.UpdateSeatStatus(
@@ -102,11 +100,10 @@ public class LockSeatCommandHandlerTests
     {
         // Arrange
         const int SEAT_NUMBER = 1;
-        var command = MinimalValidCommand;
-        command.SeatNumber = SEAT_NUMBER;
+        Command.SeatNumber = SEAT_NUMBER;
 
         // Act
-        var result = await Subject.Handle(command, CancellationToken.None);
+        var result = await Subject.Handle(Command, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result.IsError);
@@ -119,11 +116,11 @@ public class LockSeatCommandHandlerTests
     {
         // Arrange
         MockReservationAuthorizationChecker
-            .Setup(m => m.CanMakeReservation(It.IsAny<ConfigurationEntityModel>()))
-            .Returns(false);
+            .Setup(m => m.GetLockSeatAuthorization(It.IsAny<ConfigurationEntityModel>()))
+            .ReturnsAsync(AuthorizationResult.ReservationsAreClosed);
 
         // Act
-        var result = await Subject.Handle(MinimalValidCommand, CancellationToken.None);
+        var result = await Subject.Handle(Command, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.IsError);
@@ -135,11 +132,11 @@ public class LockSeatCommandHandlerTests
     {
         // Arrange
         MockSeatLocksDatabase
-            .Setup(m => m.LockSeat(It.IsAny<int>(), It.IsAny<DateTimeOffset>(), It.IsAny<string>()))
+            .Setup(m => m.LockSeat(It.IsAny<SeatLockEntityModel>()))
             .ReturnsAsync(false);
 
         // Act
-        var result = await Subject.Handle(MinimalValidCommand, CancellationToken.None);
+        var result = await Subject.Handle(Command, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.IsError);
@@ -155,7 +152,7 @@ public class LockSeatCommandHandlerTests
             .ReturnsAsync((SeatEntityModel?)null);
 
         // Act
-        var result = await Subject.Handle(MinimalValidCommand, CancellationToken.None);
+        var result = await Subject.Handle(Command, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.IsError);

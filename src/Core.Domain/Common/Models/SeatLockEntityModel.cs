@@ -1,9 +1,13 @@
 ﻿namespace Core.Domain.Common.Models;
 public class SeatLockEntityModel
 {
-    public int SeatNumber { get; set; }
-
     public DateTimeOffset Expiration { get; set; }
 
+    public string IpAddress { get; set; } = null!;
+
     public string Key { get; set; } = null!;
+
+    public DateTimeOffset LockedAt { get; set; }
+
+    public int SeatNumber { get; set; }
 }

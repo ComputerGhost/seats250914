@@ -1,5 +1,5 @@
-﻿using Core.Application.Seats;
-using Core.Application.Seats.Enumerations;
+﻿using Core.Application.Common.Enumerations;
+using Core.Application.Seats;
 using Core.Domain.Common.Models;
 using Core.Domain.Common.Ports;
 using Moq;

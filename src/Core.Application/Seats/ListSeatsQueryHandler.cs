@@ -1,4 +1,4 @@
-﻿using Core.Application.Seats.Enumerations;
+﻿using Core.Application.Common.Enumerations;
 using Core.Domain.Common.Ports;
 using MediatR;
 

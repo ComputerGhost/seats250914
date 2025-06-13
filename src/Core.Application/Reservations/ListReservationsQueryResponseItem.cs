@@ -2,17 +2,22 @@
 public class ListReservationsQueryResponseItem
 {
     /// <summary>
+    /// The primary key of the reservation.
+    /// </summary>
+    public required int ReservationId { get; set; }
+
+    /// <summary>
     /// When the reservation was made.
     /// </summary>
-    public DateTimeOffset ReservedAt { get; set; }
+    public required DateTimeOffset ReservedAt { get; set; }
 
     /// <summary>
     /// Number of the seat reserved.
     /// </summary>
-    public int SeatNumber { get; set; }
+    public required int SeatNumber { get; set; }
 
     /// <summary>
     /// Name of the person reserving the seat.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public required string Name { get; set; } = null!;
 }

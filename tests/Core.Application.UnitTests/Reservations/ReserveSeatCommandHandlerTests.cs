@@ -1,5 +1,5 @@
-﻿using Core.Application.Reservations;
-using Core.Application.Seats.Enumerations;
+﻿using Core.Application.Common.Enumerations;
+using Core.Application.Reservations;
 using Core.Domain.Authorization;
 using Core.Domain.Common.Models;
 using Core.Domain.Common.Ports;
@@ -11,7 +11,7 @@ namespace Core.Application.UnitTests.Reservations;
 [TestClass]
 public class ReserveSeatCommandHandlerTests
 {
-    private Mock<IReservationAuthorizationChecker> MockReservationAuthorizationChecker { get; set; } = null!;
+    private Mock<IAuthorizationChecker> MockReservationAuthorizationChecker { get; set; } = null!;
     private Mock<IReservationsDatabase> MockReservationsDatabase { get; set; } = null!;
     private Mock<ISeatLocksDatabase> MockSeatLocksDatabase { get; set; } = null!;
     private Mock<ISeatsDatabase> MockSeatsDatabase { get; set; } = null!;
@@ -24,8 +24,8 @@ public class ReserveSeatCommandHandlerTests
     {
         MockReservationAuthorizationChecker = new();
         MockReservationAuthorizationChecker
-            .Setup(m => m.CanReserveSeat(It.IsAny<int>(), It.IsAny<string>()))
-            .ReturnsAsync(true);
+            .Setup(m => m.GetReserveSeatAuthorization(It.IsAny<int>(), It.IsAny<string>()))
+            .ReturnsAsync(AuthorizationResult.Success);
 
         MockReservationsDatabase = new();
 
@@ -34,7 +34,7 @@ public class ReserveSeatCommandHandlerTests
             .Setup(m => m.FetchSeatLock(It.IsAny<int>()))
             .ReturnsAsync(new SeatLockEntityModel());
         MockSeatLocksDatabase
-            .Setup(m => m.LockSeat(It.IsAny<int>(), It.IsAny<DateTimeOffset>(), It.IsAny<string>()))
+            .Setup(m => m.LockSeat(It.IsAny<SeatLockEntityModel>()))
             .ReturnsAsync(true);
 
         MockSeatsDatabase = new();
@@ -165,8 +165,8 @@ public class ReserveSeatCommandHandlerTests
     {
         // Arrange
         MockReservationAuthorizationChecker
-            .Setup(m => m.CanReserveSeat(It.IsAny<int>(), It.IsAny<string>()))
-            .ReturnsAsync(false);
+            .Setup(m => m.GetReserveSeatAuthorization(It.IsAny<int>(), It.IsAny<string>()))
+            .ReturnsAsync(AuthorizationResult.KeyIsInvalid);
 
         // Act
         var result = await Subject.Handle(MinimalValidCommand, CancellationToken.None);
@@ -177,12 +177,12 @@ public class ReserveSeatCommandHandlerTests
     }
 
     [TestMethod]
-    public async Task Handle_WhenNotAuthorizedForLockedSeat_DoesNotClearLockExpiration()
+    public async Task Handle_WhenFailure_DoesNotClearLockExpiration()
     {
         // Arrange
         MockReservationAuthorizationChecker
-            .Setup(m => m.CanReserveSeat(It.IsAny<int>(), It.IsAny<string>()))
-            .ReturnsAsync(false);
+            .Setup(m => m.GetReserveSeatAuthorization(It.IsAny<int>(), It.IsAny<string>()))
+            .ReturnsAsync(AuthorizationResult.KeyIsInvalid);
 
         // Act
         var result = await Subject.Handle(MinimalValidCommand, CancellationToken.None);
@@ -198,8 +198,8 @@ public class ReserveSeatCommandHandlerTests
     {
         // Arrange
         MockReservationAuthorizationChecker
-            .Setup(m => m.CanReserveSeat(It.IsAny<int>(), It.IsAny<string>()))
-            .ReturnsAsync(false);
+            .Setup(m => m.GetReserveSeatAuthorization(It.IsAny<int>(), It.IsAny<string>()))
+            .ReturnsAsync(AuthorizationResult.KeyIsInvalid);
 
         // Act
         await Subject.Handle(MinimalValidCommand, CancellationToken.None);
@@ -215,8 +215,8 @@ public class ReserveSeatCommandHandlerTests
     {
         // Arrange
         MockReservationAuthorizationChecker
-            .Setup(m => m.CanReserveSeat(It.IsAny<int>(), It.IsAny<string>()))
-            .ReturnsAsync(false);
+            .Setup(m => m.GetReserveSeatAuthorization(It.IsAny<int>(), It.IsAny<string>()))
+            .ReturnsAsync(AuthorizationResult.KeyIsInvalid);
 
         // Act
         await Subject.Handle(MinimalValidCommand, CancellationToken.None);
