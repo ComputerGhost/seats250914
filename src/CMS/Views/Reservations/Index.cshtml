@@ -1,4 +1,6 @@
-﻿<div class="container">
+﻿@using Core.Application.Common.Enumerations
+@model ReservationListViewModel;
+<div class="container">
     <header class="mb-3">
         <h1>예약 목록</h1>
     </header>
@@ -64,23 +66,46 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td scope="row">
-                            (seat id}
-                        </td>
-                        <td>
-                            <time datetime="2015-05-30T15:20:32">2015-05-30 15:20:32 KST</time>
-                        </td>
-                        <td>
-                            Pending approval
-                        </td>
-                        <td>
-                            John Doe
-                        </td>
-                        <td>
-                            <a asp-action="Details" asp-route-seat="seat_id">상세 보기</a>
-                        </td>
-                    </tr>
+                    @foreach (var reservation in Model.Items)
+                    {
+                        <tr>
+                            <td scope="row">
+                                @reservation.SeatNumber
+                            </td>
+                            <td>
+                                <time datetime="@reservation.ReservedAt">@reservation.ReservedAt</time>
+                            </td>
+                            <td>
+                                @if (reservation.ReservationStatus == ReservationStatus.ReservationConfirmed)
+                                {
+                                    <span>
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                        Confirmed
+                                    </span>
+                                }
+                                else if (reservation.ReservationStatus == ReservationStatus.ReservationRejected)
+                                {
+                                    <span>
+                                        <i class="bi bi-ban-fill text-danger"></i>
+                                        Rejected
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span>
+                                        <i class="bi bi-hourglass-split text-secondary"></i>
+                                        Awaiting payment
+                                    </span>
+                                }
+                            </td>
+                            <td>
+                                @reservation.Name
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-reservationId="@reservation.ReservationId">상세 보기</a>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </section>
@@ -105,9 +130,9 @@
 
 @section Scripts
 {
-    <script src="//cdn.datatables.net/2.3.1/js/dataTables.min.js"></script>
+    <script defer src="//cdn.datatables.net/2.3.1/js/dataTables.min.js"></script>
     <script>
-        $(document).ready(function() {
+        window.addEventListener("load", function() {
             var table = new DataTable("#index-table", {
                 layout: {
                     topStart: null,
@@ -115,6 +140,8 @@
                     bottomStart: null,
                     bottomEnd: null,
                 },
+                // Paging has to be disabled to work with our timezone widget.
+                paging: false,
                 ordering: {
                     indicators: false,
                 },

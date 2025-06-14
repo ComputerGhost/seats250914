@@ -1,4 +1,5 @@
-﻿<div class="container">
+﻿@model ReservationCreateViewModel;
+<div class="container">
     <header class="mb-3">
         <h1>예약 생성</h1>
     </header>
@@ -6,26 +7,33 @@
     <section>
         <form method="post">
             <div class="mb-3">
-                <label for="seat" class="form-label">좌석 선택</label>
-                <select class="form-select" id="seat" required>
-                    <option value=""></option>
-                    <option value="1">아직 좌석이 확정되지 않음 (TBD)</option>
-                </select>
+                <label asp-for="SeatNumber" class="form-label">좌석 선택</label>
+                <select asp-for="SeatNumber" asp-items="Model.ValidSeatNumbers" class="form-select"></select>
+                <span asp-validation-for="SeatNumber" class="form-text text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <label for="name" class="form-label">예약자</label>
-                <input type="text" class="form-control" id="name" maxlength="50" required>
+                <label asp-for="Name" class="form-label">예약자</label>
+                <input asp-for="Name" class="form-control">
+                <span asp-validation-for="Name" class="form-text text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <label for="email" class="form-label">예약자 메일</label>
-                <input type="email" class="form-control" id="email" maxlength="255" required>
+                <label asp-for="Email" class="form-label">예약자 메일</label>
+                <input asp-for="Email" class="form-control">
+                <span asp-validation-for="Email" class="form-text text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <label for="phone" class="form-label">예약자 번호</label>
-                <input type="tel" class="form-control" id="phone" maxlength="50" required>
+                <label asp-for="PhoneNumber" class="form-label">예약자 번호</label>
+                <input asp-for="PhoneNumber" class="form-control">
+                <span asp-validation-for="PhoneNumber" class="form-text text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PreferredLanguage" class="form-label">Preferred language</label>
+                <input asp-for="PreferredLanguage" class="form-control">
+                <span asp-validation-for="PreferredLanguage" class="form-text text-danger"></span>
             </div>
 
             <button type="submit" class="btn btn-primary">예약 만들기</button>

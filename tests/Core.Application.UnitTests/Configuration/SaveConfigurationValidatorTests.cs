@@ -1,6 +1,6 @@
 ﻿using Core.Application.Configuration;
 
-namespace Core.Application.UnitTests.Accounts;
+namespace Core.Application.UnitTests.Configuration;
 
 [TestClass]
 public class SaveConfigurationValidatorTests

@@ -31,6 +31,7 @@ public class ListAccountsQueryHandlerTests
         var result = await Subject.Handle(query, CancellationToken.None);
 
         // Assert
+        Assert.IsNotNull(result.Data);
         Assert.AreEqual(0, result.Data.Count());
     }
 
@@ -47,6 +48,7 @@ public class ListAccountsQueryHandlerTests
         var result = await Subject.Handle(query, CancellationToken.None);
 
         // Assert
+        Assert.IsNotNull(result.Data);
         Assert.AreEqual(1, result.Data.Count());
         Assert.AreEqual("login", result.Data.First().Login);
     }

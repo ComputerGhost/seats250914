@@ -9,8 +9,7 @@ public interface IAccountsDatabase
     /// <remarks>
     /// Throws an exception if the login already exists.
     /// </remarks>
-    /// <returns>True if the account was created, false otherwise.</returns>
-    Task<bool> CreateAccount(AccountEntityModel account, string passwordHash);
+    Task CreateAccount(AccountEntityModel account, string passwordHash);
 
     /// <summary>
     /// Fetch an account's data. The password is not included.

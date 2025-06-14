@@ -1,4 +1,6 @@
-﻿<div class="container">
+﻿@using Core.Application.Common.Enumerations
+@model ReservationViewViewModel;
+<div class="container">
     <header class="mb-3">
         <h1>예약 상세 정보</h1>
     </header>
@@ -8,10 +10,32 @@
 
         <dl class="row">
             <dt class="col-sm-5">좌석:</dt>
-            <dd class="col-sm-7">A6</dd>
+            <dd class="col-sm-7">@Model.SeatNumber</dd>
 
             <dt class="col-sm-5">승인 상태:</dt>
-            <dd class="col-sm-7">승인 대기 중</dd>
+            <dd class="col-sm-7">
+                @if (Model.ReservationStatus == ReservationStatus.ReservationConfirmed)
+                {
+                    <span>
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        Confirmed
+                    </span>
+                }
+                else if (Model.ReservationStatus == ReservationStatus.ReservationRejected)
+                {
+                    <span>
+                        <i class="bi bi-ban-fill text-danger"></i>
+                        Rejected
+                    </span>
+                }
+                else
+                {
+                    <span>
+                        <i class="bi bi-hourglass-split text-secondary"></i>
+                        Awaiting payment
+                    </span>
+                }
+            </dd>
         </dl>
     </section>
 
@@ -22,13 +46,16 @@
 
         <dl class="row">
             <dt class="col-sm-5">이름:</dt>
-            <dd class="col-sm-7">John Doe</dd>
+            <dd class="col-sm-7">@Model.Name</dd>
 
             <dt class="col-sm-5">메일:</dt>
-            <dd class="col-sm-7">someone@example.com</dd>
+            <dd class="col-sm-7">@Model.Email</dd>
 
             <dt class="col-sm-5">전화번호:</dt>
-            <dd class="col-sm-7">1-662-555-0000</dd>
+            <dd class="col-sm-7">@Model.PhoneNumber</dd>
+
+            <dt class="col-sm-5">Preferred language:</dt>
+            <dd class="col-sm-7">@Model.PreferredLanguage</dd>
         </dl>
     </section>
 
@@ -40,25 +67,20 @@
         <dl class="row">
             <dt class="col-sm-5">예약 신청 시간:</dt>
             <dd class="col-sm-7">
-                <time datetime="2025-05-30T16:20:00Z">2025-05-30 00:00:00 KST</time>
+                <time datetime="@Model.ReservedAt">@Model.ReservedAt</time>
             </dd>
-
-            <dt class="col-sm-5">IP v4 주소:</dt>
-            <dd class="col-sm-7">127.0.0.1</dd>
-
-            <dt class="col-sm-5">감지된 언어:</dt>
-            <dd class="col-sm-7">Vietnamese, English</dd>
-
-            <dt class="col-sm-5">요청한 다른 좌석:</dt>
-            <dd class="col-sm-7">A3 (approved), A4 (pending), A5 (pending)</dd>
         </dl>
     </section>
 
     <hr>
 
     <section>
-        <button type="submit" class="btn btn-primary">예약 승인</button>
-        <button type="submit" class="btn btn-outline-primary">승인/거절 초기화</button>
-        <button type="submit" class="btn btn-danger">예약 거절</button>
+        <form asp-action="UpdateStatus" method="post">
+            @if (Model.ReservationStatus == ReservationStatus.AwaitingPayment)
+            {
+                <button name="action" value="approve" type="submit" class="btn btn-primary">예약 승인</button>
+                <button name="action" value="reject" type="submit" class="btn btn-danger">예약 거절</button>
+            }
+        </form>
     </section>
 </div>

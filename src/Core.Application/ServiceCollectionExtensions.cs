@@ -1,4 +1,5 @@
-﻿using Core.Infrastructure;
+﻿using Core.Domain.DependencyInjection;
+using Core.Infrastructure;
 using MediatR.Behaviors.Authorization.Extensions.DependencyInjection;
 using MediatR.Extensions.FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ public static class ServiceCollectionExtensions
         var assembly = Assembly.GetExecutingAssembly();
         return services
             .AddMediatR(assembly)
+            .AddDomain()
             .AddInfrastructure(configure);
     }
 

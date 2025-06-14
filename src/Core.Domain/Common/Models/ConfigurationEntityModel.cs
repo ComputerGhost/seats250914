@@ -26,6 +26,9 @@ public class ConfigurationEntityModel
     /// <summary>
     /// Additional time for user actions to account for latency.
     /// </summary>
+    /// <remarks>
+    /// Recommended to not include this in saved expirations, just in comparisons.
+    /// </remarks>
     public int GracePeriodSeconds { get; set; }
 
     /// <summary>
@@ -52,7 +55,7 @@ public class ConfigurationEntityModel
     public DateTimeOffset ScheduledOpenDateTime { get; set; }
 
     /// <summary>
-    /// Timezone to be used to display <see cref="ScheduledOpenDateTime"/>.
+    /// Display only. Timezone to be used to display <see cref="ScheduledOpenDateTime"/>.
     /// </summary>
     public string ScheduledOpenTimeZone { get; set; } = null!;
 }
