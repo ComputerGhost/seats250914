@@ -18,14 +18,15 @@ internal class ReservationsDatabase(IDbConnection connection) : IReservationsDat
             WHERE Email = @emailAddress
             AND ReservationStatuses.Status IN ('AwaitingPayment', 'ReservationConfirmed')
             """;
-        return await connection.QuerySingleAsync<int>(sql, new { emailAddress });
+        return await connection.ExecuteScalarAsync<int>(sql, new { emailAddress });
     }
 
-    public async Task<bool> CreateReservation(ReservationEntityModel reservation)
+    public async Task<int> CreateReservation(ReservationEntityModel reservation)
     {
         // This assumes that the seat number and status exist.
         var sql = """
             INSERT INTO Reservations (ReservationStatusId, SeatId, SeatLockId, ReservedAt, Name, Email, PhoneNumber, PreferredLanguage)
+            OUTPUT INSERTED.Id
             SELECT
                 ReservationStatuses.Id,
                 Seats.Id,
@@ -36,7 +37,7 @@ internal class ReservationsDatabase(IDbConnection connection) : IReservationsDat
             LEFT JOIN ReservationStatuses ON ReservationStatuses.Status = @status
             WHERE Seats.Number = @seatNumber
             """;
-        return await connection.ExecuteAsync(sql, reservation) > 0;
+        return await connection.ExecuteScalarAsync<int>(sql, reservation);
     }
 
     public async Task<ReservationEntityModel?> FetchReservation(int reservationId)

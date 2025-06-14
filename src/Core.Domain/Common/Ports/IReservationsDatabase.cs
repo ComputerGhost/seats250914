@@ -15,8 +15,8 @@ public interface IReservationsDatabase
     /// WARNING: This does not verify ownership of the seat lock.
     /// </remarks>
     /// <param name="reservation">Reservation to save.</param>
-    /// <returns>True if successful; false if failure due to bad data.</returns>
-    Task<bool> CreateReservation(ReservationEntityModel reservation);
+    /// <returns>Id of the created reservation.</returns>
+    Task<int> CreateReservation(ReservationEntityModel reservation);
 
     /// <summary>
     /// List all reservations.

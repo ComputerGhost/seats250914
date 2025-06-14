@@ -1,4 +1,5 @@
-﻿using Core.Domain.Common.Ports;
+﻿using Core.Application.Common.Enumerations;
+using Core.Domain.Common.Ports;
 using ErrorOr;
 using MediatR;
 
@@ -28,6 +29,7 @@ public class FetchReservationQueryHandler : IRequestHandler<FetchReservationQuer
             Email = reservationEntity.Email,
             PhoneNumber = reservationEntity.PhoneNumber,
             PreferredLanguage = reservationEntity.PreferredLanguage,
+            Status = Enum.Parse<ReservationStatus>(reservationEntity.Status),
         };
     }
 }

@@ -1,4 +1,6 @@
-﻿<div class="container">
+﻿@using Core.Application.Common.Enumerations
+@model ReservationViewViewModel;
+<div class="container">
     <header class="mb-3">
         <h1>Reservation details</h1>
     </header>
@@ -8,10 +10,32 @@
 
         <dl class="row">
             <dt class="col-sm-5">Seat:</dt>
-            <dd class="col-sm-7">A6</dd>
+            <dd class="col-sm-7">@Model.SeatNumber</dd>
 
             <dt class="col-sm-5">Status:</dt>
-            <dd class="col-sm-7">Pending approval</dd>
+            <dd class="col-sm-7">
+                @if (Model.ReservationStatus == ReservationStatus.ReservationConfirmed)
+                {
+                    <span>
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        Confirmed
+                    </span>
+                }
+                else if (Model.ReservationStatus == ReservationStatus.ReservationRejected)
+                {
+                    <span>
+                        <i class="bi bi-ban-fill text-danger"></i>
+                        Rejected
+                    </span>
+                }
+                else
+                {
+                    <span>
+                        <i class="bi bi-hourglass-split text-secondary"></i>
+                        Awaiting payment
+                    </span>
+                }
+            </dd>
         </dl>
     </section>
 
@@ -22,13 +46,16 @@
 
         <dl class="row">
             <dt class="col-sm-5">Name:</dt>
-            <dd class="col-sm-7">John Doe</dd>
+            <dd class="col-sm-7">@Model.Name</dd>
 
             <dt class="col-sm-5">Email:</dt>
-            <dd class="col-sm-7">someone@example.com</dd>
+            <dd class="col-sm-7">@Model.Email</dd>
 
             <dt class="col-sm-5">Phone number:</dt>
-            <dd class="col-sm-7">1-662-555-0000</dd>
+            <dd class="col-sm-7">@Model.PhoneNumber</dd>
+
+            <dt class="col-sm-5">Preferred language:</dt>
+            <dd class="col-sm-7">@Model.PreferredLanguage</dd>
         </dl>
     </section>
 
@@ -42,23 +69,18 @@
             <dd class="col-sm-7">
                 <time datetime="2025-05-30T16:20:00Z">2025-05-30 00:00:00 KST</time>
             </dd>
-
-            <dt class="col-sm-5">IP Address:</dt>
-            <dd class="col-sm-7">127.0.0.1</dd>
-
-            <dt class="col-sm-5">Detected languages:</dt>
-            <dd class="col-sm-7">Vietnamese, English</dd>
-
-            <dt class="col-sm-5">Other seats requested:</dt>
-            <dd class="col-sm-7">A3 (approved), A4 (pending), A5 (pending)</dd>
         </dl>
     </section>
 
     <hr>
 
     <section>
-        <button type="submit" class="btn btn-primary">Approve reservation</button>
-        <button type="submit" class="btn btn-outline-primary">Reset approval/rejection</button>
-        <button type="submit" class="btn btn-danger">Reject reservation</button>
+        <form asp-action="UpdateStatus" method="post">
+            @if (Model.ReservationStatus == ReservationStatus.AwaitingPayment)
+            {
+                <button name="action" value="approve" type="submit" class="btn btn-primary">Approve reservation</button>
+                <button name="action" value="reject" type="submit" class="btn btn-danger">Reject reservation</button>
+            }
+        </form>
     </section>
 </div>

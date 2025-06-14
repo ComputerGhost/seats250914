@@ -7,7 +7,7 @@ using MediatR;
 using System.Diagnostics;
 
 namespace Core.Application.Reservations;
-public class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, ErrorOr<Success>>
+public class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, ErrorOr<int>>
 {
     private readonly IAuthorizationChecker _authorizationChecker;
     private readonly IReservationsDatabase _reservationsDatabase;
@@ -26,7 +26,7 @@ public class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, Err
         _seatsDatabase = seatsDatabase;
     }
 
-    public async Task<ErrorOr<Success>> Handle(ReserveSeatCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<int>> Handle(ReserveSeatCommand request, CancellationToken cancellationToken)
     {
         var unauthorizedMessage = $"User is not authorized to reserve seat {request.SeatNumber}.";
 
@@ -43,11 +43,11 @@ public class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, Err
             return Error.Failure(unauthorizedMessage);
         }
 
-        await CreateReservation(request);
+        var reservationId = await CreateReservation(request);
 
         await UpdateSeatStatus(request.SeatNumber);
 
-        return Result.Success;
+        return reservationId;
     }
 
     private async Task<bool> CanReserveSeat(ReserveSeatCommand request)
@@ -57,7 +57,7 @@ public class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, Err
         return result.IsAuthorized;
     }
 
-    private async Task CreateReservation(ReserveSeatCommand request)
+    private async Task<int> CreateReservation(ReserveSeatCommand request)
     {
         var entityModel = new ReservationEntityModel
         {
@@ -69,8 +69,7 @@ public class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, Err
             PreferredLanguage = request.PreferredLanguage,
             Status = ReservationStatus.AwaitingPayment.ToString(),
         };
-        var result = await _reservationsDatabase.CreateReservation(entityModel);
-        Debug.Assert(result, "The reservation could not be created, possibly due to bad data.");
+        return await _reservationsDatabase.CreateReservation(entityModel);
     }
 
     private async Task<bool> DoesLockStillExist(int seatNumber)

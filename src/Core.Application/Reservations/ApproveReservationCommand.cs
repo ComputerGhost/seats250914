@@ -8,6 +8,11 @@ namespace Core.Application.Reservations;
 /// </summary>
 public class ApproveReservationCommand : IRequest<ErrorOr<Success>>
 {
+    public ApproveReservationCommand(int reservationId)
+    {
+        ReservationId = reservationId;
+    }
+
     /// <summary>
     /// The primary key of the reservation.
     /// </summary>

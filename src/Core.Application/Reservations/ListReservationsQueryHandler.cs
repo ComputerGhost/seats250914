@@ -1,4 +1,5 @@
-﻿using Core.Domain.Common.Ports;
+﻿using Core.Application.Common.Enumerations;
+using Core.Domain.Common.Ports;
 using MediatR;
 
 namespace Core.Application.Reservations;
@@ -23,6 +24,7 @@ internal class ListReservationsQueryHandler : IRequestHandler<ListReservationsQu
                 ReservationId = reservationEntity.Id,
                 ReservedAt = reservationEntity.ReservedAt,
                 SeatNumber = reservationEntity.SeatNumber,
+                Status = Enum.Parse<ReservationStatus>(reservationEntity.Status),
             })
         };
     }

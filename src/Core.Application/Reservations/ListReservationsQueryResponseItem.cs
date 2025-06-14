@@ -1,6 +1,13 @@
-﻿namespace Core.Application.Reservations;
+﻿using Core.Application.Common.Enumerations;
+
+namespace Core.Application.Reservations;
 public class ListReservationsQueryResponseItem
 {
+    /// <summary>
+    /// Name of the person reserving the seat.
+    /// </summary>
+    public required string Name { get; set; } = null!;
+
     /// <summary>
     /// The primary key of the reservation.
     /// </summary>
@@ -17,7 +24,7 @@ public class ListReservationsQueryResponseItem
     public required int SeatNumber { get; set; }
 
     /// <summary>
-    /// Name of the person reserving the seat.
+    /// Status of the reservation.
     /// </summary>
-    public required string Name { get; set; } = null!;
+    public required ReservationStatus Status { get; set; }
 }

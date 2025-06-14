@@ -1,4 +1,5 @@
-﻿using Core.Application.Reservations;
+﻿using Core.Application.Common.Enumerations;
+using Core.Application.Reservations;
 using Core.Domain.Common.Models;
 using Core.Domain.Common.Ports;
 using ErrorOr;
@@ -25,10 +26,14 @@ public class FetchReservationQueryHandlerTests
         // Arrange
         MockReservationsDatabase
             .Setup(m => m.FetchReservation(It.IsAny<int>()))
-            .ReturnsAsync(new ReservationEntityModel { SeatNumber = 1 });
+            .ReturnsAsync(new ReservationEntityModel
+            {
+                SeatNumber = 1,
+                Status = ReservationStatus.AwaitingPayment.ToString(),
+            });
 
         // Act
-        var query = new FetchReservationQuery();
+        var query = new FetchReservationQuery(1);
         var result = await Subject.Handle(query, CancellationToken.None);
 
         // Assert
@@ -45,7 +50,7 @@ public class FetchReservationQueryHandlerTests
             .ReturnsAsync((ReservationEntityModel?)null);
 
         // Act
-        var query = new FetchReservationQuery();
+        var query = new FetchReservationQuery(1);
         var result = await Subject.Handle(query, CancellationToken.None);
 
         // Assert

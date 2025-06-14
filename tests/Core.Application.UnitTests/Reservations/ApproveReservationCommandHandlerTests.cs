@@ -34,7 +34,7 @@ public class ApproveReservationCommandHandlerTests
     public async Task Handle_WhenReservationExists_ReturnsSuccess()
     {
         // Arrange
-        var request = new ApproveReservationCommand();
+        var request = new ApproveReservationCommand(1);
 
         // Act
         var result = await Subject.Handle(request, CancellationToken.None);
@@ -52,7 +52,7 @@ public class ApproveReservationCommandHandlerTests
         MockReservationsDatabase
             .Setup(m => m.FetchReservation(It.IsAny<int>()))
             .ReturnsAsync(new ReservationEntityModel { SeatNumber = SEAT_NUMBER });
-        var request = new ApproveReservationCommand { ReservationId = RESERVATION_ID };
+        var request = new ApproveReservationCommand(RESERVATION_ID);
 
         // Act
         var result = await Subject.Handle(request, CancellationToken.None);
@@ -74,7 +74,7 @@ public class ApproveReservationCommandHandlerTests
         MockReservationsDatabase
             .Setup(m => m.FetchReservation(It.IsAny<int>()))
             .ReturnsAsync((ReservationEntityModel?)null);
-        var request = new ApproveReservationCommand();
+        var request = new ApproveReservationCommand(1);
 
         // Act
         var result = await Subject.Handle(request, CancellationToken.None);

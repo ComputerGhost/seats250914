@@ -43,7 +43,7 @@ public class RejectReservationCommandHandlerTests
             .ReturnsAsync((ReservationEntityModel?)null);
 
         // Act
-        var request = new RejectReservationCommand();
+        var request = new RejectReservationCommand(1);
         var result = await Subject.Handle(request, CancellationToken.None);
 
         // Assert
@@ -56,7 +56,7 @@ public class RejectReservationCommandHandlerTests
     {
         // Arrange
         const int RESERVATION_ID = 1;
-        var request = new RejectReservationCommand { ReservationId = RESERVATION_ID };
+        var request = new RejectReservationCommand(RESERVATION_ID);
 
         // Act
         var result = await Subject.Handle(request, CancellationToken.None);
@@ -78,7 +78,7 @@ public class RejectReservationCommandHandlerTests
             .ReturnsAsync(new ReservationEntityModel { SeatNumber = SEAT_NUMBER });
 
         // Act
-        var request = new RejectReservationCommand();
+        var request = new RejectReservationCommand(1);
         var result = await Subject.Handle(request, CancellationToken.None);
 
         // Assert
@@ -103,7 +103,7 @@ public class RejectReservationCommandHandlerTests
             .ReturnsAsync(true);
 
         // Act
-        var request = new RejectReservationCommand();
+        var request = new RejectReservationCommand(1);
         var action = async () => await Subject.Handle(request, CancellationToken.None);
 
         // Assert

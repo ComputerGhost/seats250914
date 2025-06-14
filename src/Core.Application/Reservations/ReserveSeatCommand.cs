@@ -4,13 +4,13 @@ using MediatR;
 namespace Core.Application.Reservations;
 
 /// <summary>
-/// Attempts to make a reservation.
+/// Attempts to make a reservation. Returns the reservation id if successful.
 /// </summary>
 /// <remarks>
 /// A lock is required to reserve a seat.
 /// See <see cref="LockSeatCommand"/> for how to lock a seat.
 /// </remarks>
-public class ReserveSeatCommand : IRequest<ErrorOr<Success>>
+public class ReserveSeatCommand : IRequest<ErrorOr<int>>
 {
     /// <summary>
     /// Ip address of the one reserving the seat.

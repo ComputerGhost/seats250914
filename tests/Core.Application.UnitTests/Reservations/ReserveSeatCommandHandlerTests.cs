@@ -30,7 +30,7 @@ public class ReserveSeatCommandHandlerTests
         MockReservationsDatabase = new();
         MockReservationsDatabase
             .Setup(m => m.CreateReservation(It.IsAny<ReservationEntityModel>()))
-            .ReturnsAsync(true);
+            .ReturnsAsync(1);
 
         MockSeatLocksDatabase = new();
         MockSeatLocksDatabase

@@ -1,4 +1,5 @@
-﻿using Core.Application.Reservations;
+﻿using Core.Application.Common.Enumerations;
+using Core.Application.Reservations;
 using Core.Domain.Common.Models;
 using Core.Domain.Common.Ports;
 using Moq;
@@ -42,7 +43,11 @@ public class ListReservationsQueryHandlerTests
         var query = new ListReservationsQuery();
         MockReservationsDatabase
             .Setup(m => m.ListReservations())
-            .ReturnsAsync([new ReservationEntityModel { Id = 1 }]);
+            .ReturnsAsync([new ReservationEntityModel
+            {
+                Id = 1,
+                Status = ReservationStatus.AwaitingPayment.ToString(),
+            }]);
 
         // Act
         var result = await Subject.Handle(query, CancellationToken.None);

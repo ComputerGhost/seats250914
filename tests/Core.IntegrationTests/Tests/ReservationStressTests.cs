@@ -36,10 +36,7 @@ public class ReservationStressTests
         var reservations = await _mediator.Send(new ListReservationsQuery());
         foreach (var reservation in reservations.Data)
         {
-            await _mediator.Send(new RejectReservationCommand
-            {
-                ReservationId = reservation.ReservationId,
-            });
+            await _mediator.Send(new RejectReservationCommand(reservation.ReservationId));
         }
 
         await _mediator.Send(new ClearExpiredLocksCommand());
