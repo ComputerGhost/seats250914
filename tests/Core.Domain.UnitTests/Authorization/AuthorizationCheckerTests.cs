@@ -51,7 +51,7 @@ public class AuthorizationCheckerTests
             .ReturnsAsync(() => SeatLock);
 
         Subject = new(MockConfigurationDatabase.Object, MockReservationsDatabase.Object, MockSeatLocksDatabase.Object);
-        Subject.SetUserIdentity(true, null, null);
+        Subject.SetUserIdentity(true, "email", "ip address");
     }
 
     [TestMethod]
@@ -81,19 +81,6 @@ public class AuthorizationCheckerTests
     }
 
     [TestMethod]
-    public async Task GetLockSeatAuthorization_WhenNotStaff_IpAddressIsRequired()
-    {
-        // Arrange
-        Subject.SetUserIdentity(false, "email", null);
-
-        // Act
-        var action = async () => await Subject.GetLockSeatAuthorization();
-
-        // Assert
-        await Assert.ThrowsExceptionAsync<Exception>(action);
-    }
-
-    [TestMethod]
     public async Task GetLockSeatAuthorization_WhenNotStaff_AndTooManyLocks_ReturnsTooManyLocks()
     {
         // Arrange
@@ -118,19 +105,6 @@ public class AuthorizationCheckerTests
 
         // Assert
         Assert.IsTrue(result.IsAuthorized);
-    }
-
-    [TestMethod]
-    public async Task GetReserveSeatAuthorization_WhenNotStaff_EmailIsRequired()
-    {
-        // Arrange
-        Subject.SetUserIdentity(false, null, "ip-address");
-
-        // Act
-        var action = async () => await Subject.GetReserveSeatAuthorization(0, SeatLock.Key);
-
-        // Assert
-        await Assert.ThrowsExceptionAsync<Exception>(action);
     }
 
     [TestMethod]

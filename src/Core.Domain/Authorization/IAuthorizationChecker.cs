@@ -3,6 +3,8 @@
 namespace Core.Domain.Authorization;
 public interface IAuthorizationChecker
 {
+    const string UNKNOWN_EMAIL = "unknown email";
+
     /// <summary>
     /// Whether the user can generally lock a seat.
     /// </summary>
@@ -41,6 +43,6 @@ public interface IAuthorizationChecker
     /// </remarks>
     /// <param name="isStaff">Whether the change is being made by staff.</param>
     /// <param name="emailAddress">Email address of the user reserving the seat.</param>
-    /// <param name="ipAddress">Ip address (normalized) of the user reserving the seat.</param>
-    void SetUserIdentity(bool isStaff, string? emailAddress, string? ipAddress);
+    /// <param name="ipAddress">Ip address of the user reserving the seat.</param>
+    void SetUserIdentity(bool isStaff, string emailAddress, string ipAddress);
 }

@@ -14,7 +14,7 @@ public static class ServiceCollectionExtensions
         var assembly = Assembly.GetExecutingAssembly();
         return services
             .Configure(configure)
-            .AddTransient(CreateDatabaseConnection)
+            .AddScoped(CreateDatabaseConnection)
             .AddServiceImplementations(assembly);
     }
 

@@ -1,31 +1,59 @@
-﻿using Core.Application.Reservations;
+﻿using Core.Application.Configuration;
+using Core.Application.Reservations;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using System.Data;
 using System.Diagnostics;
 
 namespace Core.IntegrationTests.Tests;
 
+// I wonder if I should move this to smoke tests.
+// It seems a little much for an integration test, doesn't it?
+// I'll consider that later.
 [Ignore("This is ignored because it modifies the database.")]
 [TestClass]
 public class ReservationStressTests
 {
-    const int ACTOR_COUNT = 25;
-    const double MAX_DURATION = 1.0;
     const int SEAT_COUNT = 100;
 
     private IMediator _mediator = null!;
 
     [TestInitialize]
-    public void Initialize()
+    public async Task Initialize()
     {
         var app = MinimalApplication.Create();
         _mediator = app.ServiceProvider.GetRequiredService<IMediator>();
+
+        await _mediator.Send(new SaveConfigurationCommand
+        {
+            MaxSecondsToConfirmSeat = 60 * 10,
+            ForceOpenReservations = true,
+            MaxSeatsPerIPAddress = int.MaxValue,
+            MaxSeatsPerPerson = int.MaxValue,
+            ScheduledOpenTimeZone = "UTC",
+        });
+
+        var reservations = await _mediator.Send(new ListReservationsQuery());
+        foreach (var reservation in reservations.Data)
+        {
+            await _mediator.Send(new RejectReservationCommand
+            {
+                ReservationId = reservation.ReservationId,
+            });
+        }
+
+        await _mediator.Send(new ClearExpiredLocksCommand());
+
+        // Because open/close doesn't like multithreading.
+        app.ServiceProvider.GetRequiredService<IDbConnection>().Open();
     }
 
     [TestMethod]
     public async Task Reservation_WhenManyUsers_PleaseWork()
     {
         // Arrange
+        const int ACTOR_COUNT = 1000;
+        const double MAX_DURATION = 1.0;
         var actors = CreateActors(ACTOR_COUNT);
         var stopwatch = new Stopwatch();
 
@@ -48,39 +76,46 @@ public class ReservationStressTests
         }
     }
 
-    private class Actor
+    private class Actor(IMediator mediator)
     {
-        private readonly IMediator _mediator;
-
-        public Actor(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         public async Task ReserveSeat()
         {
             var seatLock = await SelectSeat();
-            if (seatLock == null)
+            if (seatLock == null) // No seats available
             {
-                // No seats available
                 return;
             }
 
-            await _mediator.Send(new ReserveSeatCommand
+            if (!await ReserveSeat(seatLock.SeatNumber, seatLock.SeatKey))
             {
-                Email = $"Email{seatLock.SeatNumber}@test.com",
-                Name = $"Name {seatLock.SeatNumber}",
+                throw new Exception("Failed to reserve seat.");
+            }
+        }
+
+        private async Task<bool> ReserveSeat(int seatNumber, string seatKey)
+        {
+            var result = await mediator.Send(new ReserveSeatCommand
+            {
+                Email = $"Email{seatNumber}@test.com",
+                IsStaff = true,
+                Name = $"Name {seatNumber}",
                 PreferredLanguage = "English",
-                SeatKey = seatLock.SeatKey,
-                SeatNumber = seatLock.SeatNumber,
+                SeatKey = seatKey,
+                SeatNumber = seatNumber,
             });
+            return !result.IsError;
         }
 
         private async Task<LockSeatCommandResponse?> SelectSeat()
         {
             for (int i = 1; i <= SEAT_COUNT; ++i)
             {
-                var result = await _mediator.Send(new LockSeatCommand { SeatNumber = i });
+                var result = await mediator.Send(new LockSeatCommand
+                {
+                    IpAddress = "127.0.0.1",
+                    IsStaff = true,
+                    SeatNumber = i,
+                });
                 if (!result.IsError)
                 {
                     return result.Value;

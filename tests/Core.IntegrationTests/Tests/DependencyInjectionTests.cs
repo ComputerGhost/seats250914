@@ -22,7 +22,7 @@ public class DependencyInjectionTests
         foreach (var dependency in dependencies)
         {
             var resolvedService = app.ServiceProvider.GetService(dependency);
-            Assert.IsNotNull(resolvedService);
+            Assert.IsNotNull(resolvedService, $"Could not load dependency {dependency}");
         }
     }
 

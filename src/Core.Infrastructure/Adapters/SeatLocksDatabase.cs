@@ -57,8 +57,8 @@ internal class SeatLocksDatabase(IDbConnection connection) : ISeatLocksDatabase
     {
         var sql = """
             SELECT SeatLocks.*, Seats.Number
-            FROM SeatsLocks
-            INNER JOIN Seats ON Seat.Id = SeatsLocks.SeatId
+            FROM SeatLocks
+            INNER JOIN Seats ON Seats.Id = SeatLocks.SeatId
             WHERE Seats.Number = @seatNumber
             """;
         return await connection.QuerySingleOrDefaultAsync<SeatLockEntityModel>(sql, new
@@ -72,7 +72,7 @@ internal class SeatLocksDatabase(IDbConnection connection) : ISeatLocksDatabase
         try
         {
             var sql = """
-                INSERT INTO SeatLocks (SeatId, IpAddress, Key, LockedAt, Expiration)
+                INSERT INTO SeatLocks (SeatId, IpAddress, [Key], LockedAt, Expiration)
                 SELECT
                     Seats.Id SeatId,
                     @ipAddress, @key, @lockedAt, @expiration

@@ -3,6 +3,7 @@ using Core.Domain.Common.Ports;
 using ErrorOr;
 using MediatR;
 using System.Diagnostics;
+using System.Transactions;
 
 namespace Core.Application.Reservations;
 internal class RejectReservationCommandHandler : IRequestHandler<RejectReservationCommand, ErrorOr<Success>>

@@ -65,13 +65,13 @@ public class ConfigurationEditViewModel
     /// Time zone of scheduled open date. For options see <see cref="ValidTimeZones"/>.
     /// </summary>
     [Required]
-    public string ScheduledOpenTimeZone { get; set; }
+    public string ScheduledOpenTimeZone { get; set; } = null!;
 
     /// <summary>
     /// Whether and how to override schedule.
     /// </summary>
     [Required]
-    public string ScheduleOverride { get; set; }
+    public string ScheduleOverride { get; set; } = null!;
 
     public SaveConfigurationCommand ToSaveCommand()
     {

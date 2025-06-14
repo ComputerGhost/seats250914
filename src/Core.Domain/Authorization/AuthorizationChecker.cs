@@ -24,8 +24,8 @@ internal class AuthorizationChecker: IAuthorizationChecker
     }
 
     private bool IsStaff { get; set; } = false;
-    private string? IpAddress { get; set; }
-    private string? EmailAddress { get; set; }
+    private string IpAddress { get; set; } = null!;
+    private string EmailAddress { get; set; } = null!;
 
     public async Task<AuthorizationResult> GetLockSeatAuthorization()
     {
@@ -43,11 +43,6 @@ internal class AuthorizationChecker: IAuthorizationChecker
 
         if (!IsStaff)
         {
-            if (IpAddress == null)
-            {
-                throw new Exception("IP address is required in authorization check.");
-            }
-
             if (await _seatLocksDatabase.CountLocksForIpAddress(IpAddress) >= configuration.MaxSeatsPerIPAddress)
             {
                 return AuthorizationResult.TooManySeatLocksForIpAddress;
@@ -67,7 +62,7 @@ internal class AuthorizationChecker: IAuthorizationChecker
 
         if (!IsStaff)
         {
-            if (EmailAddress == null)
+            if (EmailAddress == IAuthorizationChecker.UNKNOWN_EMAIL)
             {
                 throw new Exception("Email address is required in authorization check.");
             }
@@ -98,7 +93,7 @@ internal class AuthorizationChecker: IAuthorizationChecker
         return AuthorizationResult.Success;
     }
 
-    public void SetUserIdentity(bool isStaff, string? emailAddress, string? ipAddress)
+    public void SetUserIdentity(bool isStaff, string emailAddress, string ipAddress)
     {
         IsStaff = isStaff;
         EmailAddress = emailAddress;

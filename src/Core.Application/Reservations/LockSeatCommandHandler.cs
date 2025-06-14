@@ -60,7 +60,7 @@ internal class LockSeatCommandHandler : IRequestHandler<LockSeatCommand, ErrorOr
 
     public async Task<bool> CanLockSeat(ConfigurationEntityModel configuration, LockSeatCommand request)
     {
-        _authorizationCheck.SetUserIdentity(request.IsStaff, null, request.IpAddress);
+        _authorizationCheck.SetUserIdentity(request.IsStaff, IAuthorizationChecker.UNKNOWN_EMAIL, request.IpAddress);
         var result = await _authorizationCheck.GetLockSeatAuthorization(configuration);
         return result.IsAuthorized;
     }

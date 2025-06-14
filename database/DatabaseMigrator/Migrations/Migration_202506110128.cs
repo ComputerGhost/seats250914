@@ -1,4 +1,5 @@
 ﻿using FluentMigrator;
+using FluentMigrator.SqlServer;
 using System.Data;
 
 namespace DatabaseMigrator.Migrations;
@@ -32,10 +33,10 @@ public class Migration_202506110128 : Migration
             .OnTable("SeatStatuses")
             .Column("Status");
 
-        Insert.IntoTable("SeatStatuses").Row(new { Id = 1, Status = "Available" });
-        Insert.IntoTable("SeatStatuses").Row(new { Id = 2, Status = "Locked" });
-        Insert.IntoTable("SeatStatuses").Row(new { Id = 3, Status = "AwaitingPayment" });
-        Insert.IntoTable("SeatStatuses").Row(new { Id = 4, Status = "ReservationConfirmed" });
+        Insert.IntoTable("SeatStatuses").WithIdentityInsert().Row(new { Id = 1, Status = "Available" });
+        Insert.IntoTable("SeatStatuses").WithIdentityInsert().Row(new { Id = 2, Status = "Locked" });
+        Insert.IntoTable("SeatStatuses").WithIdentityInsert().Row(new { Id = 3, Status = "AwaitingPayment" });
+        Insert.IntoTable("SeatStatuses").WithIdentityInsert().Row(new { Id = 4, Status = "ReservationConfirmed" });
 
         Create.Table("Seats")
             .WithColumn("Id").AsInt32().PrimaryKey().Identity()
@@ -48,8 +49,7 @@ public class Migration_202506110128 : Migration
 
         Create.ForeignKey("FK_Seats_SeatStatuses")
             .FromTable("Seats").ForeignColumn("SeatStatusId")
-            .ToTable("SeatStatuses").PrimaryColumn("Id")
-            .OnDeleteOrUpdate(Rule.Cascade);
+            .ToTable("SeatStatuses").PrimaryColumn("Id");
 
         for (int number = 1; number <= SEAT_COUNT; ++number)
         {
@@ -77,8 +77,7 @@ public class Migration_202506110128 : Migration
 
         Create.ForeignKey("FK_SeatLocks_Seats")
             .FromTable("SeatLocks").ForeignColumn("SeatId")
-            .ToTable("Seats").PrimaryColumn("Id")
-            .OnDeleteOrUpdate(Rule.Cascade);
+            .ToTable("Seats").PrimaryColumn("Id");
     }
 
     private void AddReservationsTable()
@@ -91,9 +90,9 @@ public class Migration_202506110128 : Migration
             .OnTable("ReservationStatuses")
             .Column("Status");
 
-        Insert.IntoTable("ReservationStatuses").Row(new { Id = 1, Status = "AwaitingPayment" });
-        Insert.IntoTable("ReservationStatuses").Row(new { Id = 2, Status = "ReservationConfirmed" });
-        Insert.IntoTable("ReservationStatuses").Row(new { Id = 3, Status = "ReservationRejected" });
+        Insert.IntoTable("ReservationStatuses").WithIdentityInsert().Row(new { Id = 1, Status = "AwaitingPayment" });
+        Insert.IntoTable("ReservationStatuses").WithIdentityInsert().Row(new { Id = 2, Status = "ReservationConfirmed" });
+        Insert.IntoTable("ReservationStatuses").WithIdentityInsert().Row(new { Id = 3, Status = "ReservationRejected" });
 
         Create.Table("Reservations")
             .WithColumn("Id").AsInt32().PrimaryKey().Identity()
@@ -108,17 +107,16 @@ public class Migration_202506110128 : Migration
 
         Create.ForeignKey("FK_Reservations_ReservationStatuses")
             .FromTable("Reservations").ForeignColumn("ReservationStatusId")
-            .ToTable("ReservationStatuses").PrimaryColumn("Id")
-            .OnDeleteOrUpdate(Rule.Cascade);
+            .ToTable("ReservationStatuses").PrimaryColumn("Id");
 
         Create.ForeignKey("FK_Reservations_Seats")
             .FromTable("Reservations").ForeignColumn("SeatId")
-            .ToTable("Seats").PrimaryColumn("Id")
-            .OnDeleteOrUpdate(Rule.Cascade);
+            .ToTable("Seats").PrimaryColumn("Id");
 
         Create.ForeignKey("FK_Reservations_SeatLocks")
             .FromTable("Reservations").ForeignColumn("SeatLockId")
             .ToTable("SeatLocks").PrimaryColumn("Id")
-            .OnDeleteOrUpdate(Rule.SetNull);
+            .OnDelete(Rule.SetNull);
+
     }
 }
