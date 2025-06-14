@@ -2,17 +2,17 @@
 @model ReservationViewViewModel;
 <div class="container">
     <header class="mb-3">
-        <h1>Reservation details</h1>
+        <h1>예약 상세 정보</h1>
     </header>
 
     <section>
-        <h2 class="h5">Seat information</h2>
+        <h2 class="h5">좌석 정보</h2>
 
         <dl class="row">
-            <dt class="col-sm-5">Seat:</dt>
+            <dt class="col-sm-5">좌석:</dt>
             <dd class="col-sm-7">@Model.SeatNumber</dd>
 
-            <dt class="col-sm-5">Status:</dt>
+            <dt class="col-sm-5">승인 상태:</dt>
             <dd class="col-sm-7">
                 @if (Model.ReservationStatus == ReservationStatus.ReservationConfirmed)
                 {
@@ -42,16 +42,16 @@
     <hr>
 
     <section>
-        <h2 class="h5">Attendee information</h2>
+        <h2 class="h5">예약자 정보</h2>
 
         <dl class="row">
-            <dt class="col-sm-5">Name:</dt>
+            <dt class="col-sm-5">이름:</dt>
             <dd class="col-sm-7">@Model.Name</dd>
 
-            <dt class="col-sm-5">Email:</dt>
+            <dt class="col-sm-5">메일:</dt>
             <dd class="col-sm-7">@Model.Email</dd>
 
-            <dt class="col-sm-5">Phone number:</dt>
+            <dt class="col-sm-5">전화번호:</dt>
             <dd class="col-sm-7">@Model.PhoneNumber</dd>
 
             <dt class="col-sm-5">Preferred language:</dt>
@@ -62,10 +62,10 @@
     <hr>
 
     <section>
-        <h2 class="h5">Request information</h2>
+        <h2 class="h5">예약 신청 정보</h2>
 
         <dl class="row">
-            <dt class="col-sm-5">Requested time:</dt>
+            <dt class="col-sm-5">예약 신청 시간:</dt>
             <dd class="col-sm-7">
                 <time datetime="2025-05-30T16:20:00Z">2025-05-30 00:00:00 KST</time>
             </dd>
@@ -78,8 +78,8 @@
         <form asp-action="UpdateStatus" method="post">
             @if (Model.ReservationStatus == ReservationStatus.AwaitingPayment)
             {
-                <button name="action" value="approve" type="submit" class="btn btn-primary">Approve reservation</button>
-                <button name="action" value="reject" type="submit" class="btn btn-danger">Reject reservation</button>
+                <button name="action" value="approve" type="submit" class="btn btn-primary">예약 승인</button>
+                <button name="action" value="reject" type="submit" class="btn btn-danger">예약 거절</button>
             }
         </form>
     </section>

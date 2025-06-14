@@ -1,16 +1,16 @@
 ﻿@model ConfigurationEditViewModel;
 <div class="container">
     <header class="mb-3">
-        <h1>Configuration</h1>
+        <h1>좌석 예약 시스템 설정</h1>
     </header>
 
     <form method="post">
 
         <section>
-            <h2 class="h5">Schedule</h2>
+            <h2 class="h5">예약 시간 설정</h2>
 
             <div class="mb-3">
-                <label asp-for="ScheduledOpenDate" class="form-label">Scheduled open time</label>
+                <label asp-for="ScheduledOpenDate" class="form-label">예약 오픈 예정일시</label>
                 <div class="input-group">
                     <input asp-for="ScheduledOpenDate" class="form-control" aria-label="Scheduled open date">
                     <input asp-for="ScheduledOpenTime" step="1" class="form-control" aria-label="Scheduled open time">
@@ -19,23 +19,23 @@
             </div>
 
             <fieldset class="border rounded-3 p-3 mb-3">
-                <legend class="float-none w-auto m-0 px-3 fs-6">Override schedule</legend>
+                <legend class="float-none w-auto m-0 px-3 fs-6">강제 예약 설정</legend>
                 <div class="form-check">
                     <label class="form-check-label">
                         @Html.RadioButtonFor(p => p.ScheduleOverride, ConfigurationEditViewModel.OVERRIDE_OPEN, new { @class = "form-check-input" })
-                        Force open reservations
+                        지금 바로 예약 열기
                     </label>
                 </div>
                 <div class="form-check">
                     <label class="form-check-label">
                         @Html.RadioButtonFor(p => p.ScheduleOverride, ConfigurationEditViewModel.OVERRIDE_CLOSE, new { @class = "form-check-input" })
-                        Force close reservations
+                        지금 바로 예약 닫기
                     </label>
                 </div>
                 <div class="form-check">
                     <label class="form-check-label">
                         @Html.RadioButtonFor(p => p.ScheduleOverride, ConfigurationEditViewModel.OVERRIDE_NONE, new { @class = "form-check-input" })
-                        Use schedule
+                        설정된 예약 시간에 따라 자동으로 예약 열고 닫기
                     </label>
                 </div>
             </fieldset>
@@ -44,33 +44,31 @@
         <hr>
 
         <section>
-            <h2 class="h5">Visitor limits</h2>
+            <h2 class="h5">예약 제한 설정</h2>
 
             <div class="mb-3">
-                <label class="form-label" for="limitSeatsPerTransaction">Maximum seats per transaction</label>
+                <label class="form-label" for="limitSeatsPerTransaction">1회 예약 시 예약할 수 있는 최대 좌석 수</label>
                 <input class="form-control w-auto" id="limitSeatsPerTransaction" value="1" disabled>
             </div>
 
             <div class="mb-3">
-                <label asp-for="MaxSeatsPerPerson" class="form-label">Maximum seats per person</label>
+                <label asp-for="MaxSeatsPerPerson" class="form-label">사용자 1명당 최대 예약 가능 좌석 수</label>
                 <input asp-for="MaxSeatsPerPerson" class="form-control w-auto">
             </div>
 
             <div class="mb-3">
-                <label asp-for="MaxSeatsPerIPAddress" class="form-label">Maximum seats per IP address</label>
+                <label asp-for="MaxSeatsPerIPAddress" class="form-label">동일 IP에서 최대 예약 가능 좌석 수</label>
                 <input asp-for="MaxSeatsPerIPAddress" class="form-control w-auto" aria-describedby="MaxSeatsPerIPAddress-help">
                 <div id="MaxSeatsPerIPAddress-help" class="form-text">
-                    This prevents a user from faking who they are to bypass the maximum seats per person, 
-                    but it should be set high enough to allow users to share a public IP address (such as at a school or workplace).
+                    동일 사용자가 여러 번 예약하는 것을 방지하기 위한 설정입니다. 학교나 회사처럼 공용 IP 환경에서는 너무 낮게 설정하지 마세요.
                 </div>
             </div>
 
             <div class="mb-3">
-                <label asp-for="MaxSecondsToConfirmSeat" class="form-label">Maximum time (in seconds) to confirm seat</label>
+                <label asp-for="MaxSecondsToConfirmSeat" class="form-label">좌석 선택 후 예약 확정까지의 최대 시간 (초)</label>
                 <input asp-for="MaxSecondsToConfirmSeat" class="form-control w-auto" required aria-describedby="MaxSecondsToConfirmSeat-help">
                 <div id="MaxSecondsToConfirmSeat-help" class="form-text">
-                    When a user clicks on a seat, that seat is placed on hold until they cancel or confirm their selection.
-                    If the user does nothing, then we need to release the hold after some time.
+                    좌석을 클릭하면 일시적으로 보류 상태가 되며, 이 시간 안에 확정하지 않으면 자동으로 해제됩니다.
                 </div>
             </div>
         </section>
@@ -78,7 +76,7 @@
         <hr>
 
         <section>
-            <button type="submit" class="btn btn-primary">Save configuration</button>
+            <button type="submit" class="btn btn-primary">설정 저장</button>
         </section>
 
     </form>

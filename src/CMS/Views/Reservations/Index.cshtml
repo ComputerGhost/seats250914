@@ -2,10 +2,10 @@
 @model ReservationListViewModel;
 <div class="container">
     <header class="mb-3">
-        <h1>Reservations</h1>
+        <h1>예약 목록</h1>
     </header>
     
-    <p>This page is not updated in real-time, so refresh the page to get the latest data.</p>
+    <p>이 페이지는 실시간으로 갱신되지 않으므로, 최신 정보를 확인하려면 새로고침하세요.</p>
 
     <ul class="nav nav-tabs" id="tabs" role="tablist">
         <li class="nav-item" role="presentation">
@@ -18,7 +18,7 @@
                 role="tab"
                 aria-controls="seats-tab-pane"
                 aria-selected="true"
-            >Seats</button>
+            >좌석목록</button>
         </li>
         <li class="nav-item" role="presentation">
             <button
@@ -30,7 +30,7 @@
                 role="tab"
                 aria-controls="map-tab-pane"
                 aria-selected="false"
-            >Seat map</button>
+            >좌석 배치도</button>
         </li>
     </ul>
 
@@ -53,15 +53,15 @@
             <table class="table table-hover" id="index-table">
                 <thead>
                     <tr>
-                        <th scope="col">Seat</th>
-                        <th scope="col">Time requested</th>
-                        <th class="col">Status</th>
-                        <th scope="col">Name</th>
+                        <th scope="col">좌석</th>
+                        <th scope="col">예약 신청 시간 (위치)</th>
+                        <th class="col">승인 상태</th>
+                        <th scope="col">예약자</th>
                         <td scope="col" data-dt-order="disable"></td>
                     </tr>
                     <tr>
                         <th colspan="7" data-dt-order="disable">
-                            <a asp-action="Create" class="btn btn-outline-primary w-100">Reserve a seat</a>
+                            <a asp-action="Create" class="btn btn-outline-primary w-100">좌석 예약하기</a>
                         </th>
                     </tr>
                 </thead>
@@ -102,7 +102,7 @@
                                 @reservation.Name
                             </td>
                             <td>
-                                <a asp-action="Details" asp-route-reservationId="@reservation.ReservationId">View details</a>
+                                <a asp-action="Details" asp-route-reservationId="@reservation.ReservationId">상세 보기</a>
                             </td>
                         </tr>
                     }
@@ -117,7 +117,7 @@
             aria-labelledby="map-tab"
             tabindex="0"
         >
-            <img class="img-fluid" src="~/images/seat-map.webp" alt="Map of seats" aria-label="Map of seats">
+            <img class="img-fluid" src="~/images/seat-map.webp" alt="좌석 배치도" aria-label="좌석 배치도">
         </section>
 
     </div>
