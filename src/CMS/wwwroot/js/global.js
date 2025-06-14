@@ -1,7 +1,7 @@
 ﻿/* This file requires Bootstrap, jQuery, and Luxon. */
 
 // Strings to be translated:
-const CHANGE_DISPLAYED_TIME_ZONE = "Change displayed time zone.";
+const CHANGE_DISPLAYED_TIME_ZONE = "표시할 시간대를 변경하세요.";
 
 // Moving library access to the top so all of VS' false errors are in one place.
 const DateTime = luxon.DateTime;

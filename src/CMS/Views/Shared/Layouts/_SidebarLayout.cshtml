@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>혜린 팬미팅 2025 CMS</title>
+    <title>혜린 팬미팅 2025 관리자 페이지</title>
 
     <link rel="icon" href="~/favicon.ico" sizes="32x32">
     <link rel="apple-touch-icon" href="~/images/apple-touch-icon.png">
@@ -37,7 +37,7 @@
     <div class="app-sidebar shadow-sm">
         <div class="header">
             <img src="~/images/icon.png" width="48" height="48" alt="" aria-labelledby="app-title">
-            <h1 id="app-title" class="h5 ms-3 hide-on-mobile">Hyelin Fanmeeting 2025</h1>
+            <h1 id="app-title" class="h5 ms-3 hide-on-mobile">2025년 혜린 팬미팅</h1>
         </div>
 
         <nav class="nav">
@@ -47,15 +47,15 @@
             </a>
             <a asp-controller="Reservations" asp-action="Index" class="nav-link">
                 <i class="icon bi bi-ticket" aria-hidden="true"></i>
-                <span class="hide-on-mobile">Reservations</span>
+                <span class="hide-on-mobile">예약 관리 및 승인</span>
             </a>
             <a asp-controller="Accounts" asp-action="Index" class="nav-link">
                 <i class="icon bi bi-people" aria-hidden="true"></i>
-                <span class="hide-on-mobile">Staff accounts</span>
+                <span class="hide-on-mobile">관리자 계정 관리</span>
             </a>
             <a asp-controller="Configuration" asp-action="Edit" class="nav-link">
                 <i class="icon bi bi-gear" aria-hidden="true"></i>
-                <span class="hide-on-mobile">Configuration</span>
+                <span class="hide-on-mobile">좌석 예약 시스템 설정</span>
             </a>
         </nav>
 
@@ -68,11 +68,11 @@
                 <li>
                     <a asp-controller="Accounts" asp-action="Edit" asp-route-login="@username" class="dropdown-item">
                         <i class="bi bi-person" aria-hidden="true"></i>
-                        Edit account
+                        계정정보 수정
                     </a>
                     <a asp-controller="Auth" asp-action="SignOut" class="dropdown-item">
                         <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
-                        Sign out
+                        로그아웃
                     </a>
                 </li>
             </ul>
