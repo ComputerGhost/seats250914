@@ -1,5 +1,4 @@
-﻿using CMS.Extensions;
-using Core.Application.Common.Enumerations;
+﻿using Core.Application.Common.Enumerations;
 using Core.Application.Reservations;
 
 namespace CMS.ViewModels;
