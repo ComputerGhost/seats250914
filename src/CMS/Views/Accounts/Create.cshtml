@@ -2,14 +2,14 @@
 
 <div class="container">
     <header class="mb-3">
-        <h1>Create staff account</h1>
+        <h1>관리자 계정 생성</h1>
     </header>
 
     <section>
         <form method="post">
             <div class="row mb-3">
                 <div class="col-md-6 mb-3 mb-md-0">
-                    <label asp-for="Login" class="form-label">Login</label>
+                    <label asp-for="Login" class="form-label">아이디</label>
                     <input asp-for="Login" class="form-control">
                     <span asp-validation-for="Login" class="form-text text-danger"></span>
                 </div>
@@ -20,26 +20,26 @@
                     
                     <div class="form-check">
                         <input asp-for="IsEnabled" class="form-check-input">
-                        <label asp-for="IsEnabled" class="form-check-label">Is enabled</label>
+                        <label asp-for="IsEnabled" class="form-check-label">이 계정을 활성화합니다</label>
                     </div>
                 </div>
             </div>
             
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label asp-for="Password" class="form-label">Password</label>
+                    <label asp-for="Password" class="form-label">비밀번호</label>
                     <input asp-for="Password" class="form-control">
                     <span asp-validation-for="Password" class="form-text text-danger"></span>
                 </div>
                 
                 <div class="col-md-6">
-                    <label asp-for="ConfirmPassword" class="form-label">Confirm Password</label>
+                    <label asp-for="ConfirmPassword" class="form-label">비밀번호 확인</label>
                     <input asp-for="ConfirmPassword" class="form-control">
                     <span asp-validation-for="ConfirmPassword" class="form-text text-danger"></span>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-primary">생성</button>
         </form>
     </section>
 
