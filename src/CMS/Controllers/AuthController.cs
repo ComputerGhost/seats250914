@@ -43,8 +43,7 @@ public class AuthController(IMediator mediator) : Controller
             return RedirectToAction(nameof(SetUp));
         }
 
-        // This needs moved. See issue #61.
-        return View("Views/Accounts/SignIn.cshtml");
+        return View();
     }
 
     [HttpPost("sign-in")]
@@ -53,8 +52,7 @@ public class AuthController(IMediator mediator) : Controller
         if (!ModelState.IsValid)
         {
             model.Password = "";
-            // This needs moved. See issue #61.
-            return View("Views/Accounts/SignIn.cshtml", model);
+            return View(model);
         }
 
         var result = await mediator.Send(new VerifyPasswordCommand
@@ -66,8 +64,7 @@ public class AuthController(IMediator mediator) : Controller
         if (result.IsError)
         {
             ModelState.AddModelError("", "The credentials that you entered are incorrect.");
-            // This needs moved. See issue #61.
-            return View("Views/Accounts/SignIn.cshtml", model);
+            return View(model);
         }
 
         var authService = new AuthenticationService(HttpContext);
