@@ -2,7 +2,7 @@
 
 <div class="container">
     <header class="mb-3">
-        <h1>Staff account</h1>
+        <h1>관리자 계정 정보</h1>
     </header>
 
     <section>
@@ -14,25 +14,25 @@
                 <div class="col-md-8">
                     <div class="card-body">
                         <header class="d-flex justify-content-between">
-                            <h2 class="h5 card-title">Staff account info</h2>
-                            <a asp-controller="Accounts" asp-action="Edit" asp-route-login="@Model.Login">Edit</a>
+                            <h2 class="h5 card-title">관리자 정보</h2>
+                            <a asp-controller="Accounts" asp-action="Edit" asp-route-login="@Model.Login">수정</a>
                         </header>
                         <dl class="row">
-                            <dt class="col-sm-5">Login:</dt>
+                            <dt class="col-sm-5">아이디:</dt>
                             <dd class="col-sm-7">@Model.Login</dd>
 
-                            <dt class="col-sm-5">Status:</dt>
+                            <dt class="col-sm-5">상태:</dt>
                             <dd class="col-sm-7">
                                 @if (@Model.IsEnabled)
                                 {
                                     <span>
-                                        <i class='bi bi-check-circle-fill text-success'></i> Enabled
+                                        <i class='bi bi-check-circle-fill text-success'></i> 활성화됨
                                     </span>
                                 }
                                 else
                                 {
                                     <span>
-                                        <i class='bi bi-ban-fill text-danger'></i> Disabled
+                                        <i class='bi bi-ban-fill text-danger'></i> 비활성화됨
                                     </span>
                                 }
                             </dd>
