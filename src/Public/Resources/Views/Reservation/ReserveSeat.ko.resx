@@ -118,37 +118,37 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="&lt;!-- form disclosures --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;Submitting this form creates a bindable contract between you and us. Additionally, we will save and use your data in order to provide quality service. For more information, please read our &lt;a href="~/legal/terms-of-service"&gt;Terms of Service&lt;/a&gt; and &lt;a href="~/legal/privacy-policy"&gt;Privacy Policy&lt;/a&gt;.&lt;/p&gt;</value>
+    <value>&lt;p&gt;이 양식을 제출하면 귀하와 저희 간에 법적 효력을 지닌 계약이 체결됩니다. 또한, 양질의 서비스를 제공하기 위해 귀하의 정보를 저장하고 활용하게 됩니다. 자세한 내용은 &lt;a href="~/legal/terms-of-service"&gt;이용약관&lt;/a&gt; 및 &lt;a href="~/legal/privacy-policy"&gt;개인정보처리방침&lt;/a&gt;을 참고해주세요.&lt;/p&gt;</value>
   </data>
   <data name="&lt;!-- seat information --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;You have selected seat {seat-id}. Please fill out this form then proceed to the payment page. Your reservation will be confirmed within 24 hours after your payment is processed.&lt;/p&gt;
-&lt;p&gt;If this form is not completed in {countdown-timer}, then your seat will be made available for another fan to claim it.&lt;/p&gt;</value>
+    <value>&lt;p&gt;귀하는 {seat-id} 좌석을 선택하셨습니다. 아래 양식을 작성하신 후 결제 페이지로 이동해주세요. 결제가 완료되면 24시간 이내에 예약이 확정됩니다.&lt;/p&gt;
+  &lt;p&gt;이 양식이 {countdown-timer} 내에 제출되지 않으면, 해당 좌석은 다른 팬에게 배정될 수 있습니다.&lt;/p&gt;</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>취소</value>
   </data>
   <data name="Email" xml:space="preserve">
-    <value>Email</value>
+    <value>이메일</value>
   </data>
   <data name="I accept the terms of service and privacy policy linked above." xml:space="preserve">
-    <value>I accept the terms of service and privacy policy linked above.</value>
+    <value>위에 링크된 이용약관 및 개인정보처리방침에 동의합니다.</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Name</value>
+    <value>예약자 이름</value>
   </data>
   <data name="Phone number" xml:space="preserve">
-    <value>Phone number</value>
+    <value>전화번호</value>
   </data>
   <data name="Please provide a Korean phone number if possible." xml:space="preserve">
-    <value>Please provide a Korean phone number if possible.</value>
+    <value>가능하다면 한국 전화번호를 입력해주세요.</value>
   </data>
   <data name="Preferred language" xml:space="preserve">
-    <value>Preferred language</value>
+    <value>선호 언어</value>
   </data>
   <data name="Seat Reservation" xml:space="preserve">
-    <value>Seat Reservation</value>
+    <value>좌석 예약</value>
   </data>
   <data name="Submit" xml:space="preserve">
-    <value>Submit</value>
+    <value>제출</value>
   </data>
 </root>

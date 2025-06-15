@@ -118,44 +118,48 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="&lt;!-- event information --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;Fall in love with Hyelin at her "Fall in Hyelin" fanmeeting event this September 14, 2025 at &lt;span class="text-nowrap"&gt;H-STAGE&lt;/span&gt; in Mapo. Doors open at 14:00 KST, and the event starts at 15:00 KST.&lt;/p&gt;</value>
+    <value>
+      &lt;p&gt;2025년 9월 14일, 마포 H-STAGE에서 열리는 "Fall in Hyelin" 팬미팅에서 혜린과 사랑에 빠져보세요. 입장은 오후 2시(KST), 팬미팅은 오후 3시(KST)에 시작됩니다.&lt;/p&gt;
+    </value>
   </data>
   <data name="&lt;!-- hero content --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;You are invited to Hyelin's party on September 14, 2025.&lt;/p&gt;
-&lt;p&gt;&lt;q&gt;I want this to be a little party between you and me, where we can interact with one another.&lt;/q&gt;&lt;/p&gt;
-&lt;p&gt;Fall in love with Hyelin this fall.&lt;/p&gt;</value>
+    <value>&lt;p&gt;2025년 9월 14일, 혜린이의 특별한 파티에 여러분을 초대합니다.&lt;/p&gt;
+&lt;p&gt;&lt;q&gt;이건 너와 나만의 작은 파티야. 서로 소통하고 함께 즐기는 시간이 되기를 바래.&lt;/q&gt;&lt;/p&gt;
+&lt;p&gt;올가을, 혜린이에게 푹 빠져보세요!&lt;/p&gt;</value>
   </data>
   <data name="&lt;!-- seat instructions --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;Please select your seat and make your payment. When reserving a seat, you must agree to our &lt;a asp-controller="Legal" asp-action="TermsOfService"&gt;Terms of Service&lt;/a&gt;. Your reservation will be confirmed within 24 hours.&lt;/p&gt;</value>
+    <value>
+      &lt;p&gt;좌석을 선택한 후 결제를 진행해주세요. 좌석을 예약하시려면 &lt;a asp-controller="Legal" asp-action="TermsOfService"&gt;이용 약관&lt;/a&gt;에 동의하셔야 합니다. 예약은 24시간 이내에 확정됩니다.&lt;/p&gt;
+    </value>
   </data>
   <data name="&lt;!--venue address--&gt;" xml:space="preserve">
     <value>서울특별시 마포구 와우산로 97 지하 2층</value>
   </data>
   <data name="&lt;!--venue directions--&gt;" xml:space="preserve">
-    <value>H-STAGE is located on the second basement floor of the Hana Bank building in front of the main gate of Hongik University. Look for the "H-STAGE" sign next to the parking entrance, then take the stairs down two flights to the external rest area and entrance.</value>
+    <value>H-STAGE는 홍익대학교 정문 앞 하나은행 건물 지하 2층에 위치해 있습니다. 주차장 입구 옆에 있는 "H-STAGE" 간판을 찾은 후, 외부 계단을 따라 두 층 내려가면 야외 휴게 공간과 입구를 볼 수 있습니다.</value>
   </data>
   <data name="&lt;!--venue picture credit--&gt;" xml:space="preserve">
-    <value>Front of H-STAGE Building. Photo from &lt;a href="https://theplay.or.kr/소극장/"&gt;H-STAGE webpage&lt;/a&gt;.</value>
+    <value>H-STAGE 건물 정면. 사진 출처: &lt;a href="https://theplay.or.kr/소극장/"&gt;H-STAGE 웹페이지&lt;/a&gt;.</value>
   </data>
   <data name="Address:" xml:space="preserve">
-    <value>Address:</value>
+    <value>주소:</value>
   </data>
   <data name="Event Information" xml:space="preserve">
-    <value>Event Information</value>
+    <value>팬미팅 정보</value>
   </data>
   <data name="Fall in Hyelin" xml:space="preserve">
     <value>Fall in Hyelin</value>
   </data>
   <data name="Reserve a Seat" xml:space="preserve">
-    <value>Reserve a Seat</value>
+    <value>좌석 예약</value>
   </data>
   <data name="Reserve Your Seat" xml:space="preserve">
-    <value>Reserve Your Seat</value>
+    <value>좌석 예약하기</value>
   </data>
   <data name="Venue Information" xml:space="preserve">
-    <value>Venue Information</value>
+    <value>행사 장소 안내</value>
   </data>
   <data name="Website:" xml:space="preserve">
-    <value>Website:</value>
+    <value>웹사이트:</value>
   </data>
 </root>
