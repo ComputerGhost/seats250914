@@ -37,40 +37,29 @@ public class ConfigurationEditViewModel
 
     /* Form fields */
 
-    [Range(0, int.MaxValue)]
-    [Required]
     public int GracePeriodSeconds { get; set; }
 
-    [Range(1, int.MaxValue)]
-    [Required]
     public int MaxSeatsPerPerson { get; set; }
 
-    [Range(1, int.MaxValue)]
-    [Required]
     public int MaxSeatsPerIPAddress { get; set; }
 
-    [Required]
     public int MaxSecondsToConfirmSeat { get; set; }
 
     [DataType(DataType.Date)]
-    [Required]
     public DateTime ScheduledOpenDate { get; set; }
 
     [DataType(DataType.Time)]
     [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm:ss}")]
-    [Required]
     public DateTime ScheduledOpenTime { get; set; }
 
     /// <summary>
     /// Time zone of scheduled open date. For options see <see cref="ValidTimeZones"/>.
     /// </summary>
-    [Required]
     public string ScheduledOpenTimeZone { get; set; } = null!;
 
     /// <summary>
     /// Whether and how to override schedule.
     /// </summary>
-    [Required]
     public string ScheduleOverride { get; set; } = null!;
 
     public SaveConfigurationCommand ToSaveCommand()

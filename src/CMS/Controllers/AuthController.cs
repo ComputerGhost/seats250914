@@ -3,12 +3,13 @@ using CMS.ViewModels;
 using Core.Application.Accounts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 
 namespace CMS.Controllers;
 
 [Route("/auth/")]
-public class AuthController(IMediator mediator) : Controller
+public class AuthController(IMediator mediator, IStringLocalizer<AuthController> localizer) : Controller
 {
     [HttpGet("setup")]
     public async Task<IActionResult> SetUp([FromServices] IOptions<AuthenticationOptions> authenticationOptions)
@@ -26,12 +27,9 @@ public class AuthController(IMediator mediator) : Controller
             Password = authenticationOptions.Value.InitialPassword,
         });
 
-        if (result.IsError)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError);
-        }
-
-        return RedirectToAction(nameof(SignIn));
+        return result.Match<IActionResult>(
+            result => RedirectToAction(nameof(SignIn)),
+            errors => StatusCode(StatusCodes.Status500InternalServerError));
     }
 
     [HttpGet("sign-in")]
@@ -47,36 +45,32 @@ public class AuthController(IMediator mediator) : Controller
     }
 
     [HttpPost("sign-in")]
-    public async Task<IActionResult> SignIn([FromForm] AccountSignInViewModel model, [FromQuery] string? returnUrl)
+    public async Task<IActionResult> SignIn([FromForm] AuthSignInViewModel model, [FromQuery] string? returnUrl)
     {
-        if (!ModelState.IsValid)
-        {
-            model.Password = "";
-            return View(model);
-        }
-
         var result = await mediator.Send(new VerifyPasswordCommand
         {
             Login = model.Login,
             Password = model.Password,
         });
 
-        if (result.IsError)
+        return await result.MatchAsync(
+            async result => await SuccessfulSignIn(),
+            errors => IncorrectCredentials());
+
+        Task<IActionResult> IncorrectCredentials()
         {
-            ModelState.AddModelError("", "The credentials that you entered are incorrect.");
-            return View(model);
+            ModelState.AddModelError("", localizer["IncorrectCredentials"]);
+            return Task.FromResult<IActionResult>(View(model));
         }
 
-        var authService = new AuthenticationService(HttpContext);
-        await authService.SignIn(model.Login);
+        async Task<IActionResult> SuccessfulSignIn()
+        {
+            var authService = new AuthenticationService(HttpContext);
+            await authService.SignIn(model.Login);
 
-        if (Uri.TryCreate(returnUrl, UriKind.Relative, out var validatedReturnUri))
-        {
-            return Redirect(validatedReturnUri.ToString());
-        }
-        else
-        {
-            return Redirect("/");
+            var safeReturnUrl = Uri.TryCreate(returnUrl, UriKind.Relative, out var validatedReturnUri)
+                ? validatedReturnUri.ToString() : "/";
+            return Redirect(safeReturnUrl);
         }
     }
 

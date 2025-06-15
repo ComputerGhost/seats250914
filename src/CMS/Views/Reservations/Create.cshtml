@@ -14,26 +14,22 @@
 
             <div class="mb-3">
                 <label asp-for="Name" class="form-label">예약자</label>
-                <input asp-for="Name" class="form-control">
-                <span asp-validation-for="Name" class="form-text text-danger"></span>
+                <input asp-for="Name" class="form-control" required maxlength="50">
             </div>
 
             <div class="mb-3">
                 <label asp-for="Email" class="form-label">예약자 메일</label>
-                <input asp-for="Email" class="form-control">
-                <span asp-validation-for="Email" class="form-text text-danger"></span>
+                <input asp-for="Email" class="form-control" required maxlength="255">
             </div>
 
             <div class="mb-3">
                 <label asp-for="PhoneNumber" class="form-label">예약자 번호</label>
-                <input asp-for="PhoneNumber" class="form-control">
-                <span asp-validation-for="PhoneNumber" class="form-text text-danger"></span>
+                <input asp-for="PhoneNumber" class="form-control" maxlength="15">
             </div>
 
             <div class="mb-3">
                 <label asp-for="PreferredLanguage" class="form-label">Preferred language</label>
-                <input asp-for="PreferredLanguage" class="form-control">
-                <span asp-validation-for="PreferredLanguage" class="form-text text-danger"></span>
+                <input asp-for="PreferredLanguage" class="form-control" required maxlength="50">
             </div>
 
             <button type="submit" class="btn btn-primary">예약 만들기</button>

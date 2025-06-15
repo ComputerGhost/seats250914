@@ -43,14 +43,7 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label asp-for="Password" class="form-label">비밀번호</label>
-                    <input asp-for="Password" class="form-control">
-                    <span asp-validation-for="Password" class="form-text text-danger"></span>
-                </div>
-
-                <div class="col-md-6">
-                    <label asp-for="ConfirmPassword" class="form-label">비밀번호 확인</label>
-                    <input asp-for="ConfirmPassword" class="form-control">
-                    <span asp-validation-for="ConfirmPassword" class="form-text text-danger"></span>
+                    <input asp-for="Password" class="form-control" maxlength="50" required>
                 </div>
             </div>
 

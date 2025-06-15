@@ -4,28 +4,24 @@ using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using System.Diagnostics;
 
 namespace CMS.Controllers;
 
 [Authorize]
 [Route("/accounts/")]
-public class AccountsController(IMediator mediator) : Controller
+public class AccountsController(IMediator mediator, IStringLocalizer<AccountsController> localizer) : Controller
 {
     [HttpGet("new")]
     public IActionResult Create()
     {
-        var model = new AccountCreateViewModel();
-        return View(model);
+        return View(new AccountCreateViewModel());
     }
 
     [HttpPost("new")]
     public async Task<IActionResult> Create([FromForm] AccountCreateViewModel model)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
         var result = await mediator.Send(new CreateAccountCommand
         {
             Login = model.Login,
@@ -33,7 +29,20 @@ public class AccountsController(IMediator mediator) : Controller
             IsEnabled = model.IsEnabled,
         });
 
-        return CheckForError(result) ?? RedirectToAction(nameof(Details), new { model.Login });
+        return result.Match(
+            result => RedirectToAction(nameof(Details), new { model.Login }),
+            errors => errors.First().Type switch
+            {
+                ErrorType.Conflict => LoginConflict(),
+                ErrorType.NotFound => NotFound(),
+                _ => throw new NotImplementedException(),
+            });
+
+        IActionResult LoginConflict()
+        {
+            ModelState.AddModelError(nameof(AccountCreateViewModel.Login), localizer["Login conflict"]);
+            return View(model);
+        }
     }
 
     [HttpGet]
@@ -47,23 +56,32 @@ public class AccountsController(IMediator mediator) : Controller
     public async Task<IActionResult> Details(string login)
     {
         var result = await mediator.Send(new FetchAccountQuery(login));
-        return CheckForError(result) ?? View(new AccountViewViewModel(result.Value));
+        return result.Match<IActionResult>(
+            result => View(new AccountViewViewModel(result)),
+            errors => errors.First().Type switch
+            {
+                ErrorType.NotFound => NotFound(),
+                _ => throw new NotImplementedException(),
+            });
     }
 
     [HttpGet("{login}/edit")]
     public async Task<IActionResult> Edit(string login)
     {
         var result = await mediator.Send(new FetchAccountQuery(login));
-        return CheckForError(result) ?? View(new AccountEditViewModel(result.Value));
+        return result.Match<IActionResult>(
+            result => View(new AccountEditViewModel(result)),
+            errors => errors.First().Type switch
+            {
+                ErrorType.NotFound => NotFound(),
+                _ => throw new NotImplementedException(),
+            });
     }
 
     [HttpPost("{login}/edit")]
     public async Task<IActionResult> Edit(string login, [FromForm] AccountEditViewModel model)
     {
-        if (login != model.Login)
-        {
-            return BadRequest("The route parameter `login` and the view model's `Login` are not equal.");
-        }
+        Debug.Assert(login == model.Login, "The route parameter `login` and the view model's `Login` are not equal.");
 
         return model.Action switch
         {
@@ -80,9 +98,13 @@ public class AccountsController(IMediator mediator) : Controller
                 Password = model.Password,
             });
 
-            model.IsPasswordChangeSuccessful = !result.IsError;
-
-            return CheckForError(result) ?? View(model);
+            return result.Match<IActionResult>(
+                result => View(model.WithSuccessfulPasswordChange()),
+                errors => errors.First().Type switch
+                {
+                    ErrorType.NotFound => NotFound(),
+                    _ => throw new NotImplementedException(),
+                });
         }
 
         async Task<IActionResult> UpdateAccount()
@@ -93,31 +115,13 @@ public class AccountsController(IMediator mediator) : Controller
                 IsEnabled = model.IsEnabled,
             });
 
-            return CheckForError(result) ?? RedirectToAction(nameof(Details), new { Login = login });
-        }
-    }
-
-    private IActionResult? CheckForError(IErrorOr errorOr)
-    {
-        if (!errorOr.IsError)
-        {
-            return null;
-        }
-
-        var firstError = errorOr.Errors![0];
-
-        if (firstError.Type == ErrorType.NotFound)
-        {
-            return NotFound();
-        }
-        else if (firstError.Type == ErrorType.Conflict)
-        {
-            ModelState.AddModelError(nameof(AccountCreateViewModel.Login), firstError.Description);
-            return null;
-        }
-        else
-        {
-            throw new Exception(firstError.Description);
+            return result.Match<IActionResult>(
+                result => RedirectToAction(nameof(Details), new { Login = login }),
+                errors => errors.First().Type switch
+                {
+                    ErrorType.NotFound => NotFound(),
+                    _ => throw new NotImplementedException(),
+                });
         }
     }
 }

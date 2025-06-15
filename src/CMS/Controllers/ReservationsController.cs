@@ -5,12 +5,14 @@ using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using System.Diagnostics;
 
 namespace CMS.Controllers;
 
 [Authorize]
 [Route("/reservations/")]
-public class ReservationsController(IMediator mediator) : Controller
+public class ReservationsController(IMediator mediator, IStringLocalizer<ReservationsController> localizer) : Controller
 {
     [HttpGet]
     public async Task<IActionResult> Index()
@@ -29,30 +31,36 @@ public class ReservationsController(IMediator mediator) : Controller
     [HttpPost("new")]
     public async Task<IActionResult> Create(ReservationCreateViewModel model)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
         var ipAddress = Request.GetClientIpAddress();
 
         var lockResult = await mediator.Send(model.ToLockSeatCommand(ipAddress));
         if (lockResult.IsError)
         {
-            ModelState.AddModelError(nameof(ReservationCreateViewModel.SeatNumber), "Could not lock seat.");
-            return View(model);
+            return SeatConflict();
         }
 
         var reserveResult = await mediator.Send(model.ToReserveSeatCommand(ipAddress, lockResult.Value));
-        return CheckForError(reserveResult)
-            ?? RedirectToAction(nameof(Details), new { reservationId = reserveResult.Value });
+        Debug.Assert(!reserveResult.IsError, "Reserving a seat should not be unsuccessful here.");
+        return RedirectToAction(nameof(Details), new { reservationId = reserveResult.Value });
+
+        IActionResult SeatConflict()
+        {
+            ModelState.AddModelError(nameof(ReservationCreateViewModel.SeatNumber), localizer["Could not lock seat."]);
+            return View(model);
+        }
     }
 
     [HttpGet("{reservationId}/details")]
     public async Task<IActionResult> Details(int reservationId)
     {
         var result = await mediator.Send(new FetchReservationQuery(reservationId));
-        return CheckForError(result) ?? View(new ReservationViewViewModel(result.Value));
+        return result.Match<IActionResult>(
+            result => View(new ReservationViewViewModel(result)),
+            errors => errors.First().Type switch
+            {
+                ErrorType.NotFound => NotFound(),
+                _ => throw new NotImplementedException(),
+            });
     }
 
     [HttpPost("{reservationId}/details")]
@@ -65,7 +73,13 @@ public class ReservationsController(IMediator mediator) : Controller
             _ => throw new NotImplementedException(),
         };
 
-        return CheckForError(result) ?? RedirectToAction("Details", new { reservationId });
+        return result.Match<IActionResult>(
+            result => RedirectToAction(nameof(Details), new { reservationId }),
+            errors => errors.First().Type switch
+            {
+                ErrorType.NotFound => NotFound(),
+                _ => throw new NotImplementedException(),
+            });
 
         Task<ErrorOr<Success>> ApproveReservation()
         {
@@ -77,30 +91,6 @@ public class ReservationsController(IMediator mediator) : Controller
         {
             var command = new RejectReservationCommand(reservationId);
             return mediator.Send(command);
-        }
-    }
-
-    private IActionResult? CheckForError(IErrorOr errorOr)
-    {
-        if (!errorOr.IsError)
-        {
-            return null;
-        }
-
-        var firstError = errorOr.Errors![0];
-
-        if (firstError.Type == ErrorType.NotFound)
-        {
-            return NotFound();
-        }
-        else if (firstError.Type == ErrorType.Conflict)
-        {
-            ModelState.AddModelError(nameof(AccountCreateViewModel.Login), firstError.Description);
-            return null;
-        }
-        else
-        {
-            throw new Exception(firstError.Description);
         }
     }
 }

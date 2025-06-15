@@ -17,20 +17,13 @@ public class ReservationCreateViewModel
 
     /* Form fields */
 
-    [MaxLength(255)]
-    [Required]
     public string Email { get; set; } = null!;
 
-    [MaxLength(50)]
-    [Required]
     public string Name { get; set; } = null!;
 
     [DataType(DataType.PhoneNumber)]
-    [MaxLength(15)]
     public string? PhoneNumber { get; set; }
 
-    [MaxLength(50)]
-    [Required]
     public string PreferredLanguage { get; set; } = null!;
 
     public int SeatNumber { get; set; }
