@@ -1,8 +1,7 @@
 ﻿body {
-    font-family: Inter, sans-serif;
-    font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
+    font-family: "Noto Sans KR", sans-serif;
 }
 
 h1, h2, h3, h4, h5 {
-    font-family: Montserrat, sans-serif;
+    font-family: NanumSquare, sans-serif;
 }
