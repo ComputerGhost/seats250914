@@ -18,21 +18,21 @@
                 {
                     <span>
                         <i class="bi bi-check-circle-fill text-success"></i>
-                        Confirmed
+                        승인됨
                     </span>
                 }
                 else if (Model.ReservationStatus == ReservationStatus.ReservationRejected)
                 {
                     <span>
                         <i class="bi bi-ban-fill text-danger"></i>
-                        Rejected
+                        거절됨
                     </span>
                 }
                 else
                 {
                     <span>
                         <i class="bi bi-hourglass-split text-secondary"></i>
-                        Awaiting payment
+                        승인 대기 중
                     </span>
                 }
             </dd>
@@ -54,7 +54,7 @@
             <dt class="col-sm-5">전화번호:</dt>
             <dd class="col-sm-7">@Model.PhoneNumber</dd>
 
-            <dt class="col-sm-5">Preferred language:</dt>
+            <dt class="col-sm-5">선호언어:</dt>
             <dd class="col-sm-7">@Model.PreferredLanguage</dd>
         </dl>
     </section>
