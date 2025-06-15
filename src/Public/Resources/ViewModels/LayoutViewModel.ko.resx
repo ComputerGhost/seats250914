@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Event" xml:space="preserve">
-    <value>Event</value>
+    <value>행사정보</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
@@ -127,18 +127,18 @@
     <value>혜린 팬미팅 2025</value>
   </data>
   <data name="Privacy Policy" xml:space="preserve">
-    <value>Privacy Policy</value>
+    <value>개인정보 보호정책</value>
   </data>
   <data name="Reserve a Seat" xml:space="preserve">
-    <value>Reserve a Seat</value>
+    <value>좌석예약</value>
   </data>
   <data name="Terms of Service" xml:space="preserve">
-    <value>Terms of Service</value>
+    <value>이용 약관</value>
   </data>
   <data name="Toggle navigation" xml:space="preserve">
-    <value>Toggle navigation</value>
+    <value>메뉴 열기/닫기</value>
   </data>
   <data name="Venue" xml:space="preserve">
-    <value>Venue</value>
+    <value>위치정보</value>
   </data>
 </root>
