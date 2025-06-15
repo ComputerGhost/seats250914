@@ -12,9 +12,9 @@
             <div class="mb-3">
                 <label asp-for="ScheduledOpenDate" class="form-label">예약 오픈 예정일시</label>
                 <div class="input-group">
-                    <input asp-for="ScheduledOpenDate" class="form-control" aria-label="Scheduled open date">
-                    <input asp-for="ScheduledOpenTime" step="1" class="form-control" aria-label="Scheduled open time">
-                    <select asp-for="ScheduledOpenTimeZone" asp-items="Model.ValidTimeZones" class="form-select" aria-label="Scheduled open time zone"></select>
+                    <input asp-for="ScheduledOpenDate" class="form-control" aria-label="Scheduled open date" required>
+                    <input asp-for="ScheduledOpenTime" step="1" class="form-control" aria-label="Scheduled open time" required>
+                    <select asp-for="ScheduledOpenTimeZone" asp-items="Model.ValidTimeZones" class="form-select" aria-label="Scheduled open time zone" required></select>
                 </div>
             </div>
 
@@ -53,12 +53,12 @@
 
             <div class="mb-3">
                 <label asp-for="MaxSeatsPerPerson" class="form-label">사용자 1명당 최대 예약 가능 좌석 수</label>
-                <input asp-for="MaxSeatsPerPerson" class="form-control w-auto">
+                <input asp-for="MaxSeatsPerPerson" class="form-control w-auto" min="1" required>
             </div>
 
             <div class="mb-3">
                 <label asp-for="MaxSeatsPerIPAddress" class="form-label">동일 IP에서 최대 예약 가능 좌석 수</label>
-                <input asp-for="MaxSeatsPerIPAddress" class="form-control w-auto" aria-describedby="MaxSeatsPerIPAddress-help">
+                <input asp-for="MaxSeatsPerIPAddress" class="form-control w-auto" aria-describedby="MaxSeatsPerIPAddress-help" min="1" required>
                 <div id="MaxSeatsPerIPAddress-help" class="form-text">
                     동일 사용자가 여러 번 예약하는 것을 방지하기 위한 설정입니다. 학교나 회사처럼 공용 IP 환경에서는 너무 낮게 설정하지 마세요.
                 </div>
@@ -66,7 +66,7 @@
 
             <div class="mb-3">
                 <label asp-for="MaxSecondsToConfirmSeat" class="form-label">좌석 선택 후 예약 확정까지의 최대 시간 (초)</label>
-                <input asp-for="MaxSecondsToConfirmSeat" class="form-control w-auto" required aria-describedby="MaxSecondsToConfirmSeat-help">
+                <input asp-for="MaxSecondsToConfirmSeat" class="form-control w-auto" aria-describedby="MaxSecondsToConfirmSeat-help" required>
                 <div id="MaxSecondsToConfirmSeat-help" class="form-text">
                     좌석을 클릭하면 일시적으로 보류 상태가 되며, 이 시간 안에 확정하지 않으면 자동으로 해제됩니다.
                 </div>

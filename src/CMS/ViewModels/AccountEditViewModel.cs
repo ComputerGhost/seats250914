@@ -1,5 +1,5 @@
 ﻿using Core.Application.Accounts;
-using System.ComponentModel;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 
 namespace CMS.ViewModels;
@@ -28,11 +28,12 @@ public class AccountEditViewModel
 
     public bool IsPasswordChangeSuccessful { get; set; } = false;
 
-    [MaxLength(50)]
-    [Required]
+    [DataType(DataType.Password)]
     public string Password { get; set; } = "";
 
-    [Compare(nameof(Password))]
-    [DisplayName("Confirm Password")]
-    public string ConfirmPassword { get; set; } = "";
+    public AccountEditViewModel WithSuccessfulPasswordChange()
+    {
+        IsPasswordChangeSuccessful = true;
+        return this;
+    }
 }
