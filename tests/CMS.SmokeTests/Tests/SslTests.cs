@@ -11,10 +11,11 @@ public class SslTests : TestBase
     public async Task Https_IsDeliveredOverSecureConnection()
     {
         // Arrange
+        var signInUrl = TargetUrl + "/auth/sign-in";
 
         // Act
         using var client = new HttpClient();
-        var response = await client.GetAsync(TargetUrl);
+        var response = await client.GetAsync(signInUrl);
 
         // Assert
         Assert.AreEqual("https", new UriBuilder(TargetUrl).Scheme);

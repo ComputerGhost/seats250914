@@ -35,6 +35,6 @@ public class HostingTests : TestBase
         Driver.Navigate().GoToUrl(TargetUrl);
 
         // Assert
-        Assert.AreEqual("혜린 팬미팅 2025 CMS", Driver.Title);
+        Assert.AreEqual("혜린 팬미팅 2025 관리자 페이지", Driver.Title);
     }
 }
