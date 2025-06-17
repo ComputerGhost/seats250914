@@ -1,8 +1,14 @@
 ﻿@using Public.Features.SeatSelection.Models
-@inject IStringLocalizer<SeatSelectorModel> Localizer;
+@using Public.Views.Shared.Components.Enumerations
+@model SeatSelectorViewModel;
+@inject IStringLocalizer<SeatSelectorViewModel> Localizer;
+
 @functions {
-    private void RenderSeat(int number, string status)
+
+    private void RenderSeat(int number)
     {
+        var status = Model.SeatStatuses[number];
+
         <button
             class="seat @status"
             data-index="@(number - 1)"
@@ -11,9 +17,99 @@
     }
 }
 
-<div class="row">
-    <div class="col-lg-10 col-md-9 mb-3 d-flex justify-content-center">
-        <div id="seat-map" data-scaled-for-parent-width="1100" class="interactive-seat-selector" aria-hidden="true">
+@* Statuses *@
+
+@if (Model.SystemStatus == SystemStatus.OpeningSoon)
+{
+    <div class="alert alert-info" role="alert">
+        <h3 class="h4">
+            <i class="bi bi-info-circle-fill"></i>
+            Reservations will open soon!
+        </h3>
+        <p class="mb-0">
+            Reservations will open Month dd, 2025 at HH:mm.
+        </p>
+    </div>
+}
+else if (Model.SystemStatus == SystemStatus.ClosingSoon)
+{
+    <div class="alert alert-info" role="alert">
+        <h3 class="h4">
+            <i class="bi bi-info-circle-fill"></i>
+            Reservations will close soon!
+        </h3>
+        <p class="mb-0">
+            Reservations will close Month dd, 2025 at HH:mm.
+            Be sure to get your seat soon!
+        </p>
+    </div>
+}
+else if (Model.SystemStatus == SystemStatus.OutOfSeatsTemporarily)
+{
+    <div class="alert alert-warning" role="alert">
+        <h3 class="h4">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            We're out of seats!
+        </h3>
+        <p class="mb-0">
+            Some of the reservations are still pending, 
+            so check back later to see if any seats become available.
+        </p>
+    </div>
+}
+else if (Model.SystemStatus == SystemStatus.OutOfSeatsPermanently)
+{
+    <div class="alert alert-danger" role="alert">
+        <h3 class="h4">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            We're out of seats!
+        </h3>
+        <p class="mb-0">
+            All of the seats have been reserved.
+            We're sorry that we have no more available seats.
+        </p>
+    </div>
+}
+else if (Model.SystemStatus == SystemStatus.ClosedPerSchedule)
+{
+    <div class="alert alert-danger" role="alert">
+        <h3 class="h4">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            Reservations are closed!
+        </h3>
+        <p class="mb-0">
+            Thank you to everyone who purchased a seat.
+            We will see you at the event!
+        </p>
+    </div>
+}
+else if (Model.SystemStatus == SystemStatus.ClosedManually)
+{
+    <div class="alert alert-danger" role="alert">
+        <h3 class="h4">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            Reservations are closed!
+        </h3>
+        <p class="mb-0">
+            Reservations are closed right now.
+            Please check back later.
+        </p>
+    </div>
+}
+
+@* Seating graphic *@
+
+<script>
+    var loadSeatingWidget = function ($element) {
+        new SeatSelector($element);
+    };
+</script>
+
+<div class="row lazy-loaded" data-onload="loadSeatingWidget" data-priority="1">
+
+    @{ var mapClass = Model.IsOpen ? "col-lg-10 col-md-9" : "col-12"; }
+    <div class="@mapClass mb-3 d-flex justify-content-center">
+        <div data-scaled-for-parent-width="1100" class="interactive-seat-selector" aria-hidden="true">
 
             <div class="legend">
                 <div class="key available">@Localizer["Available"]</div>
@@ -27,45 +123,45 @@
                     <div class="row">
                         <div class="wall" style="font-size: 1em"></div>
                         <div class="empty-space" style="font-size: 4em"></div>
-                        @{RenderSeat(90, "available");}
-                        @{RenderSeat(91, "available");}
-                        @{RenderSeat(92, "available");}
-                        @{RenderSeat(93, "available");}
+                        @{RenderSeat(90);}
+                        @{RenderSeat(91);}
+                        @{RenderSeat(92);}
+                        @{RenderSeat(93);}
                     </div>
                     <div class="row">
                         <div class="wall" style="font-size: 0.3em"></div>
                         <div class="empty-space" style="font-size: 2em"></div>
-                        @{RenderSeat(61, "available");}
-                        @{RenderSeat(62, "available");}
-                        @{RenderSeat(63, "available");}
-                        @{RenderSeat(64, "available");}
-                        @{RenderSeat(65, "available");}
-                        @{RenderSeat(66, "available");}
-                        @{RenderSeat(67, "available");}
+                        @{RenderSeat(61);}
+                        @{RenderSeat(62);}
+                        @{RenderSeat(63);}
+                        @{RenderSeat(64);}
+                        @{RenderSeat(65);}
+                        @{RenderSeat(66);}
+                        @{RenderSeat(67);}
                     </div>
                     <div class="row">
                         <div class="empty-space" style="font-size: 0.6em"></div>
-                        @{RenderSeat(31, "available");}
-                        @{RenderSeat(32, "available");}
-                        @{RenderSeat(33, "available");}
-                        @{RenderSeat(34, "available");}
-                        @{RenderSeat(35, "available");}
-                        @{RenderSeat(36, "available");}
-                        @{RenderSeat(37, "available");}
-                        @{RenderSeat(38, "available");}
-                        @{RenderSeat(39, "available");}
+                        @{RenderSeat(31);}
+                        @{RenderSeat(32);}
+                        @{RenderSeat(33);}
+                        @{RenderSeat(34);}
+                        @{RenderSeat(35);}
+                        @{RenderSeat(36);}
+                        @{RenderSeat(37);}
+                        @{RenderSeat(38);}
+                        @{RenderSeat(39);}
                     </div>
                     <div class="row">
                         <div class="empty-space" style="font-size: 1em"></div>
-                        @{RenderSeat(1, "available");}
-                        @{RenderSeat(2, "available");}
-                        @{RenderSeat(3, "available");}
-                        @{RenderSeat(4, "available");}
-                        @{RenderSeat(5, "available");}
-                        @{RenderSeat(6, "available");}
-                        @{RenderSeat(7, "available");}
-                        @{RenderSeat(8, "available");}
-                        @{RenderSeat(9, "on-hold");}
+                        @{RenderSeat(1);}
+                        @{RenderSeat(2);}
+                        @{RenderSeat(3);}
+                        @{RenderSeat(4);}
+                        @{RenderSeat(5);}
+                        @{RenderSeat(6);}
+                        @{RenderSeat(7);}
+                        @{RenderSeat(8);}
+                        @{RenderSeat(9);}
                     </div>
                 </div>
 
@@ -73,97 +169,97 @@
                     <div class="row">
                     </div>
                     <div class="row">
-                        @{RenderSeat(68, "available");}
-                        @{RenderSeat(69, "available");}
-                        @{RenderSeat(70, "available");}
-                        @{RenderSeat(71, "available");}
-                        @{RenderSeat(72, "available");}
-                        @{RenderSeat(73, "available");}
-                        @{RenderSeat(74, "available");}
-                        @{RenderSeat(75, "available");}
-                        @{RenderSeat(76, "available");}
-                        @{RenderSeat(77, "available");}
-                        @{RenderSeat(78, "available");}
-                        @{RenderSeat(79, "available");}
-                        @{RenderSeat(80, "available");}
-                        @{RenderSeat(81, "available");}
+                        @{RenderSeat(68);}
+                        @{RenderSeat(69);}
+                        @{RenderSeat(70);}
+                        @{RenderSeat(71);}
+                        @{RenderSeat(72);}
+                        @{RenderSeat(73);}
+                        @{RenderSeat(74);}
+                        @{RenderSeat(75);}
+                        @{RenderSeat(76);}
+                        @{RenderSeat(77);}
+                        @{RenderSeat(78);}
+                        @{RenderSeat(79);}
+                        @{RenderSeat(80);}
+                        @{RenderSeat(81);}
                     </div>
                     <div class="row">
-                        @{RenderSeat(40, "available");}
-                        @{RenderSeat(41, "available");}
-                        @{RenderSeat(42, "available");}
-                        @{RenderSeat(43, "available");}
-                        @{RenderSeat(44, "available");}
-                        @{RenderSeat(45, "available");}
-                        @{RenderSeat(46, "available");}
-                        @{RenderSeat(47, "available");}
-                        @{RenderSeat(48, "available");}
-                        @{RenderSeat(49, "available");}
-                        @{RenderSeat(50, "available");}
-                        @{RenderSeat(51, "available");}
-                        @{RenderSeat(52, "available");}
+                        @{RenderSeat(40);}
+                        @{RenderSeat(41);}
+                        @{RenderSeat(42);}
+                        @{RenderSeat(43);}
+                        @{RenderSeat(44);}
+                        @{RenderSeat(45);}
+                        @{RenderSeat(46);}
+                        @{RenderSeat(47);}
+                        @{RenderSeat(48);}
+                        @{RenderSeat(49);}
+                        @{RenderSeat(50);}
+                        @{RenderSeat(51);}
+                        @{RenderSeat(52);}
                     </div>
                     <div class="row">
-                        @{RenderSeat(10, "reserved");}
-                        @{RenderSeat(11, "reserved");}
-                        @{RenderSeat(12, "reserved");}
-                        @{RenderSeat(13, "reserved");}
-                        @{RenderSeat(14, "reserved");}
-                        @{RenderSeat(15, "reserved");}
-                        @{RenderSeat(16, "reserved");}
-                        @{RenderSeat(17, "reserved");}
-                        @{RenderSeat(18, "reserved");}
-                        @{RenderSeat(19, "reserved");}
-                        @{RenderSeat(20, "reserved");}
-                        @{RenderSeat(21, "reserved");}
+                        @{RenderSeat(10);}
+                        @{RenderSeat(11);}
+                        @{RenderSeat(12);}
+                        @{RenderSeat(13);}
+                        @{RenderSeat(14);}
+                        @{RenderSeat(15);}
+                        @{RenderSeat(16);}
+                        @{RenderSeat(17);}
+                        @{RenderSeat(18);}
+                        @{RenderSeat(19);}
+                        @{RenderSeat(20);}
+                        @{RenderSeat(21);}
                     </div>
                 </div>
 
                 <div class="section right">
                     <div class="row">
-                        @{RenderSeat(94, "available");}
-                        @{RenderSeat(95, "available");}
-                        @{RenderSeat(96, "available");}
-                        @{RenderSeat(97, "available");}
-                        @{RenderSeat(98, "available");}
-                        @{RenderSeat(99, "available");}
-                        @{RenderSeat(100, "available");}
+                        @{RenderSeat(94);}
+                        @{RenderSeat(95);}
+                        @{RenderSeat(96);}
+                        @{RenderSeat(97);}
+                        @{RenderSeat(98);}
+                        @{RenderSeat(99);}
+                        @{RenderSeat(100);}
                         <div class="empty-space" style="font-size: 0.6em"></div>
                         <div class="wall" style="font-size: 1.4em"></div>
                     </div>
                     <div class="row">
-                        @{RenderSeat(82, "available");}
-                        @{RenderSeat(83, "available");}
-                        @{RenderSeat(84, "available");}
-                        @{RenderSeat(85, "available");}
-                        @{RenderSeat(86, "available");}
-                        @{RenderSeat(87, "available");}
-                        @{RenderSeat(88, "available");}
-                        @{RenderSeat(89, "available");}
+                        @{RenderSeat(82);}
+                        @{RenderSeat(83);}
+                        @{RenderSeat(84);}
+                        @{RenderSeat(85);}
+                        @{RenderSeat(86);}
+                        @{RenderSeat(87);}
+                        @{RenderSeat(88);}
+                        @{RenderSeat(89);}
                         <div class="empty-space" style="font-size: 0.6em"></div>
                         <div class="wall" style="font-size: 0.7em"></div>
                     </div>
                     <div class="row">
-                        @{RenderSeat(53, "available");}
-                        @{RenderSeat(54, "available");}
-                        @{RenderSeat(55, "available");}
-                        @{RenderSeat(56, "available");}
-                        @{RenderSeat(57, "available");}
-                        @{RenderSeat(58, "available");}
-                        @{RenderSeat(59, "available");}
-                        @{RenderSeat(60, "available");}
+                        @{RenderSeat(53);}
+                        @{RenderSeat(54);}
+                        @{RenderSeat(55);}
+                        @{RenderSeat(56);}
+                        @{RenderSeat(57);}
+                        @{RenderSeat(58);}
+                        @{RenderSeat(59);}
+                        @{RenderSeat(60);}
                         <div class="empty-space" style="font-size: 1.6em"></div>
                     </div>
                     <div class="row">
-                        @{RenderSeat(22, "available");}
-                        @{RenderSeat(23, "available");}
-                        @{RenderSeat(24, "available");}
-                        @{RenderSeat(25, "available");}
-                        @{RenderSeat(26, "available");}
-                        @{RenderSeat(27, "available");}
-                        @{RenderSeat(28, "available");}
-                        @{RenderSeat(29, "available");}
-                        @{RenderSeat(30, "available");}
+                        @{RenderSeat(22);}
+                        @{RenderSeat(23);}
+                        @{RenderSeat(24);}
+                        @{RenderSeat(25);}
+                        @{RenderSeat(26);}
+                        @{RenderSeat(27);}
+                        @{RenderSeat(28);}
+                        @{RenderSeat(29);}
+                        @{RenderSeat(30);}
                         <div class="empty-space" style="font-size: 1em"></div>
                     </div>
                 </div>
@@ -176,19 +272,21 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-2 col-md-3">
+
+    @{ var selectionClass = Model.IsOpen ? "col-lg-2 col-md-3" : "d-none"; }
+    <div class="@selectionClass">
         <form>
             <div class="d-flex flex-column">
                 <div class="mb-3">
-                    <label for="seat" class="form-label">@Localizer["Seat"]</label>
-                    <select class="form-select" id="seat">
-                        <option></option>
-                    </select>
+                    <label for="seat" class="form-label">
+                        @Localizer["Seat"]
+                        <select asp-for="SelectedSeat" class="form-select" required>
+                            <option></option>
+                        </select>
+                    </label>
                 </div>
                 <button class="btn btn-primary">@Localizer["Reserve Seat"]</button>
             </div>
         </form>
     </div>
 </div>
-
-<script defer src="~/js/seat-selector.js"></script>
