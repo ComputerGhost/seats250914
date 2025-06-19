@@ -1,21 +1,17 @@
 ﻿using Core.Application.Reservations;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
-namespace CMS.ViewModels;
+namespace Public.Models.ViewModels;
 
-public class ReservationCreateViewModel
+public class ReserveSeatViewModel
 {
-    public ReservationCreateViewModel()
-    {
-    }
+    /* Display only */
 
-    /* Form options */
-
-    public IEnumerable<SelectListItem> ValidSeatNumbers => Enumerable.Range(1, 100)
-        .Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString(), });
+    public int SeatNumber { get; set; }
 
     /* Form fields */
+
+    public bool AgreeToTerms { get; set; }
 
     [DataType(DataType.EmailAddress)]
     public string Email { get; set; } = null!;
@@ -27,24 +23,12 @@ public class ReservationCreateViewModel
 
     public string PreferredLanguage { get; set; } = null!;
 
-    public int SeatNumber { get; set; }
-
-    public LockSeatCommand ToLockSeatCommand(string ipAddress)
-    {
-        return new LockSeatCommand
-        {
-            IpAddress = ipAddress,
-            IsStaff = true,
-            SeatNumber = SeatNumber,
-        };
-    }
-
     public ReserveSeatCommand ToReserveSeatCommand(string ipAddress, LockSeatCommandResponse seatLock)
     {
         return new ReserveSeatCommand
         {
             IpAddress = ipAddress,
-            IsStaff = true,
+            IsStaff = false,
             Email = Email,
             Name = Name,
             PhoneNumber = PhoneNumber,

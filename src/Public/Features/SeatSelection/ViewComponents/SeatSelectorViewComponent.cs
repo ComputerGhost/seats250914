@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Core.Application.Seats;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Public.Features.SeatSelection.Models;
 
 namespace Public.Features.SeatSelection.ViewComponents;
 
@@ -8,10 +11,16 @@ namespace Public.Features.SeatSelection.ViewComponents;
 /// <remarks>
 /// See Views/Shared/Components/SeatSelector for the associated view.
 /// </remarks>
-public class SeatSelectorViewComponent : ViewComponent
+public class SeatSelectorViewComponent(IMediator mediator) : ViewComponent
 {
-    public IViewComponentResult Invoke()
+    public async Task<IViewComponentResult> InvokeAsync(string idPrefix)
     {
-        return View();
+        var listSeatsResult = await mediator.Send(new ListSeatsQuery());
+        return View(new SeatSelectorViewModel(listSeatsResult)
+        {
+            IdPrefix = idPrefix,
+            LockSeatUrl = Url.Action("LockSeat", "Api")!,
+            ReservationPageUrl = Url.Action("ReserveSeat", "Reservation")!,
+        });
     }
 }

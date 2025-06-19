@@ -1,5 +1,10 @@
 ﻿@inject IViewLocalizer Localizer;
 
+@section Scripts
+{
+    <script defer src="~/js/home.js" asp-append-version="true"></script>
+}
+
 <section id="top" class="hero">
     <div class="hero-adaptive-layout">
 
@@ -62,7 +67,7 @@
         </div>
 
         <div class="col-12">
-            <vc:seat-selector />
+            @await Component.InvokeAsync("SeatSelector", new { idPrefix = "seat-selector" });
         </div>
     </div>
 </section>

@@ -1,4 +1,4 @@
-﻿namespace Public.ViewModels;
+﻿namespace Public.Models.ViewModels;
 
 public class LayoutViewModel
 {

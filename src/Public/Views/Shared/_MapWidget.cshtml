@@ -1,4 +1,14 @@
-﻿
+﻿<script>
+	var loadMapWidget = function ($element) {
+		$element.attr('src', $($element).data('src'));
+	};
+</script>
+
 ﻿<div class="map-widget" style="height: 450px">
-	<iframe src="@Url.Action("KakaoMap", "Embed")"></iframe>
+	<iframe
+		class="lazy-loaded"
+		data-onload="loadMapWidget"
+		data-priority="10"
+		data-src="@Url.Action("KakaoMap", "Embed")"
+	></iframe>
 </div>
