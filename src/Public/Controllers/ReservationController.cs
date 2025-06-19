@@ -10,6 +10,11 @@ namespace Public.Controllers;
 [Route("reservation")]
 public class ReservationController(IMediator mediator) : Controller
 {
+    private static readonly JsonSerializerOptions readOptions = new()
+    {
+        PropertyNameCaseInsensitive = true,
+    };
+
     [HttpGet("expired")]
     public IActionResult TimeExpired()
     {
@@ -23,6 +28,8 @@ public class ReservationController(IMediator mediator) : Controller
         var seatLock = GetSeatLockFromCookie();
         if (seatLock == null || seatLock.LockExpiration < DateTime.UtcNow)
         {
+            // The seat lock won't be expired here in the normal flow,
+            // so let's redirect to "/" instead of the expiration page.
             return RedirectToAction("Index", "Home");
         }
 
@@ -79,11 +86,7 @@ public class ReservationController(IMediator mediator) : Controller
 
         try
         {
-            var options = new JsonSerializerOptions()
-            {
-                PropertyNameCaseInsensitive = true,
-            };
-            return JsonSerializer.Deserialize<LockSeatCommandResponse>(cookie, options);
+            return JsonSerializer.Deserialize<LockSeatCommandResponse>(cookie, readOptions);
         }
         catch (JsonException)
         {
