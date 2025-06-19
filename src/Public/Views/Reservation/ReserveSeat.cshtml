@@ -1,5 +1,5 @@
 ﻿@inject IViewLocalizer Localizer;
-
+@model ReserveSeatViewModel;
 <div class="container py-3">
     <h1>@Localizer["Seat Reservation"]</h1>
 
@@ -10,23 +10,30 @@
     <form method="post">
         <section>
             <div class="mb-3">
-                <label for="name" class="form-label">@Localizer["Name"]</label>
-                <input type="text" id="name" class="form-control" maxlength="50" required>
+                <label asp-for="SeatNumber" class="form-label">Seat</label>
+                <input asp-for="SeatNumber" class="form-control" disabled>
+            </div>
+        </section>
+
+        <section>
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">@Localizer["Name"]</label>
+                <input asp-for="Name" class="form-control" maxlength="50" required>
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">@Localizer["Email"]</label>
-                <input type="email" id="email" class="form-control" maxlength="255" required>
+                <label asp-for="Email" class="form-label" />@Localizer["Email"]</label>
+                <input asp-for="Email" class="form-control" maxlength="255" required>
             </div>
             <div class="mb-3">
-                <label for="phone" class="form-label">@Localizer["Phone number"]</label>
-                <input type="tel" id="phone" class="form-control" maxlength="15" aria-describedby="phoneHelp">
+                <label asp-for="PhoneNumber" class="form-label">@Localizer["Phone number"]</label>
+                <input asp-for="PhoneNumber" class="form-control" maxlength="15" aria-describedby="phoneHelp">
                 <div id="phoneHelp" class="form-text">
                     @Localizer["Please provide a Korean phone number if possible."]
                 </div>
             </div>
             <div class="mb-3">
-                <label for="language" class="form-label">@Localizer["Preferred language"]</label>
-                <select id="language" class="form-select" required>
+                <label asp-for="PreferredLanguage" class="form-label">@Localizer["Preferred language"]</label>
+                <select asp-for="PreferredLanguage" required>
                     <option value="English">English</option>
                     <option value="Korean">한국어</option>
                 </select>
@@ -37,8 +44,8 @@
             @Localizer["<!-- form disclosures -->"]
 
             <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" value="" id="agree" required>
-                <label class="form-check-label" for="agree">
+                <input asp-for="AgreeToTerms" class="form-check-input" required>
+                <label asp-for="AgreeToTerms" class="form-check-label">
                     @Localizer["I accept the terms of service and privacy policy linked above."]
                 </label>
             </div>

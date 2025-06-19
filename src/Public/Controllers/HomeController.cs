@@ -1,12 +1,9 @@
-﻿using Core.Application.Seats;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Public.ViewModels;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Public.Controllers;
 
 [Route("/")]
-public class HomeController(IMediator mediator) : Controller
+public class HomeController : Controller
 {
     [HttpGet]
     public IActionResult Index()

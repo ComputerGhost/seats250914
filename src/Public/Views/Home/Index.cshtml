@@ -1,5 +1,4 @@
 ﻿@inject IViewLocalizer Localizer;
-@model HomeViewModel;
 
 @section Scripts
 {
@@ -68,7 +67,7 @@
         </div>
 
         <div class="col-12">
-            @await Component.InvokeAsync("SeatSelector")
+            @await Component.InvokeAsync("SeatSelector", new { idPrefix = "seat-selector" });
         </div>
     </div>
 </section>

@@ -105,7 +105,12 @@ else if (Model.SystemStatus == SystemStatus.ClosedManually)
     };
 </script>
 
-<div class="row lazy-loaded" data-onload="loadSeatingWidget" data-priority="1">
+<div
+    class="row lazy-loaded"
+    data-onload="loadSeatingWidget"
+    data-priority="1"
+    data-reservation-page-url="@Model.ReservationPageUrl"
+>
 
     @{ var mapClass = Model.IsOpen ? "col-lg-10 col-md-9" : "col-12"; }
     <div class="@mapClass mb-3 d-flex justify-content-center">
@@ -275,15 +280,21 @@ else if (Model.SystemStatus == SystemStatus.ClosedManually)
 
     @{ var selectionClass = Model.IsOpen ? "col-lg-2 col-md-3" : "d-none"; }
     <div class="@selectionClass">
-        <form>
+        <form action="@Model.LockSeatUrl" method="post">
             <div class="d-flex flex-column">
                 <div class="mb-3">
-                    <label for="seat" class="form-label">
+                    <label for="@(Model.IdPrefix)-seat" class="form-label w-100">
                         @Localizer["Seat"]
-                        <select asp-for="SelectedSeat" class="form-select" required>
-                            <option></option>
-                        </select>
                     </label>
+                    <select
+                        class="form-select"
+                        data-conflict-text="Seat {} is no longer available."
+                        id="@(Model.IdPrefix)-seat"
+                        name="seatNumber"
+                        required
+                    >
+                        <option></option>
+                    </select>
                 </div>
                 <button class="btn btn-primary">@Localizer["Reserve Seat"]</button>
             </div>

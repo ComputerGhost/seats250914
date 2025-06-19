@@ -13,20 +13,14 @@ namespace Public.Features.SeatSelection.ViewComponents;
 /// </remarks>
 public class SeatSelectorViewComponent(IMediator mediator) : ViewComponent
 {
-    public IViewComponentResult Invoke2()
+    public async Task<IViewComponentResult> InvokeAsync(string idPrefix)
     {
-        return View();
-    }
-
-    public async Task<IViewComponentResult> InvokeAsync(int? selectedSeat)
-    {
-        var result = await mediator.Send(new ListSeatsQuery());
-
-        var model = new SeatSelectorViewModel(result)
+        var listSeatsResult = await mediator.Send(new ListSeatsQuery());
+        return View(new SeatSelectorViewModel(listSeatsResult)
         {
-            SelectedSeat = selectedSeat,
-        };
-
-        return View(model);
+            IdPrefix = idPrefix,
+            LockSeatUrl = Url.Action("LockSeat", "Api")!,
+            ReservationPageUrl = Url.Action("ReserveSeat", "Reservation")!,
+        });
     }
 }

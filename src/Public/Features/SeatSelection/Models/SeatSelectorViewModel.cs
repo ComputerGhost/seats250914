@@ -37,25 +37,21 @@ public class SeatSelectorViewModel
         }
     }
 
-    /* Options */
+    public required string IdPrefix { get; init; }
+
+    public bool IsOpen => SystemStatus == SystemStatus.Open;
+
+    public required string LockSeatUrl { get; set; }
+
+    public required string ReservationPageUrl { get; set; }
 
     public IDictionary<int, string> SeatStatuses { get; set; } = new Dictionary<int, string>();
 
-    /* Form entry */
-
-    public int? SelectedSeat { get; set; }
-
-    /* Display */
-
-    public SystemStatus SystemStatus { get; set; }
-
-    public bool IsOpen => SystemStatus == SystemStatus.Open;
+    public SystemStatus SystemStatus { get; init; }
 
     // TODO: open time
 
     // TODO: close time
-
-    /* ... */
 
     private static string StatusEnumToString(SeatStatus statusEnum)
     {

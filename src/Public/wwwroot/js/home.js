@@ -1,4 +1,15 @@
 ﻿/**
+ * Helper functions
+ */
+
+function setCookie(key, value, expires) {
+    const encodedKey = encodeURIComponent(key);
+    const encodedValue = encodeURIComponent(value);
+    const formattedExpires = new Date(expires).toUTCString();
+    document.cookie = `${encodedKey}=${encodedValue};expires=${formattedExpires};path=/`;
+}
+
+/**
  * Lazy loader.
  *
  * 1. Add the "lazy-loaded" class to the element.
@@ -35,103 +46,146 @@ window.addEventListener("load", function () {
  * This is the JavaScript for the client-side behavior.
  */
 function SeatSelector($element) {
-    var $mapElement = $element.find(".interactive-seat-selector");
-    var $selectElement = $element.find("select");
+    const that = this;
+    this._$reservationPageUrl = $element.data("reservation-page-url");
 
-    var seatSelector = new InteractiveSeatSelector($mapElement);
+    const seatForm = new SeatForm($element.find("form"));
+    const seatMap = new InteractiveSeatSelector(
+        $element.find(".interactive-seat-selector")
+    );
 
-    seatSelector.onInitialized = function (seats) {
-        $.each(seats, function (_, seat) {
-            if (seat.status === "available") {
-                var $optionElement = $("<option>")
-                    .val(seat.index)
-                    .text(seat.$element.text());
-                $selectElement.append($optionElement);
+    // The seat map and the select need to be in sync.
+    seatForm.onChange = (seatNumber) => seatMap.selectSeat(seatNumber - 1);
+    seatMap.onInitialized = (seats) => seatForm.addSeats(seats);
+    seatMap.onSelected = (seat) => seatForm.selectSeat(seat.index + 1);
+    seatMap.onDeselected = () => seatForm.selectSeat(null);
+
+    // Calling this will load the seats from the DOM to finish initializing.
+    seatMap.build();
+
+    seatForm.onConflict = function (requestData) {
+        seatForm.removeSeat(requestData.seatNumber);
+        seatMap.deselectSeat(requestData.seatNumber - 1);
+        seatMap.updateSeat(requestData.seatNumber - 1, "on-hold");
+    };
+
+    seatForm.onSuccess = function (requestData, responseData) {
+        const seatLock = JSON.stringify(responseData);
+        setCookie("seatLock", seatLock, responseData.lockExpiration);
+        document.location = that._$reservationPageUrl;
+    };
+
+    // This encapsulates the form logic.
+    function SeatForm($formElement) {
+        var that = this;
+
+        this._$formElement = $formElement;
+        this._$selectElement = $formElement.find("select");
+        this._$errorElement = $("<div>")
+            .addClass("form-text text-danger")
+            .insertAfter(this._$selectElement);
+
+        this.onChange = null;
+        this.onConflict = null;
+        this.onSuccess = null;
+
+        this._$selectElement.change(() => {
+            const seatNumber = that._$selectElement.val();
+            that.onChange && that.onChange(seatNumber);
+        });
+
+        this._$formElement.on("submit", function (e) {
+            if (this.checkValidity()) {
+                e.preventDefault();
+                that.submit();
             }
         });
-    };
 
-    seatSelector.onSelected = function (seat) {
-        $selectElement.val(seat.index);
-    };
+        this.addSeats = function (seats) {
+            $.each(seats, function (_, seat) {
+                if (seat.status === "available") {
+                    const $optionElement = $("<option>")
+                        .val(seat.index + 1)
+                        .text(seat.$element.text());
+                    that._$selectElement.append($optionElement);
+                }
+            });
+        };
 
-    seatSelector.onDeselected = function () {
-        $selectElement.val(null);
-    };
+        this.removeSeat = function (seatNumber) {
+            that._$selectElement.find("[value=" + seatNumber + "]").remove();
+        };
 
-    seatSelector.build();
+        this.selectSeat = function (seatNumber) {
+            that._$selectElement.val(seatNumber);
+        };
 
-    $selectElement.change(() => {
-        var index = $selectElement.val();
-        seatSelector.selectSeat(index);
-    });
+        this.submit = function () {
+            const formData = new FormData(that._$formElement[0]);
+            const formEntries = formData.entries();
+            const requestData = Object.fromEntries(formEntries);
 
-    // This is the the interactive seat selector logic.
+            $.ajax({
+                url: $formElement.attr("action"),
+                method: $formElement.attr("method").toUpperCase(),
+                contentType: "application/json",
+                data: JSON.stringify(requestData),
+            })
+                .done(function (responseData) {
+                    that._handleSuccess(requestData, responseData);
+                })
+                .fail(function (xhr) {
+                    if (xhr.status === 409) {
+                        that._handleConflict(requestData);
+                    }
+                });
+        };
+
+        this._handleConflict = function (requestData) {
+            const template = that._$selectElement.data("conflict-text");
+            that._$errorElement.text(
+                template.replace("{}", requestData.seatNumber)
+            );
+            that.onConflict && that.onConflict(requestData);
+        };
+
+        this._handleSuccess = function (requestData, responseData) {
+            that.onSuccess && that.onSuccess(requestData, responseData);
+        };
+    }
+
+    // This encapsulates the seat map logic.
     function InteractiveSeatSelector($mapElement) {
         var that = this;
-        this.maxSeats = 1;
+
+        this._initialFontSize = parseFloat($mapElement.css("font-size"));
+        this._idealParentWidth = $mapElement.data("scaled-for-parent-width");
+        this._seats = [];
+        this._selection = null;
+
+        // Set these before calling `build`.
         this.onInitialized = null;
         this.onSelected = null;
         this.onDeselected = null;
 
-        this._initialFontSize = parseFloat($mapElement.css("font-size"));
-        this._looksGoodAtParentWidth = $mapElement.data("scaled-for-parent-width");
-        this._$mapElement = $mapElement;
-        this._seats = [];
-        this._selections = [];
-
+        // Load the seat map into memory and tie up events.
         this.build = function () {
-            that._$mapElement.find(".seat").each((_, seatElement) => {
+            $mapElement.find(".seat").each((_, seatElement) => {
                 var $seatElement = $(seatElement);
-                var index = $seatElement.data("index");
-                var status = $seatElement.data("status");
-
-                that._seats[index] = {
-                    index: index,
-                    status: status,
-                    $element: $seatElement,
-                };
-
-                $seatElement.click(function () {
-                    var index = $(this).data("index");
-                    var seat = that._seats[index];
-                    if (seat.status === "selected") {
-                        that.deselectSeat(index);
-                    } else if (seat.status === "available") {
-                        that.selectSeat(index);
-                    }
-                });
+                that._addSeatToMemory($seatElement);
+                that._addSeatClickHandler($seatElement);
             });
 
             $(window).resize(() => that._scaleToFit());
             that._scaleToFit();
 
             that.onInitialized && that.onInitialized(that._seats);
-            that._$mapElement.addClass("initialized");
-        };
-
-        this.selectSeat = function (index) {
-            var seat = that._seats[index];
-            if (seat.status !== "available") {
-                return;
-            }
-
-            seat.status = "selected";
-            seat.$element.removeClass("available");
-            seat.$element.addClass("selected");
-
-            that._selections.push(seat);
-            if (that._selections.length > that.maxSeats) {
-                var previousSeat = that._selections.shift();
-                that.deselectSeat(previousSeat.index);
-            }
-
-            that.onSelected && that.onSelected(seat);
+            $mapElement.addClass("initialized");
         };
 
         this.deselectSeat = function (index) {
             var seat = that._seats[index];
-            if (seat.status !== "selected") {
+            if (!seat || seat.status !== "selected") {
                 return;
             }
 
@@ -139,19 +193,63 @@ function SeatSelector($element) {
             seat.$element.removeClass("selected");
             seat.$element.addClass("available");
 
-            that._selections = that._selections.filter(
-                (selectedSeat) => selectedSeat.index !== index
-            );
+            that._selection = null;
 
             that.onDeselected && that.onDeselected(seat);
         };
 
+        this.selectSeat = function (index) {
+            var seat = that._seats[index];
+            if (!seat) {
+                that._selection && this.deselectSeat(that._selection.index);
+                return;
+            } else if (seat.status !== "available") {
+                return;
+            }
+
+            seat.status = "selected";
+            seat.$element.removeClass("available");
+            seat.$element.addClass("selected");
+
+            that._selection && that.deselectSeat(that._selection.index);
+            that._selection = seat;
+
+            that.onSelected && that.onSelected(seat);
+        };
+
+        this.updateSeat = function (index, status) {
+            that._seats[index].status = status;
+            that._seats[index].$element.attr("class", "seat " + status);
+        };
+
+        this._addSeatToMemory = function ($seatElement) {
+            var index = $seatElement.data("index");
+            var status = $seatElement.data("status");
+            that._seats[index] = {
+                index: index,
+                status: status,
+                $element: $seatElement,
+            };
+        };
+
+        this._addSeatClickHandler = function ($seatElement) {
+            $seatElement.click(function () {
+                var index = $(this).data("index");
+                var seat = that._seats[index];
+                if (seat.status === "selected") {
+                    that.deselectSeat(index);
+                } else if (seat.status === "available") {
+                    that.selectSeat(index);
+                }
+            });
+        };
+
         this._scaleToFit = function () {
-            var parentWidth = that._$mapElement.parent().width();
-            if (parentWidth < that._looksGoodAtParentWidth) {
-                var scale = parentWidth / that._looksGoodAtParentWidth;
+            var parentWidth = $mapElement.parent().width();
+            if (parentWidth < that._idealParentWidth) {
+                var scale = parentWidth / that._idealParentWidth;
                 var newFontSize = that._initialFontSize * scale;
-                that._$mapElement.css("font-size", newFontSize + "px");
+                $mapElement.css("font-size", newFontSize + "px");
             }
         };
     }
