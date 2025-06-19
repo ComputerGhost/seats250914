@@ -10,13 +10,20 @@ namespace Public.Controllers;
 [Route("reservation")]
 public class ReservationController(IMediator mediator) : Controller
 {
+    [HttpGet("expired")]
+    public IActionResult TimeExpired()
+    {
+        Response.Cookies.Delete("seatLock");
+        return View();
+    }
+
     [HttpGet("new")]
     public IActionResult ReserveSeat()
     {
         var seatLock = GetSeatLockFromCookie();
         if (seatLock == null || seatLock.LockExpiration < DateTime.UtcNow)
         {
-            return SeatKeyExpired();
+            return RedirectToAction("Index", "Home");
         }
 
         // There is no need to verify the seat lock here.
@@ -36,7 +43,7 @@ public class ReservationController(IMediator mediator) : Controller
         var seatLock = GetSeatLockFromCookie();
         if (seatLock == null || seatLock.LockExpiration < DateTime.UtcNow)
         {
-            return SeatKeyExpired();
+            return RedirectToAction("Index", "Home");
         }
 
         // There is no need to verify the seat lock here.
@@ -48,7 +55,7 @@ public class ReservationController(IMediator mediator) : Controller
         var result = await mediator.Send(command);
         return result.Match(
             result => Reserved(),
-            error => SeatKeyExpired());
+            error => RedirectToAction(nameof(TimeExpired)));
 
         IActionResult Reserved()
         {
@@ -82,10 +89,5 @@ public class ReservationController(IMediator mediator) : Controller
         {
             return null;
         }
-    }
-
-    private IActionResult SeatKeyExpired()
-    {
-        return RedirectToAction("Index", "Home");
     }
 }
