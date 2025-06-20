@@ -1,7 +1,7 @@
 ﻿using Core.Application.Reservations;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Public.Extensions;
+using Presentation.Shared.FrameworkEnhancements.Extensions;
 using Public.Models.ViewModels;
 using System.Text.Json;
 

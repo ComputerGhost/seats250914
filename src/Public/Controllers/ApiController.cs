@@ -2,7 +2,7 @@
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Public.Extensions;
+using Presentation.Shared.FrameworkEnhancements.Extensions;
 using Public.Models.DTOs;
 
 namespace Public.Controllers;

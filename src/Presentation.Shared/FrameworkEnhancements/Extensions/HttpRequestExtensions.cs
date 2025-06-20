@@ -1,6 +1,7 @@
-﻿using System.Net;
+﻿using Microsoft.AspNetCore.Http;
+using System.Net;
 
-namespace CMS.Extensions;
+namespace Presentation.Shared.FrameworkEnhancements.Extensions;
 
 public static class HttpRequestExtensions
 {

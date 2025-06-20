@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using Public.Features.Localization.Extensions;
+using Presentation.Shared.Localization.Extensions;
 
 namespace Public.Features.Localization.TagHelpers;
 

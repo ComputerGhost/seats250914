@@ -1,6 +1,6 @@
 using CMS.Features.Authentication;
-using CMS.Features.Localization.Extensions;
 using Core.Application;
+using Presentation.Shared.Localization.Extensions;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,5 +1,5 @@
 using Core.Application;
-using Public.Features.Localization.Extensions;
+using Presentation.Shared.Localization.Extensions;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);

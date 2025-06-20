@@ -1,6 +1,7 @@
-﻿using Public.Features.Localization.Models;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Presentation.Shared.Localization.Models;
 
-namespace Public.Features.Localization.Extensions;
+namespace Presentation.Shared.Localization.Extensions;
 
 public static class ServiceCollectionExtensions
 {

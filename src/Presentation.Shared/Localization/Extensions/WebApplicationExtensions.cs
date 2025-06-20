@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Localization;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using CMS.Features.Localization.Models;
+using Presentation.Shared.Localization.Models;
 
-namespace CMS.Features.Localization.Extensions;
+namespace Presentation.Shared.Localization.Extensions;
 
 public static class WebApplicationExtensions
 {
