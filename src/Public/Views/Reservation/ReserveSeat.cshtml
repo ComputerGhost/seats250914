@@ -1,10 +1,28 @@
 ﻿@inject IViewLocalizer Localizer;
 @model ReserveSeatViewModel;
+
+@section Scripts
+{
+    <script>
+        window.addEventListener("load", function () {
+            const periodUntilExpiration = "@Model.TimeUntilExpirationPeriod";
+            const secondsUntilExpiration = periodToSeconds(periodUntilExpiration);
+            setTimeout(function () {
+                window.location = "@Url.Action("TimeExpired")";
+            }, secondsUntilExpiration * 1000);
+        });
+    </script>
+}
+
 <div class="container py-3">
     <h1>@Localizer["Seat Reservation"]</h1>
 
     <section>
-        @Localizer["<!-- seat instructions -->"]
+        @Localizer["<!-- seat information -->",
+            Model.SeatNumber,
+            Model.TimeUntilExpirationText,
+            Model.TimeUntilExpirationPeriod
+        ]
     </section>
     
     <form method="post">
@@ -21,7 +39,7 @@
                 <input asp-for="Name" class="form-control" maxlength="50" required>
             </div>
             <div class="mb-3">
-                <label asp-for="Email" class="form-label" />@Localizer["Email"]</label>
+                <label asp-for="Email" class="form-label">@Localizer["Email"]</label>
                 <input asp-for="Email" class="form-control" maxlength="255" required>
             </div>
             <div class="mb-3">

@@ -1,0 +1,8 @@
+@use "bootstrap";
+
+time.countdown {
+    @extend .text-nowrap;
+    @extend .bg-info-subtle;
+    @extend .px-1;
+    font-family: monospace;
+}
