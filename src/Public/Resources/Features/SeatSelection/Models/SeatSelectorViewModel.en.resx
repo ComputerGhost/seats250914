@@ -118,21 +118,57 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Available" xml:space="preserve">
-    <value>예약가능</value>
+    <value>Available</value>
   </data>
   <data name="On hold" xml:space="preserve">
-    <value>예약 대기중</value>
+    <value>On hold</value>
+  </data>
+  <data name="Reservations will close soon!" xml:space="preserve">
+    <value>Reservations will close soon!</value>
+  </data>
+  <data name="Reservations will open soon!" xml:space="preserve">
+    <value>Reservations will open soon!</value>
   </data>
   <data name="Reserve Seat" xml:space="preserve">
-    <value>좌석 예약하기</value>
+    <value>Reserve Seat</value>
   </data>
   <data name="Reserved" xml:space="preserve">
-    <value>예약됨</value>
+    <value>Reserved</value>
   </data>
   <data name="Seat" xml:space="preserve">
-    <value>좌석 선택</value>
+    <value>Seat</value>
   </data>
   <data name="Selected" xml:space="preserve">
-    <value>선택한 좌석</value>
+    <value>Selected</value>
+  </data>
+  <data name="We're out of seats!" xml:space="preserve">
+    <value>We're out of seats!</value>
+  </data>
+  <data name="Reservations are closed!" xml:space="preserve">
+    <value>Reservations are closed!</value>
+  </data>
+  <data name="&lt;!--details:OpeningSoon--&gt;" xml:space="preserve">
+    <value>Reservations will open {0}.</value>
+  </data>
+  <data name="&lt;!--details:ClosingSoon--&gt;" xml:space="preserve">
+    <value>Reservations will close {0}. Be sure to get your seat soon!</value>
+  </data>
+  <data name="&lt;!--details:OutOfSeatsTemporarily--&gt;" xml:space="preserve">
+    <value>Some of the reservations are still pending, so check back later to see if any seats become available.</value>
+  </data>
+  <data name="&lt;!--details:OutOfSeatsPermanently--&gt;" xml:space="preserve">
+    <value>All of the seats have been reserved. We're sorry that we have no more available seats.</value>
+  </data>
+  <data name="&lt;!--details:ClosedPerSchedule--&gt;" xml:space="preserve">
+    <value>Thank you to everyone who purchased a seat. We will see you at the event!</value>
+  </data>
+  <data name="&lt;!--details:ClosedManually--&gt;" xml:space="preserve">
+    <value>Reservations are closed right now. Please check back later.</value>
+  </data>
+  <data name="Seat {} is no longer available." xml:space="preserve">
+    <value>Seat {} is no longer available.</value>
+  </data>
+  <data name="Stage" xml:space="preserve">
+    <value>Stage</value>
   </data>
 </root>

@@ -118,21 +118,57 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Available" xml:space="preserve">
-    <value>Available</value>
+    <value>예약가능</value>
   </data>
   <data name="On hold" xml:space="preserve">
-    <value>On hold</value>
+    <value>예약 대기중</value>
+  </data>
+  <data name="Reservations will close soon!" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Reservations will open soon!" xml:space="preserve">
+    <value />
   </data>
   <data name="Reserve Seat" xml:space="preserve">
-    <value>Reserve Seat</value>
+    <value>좌석 예약하기</value>
   </data>
   <data name="Reserved" xml:space="preserve">
-    <value>Reserved</value>
+    <value>예약됨</value>
   </data>
   <data name="Seat" xml:space="preserve">
-    <value>Seat</value>
+    <value>좌석 선택</value>
   </data>
   <data name="Selected" xml:space="preserve">
-    <value>Selected</value>
+    <value>선택한 좌석</value>
+  </data>
+  <data name="We're out of seats!" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Reservations are closed!" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&lt;!--details:OpeningSoon--&gt;" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&lt;!--details:ClosingSoon--&gt;" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&lt;!--details:OutOfSeatsTemporarily--&gt;" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&lt;!--details:OutOfSeatsPermanently--&gt;" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&lt;!--details:ClosedPerSchedule--&gt;" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&lt;!--details:ClosedManually--&gt;" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Seat {} is no longer available." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Stage" xml:space="preserve">
+    <value />
   </data>
 </root>
