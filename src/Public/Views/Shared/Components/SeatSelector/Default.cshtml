@@ -24,10 +24,10 @@
     <div class="alert alert-info" role="alert">
         <h3 class="h4">
             <i class="bi bi-info-circle-fill"></i>
-            Reservations will open soon!
+            @Localizer["Reservations will open soon!"]
         </h3>
         <p class="mb-0">
-            Reservations will open Month dd, 2025 at HH:mm.
+            @Localizer["<!--details:OpeningSoon-->", "[TBD]"]
         </p>
     </div>
 }
@@ -36,11 +36,10 @@ else if (Model.SystemStatus == SystemStatus.ClosingSoon)
     <div class="alert alert-info" role="alert">
         <h3 class="h4">
             <i class="bi bi-info-circle-fill"></i>
-            Reservations will close soon!
+            @Localizer["Reservations will close soon!"]
         </h3>
         <p class="mb-0">
-            Reservations will close Month dd, 2025 at HH:mm.
-            Be sure to get your seat soon!
+            @Localizer["<!--details:ClosingSoon-->", "[TBD]"]
         </p>
     </div>
 }
@@ -49,11 +48,10 @@ else if (Model.SystemStatus == SystemStatus.OutOfSeatsTemporarily)
     <div class="alert alert-warning" role="alert">
         <h3 class="h4">
             <i class="bi bi-exclamation-triangle-fill"></i>
-            We're out of seats!
+            @Localizer["We're out of seats!"]
         </h3>
         <p class="mb-0">
-            Some of the reservations are still pending, 
-            so check back later to see if any seats become available.
+            @Localizer["<!--details:OutOfSeatsTemporarily-->"]
         </p>
     </div>
 }
@@ -62,11 +60,10 @@ else if (Model.SystemStatus == SystemStatus.OutOfSeatsPermanently)
     <div class="alert alert-danger" role="alert">
         <h3 class="h4">
             <i class="bi bi-exclamation-triangle-fill"></i>
-            We're out of seats!
+            @Localizer["We're out of seats!"]
         </h3>
         <p class="mb-0">
-            All of the seats have been reserved.
-            We're sorry that we have no more available seats.
+            @Localizer["<!--details:OutOfSeatsPermanently-->"]
         </p>
     </div>
 }
@@ -75,11 +72,10 @@ else if (Model.SystemStatus == SystemStatus.ClosedPerSchedule)
     <div class="alert alert-danger" role="alert">
         <h3 class="h4">
             <i class="bi bi-exclamation-triangle-fill"></i>
-            Reservations are closed!
+            @Localizer["Reservations are closed!"]
         </h3>
         <p class="mb-0">
-            Thank you to everyone who purchased a seat.
-            We will see you at the event!
+            @Localizer["<!--details:ClosedPerSchedule-->"]
         </p>
     </div>
 }
@@ -88,11 +84,10 @@ else if (Model.SystemStatus == SystemStatus.ClosedManually)
     <div class="alert alert-danger" role="alert">
         <h3 class="h4">
             <i class="bi bi-exclamation-triangle-fill"></i>
-            Reservations are closed!
+            @Localizer["Reservations are closed!"]
         </h3>
         <p class="mb-0">
-            Reservations are closed right now.
-            Please check back later.
+            @Localizer["<!--details:ClosedManually-->"]
         </p>
     </div>
 }
@@ -273,7 +268,7 @@ else if (Model.SystemStatus == SystemStatus.ClosedManually)
             <div class="empty-space" style="font-size: 3em"></div>
 
             <div class="stage">
-                Stage
+                @Localizer["Stage"]
             </div>
         </div>
     </div>
@@ -288,7 +283,7 @@ else if (Model.SystemStatus == SystemStatus.ClosedManually)
                     </label>
                     <select
                         class="form-select"
-                        data-conflict-text="Seat {} is no longer available."
+                        data-conflict-text="@Localizer["Seat {} is no longer available."]"
                         id="@(Model.IdPrefix)-seat"
                         name="seatNumber"
                         required
