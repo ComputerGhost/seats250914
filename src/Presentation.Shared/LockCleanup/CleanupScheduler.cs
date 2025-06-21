@@ -19,11 +19,14 @@ public class CleanupScheduler : BackgroundService
 
     public required int MaxWaitSeconds { get; set; }
 
+    /// <summary>
+    /// A short delay to ensure the expiration has definitely passed by cleanup time.
+    /// </summary>
+    public int ProcessingDelaySeconds { get; set; } = 1;
+
     public async Task ScheduleCleanup()
     {
-        // Add a short delay to ensure the expiration has definitely passed by cleanup time.
-        const int PROCESSING_DELAY = 1;
-        var secondsToExpire = await GetLockExpirationSeconds() + PROCESSING_DELAY;
+        var secondsToExpire = await GetLockExpirationSeconds() + ProcessingDelaySeconds;
         var when = DateTimeOffset.UtcNow.AddSeconds(secondsToExpire);
 
         lock (_scheduleLock)

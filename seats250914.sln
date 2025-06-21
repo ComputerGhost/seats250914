@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseMigrator", "databas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.Shared", "src\Presentation.Shared\Presentation.Shared.csproj", "{3E4BE61C-935D-4757-B863-F6EBDF8DAAB4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.Shared.UnitTests", "tests\Presentation.Shared.UnitTests\Presentation.Shared.UnitTests.csproj", "{272042FE-B029-49F3-A1BC-5391A1CD13C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{3E4BE61C-935D-4757-B863-F6EBDF8DAAB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E4BE61C-935D-4757-B863-F6EBDF8DAAB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E4BE61C-935D-4757-B863-F6EBDF8DAAB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{272042FE-B029-49F3-A1BC-5391A1CD13C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{272042FE-B029-49F3-A1BC-5391A1CD13C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{272042FE-B029-49F3-A1BC-5391A1CD13C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{272042FE-B029-49F3-A1BC-5391A1CD13C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +110,7 @@ Global
 		{2B04AB88-6BBD-46C2-98DF-9A1AE782ABC1} = {0D1CCD8C-16C6-4C41-9C22-D0D3C5A29698}
 		{D80951A5-E7F3-42A5-B000-69B35254C4E4} = {75EC31C6-6883-40B2-9B7D-B31865781312}
 		{3E4BE61C-935D-4757-B863-F6EBDF8DAAB4} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{272042FE-B029-49F3-A1BC-5391A1CD13C2} = {0D1CCD8C-16C6-4C41-9C22-D0D3C5A29698}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {34C3F124-280F-4113-AC8D-B0C2D4C7A017}
