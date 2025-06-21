@@ -16,6 +16,8 @@ body > footer {
 
 .navbar {
     @extend .text-bg-light;
+    @extend .border-bottom;
+    @extend .shadow;
 
     .nav-link {
         border-radius: 1em;
