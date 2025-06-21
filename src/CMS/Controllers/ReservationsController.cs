@@ -1,11 +1,11 @@
-﻿using CMS.Extensions;
-using CMS.ViewModels;
+﻿using CMS.ViewModels;
 using Core.Application.Reservations;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Presentation.Shared.FrameworkEnhancements.Extensions;
 using System.Diagnostics;
 
 namespace CMS.Controllers;

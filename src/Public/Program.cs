@@ -1,9 +1,11 @@
 using Core.Application;
-using Public.Features.Localization.Extensions;
+using Presentation.Shared.Localization.Extensions;
+using Presentation.Shared.LockCleanup;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMvc();
+builder.Services.AddCleanupScheduler(options => options.MaxWaitSeconds = 60 * 60);
 builder.Services.AddCore(options =>
 {
     builder.Configuration.Bind("InfrastructureOptions", options);

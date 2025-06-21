@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Localization;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 
-namespace Public.Features.Localization.Extensions;
+namespace Presentation.Shared.Localization.Extensions;
 
 public static class HttpContextExtensions
 {

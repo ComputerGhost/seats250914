@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Public.Features.Localization.Extensions;
-using Public.Features.Localization.Models;
+using Presentation.Shared.Localization.Extensions;
+using Presentation.Shared.Localization.Models;
 
-namespace Public.Features.Localization.ViewComponents;
+namespace Publish.Localization.ViewComponents;
 
 /// <summary>
 /// Dropdown menu to select a culture.

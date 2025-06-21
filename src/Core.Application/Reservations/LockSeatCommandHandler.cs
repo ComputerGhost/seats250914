@@ -48,6 +48,8 @@ internal class LockSeatCommandHandler : IRequestHandler<LockSeatCommand, ErrorOr
             return Error.Conflict();
         }
 
+        // It is imperative that this is not called until after the lock is created.
+        // Otherwise, the cleanup code might interfere with new seat locks.
         await UpdateSeatStatus(request.SeatNumber);
 
         return new LockSeatCommandResponse

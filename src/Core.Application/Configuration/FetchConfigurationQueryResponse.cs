@@ -3,6 +3,16 @@
 namespace Core.Application.Configuration;
 public class FetchConfigurationQueryResponse
 {
+    /// <summary>
+    /// Minimal valid configuration, useful for unit tests.
+    /// </summary>
+    public static FetchConfigurationQueryResponse DefaultForTesting => new();
+
+    private FetchConfigurationQueryResponse()
+    {
+        ScheduledOpenTimeZone = "UTC";
+    }
+
     internal FetchConfigurationQueryResponse(ConfigurationEntityModel entityModel)
     {
         ForceCloseReservations = entityModel.ForceCloseReservations;

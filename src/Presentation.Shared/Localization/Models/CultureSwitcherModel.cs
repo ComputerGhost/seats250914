@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Public.Features.Localization.Models;
+namespace Presentation.Shared.Localization.Models;
 
 public class CultureSwitcherModel
 {

@@ -1,7 +1,7 @@
 ﻿using Core.Application.Reservations;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Public.Extensions;
+using Presentation.Shared.FrameworkEnhancements.Extensions;
 using Public.Models.ViewModels;
 using System.Text.Json;
 
@@ -33,13 +33,13 @@ public class ReservationController(IMediator mediator) : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        // There is no need to verify the seat lock here.
-        // If the user has tampered with it, no harm done.
-        // We're just showing a page.
-
         return View(new ReserveSeatViewModel
         {
+            ServerTime = DateTimeOffset.UtcNow,
+
+            // Trust the lock from the cookie since it's only used for display.
             SeatNumber = seatLock.SeatNumber,
+            LockExpiration = seatLock.LockExpiration,
         });
     }
 
@@ -50,12 +50,10 @@ public class ReservationController(IMediator mediator) : Controller
         var seatLock = GetSeatLockFromCookie();
         if (seatLock == null || seatLock.LockExpiration < DateTime.UtcNow)
         {
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(TimeExpired));
         }
 
-        // There is no need to verify the seat lock here.
-        // If the user has tampered with it, the reservation will just fail.
-        // It's the same result as it expiring.
+        // The seat lock will be verified by the reservation code.
 
         var ipAddress = Request.GetClientIpAddress();
         var command = model.ToReserveSeatCommand(ipAddress, seatLock);
@@ -77,6 +75,13 @@ public class ReservationController(IMediator mediator) : Controller
         return View();
     }
 
+    /// <summary>
+    /// Get the seat lock that the user has saved.
+    /// </summary>
+    /// <remarks>
+    /// User-provided data should not be trusted without being verified,
+    /// but it's safe to use it for display purposes.
+    /// </remarks>
     private LockSeatCommandResponse? GetSeatLockFromCookie()
     {
         if (!Request.Cookies.TryGetValue("seatLock", out var cookie))
