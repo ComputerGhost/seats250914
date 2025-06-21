@@ -2,12 +2,67 @@
  * Helper functions
  */
 
+function periodToSeconds(period) {
+    const matches = period.match(/PT?(?:(\d+)M)?(?:(\d+)S)/);
+    const minutes = matches[1] ? parseInt(matches[1]) : 0;
+    const seconds = matches[2] ? parseInt(matches[2]) : 0;
+    return minutes * 60 + seconds;
+}
+
+function secondsToPeriod(totalSeconds) {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `PT${minutes}M${seconds}S`;
+}
+
 function setCookie(key, value, expires) {
     const encodedKey = encodeURIComponent(key);
     const encodedValue = encodeURIComponent(value);
     const formattedExpires = new Date(expires).toUTCString();
     document.cookie = `${encodedKey}=${encodedValue};expires=${formattedExpires};path=/`;
 }
+
+/**
+ * Countdown timer.
+ *
+ * This converts a static time display into a countdown timer.
+ *
+ * To use, simply add the `countdown` CSS class to a `<time`> element that has
+ * a period for its `datetime` attribute, formatted according to HTML5 specs.
+ *
+ * NOTE: Periods longer than PT59M59S are not supported.
+ */
+function Countdown($element) {
+    const that = this;
+    this.startTime = new Date();
+    this.duration = periodToSeconds($element.attr("datetime"));
+    this.timerId = setInterval(() => that.updateCountdown(), 500);
+
+    this.updateCountdown = function () {
+        const elapsed = (new Date() - that.startTime) / 1000;
+        var remaining = that.duration - elapsed;
+
+        if (remaining <= 0) {
+            clearInterval(that.timerId);
+            remaining = 0;
+        }
+
+        $element.attr("datetime", secondsToPeriod(remaining));
+        $element.text(secondsToDisplay(remaining));
+    };
+
+    function secondsToDisplay(totalSeconds) {
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = Math.floor(totalSeconds % 60);
+        return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+    }
+}
+
+window.addEventListener("load", function () {
+    $("time.countdown").each(function () {
+        new Countdown($(this));
+    });
+});
 
 /**
  * Lazy loader.

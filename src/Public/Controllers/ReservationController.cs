@@ -33,13 +33,13 @@ public class ReservationController(IMediator mediator) : Controller
             return RedirectToAction("Index", "Home");
         }
 
+        // Trust the lock from the cookie since it's only used for display.
+        var timeUntilExpiration = seatLock.LockExpiration - DateTimeOffset.UtcNow;
+
         return View(new ReserveSeatViewModel
         {
-            ServerTime = DateTimeOffset.UtcNow,
-
-            // Trust the lock from the cookie since it's only used for display.
             SeatNumber = seatLock.SeatNumber,
-            LockExpiration = seatLock.LockExpiration,
+            TimeUntilExpiration = timeUntilExpiration,
         });
     }
 

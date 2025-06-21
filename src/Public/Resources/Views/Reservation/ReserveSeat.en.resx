@@ -121,8 +121,8 @@
     <value>&lt;p&gt;Submitting this form creates a bindable contract between you and us. Additionally, we will save and use your data in order to provide quality service. For more information, please read our &lt;a href="~/legal/terms-of-service"&gt;Terms of Service&lt;/a&gt; and &lt;a href="~/legal/privacy-policy"&gt;Privacy Policy&lt;/a&gt;.&lt;/p&gt;</value>
   </data>
   <data name="&lt;!-- seat information --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;You have selected seat {seat-id}. Please fill out this form then proceed to the payment page. Your reservation will be confirmed within 24 hours after your payment is processed.&lt;/p&gt;
-&lt;p&gt;If this form is not completed in {countdown-timer}, then your seat will be made available for another fan to claim it.&lt;/p&gt;</value>
+    <value>&lt;p&gt;You have selected seat {0}. Please fill out this form then proceed to the payment page. Your reservation will be confirmed within 24 hours after your payment is processed.&lt;/p&gt;
+&lt;p&gt;If this form is not completed in &lt;time class="countdown" datetime="{2}"&gt;{1}&lt;/time&gt;, then your seat will be made available for another fan to claim it.&lt;/p&gt;</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>

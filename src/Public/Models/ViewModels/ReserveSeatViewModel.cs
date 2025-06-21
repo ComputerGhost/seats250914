@@ -7,9 +7,11 @@ public class ReserveSeatViewModel
 {
     /* Display only */
 
-    public required DateTimeOffset ServerTime { get; set; }
+    public required TimeSpan TimeUntilExpiration { get; set; }
 
-    public required DateTimeOffset LockExpiration { get; set; }
+    public string TimeUntilExpirationText => TimeUntilExpiration.ToString(@"mm\:ss");
+
+    public string TimeUntilExpirationPeriod => TimeUntilExpiration.ToString(@"\P\Tmm\Mss\S");
 
     public required int SeatNumber { get; set; }
 
