@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Could not lock seat." xml:space="preserve">
-    <value>Could not lock seat..</value>
+    <value>좌석을 예약할 수 없습니다.</value>
   </data>
 </root>
