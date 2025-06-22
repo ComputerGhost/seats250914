@@ -10,12 +10,12 @@ namespace Core.Infrastructure.Adapters;
 [ServiceImplementation]
 internal class SeatLocksDatabase(IDbConnection connection) : ISeatLocksDatabase
 {
-    public async Task ClearExpiredLocks(DateTimeOffset beforeDate)
+    public async Task ClearExpiredLocks(DateTimeOffset beforeTime)
     {
-        var sql = "DELETE FROM SeatLocks WHERE Expiration < @beforeDate";
+        var sql = "DELETE FROM SeatLocks WHERE Expiration < @beforeTime";
         await connection.ExecuteAsync(sql, new
         {
-            beforeDate,
+            beforeTime,
         });
     }
 

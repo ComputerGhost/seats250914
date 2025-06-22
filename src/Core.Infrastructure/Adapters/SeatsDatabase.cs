@@ -34,7 +34,7 @@ internal class SeatsDatabase(IDbConnection connection) : ISeatsDatabase
         return await connection.QueryAsync<SeatEntityModel>(sql);
     }
 
-    public async Task ResetLockedSeatStatuses()
+    public async Task ResetUnlockedSeatStatuses()
     {
         var sql = """
             UPDATE s

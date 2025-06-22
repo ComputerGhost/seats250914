@@ -30,6 +30,7 @@ public interface IAuthorizationChecker
     /// </summary>
     /// <remarks>
     /// If the user is not staff, all of the identity information is required.
+    /// A grace period is considered for the lock expiration.
     /// </remarks>
     /// <param name="seatNumber">Number of the seat to check.</param>
     /// <param name="key">Key to unlock a hold on the seat.</param>
