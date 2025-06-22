@@ -38,6 +38,10 @@ public class FetchConfigurationQueryResponse
     /// <summary>
     /// Additional time for user actions to account for latency.
     /// </summary>
+    /// <remarks>
+    /// This should only be used on expiration checks.
+    /// It should never be saved as part of an expiration.
+    /// </remarks>
     public int GracePeriodSeconds { get; set; }
 
     /// <summary>

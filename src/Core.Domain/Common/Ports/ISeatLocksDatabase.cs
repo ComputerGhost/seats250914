@@ -18,8 +18,8 @@ public interface ISeatLocksDatabase
     /// <remarks>
     /// Recommended to pass the current date plus the expiration timespan.
     /// </remarks>
-    /// <param name="beforeDate">Locks expiring before this date will be deleted.</param>
-    Task ClearExpiredLocks(DateTimeOffset beforeDate);
+    /// <param name="beforeTime">Locks expiring before this time will be deleted.</param>
+    Task ClearExpiredLocks(DateTimeOffset beforeTime);
 
     /// <summary>
     /// Marks a lock as not expiring.

@@ -112,6 +112,28 @@ public class LockSeatCommandHandlerTests
     }
 
     [TestMethod]
+    public async Task Handle_WhenSuccessful_SetsExpirationWithoutGracePeriod()
+    {
+        // Arrange
+        var configuration = new ConfigurationEntityModel
+        {
+            MaxSecondsToConfirmSeat = 60,
+            GracePeriodSeconds = 60,
+        };
+        MockConfigurationDatabase
+            .Setup(m => m.FetchConfiguration())
+            .ReturnsAsync(configuration);
+
+        // Act
+        var result = await Subject.Handle(Command, CancellationToken.None);
+
+        // Assert
+        var expiresInSeconds = (result.Value.LockExpiration - DateTimeOffset.UtcNow).TotalSeconds;
+        Assert.AreEqual(configuration.MaxSecondsToConfirmSeat, expiresInSeconds, 10);
+
+    }
+
+    [TestMethod]
     public async Task Handle_WhenReservationsAreClosed_ReturnsFailure()
     {
         // Arrange
