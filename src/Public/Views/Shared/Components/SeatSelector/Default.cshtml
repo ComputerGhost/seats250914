@@ -1,6 +1,7 @@
 ﻿@using Public.Features.SeatSelection.Models
 @using Public.Views.Shared.Components.Enumerations
 @inject IStringLocalizer<SeatSelectorViewModel> Localizer;
+@inject IHtmlLocalizer<SeatSelectorViewModel> HtmlLocalizer;
 @model SeatSelectorViewModel;
 
 @functions {
@@ -292,6 +293,9 @@ else if (Model.SystemStatus == SystemStatus.ClosedManually)
                     </select>
                 </div>
                 <button class="btn btn-primary">@Localizer["Reserve Seat"]</button>
+                <p class="form-text mb-0">
+                    @HtmlLocalizer["<!-- reserve seat disclosure -->", @Localizer["Reserve Seat"]]
+                </p>
             </div>
         </form>
     </div>
