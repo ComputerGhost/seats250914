@@ -54,7 +54,29 @@
         </div>
     </header>
 
-    <main data-bs-spy="scroll" data-bs-target="#navbar-menu" data-bs-smoothScroll="true">
+    @*
+        See Bootstrap PR #41016 for details about the bug I'm trying to fix.
+
+        The root margin needs to be as narrow as possible. This narrows the 
+        observable test area so that small sections are not skipped.
+
+        The root margin cannot be narrower than the intervals set in the 
+        thresholds. Otherwise, it might not be notified of a section being 
+        visible, causing no section to be "active".
+
+        Using these constraints, I have configured the scrollspy.
+
+        Unfortunately, a new problem is introduced: If the last section is not 
+        tall enough to reach the observable test area, then it can never be 
+        made "active"... I don't see an easy way to fix this.
+    *@
+    <main
+        data-bs-root-margin="-75px 0px -75% 0px"
+        data-bs-smooth-scroll="false"
+        data-bs-spy="scroll"
+        data-bs-target="#navbar-menu"
+        data-bs-threshold="0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0"
+    >
         @RenderBody()
     </main>
 

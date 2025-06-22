@@ -14,6 +14,10 @@ body > footer {
     font-size: map.get(bootstrap.$font-sizes, "6");
 }
 
+html {
+    scroll-padding-top: $header-height;
+}
+
 .navbar {
     @extend .text-bg-light;
     @extend .border-bottom;

@@ -132,7 +132,7 @@ function SeatSelector($element) {
 
     // This encapsulates the form logic.
     function SeatForm($formElement) {
-        var that = this;
+        const that = this;
 
         this._$formElement = $formElement;
         this._$selectElement = $formElement.find("select");
@@ -211,7 +211,7 @@ function SeatSelector($element) {
 
     // This encapsulates the seat map logic.
     function InteractiveSeatSelector($mapElement) {
-        var that = this;
+        const that = this;
 
         this._initialFontSize = parseFloat($mapElement.css("font-size"));
         this._idealParentWidth = $mapElement.data("scaled-for-parent-width");
