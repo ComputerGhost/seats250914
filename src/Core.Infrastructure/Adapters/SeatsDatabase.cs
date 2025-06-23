@@ -9,6 +9,20 @@ namespace Core.Infrastructure.Adapters;
 [ServiceImplementation]
 internal class SeatsDatabase(IDbConnection connection) : ISeatsDatabase
 {
+    public async Task<int> CountSeats(string seatStatus)
+    {
+        var sql = """
+            SELECT COUNT(*)
+            FROM Seats
+            LEFT JOIN SeatStatuses ON SeatStatuses.Id = Seats.SeatStatusId
+            WHERE SeatStatuses.Status = @seatStatus
+            """;
+        return await connection.QuerySingleAsync<int>(sql, new
+        {
+            seatStatus,
+        });
+    }
+
     public async Task<SeatEntityModel?> FetchSeat(int seatNumber)
     {
         var sql = """

@@ -2,7 +2,7 @@
 using ErrorOr;
 using MediatR;
 
-namespace Core.Application.Configuration;
+namespace Core.Application.System;
 internal class TestDatabaseQueryHandler : IRequestHandler<TestDatabaseQuery, ErrorOr<TestDatabaseQueryResponse>>
 {
     private readonly ITestDatabase _testDatabase;

@@ -19,8 +19,8 @@ internal class ConfigurationDatabase(IDbConnection connection) : IConfigurationD
     public async Task<bool> SaveConfiguration(ConfigurationEntityModel configuration)
     {
         var sql = """
-            INSERT INTO Configuration (ForceCloseReservations, ForceOpenReservations, GracePeriodSeconds, MaxSeatsPerPerson, MaxSeatsPerIPAddress, MaxSecondsToConfirmSeat, ScheduledOpenDateTime, ScheduledOpenTimeZone)
-            VALUES (@ForceCloseReservations, @ForceOpenReservations, @GracePeriodSeconds, @MaxSeatsPerPerson, @MaxSeatsPerIPAddress, @MaxSecondsToConfirmSeat, @ScheduledOpenDateTime, @ScheduledOpenTimeZone);
+            INSERT INTO Configuration (ForceCloseReservations, ForceOpenReservations, GracePeriodSeconds, MaxSeatsPerPerson, MaxSeatsPerIPAddress, MaxSecondsToConfirmSeat, ScheduledOpenDateTime, ScheduledOpenTimeZone, ScheduledCloseDateTime, ScheduledCloseTimeZone)
+            VALUES (@ForceCloseReservations, @ForceOpenReservations, @GracePeriodSeconds, @MaxSeatsPerPerson, @MaxSeatsPerIPAddress, @MaxSecondsToConfirmSeat, @ScheduledOpenDateTime, @ScheduledOpenTimeZone, @ScheduledCloseDateTime, @ScheduledCloseTimeZone);
             """;
         return await connection.ExecuteAsync(sql, configuration) > 0;
     }

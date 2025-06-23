@@ -1,7 +1,7 @@
 ﻿using Core.Domain.Common.Ports;
 using MediatR;
 
-namespace Core.Application.Configuration;
+namespace Core.Application.System;
 internal class SaveConfigurationHandler : IRequestHandler<SaveConfigurationCommand>
 {
     private readonly IConfigurationDatabase _configurationDatabase;

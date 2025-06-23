@@ -28,7 +28,11 @@
             @Localizer["Reservations will open soon!"]
         </h3>
         <p class="mb-0">
-            @Localizer["<!--details:OpeningSoon-->", "[TBD]"]
+            @HtmlLocalizer["<!--details:OpeningSoon-->",
+                Model.OpenTimeParameter,
+                Model.OpenTimeZone,
+                Model.OpenTimeDisplay
+            ]
         </p>
     </div>
 }
@@ -40,7 +44,11 @@ else if (Model.SystemStatus == SystemStatus.ClosingSoon)
             @Localizer["Reservations will close soon!"]
         </h3>
         <p class="mb-0">
-            @Localizer["<!--details:ClosingSoon-->", "[TBD]"]
+            @HtmlLocalizer["<!--details:ClosingSoon-->", 
+                Model.CloseTimeParameter,
+                Model.CloseTimeZone,
+                Model.OpenTimeDisplay
+            ]
         </p>
     </div>
 }
@@ -105,7 +113,7 @@ else if (Model.SystemStatus == SystemStatus.ClosedManually)
     class="row lazy-loaded"
     data-onload="loadSeatingWidget"
     data-priority="1"
-    data-reservation-page-url="@Model.ReservationPageUrl"
+    data-reservation-page-url="@Model.UrlForReservationPage"
 >
 
     @{ var mapClass = Model.IsOpen ? "col-lg-10 col-md-9" : "col-12"; }
@@ -276,7 +284,7 @@ else if (Model.SystemStatus == SystemStatus.ClosedManually)
 
     @{ var selectionClass = Model.IsOpen ? "col-lg-2 col-md-3" : "d-none"; }
     <div class="@selectionClass">
-        <form action="@Model.LockSeatUrl" method="post">
+        <form action="@Model.UrlForLockSeat" method="post">
             <div class="d-flex flex-column">
                 <div class="mb-3">
                     <label for="@(Model.IdPrefix)-seat" class="form-label w-100">

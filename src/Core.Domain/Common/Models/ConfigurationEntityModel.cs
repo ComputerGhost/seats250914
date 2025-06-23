@@ -1,7 +1,7 @@
 ﻿namespace Core.Domain.Common.Models;
 public class ConfigurationEntityModel
 {
-    public static ConfigurationEntityModel Default => new ConfigurationEntityModel
+    public static ConfigurationEntityModel Default => new()
     {
         ForceCloseReservations = true,
         ForceOpenReservations = false,
@@ -9,8 +9,10 @@ public class ConfigurationEntityModel
         MaxSeatsPerPerson = 4,
         MaxSeatsPerIPAddress = 10,
         MaxSecondsToConfirmSeat = 600,
+        ScheduledCloseDateTime = DateTimeOffset.UtcNow.AddMonths(1),
+        ScheduledCloseTimeZone = "UTC",
         ScheduledOpenDateTime = DateTimeOffset.UtcNow,
-        ScheduledOpenTimeZone = "Coordinated Universal Time",
+        ScheduledOpenTimeZone = "UTC",
     };
 
     /// <summary>
@@ -48,6 +50,16 @@ public class ConfigurationEntityModel
     /// A grace period should be added to this but not shown to the user.
     /// </remarks>
     public int MaxSecondsToConfirmSeat { get; set; }
+
+    /// <summary>
+    /// Instant in time in which reservations should close.
+    /// </summary>
+    public DateTimeOffset ScheduledCloseDateTime { get; set; }
+
+    /// <summary>
+    /// Display only. Timezone to be used to display <see cref="ScheduledCloseDateTime"/>.
+    /// </summary>
+    public string ScheduledCloseTimeZone { get; set; } = null!;
 
     /// <summary>
     /// Instant in time in which reservations should open.

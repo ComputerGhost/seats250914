@@ -1,5 +1,5 @@
-﻿using Core.Application.Configuration;
-using Core.Application.Reservations;
+﻿using Core.Application.Reservations;
+using Core.Application.System;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -81,6 +81,7 @@ public class CleanupSchedulerTests
         // Act
         await Task.Delay(TimeSpan.FromSeconds(Subject.MaxWaitSeconds));
         ++cleanCount;
+        await Task.Delay(TimeSpan.FromSeconds(Subject.ProcessingDelaySeconds));
 
         // Assert
         MockMediator.Verify(

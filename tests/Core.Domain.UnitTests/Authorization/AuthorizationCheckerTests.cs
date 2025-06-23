@@ -19,12 +19,8 @@ public class AuthorizationCheckerTests
     [TestInitialize]
     public void Initialize()
     {
-        Configuration = new()
-        {
-            ForceCloseReservations = false,
-            ForceOpenReservations = false,
-            ScheduledOpenDateTime = DateTime.UtcNow.AddYears(-1),
-        };
+        Configuration = ConfigurationEntityModel.Default;
+        Configuration.ForceCloseReservations = false;
 
         SeatLock = new SeatLockEntityModel
         {

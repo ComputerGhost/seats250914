@@ -1,7 +1,7 @@
 ﻿using Core.Domain.Common.Models;
 using MediatR;
 
-namespace Core.Application.Configuration;
+namespace Core.Application.System;
 public class SaveConfigurationCommand : IRequest
 {
     /// <summary>

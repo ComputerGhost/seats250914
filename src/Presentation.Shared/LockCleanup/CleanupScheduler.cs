@@ -1,4 +1,4 @@
-﻿using Core.Application.Configuration;
+﻿using Core.Application.System;
 using Core.Application.Reservations;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;

@@ -35,8 +35,8 @@ internal class AuthorizationChecker: IAuthorizationChecker
 
     public async Task<AuthorizationResult> GetLockSeatAuthorization(ConfigurationEntityModel configuration)
     {
-
-        if (!OpenChecker.AreReservationsOpen(configuration))
+        var openChecker = OpenChecker.FromConfiguration(configuration);
+        if (!openChecker.AreReservationsOpen())
         {
             return AuthorizationResult.ReservationsAreClosed;
         }
@@ -55,7 +55,9 @@ internal class AuthorizationChecker: IAuthorizationChecker
     public async Task<AuthorizationResult> GetReserveSeatAuthorization(int seatNumber, string key)
     {
         var configuration = await _configurationDatabase.FetchConfiguration();
-        if (!OpenChecker.AreReservationsOpen(configuration))
+
+        var openChecker = OpenChecker.FromConfiguration(configuration);
+        if (!openChecker.AreReservationsOpen())
         {
             return AuthorizationResult.ReservationsAreClosed;
         }

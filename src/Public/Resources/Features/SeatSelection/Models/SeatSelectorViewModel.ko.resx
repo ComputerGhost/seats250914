@@ -148,10 +148,10 @@
     <value>예약이 마감되었습니다!</value>
   </data>
   <data name="&lt;!--details:OpeningSoon--&gt;" xml:space="preserve">
-    <value>{0}부터 예약이 시작됩니다.</value>
+    <value>&lt;time datetime="{0}" data-timezone="{1}"&gt;{2}&lt;/time&gt;부터 예약이 시작됩니다.</value>
   </data>
   <data name="&lt;!--details:ClosingSoon--&gt;" xml:space="preserve">
-    <value>{0}에 예약이 마감됩니다. 서둘러 좌석을 확보하세요!</value>
+    <value>&lt;time datetime="{0}" data-timezone="{1}"&gt;{2}&lt;/time&gt;에 예약이 마감됩니다. 서둘러 좌석을 확보하세요!</value>
   </data>
   <data name="&lt;!--details:OutOfSeatsTemporarily--&gt;" xml:space="preserve">
     <value>일부 예약이 아직 확정되지 않아, 나중에 좌석이 다시 열릴 수 있습니다. 잠시 후 다시 확인해 주세요.</value>
