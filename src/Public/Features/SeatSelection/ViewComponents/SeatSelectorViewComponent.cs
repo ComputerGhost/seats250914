@@ -1,4 +1,5 @@
 ﻿using Core.Application.Seats;
+using Core.Application.System;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Public.Features.SeatSelection.Models;
@@ -15,12 +16,13 @@ public class SeatSelectorViewComponent(IMediator mediator) : ViewComponent
 {
     public async Task<IViewComponentResult> InvokeAsync(string idPrefix)
     {
-        var listSeatsResult = await mediator.Send(new ListSeatsQuery());
-        return View(new SeatSelectorViewModel(listSeatsResult)
+        var seatsList = await mediator.Send(new ListSeatsQuery());
+        var systemStatus = await mediator.Send(new FetchReservationsStatusQuery());
+        return View(new SeatSelectorViewModel(seatsList, systemStatus)
         {
             IdPrefix = idPrefix,
-            LockSeatUrl = Url.Action("LockSeat", "Api")!,
-            ReservationPageUrl = Url.Action("ReserveSeat", "Reservation")!,
+            UrlForLockSeat = Url.Action("LockSeat", "Api")!,
+            UrlForReservationPage = Url.Action("ReserveSeat", "Reservation")!,
         });
     }
 }

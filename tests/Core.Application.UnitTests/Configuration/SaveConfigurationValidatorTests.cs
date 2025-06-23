@@ -1,4 +1,4 @@
-﻿using Core.Application.Configuration;
+﻿using Core.Application.System;
 
 namespace Core.Application.UnitTests.Configuration;
 

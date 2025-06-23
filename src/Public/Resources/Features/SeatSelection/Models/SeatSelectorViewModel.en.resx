@@ -148,10 +148,10 @@
     <value>Reservations are closed!</value>
   </data>
   <data name="&lt;!--details:OpeningSoon--&gt;" xml:space="preserve">
-    <value>Reservations will open {0}.</value>
+    <value>Reservations will open &lt;time datetime="{0}" data-timezone="{1}"&gt;{2}&lt;/time&gt;.</value>
   </data>
   <data name="&lt;!--details:ClosingSoon--&gt;" xml:space="preserve">
-    <value>Reservations will close {0}. Be sure to get your seat soon!</value>
+    <value>Reservations will close &lt;time datetime="{0}" data-timezone="{1}"&gt;{2}&lt;/time&gt;. Be sure to get your seat soon!</value>
   </data>
   <data name="&lt;!--details:OutOfSeatsTemporarily--&gt;" xml:space="preserve">
     <value>Some of the reservations are still pending, so check back later to see if any seats become available.</value>

@@ -1,4 +1,4 @@
-﻿using Core.Application.Configuration;
+﻿using Core.Application.System;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 

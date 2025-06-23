@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Core.Application.Configuration;
+namespace Core.Application.System;
 public class SaveConfigurationValidator : AbstractValidator<SaveConfigurationCommand>
 {
     public SaveConfigurationValidator()
