@@ -172,6 +172,6 @@
     <value>무대</value>
   </data>
   <data name="&lt;!-- reserve seat disclosure --&gt;" xml:space="preserve">
-    <value>When you click "{0}", we will save and use your data in order to process your request. For more information about what we collect, please read our &lt;a href="~/legal/privacy-policy"&gt;Privacy Policy&lt;/a&gt;.</value>
+      <value>"{0}"을(를) 클릭하시면, 요청을 처리하기 위해 귀하의 데이터를 저장하고 사용할 수 있습니다. 저희가 수집하는 정보에 대한 자세한 내용은 &lt;a href="~/legal/privacy-policy"&gt;개인정보처리방침&lt;/a&gt;을 확인해 주세요.</value>
   </data>
 </root>
