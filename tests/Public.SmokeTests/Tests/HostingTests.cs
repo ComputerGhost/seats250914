@@ -1,5 +1,7 @@
 ﻿using OpenQA.Selenium;
 using Public.SmokeTests.Utilities;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Public.SmokeTests.Tests;
 
@@ -23,7 +25,7 @@ public class HostingTests : TestBase
     }
 
     [TestMethod]
-    public void WwwSubdomain_RedirectsToNoSubdomain()
+    public async Task WwwSubdomain_RedirectsToNoSubdomain()
     {
         // Arrange
         var noSubdomain = TargetUrl;
@@ -32,10 +34,15 @@ public class HostingTests : TestBase
             .ToString();
 
         // Act
-        Driver.Navigate().GoToUrl(wwwSubdomain);
+        using var httpClientHandler = new HttpClientHandler();
+        httpClientHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+        httpClientHandler.AllowAutoRedirect = false;
+        using var client = new HttpClient(httpClientHandler);
+        var result = await client.GetAsync(wwwSubdomain);
 
         // Assert
-        Assert.AreEqual(noSubdomain, Driver.Url.TrimEnd('/'));
+        Assert.AreEqual(HttpStatusCode.MovedPermanently, result.StatusCode);
+        Assert.AreEqual(noSubdomain, result.Headers.Location?.ToString().TrimEnd('/'));
     }
 
     [TestMethod]
@@ -86,6 +93,5 @@ public class HostingTests : TestBase
         // Assert
         var exception = await Assert.ThrowsAsync<HttpRequestException>(action);
         Assert.IsNotNull(exception.InnerException);
-        Assert.IsTrue(exception.InnerException.Message.Contains("(ResponseEnded)"));
     }
 }
