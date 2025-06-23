@@ -59,6 +59,10 @@ public class SaveConfigurationCommand : IRequest
             MaxSecondsToConfirmSeat = MaxSecondsToConfirmSeat,
             ScheduledOpenDateTime = ScheduledOpenDateTime,
             ScheduledOpenTimeZone = ScheduledOpenTimeZone,
+
+            // TODO: Set these properly. I have a ticket to do it already. Somewhere.
+            ScheduledCloseDateTime = ScheduledOpenDateTime.AddMonths(1),
+            ScheduledCloseTimeZone = ScheduledOpenTimeZone,
         };
     }
 }
