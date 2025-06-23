@@ -33,7 +33,7 @@ public class ConfigurationEditViewModel
     /* Form options */
 
     public IEnumerable<SelectListItem> ValidTimeZones => TimeZoneInfo.GetSystemTimeZones()
-        .Select(tz => new SelectListItem(tz.DisplayName, tz.StandardName));
+        .Select(tz => new SelectListItem(tz.DisplayName, tz.Id));
 
     /* Form fields */
 
