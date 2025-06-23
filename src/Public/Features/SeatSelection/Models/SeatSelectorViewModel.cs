@@ -1,57 +1,70 @@
 ﻿using Core.Application.Seats;
 using Core.Application.Common.Enumerations;
 using Public.Views.Shared.Components.Enumerations;
+using Core.Application.System;
+using Core.Domain.Scheduling;
 
 namespace Public.Features.SeatSelection.Models;
 
 public class SeatSelectorViewModel
 {
-    public SeatSelectorViewModel(ListSeatsQueryResponse listSeatsQueryResponse)
+    public SeatSelectorViewModel(ListSeatsQueryResponse seatsList, FetchReservationsStatusQueryResponse systemStatus)
     {
-        bool areOnHoldSeats = false;
-        bool areAvailableSeats = false;
+        SeatStatuses = seatsList.Data.ToDictionary(
+            seat => seat.SeatNumber,
+            seat => StatusEnumToString(seat.Status));
 
-        foreach (var seat in listSeatsQueryResponse.Data)
+        SystemStatus = systemStatus.Status switch
         {
-            SeatStatuses.Add(seat.SeatNumber, StatusEnumToString(seat.Status));
+            ReservationsStatus.OpeningLater => SystemStatus.OpeningSoon,
+            ReservationsStatus.OpenedManually => SystemStatus.Open,
+            ReservationsStatus.OpenedPerSchedule => SystemStatus.Open,
+            _ => Enum.Parse<SystemStatus>(systemStatus.Status.ToString())
+        };
 
-            areOnHoldSeats = areOnHoldSeats
-                || seat.Status == SeatStatus.Locked
-                || seat.Status == SeatStatus.AwaitingPayment;
+        // TODO: Handle "Closing soon".
 
-            areAvailableSeats = areAvailableSeats
-                || seat.Status == SeatStatus.Available;
-        }
+        // test overrride:
+        SystemStatus = SystemStatus.ClosingSoon;
 
-        if (areAvailableSeats)
-        {
-            SystemStatus = SystemStatus.Open;
-        }
-        else if (areOnHoldSeats)
-        {
-            SystemStatus = SystemStatus.OutOfSeatsTemporarily;
-        }
-        else
-        {
-            SystemStatus = SystemStatus.OutOfSeatsPermanently;
-        }
+        CloseTimeDisplay = FormatForDisplay(systemStatus.ScheduledCloseDateTime, systemStatus.ScheduledCloseTimeZone);
+        CloseTimeParameter = FormatForParameter(systemStatus.ScheduledCloseDateTime);
+        CloseTimeZone = systemStatus.ScheduledCloseTimeZone;
+        OpenTimeDisplay = FormatForDisplay(systemStatus.ScheduledOpenDateTime, systemStatus.ScheduledOpenTimeZone);
+        OpenTimeParameter = FormatForParameter(systemStatus.ScheduledOpenDateTime);
+        OpenTimeZone = systemStatus.ScheduledOpenTimeZone;
     }
 
+    public required string UrlForReservationPage { get; init; }
+    public required string UrlForLockSeat { get; init; }
     public required string IdPrefix { get; init; }
 
+    public string CloseTimeDisplay { get; init; }
+    public string CloseTimeParameter { get; init; }
+    public string CloseTimeZone { get; init; }
+    public string OpenTimeDisplay { get; init; }
+    public string OpenTimeParameter { get; init; }
+    public string OpenTimeZone { get; init; }
+
+    public IDictionary<int, string> SeatStatuses { get; init; } = new Dictionary<int, string>();
+    public SystemStatus SystemStatus { get; init; }
     public bool IsOpen => SystemStatus == SystemStatus.Open;
 
-    public required string LockSeatUrl { get; set; }
+    private static string FormatForDisplay(DateTimeOffset when, string timeZone)
+    {
+        var tz = TimeZoneInfo.FindSystemTimeZoneById(timeZone);
+        var localTime = TimeZoneInfo.ConvertTime(when, tz);
+        var offset = tz.GetUtcOffset(localTime);
 
-    public required string ReservationPageUrl { get; set; }
+        var timeFormat = "yyyy-MM-dd HH:mm";
+        var offsetFormat = (offset < TimeSpan.Zero ? @"\-" : "") + @"hh\:mm";
+        return $"{localTime.ToString(timeFormat)} UTC{offset.ToString(offsetFormat)}";
+    }
 
-    public IDictionary<int, string> SeatStatuses { get; set; } = new Dictionary<int, string>();
-
-    public SystemStatus SystemStatus { get; init; }
-
-    // TODO: open time
-
-    // TODO: close time
+    private static string FormatForParameter(DateTimeOffset when)
+    {
+        return when.ToString("yyyy-MM-ddTHH:mm");
+    }
 
     private static string StatusEnumToString(SeatStatus statusEnum)
     {

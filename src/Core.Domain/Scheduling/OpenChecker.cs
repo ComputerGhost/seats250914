@@ -1,30 +1,81 @@
-﻿using Core.Domain.Common.Models;
+﻿using Core.Domain.Common.Enumerations;
+using Core.Domain.Common.Models;
 using Core.Domain.Common.Ports;
 
 namespace Core.Domain.Scheduling;
 public class OpenChecker
 {
-    private readonly IConfigurationDatabase _configurationDatabase;
-
-    public OpenChecker(IConfigurationDatabase configurationDatabase)
+    public static OpenChecker FromConfiguration(ConfigurationEntityModel configuration)
     {
-        _configurationDatabase = configurationDatabase;
+        return new(configuration, null);
     }
 
-    public async Task<bool> AreReservationsOpen()
+    public static async Task<OpenChecker> FromDatabase(IConfigurationDatabase configuratinDatabase, ISeatsDatabase seatsDatabase)
     {
-        var configuration = await _configurationDatabase.FetchConfiguration();
-        return AreReservationsOpen(configuration);
+        var configuration = await configuratinDatabase.FetchConfiguration();
+        return new(configuration, seatsDatabase);
     }
 
-    public static bool AreReservationsOpen(ConfigurationEntityModel configuration)
+    private readonly ISeatsDatabase? _seatsDatabase;
+
+    private OpenChecker(ConfigurationEntityModel configuration, ISeatsDatabase? seatsDatabase)
     {
-        if (configuration.ForceCloseReservations || configuration.ForceOpenReservations)
+        IsForcedClosed = configuration.ForceCloseReservations;
+        IsForcedOpen = configuration.ForceOpenReservations;
+        ScheduledCloseDateTime = configuration.ScheduledCloseDateTime;
+        ScheduledCloseTimeZone = configuration.ScheduledCloseTimeZone;
+        ScheduledOpenDateTime = configuration.ScheduledOpenDateTime;
+        ScheduledOpenTimeZone = configuration.ScheduledOpenTimeZone;
+        _seatsDatabase = seatsDatabase;
+    }
+
+    public bool IsForcedClosed { get; set; }
+    public bool IsForcedOpen { get; set; }
+
+    public DateTimeOffset ScheduledCloseDateTime { get; set; }
+    public string ScheduledCloseTimeZone { get; set; }
+
+    public DateTimeOffset ScheduledOpenDateTime { get; set; }
+    public string ScheduledOpenTimeZone { get; set; }
+
+    public bool AreReservationsOpen()
+    {
+        if (IsForcedClosed || IsForcedOpen)
         {
-            return configuration.ForceOpenReservations;
+            return IsForcedOpen;
         }
 
         var now = DateTime.UtcNow;
-        return configuration.ScheduledOpenDateTime < now;
+        return ScheduledOpenDateTime < now && now < ScheduledCloseDateTime;
+    }
+
+    public async Task<ReservationsStatus> CalculateStatus()
+    {
+        if (_seatsDatabase == null)
+        {
+            throw new InvalidOperationException("The seats database adapter must be specified to use `CalculateStatus`.");
+        }
+
+        if (!AreReservationsOpen())
+        {
+            return IsForcedClosed
+                ? ReservationsStatus.ClosedManually
+                : ReservationsStatus.ClosedPerSchedule;
+        }
+
+        if (await _seatsDatabase.CountSeats(SeatStatus.Available.ToString()) == 0)
+        {
+            if (await _seatsDatabase.CountSeats(SeatStatus.Locked.ToString()) == 0
+                && await _seatsDatabase.CountSeats(SeatStatus.AwaitingPayment.ToString()) == 0)
+            {
+                return ReservationsStatus.OutOfSeatsPermanently;
+            }
+
+            return ReservationsStatus.OutOfSeatsTemporarily;
+        }
+
+        return IsForcedOpen
+            ? ReservationsStatus.OpenedManually
+            : ReservationsStatus.OpenedPerSchedule;
     }
 }

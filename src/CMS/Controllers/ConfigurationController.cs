@@ -1,5 +1,5 @@
 ﻿using CMS.ViewModels;
-using Core.Application.Configuration;
+using Core.Application.System;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

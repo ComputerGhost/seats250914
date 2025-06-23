@@ -4,6 +4,11 @@ namespace Core.Domain.Common.Ports;
 public interface ISeatsDatabase
 {
     /// <summary>
+    /// Counts the number of seats with a specified status.
+    /// </summary>
+    Task<int> CountSeats(string seatStatus);
+
+    /// <summary>
     /// Fetches a seat's basic info.
     /// </summary>
     /// <returns>The found seat, or null if not found.</returns>

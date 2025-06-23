@@ -1,6 +1,6 @@
 ﻿using Core.Domain.Common.Models;
 
-namespace Core.Application.Configuration;
+namespace Core.Application.System;
 public class FetchConfigurationQueryResponse
 {
     /// <summary>
@@ -71,6 +71,4 @@ public class FetchConfigurationQueryResponse
     /// Timezone to be used to display <see cref="ScheduledOpenDateTime"/>.
     /// </summary>
     public string ScheduledOpenTimeZone { get; set; }
-
-
 }
