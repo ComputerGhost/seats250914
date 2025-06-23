@@ -24,9 +24,6 @@ public class SeatSelectorViewModel
 
         // TODO: Handle "Closing soon".
 
-        // test overrride:
-        SystemStatus = SystemStatus.ClosingSoon;
-
         CloseTimeDisplay = FormatForDisplay(systemStatus.ScheduledCloseDateTime, systemStatus.ScheduledCloseTimeZone);
         CloseTimeParameter = FormatForParameter(systemStatus.ScheduledCloseDateTime);
         CloseTimeZone = systemStatus.ScheduledCloseTimeZone;
