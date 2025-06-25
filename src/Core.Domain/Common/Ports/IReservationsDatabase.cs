@@ -1,4 +1,4 @@
-﻿using Core.Domain.Common.Models;
+﻿using Core.Domain.Common.Models.Entities;
 
 namespace Core.Domain.Common.Ports;
 public interface IReservationsDatabase

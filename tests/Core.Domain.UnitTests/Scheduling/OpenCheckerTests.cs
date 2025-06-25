@@ -1,4 +1,4 @@
-﻿using Core.Domain.Common.Models;
+﻿using Core.Domain.Common.Models.Entities;
 using Core.Domain.Common.Ports;
 using Core.Domain.Scheduling;
 using Moq;
@@ -14,7 +14,7 @@ public class OpenCheckerTests
     private ConfigurationEntityModel Configuration { get; set; } = null!;
 
     [TestInitialize]
-    public async Task Initialize()
+    public void Initialize()
     {
         Configuration = new()
         {

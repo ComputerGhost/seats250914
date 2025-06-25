@@ -1,5 +1,5 @@
 ﻿using Core.Domain.Common.Exceptions;
-using Core.Domain.Common.Models;
+using Core.Domain.Common.Models.Entities;
 using Core.Domain.Common.Ports;
 using Core.Domain.DependencyInjection;
 using Dapper;

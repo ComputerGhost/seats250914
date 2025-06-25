@@ -1,4 +1,4 @@
-﻿using Core.Application.Common.Enumerations;
+﻿using Core.Domain.Common.Enumerations;
 using Core.Domain.Common.Ports;
 using ErrorOr;
 using MediatR;

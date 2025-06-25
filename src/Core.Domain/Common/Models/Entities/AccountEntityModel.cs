@@ -1,4 +1,4 @@
-﻿namespace Core.Domain.Common.Models;
+﻿namespace Core.Domain.Common.Models.Entities;
 public class AccountEntityModel
 {
     public bool IsEnabled { get; set; }

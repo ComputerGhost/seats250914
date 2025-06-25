@@ -1,5 +1,5 @@
 ﻿using Core.Application.Accounts;
-using Core.Domain.Common.Models;
+using Core.Domain.Common.Models.Entities;
 using Core.Domain.Common.Ports;
 using Moq;
 

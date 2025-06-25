@@ -1,4 +1,4 @@
-﻿namespace Core.Application.Common.Enumerations;
+﻿namespace Core.Domain.Common.Enumerations;
 public enum ReservationStatus
 {
     /// <summary>
