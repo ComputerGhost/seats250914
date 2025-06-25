@@ -1,4 +1,4 @@
-﻿namespace Core.Domain.Common.Models;
+﻿namespace Core.Domain.Common.Models.Entities;
 public class ReservationEntityModel
 {
     // If we're creating the reservation then we won't have an id yet.

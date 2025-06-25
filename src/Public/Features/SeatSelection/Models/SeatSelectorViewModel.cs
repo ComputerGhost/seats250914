@@ -1,8 +1,8 @@
 ﻿using Core.Application.Seats;
-using Core.Application.Common.Enumerations;
 using Public.Views.Shared.Components.Enumerations;
 using Core.Application.System;
 using Core.Domain.Scheduling;
+using Core.Domain.Common.Enumerations;
 
 namespace Public.Features.SeatSelection.Models;
 

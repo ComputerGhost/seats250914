@@ -23,27 +23,19 @@ internal class AuthorizationChecker: IAuthorizationChecker
         _seatLocksDatabase = seatLocksDatabase;
     }
 
-    private bool IsStaff { get; set; } = false;
-    private string IpAddress { get; set; } = null!;
-    private string EmailAddress { get; set; } = null!;
-
-    public async Task<AuthorizationResult> GetLockSeatAuthorization()
+    public async Task<AuthorizationResult> GetLockSeatAuthorization(IdentityModel identity)
     {
         var configuration = await _configurationDatabase.FetchConfiguration();
-        return await GetLockSeatAuthorization(configuration);
-    }
 
-    public async Task<AuthorizationResult> GetLockSeatAuthorization(ConfigurationEntityModel configuration)
-    {
         var openChecker = OpenChecker.FromConfiguration(configuration);
         if (!openChecker.AreReservationsOpen())
         {
             return AuthorizationResult.ReservationsAreClosed;
         }
 
-        if (!IsStaff)
+        if (!identity.IsStaff)
         {
-            if (await _seatLocksDatabase.CountLocksForIpAddress(IpAddress) >= configuration.MaxSeatsPerIPAddress)
+            if (await _seatLocksDatabase.CountLocksForIpAddress(identity.IpAddress) >= configuration.MaxSeatsPerIPAddress)
             {
                 return AuthorizationResult.TooManySeatLocksForIpAddress;
             }
@@ -52,7 +44,7 @@ internal class AuthorizationChecker: IAuthorizationChecker
         return AuthorizationResult.Success;
     }
 
-    public async Task<AuthorizationResult> GetReserveSeatAuthorization(int seatNumber, string key)
+    public async Task<AuthorizationResult> GetReserveSeatAuthorization(IdentityModel identity, int seatNumber, string key)
     {
         var configuration = await _configurationDatabase.FetchConfiguration();
 
@@ -62,15 +54,14 @@ internal class AuthorizationChecker: IAuthorizationChecker
             return AuthorizationResult.ReservationsAreClosed;
         }
 
-        if (!IsStaff)
+        if (!identity.IsStaff)
         {
-            if (EmailAddress == IAuthorizationChecker.UNKNOWN_EMAIL)
+            if (identity.Email == null)
             {
                 throw new Exception("Email address is required in authorization check.");
             }
 
-            var count = await _reservationsDatabase.CountActiveReservationsForEmailAddress(EmailAddress);
-            if (await _reservationsDatabase.CountActiveReservationsForEmailAddress(EmailAddress) >= configuration.MaxSeatsPerPerson)
+            if (await _reservationsDatabase.CountActiveReservationsForEmailAddress(identity.Email) >= configuration.MaxSeatsPerPerson)
             {
                 return AuthorizationResult.TooManyReservationsForEmail;
             }
@@ -93,12 +84,5 @@ internal class AuthorizationChecker: IAuthorizationChecker
         }
 
         return AuthorizationResult.Success;
-    }
-
-    public void SetUserIdentity(bool isStaff, string emailAddress, string ipAddress)
-    {
-        IsStaff = isStaff;
-        EmailAddress = emailAddress;
-        IpAddress = ipAddress;
     }
 }

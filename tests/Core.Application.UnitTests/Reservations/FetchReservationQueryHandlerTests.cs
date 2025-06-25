@@ -1,6 +1,6 @@
-﻿using Core.Application.Common.Enumerations;
-using Core.Application.Reservations;
-using Core.Domain.Common.Models;
+﻿using Core.Application.Reservations;
+using Core.Domain.Common.Enumerations;
+using Core.Domain.Common.Models.Entities;
 using Core.Domain.Common.Ports;
 using ErrorOr;
 using Moq;

@@ -1,5 +1,6 @@
 ﻿using Core.Domain.Authorization;
 using Core.Domain.Common.Models;
+using Core.Domain.Common.Models.Entities;
 using Core.Domain.Common.Ports;
 using Moq;
 
@@ -15,6 +16,8 @@ public class AuthorizationCheckerTests
 
     private ConfigurationEntityModel Configuration { get; set; } = null!;
     private SeatLockEntityModel SeatLock { get; set; } = null!;
+
+    private IdentityModel MinimalIdentity { get; set; }
 
     [TestInitialize]
     public void Initialize()
@@ -47,7 +50,13 @@ public class AuthorizationCheckerTests
             .ReturnsAsync(() => SeatLock);
 
         Subject = new(MockConfigurationDatabase.Object, MockReservationsDatabase.Object, MockSeatLocksDatabase.Object);
-        Subject.SetUserIdentity(true, "email", "ip address");
+
+        MinimalIdentity = new()
+        {
+            Email = "",
+            IpAddress = "",
+            IsStaff = true,
+        };
     }
 
     [TestMethod]
@@ -56,7 +65,7 @@ public class AuthorizationCheckerTests
         // Arrange
 
         // Act
-        var result = await Subject.GetLockSeatAuthorization();
+        var result = await Subject.GetLockSeatAuthorization(MinimalIdentity);
 
         // Assert
         Assert.IsTrue(result.IsAuthorized);
@@ -69,7 +78,7 @@ public class AuthorizationCheckerTests
         Configuration.ForceCloseReservations = true;
 
         // Act
-        var result = await Subject.GetLockSeatAuthorization();
+        var result = await Subject.GetLockSeatAuthorization(MinimalIdentity);
 
         // Assert
         Assert.IsFalse(result.IsAuthorized);
@@ -80,11 +89,11 @@ public class AuthorizationCheckerTests
     public async Task GetLockSeatAuthorization_WhenNotStaff_AndTooManyLocks_ReturnsTooManyLocks()
     {
         // Arrange
-        Subject.SetUserIdentity(false, "email", "ip address");
+        MinimalIdentity.IsStaff = false;
         Configuration.MaxSeatsPerIPAddress = 0;
 
         // Act
-        var result = await Subject.GetLockSeatAuthorization();
+        var result = await Subject.GetLockSeatAuthorization(MinimalIdentity);
 
         // Assert
         Assert.IsFalse(result.IsAuthorized);
@@ -97,7 +106,7 @@ public class AuthorizationCheckerTests
         // Arrange
 
         // Act
-        var result = await Subject.GetReserveSeatAuthorization(0, SeatLock.Key);
+        var result = await Subject.GetReserveSeatAuthorization(MinimalIdentity, 0, SeatLock.Key);
 
         // Assert
         Assert.IsTrue(result.IsAuthorized);
@@ -107,11 +116,11 @@ public class AuthorizationCheckerTests
     public async Task GetReserveSeatAuthorization_WhenTooManyReservations_ReturnsTooManyReservations()
     {
         // Arrange
-        Subject.SetUserIdentity(false, "email", "ip address");
+        MinimalIdentity.IsStaff = false;
         Configuration.MaxSeatsPerPerson = 0;
 
         // Act
-        var result = await Subject.GetReserveSeatAuthorization(0, SeatLock.Key);
+        var result = await Subject.GetReserveSeatAuthorization(MinimalIdentity, 0, SeatLock.Key);
 
         // Assert
         Assert.IsFalse(result.IsAuthorized);
@@ -127,7 +136,7 @@ public class AuthorizationCheckerTests
             .ReturnsAsync((SeatLockEntityModel?)null);
 
         // Act
-        var result = await Subject.GetReserveSeatAuthorization(0, SeatLock.Key);
+        var result = await Subject.GetReserveSeatAuthorization(MinimalIdentity, 0, SeatLock.Key);
 
         // Assert
         Assert.IsFalse(result.IsAuthorized);
@@ -142,7 +151,7 @@ public class AuthorizationCheckerTests
         var invalidKey = "invalid key";
 
         // Act
-        var result = await Subject.GetReserveSeatAuthorization(0, invalidKey);
+        var result = await Subject.GetReserveSeatAuthorization(MinimalIdentity, 0, invalidKey);
 
         // Assert
         Assert.IsFalse(result.IsAuthorized);
@@ -156,7 +165,7 @@ public class AuthorizationCheckerTests
         SeatLock.Expiration = DateTime.UtcNow.AddYears(-1);
 
         // Act
-        var result = await Subject.GetReserveSeatAuthorization(0, SeatLock.Key);
+        var result = await Subject.GetReserveSeatAuthorization(MinimalIdentity, 0, SeatLock.Key);
 
         // Assert
         Assert.IsFalse(result.IsAuthorized);
@@ -171,7 +180,7 @@ public class AuthorizationCheckerTests
         Configuration.GracePeriodSeconds = (int)TimeSpan.FromDays(1).TotalSeconds;
 
         // Act
-        var result = await Subject.GetReserveSeatAuthorization(0, SeatLock.Key);
+        var result = await Subject.GetReserveSeatAuthorization(MinimalIdentity, 0, SeatLock.Key);
 
         // Assert
         Assert.IsTrue(result.IsAuthorized);

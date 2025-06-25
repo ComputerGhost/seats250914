@@ -1,4 +1,5 @@
-﻿using ErrorOr;
+﻿using Core.Domain.Common.Models;
+using ErrorOr;
 using MediatR;
 
 namespace Core.Application.Reservations;
@@ -26,4 +27,10 @@ public class LockSeatCommand : IRequest<ErrorOr<LockSeatCommandResponse>>
     /// The number of the seat to be locked.
     /// </summary>
     public int SeatNumber { get; set; }
+
+    internal IdentityModel Identity => new()
+    {
+        IpAddress = IpAddress,
+        IsStaff = IsStaff,
+    };
 }

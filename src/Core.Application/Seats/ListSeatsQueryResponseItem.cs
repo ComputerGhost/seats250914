@@ -1,4 +1,4 @@
-﻿using Core.Application.Common.Enumerations;
+﻿using Core.Domain.Common.Enumerations;
 
 namespace Core.Application.Seats;
 public class ListSeatsQueryResponseItem

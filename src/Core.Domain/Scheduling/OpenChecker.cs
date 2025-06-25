@@ -1,5 +1,5 @@
 ﻿using Core.Domain.Common.Enumerations;
-using Core.Domain.Common.Models;
+using Core.Domain.Common.Models.Entities;
 using Core.Domain.Common.Ports;
 
 namespace Core.Domain.Scheduling;

@@ -1,4 +1,4 @@
-﻿using Core.Application.Common.Enumerations;
+﻿using Core.Domain.Common.Enumerations;
 
 namespace Core.Application.Reservations;
 public class ListReservationsQueryResponseItem

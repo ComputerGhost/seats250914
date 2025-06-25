@@ -1,4 +1,5 @@
-﻿using ErrorOr;
+﻿using Core.Domain.Common.Models;
+using ErrorOr;
 using MediatR;
 
 namespace Core.Application.Reservations;
@@ -51,4 +52,14 @@ public class ReserveSeatCommand : IRequest<ErrorOr<int>>
     /// Preferred langauge of the person reserving the seat.
     /// </summary>
     public string PreferredLanguage { get; set; } = null!;
+
+    internal IdentityModel Identity => new()
+    {
+        Email = Email,
+        IsStaff = IsStaff,
+        IpAddress = IpAddress,
+        Name = Name,
+        PhoneNumber = PhoneNumber,
+        PreferredLanguage = PreferredLanguage,
+    };
 }

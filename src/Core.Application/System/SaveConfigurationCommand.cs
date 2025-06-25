@@ -1,4 +1,4 @@
-﻿using Core.Domain.Common.Models;
+﻿using Core.Domain.Common.Models.Entities;
 using MediatR;
 
 namespace Core.Application.System;

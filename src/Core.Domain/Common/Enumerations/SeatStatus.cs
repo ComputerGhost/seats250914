@@ -1,5 +1,5 @@
 ﻿namespace Core.Domain.Common.Enumerations;
-internal enum SeatStatus
+public enum SeatStatus
 {
     /// <summary>
     /// Seat is available for anyone to choose.
