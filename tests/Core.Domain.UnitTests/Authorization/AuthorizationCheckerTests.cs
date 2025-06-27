@@ -159,7 +159,7 @@ public class AuthorizationCheckerTests
     }
 
     [TestMethod]
-    public async Task GetReserveSeatAuthorization_WhenKeyIsExpired_ReturnsKeyExpired()
+    public async Task GetReserveSeatAuthorization_WhenKeyIsExpired_ReturnsKeyIsExpired()
     {
         // Arrange
         SeatLock.Expiration = DateTime.UtcNow.AddYears(-1);
@@ -181,6 +181,77 @@ public class AuthorizationCheckerTests
 
         // Act
         var result = await Subject.GetReserveSeatAuthorization(MinimalIdentity, 0, SeatLock.Key);
+
+        // Assert
+        Assert.IsTrue(result.IsAuthorized);
+    }
+
+    [TestMethod]
+    public async Task GetUnlockSeatAuthorization_WithTestInitializeDefaults_ReturnsSuccess()
+    {
+        // Arrange
+
+        // Act
+        var result = await Subject.GetUnlockSeatAuthorization(0, SeatLock.Key);
+
+        // Assert
+        Assert.IsTrue(result.IsAuthorized);
+    }
+
+    [TestMethod]
+    public async Task GetUnlockSeatAuthorization_WhenLockDoesNotExist_ReturnsSeatIsNotLocked()
+    {
+        // Arrange
+        MockSeatLocksDatabase
+            .Setup(m => m.FetchSeatLock(It.IsAny<int>()))
+            .ReturnsAsync((SeatLockEntityModel?)null);
+
+        // Act
+        var result = await Subject.GetUnlockSeatAuthorization(0, SeatLock.Key);
+
+        // Assert
+        Assert.IsFalse(result.IsAuthorized);
+        Assert.AreEqual(AuthorizationRejectionReason.SeatIsNotLocked, result.FailureReason);
+    }
+
+    [TestMethod]
+    public async Task GetUnlockSeatAuthorization_WhenKeyIsInvalid_ReturnsKeyIsInvalid()
+    {
+        // Arrange
+        SeatLock.Key = "key";
+        var invalidKey = "invalid key";
+
+        // Act
+        var result = await Subject.GetUnlockSeatAuthorization(0, invalidKey);
+
+        // Assert
+        Assert.IsFalse(result.IsAuthorized);
+        Assert.AreEqual(AuthorizationRejectionReason.KeyIsInvalid, result.FailureReason);
+    }
+
+    [TestMethod]
+    public async Task GetUnlockSeatAuthorization_WhenKeyIsExpired_ReturnsKeyIsExpired()
+    {
+        // Arrange
+        SeatLock.Expiration = DateTime.UtcNow.AddYears(-1);
+
+        // Act
+        var result = await Subject.GetUnlockSeatAuthorization(0, SeatLock.Key);
+
+        // Assert
+        Assert.IsFalse(result.IsAuthorized);
+        Assert.AreEqual(AuthorizationRejectionReason.KeyIsExpired, result.FailureReason);
+    }
+
+    [TestMethod]
+    public async Task GetUnlockSeatAuthorization_WhenKeyIsExpired_ButWithinGracePeriod_ReturnsSuccess()
+    {
+        // Arrange
+        SeatLock.Expiration = DateTime.UtcNow.AddMinutes(-1);
+        Configuration.GracePeriodSeconds = (int)TimeSpan.FromDays(1).TotalSeconds;
+
+        // Act
+        var result = await Subject.GetUnlockSeatAuthorization(0, SeatLock.Key);
 
         // Assert
         Assert.IsTrue(result.IsAuthorized);

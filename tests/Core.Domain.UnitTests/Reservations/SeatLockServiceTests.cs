@@ -190,4 +190,36 @@ public class SeatLockServiceTests
         // Assert
         Assert.IsNull(result);
     }
+
+    [TestMethod]
+    public async Task UnlockSeat_DeletesLock()
+    {
+        // Arrange
+        const int SEAT_NUMBER = 1;
+
+        // Act
+        await Subject.UnlockSeat(SEAT_NUMBER);
+
+        // Assert
+        MockSeatLocksDatabase.Verify(m => m.DeleteLock(
+            It.Is<int>(p => p == SEAT_NUMBER)));
+    }
+
+    [TestMethod]
+    public async Task UnlockSeat_UpdatesSeatStatus()
+    {
+        // Arrange
+        const int SEAT_NUMBER = 1;
+
+        // Act
+        await Subject.UnlockSeat(SEAT_NUMBER);
+
+        // Assert
+        MockSeatsDatabase.Verify(m => m.UpdateSeatStatus(
+            It.Is<int>(p => p == SEAT_NUMBER),
+            It.Is<string>(p => p == SeatStatus.Available.ToString())));
+        MockMediator.Verify(m => m.Publish(
+            It.IsAny<SeatStatusChangedNotification>(),
+            It.IsAny<CancellationToken>()));
+    }
 }

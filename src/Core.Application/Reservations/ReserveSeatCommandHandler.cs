@@ -5,7 +5,7 @@ using ErrorOr;
 using MediatR;
 
 namespace Core.Application.Reservations;
-public class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, ErrorOr<int>>
+internal class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, ErrorOr<int>>
 {
     private readonly IAuthorizationChecker _authorizationChecker;
     private readonly IReservationService _reservationService;

@@ -1,4 +1,5 @@
 ﻿using Core.Application.Reservations;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 
 namespace Public.Models.ViewModels;
@@ -7,15 +8,19 @@ public class ReserveSeatViewModel
 {
     /* Display only */
 
+    [BindNever]
     public required TimeSpan TimeUntilExpiration { get; set; }
 
     public string TimeUntilExpirationText => TimeUntilExpiration.ToString(@"mm\:ss");
 
     public string TimeUntilExpirationPeriod => TimeUntilExpiration.ToString(@"\P\Tmm\Mss\S");
 
+    [BindNever]
     public required int SeatNumber { get; set; }
 
     /* Form fields */
+
+    public string Action { get; set; } = null!;
 
     public bool AgreeToTerms { get; set; }
 

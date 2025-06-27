@@ -45,28 +45,52 @@ public class ReservationController(IMediator mediator) : Controller
 
     [HttpPost("new")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ReserveSeat(ReserveSeatViewModel model)
+    public async Task<IActionResult> ReserveSeat([FromForm] ReserveSeatViewModel model)
+    {
+        return model.Action switch
+        {
+            "submit" => await ReserveSeat_Submit(model),
+            "cancel" => await ReserveSeat_Cancel(),
+            _ => throw new NotImplementedException(),
+        };
+    }
+
+    private async Task<IActionResult> ReserveSeat_Cancel()
     {
         var seatLock = GetSeatLockFromCookie();
-        if (seatLock == null || seatLock.LockExpiration < DateTime.UtcNow)
+        if (seatLock != null)
         {
-            return RedirectToAction(nameof(TimeExpired));
-        }
+            await mediator.Send(new UnlockSeatCommand
+            {
+                SeatKey = seatLock.SeatKey,
+                SeatNumber = seatLock.SeatNumber,
+            });
 
-        // The seat lock will be verified by the reservation code.
-
-        var ipAddress = Request.GetClientIpAddress();
-        var command = model.ToReserveSeatCommand(ipAddress, seatLock);
-        var result = await mediator.Send(command);
-        return result.Match(
-            result => Reserved(),
-            error => RedirectToAction(nameof(TimeExpired)));
-
-        IActionResult Reserved()
-        {
             Response.Cookies.Delete("seatLock");
-            return RedirectToAction(nameof(MakePayment));
         }
+
+        return RedirectToAction("Index", "Home");
+    }
+
+    private async Task<IActionResult> ReserveSeat_Submit(ReserveSeatViewModel model)
+    {
+        var seatLock = GetSeatLockFromCookie();
+        if (seatLock != null)
+        {
+            // The seat lock will be verified by the reservation code.
+            var ipAddress = Request.GetClientIpAddress();
+            var command = model.ToReserveSeatCommand(ipAddress, seatLock);
+            var result = await mediator.Send(command);
+
+            Response.Cookies.Delete("seatLock");
+
+            if (!result.IsError)
+            {
+                return RedirectToAction(nameof(MakePayment));
+            }
+        }
+
+        return RedirectToAction(nameof(TimeExpired));
     }
 
     [HttpGet("payment")]
