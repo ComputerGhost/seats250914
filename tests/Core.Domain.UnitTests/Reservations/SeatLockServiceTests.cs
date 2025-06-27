@@ -2,6 +2,7 @@
 using Core.Domain.Common.Models.Entities;
 using Core.Domain.Common.Ports;
 using Core.Domain.Reservations;
+using MediatR;
 using Moq;
 
 namespace Core.Domain.UnitTests.Reservations;
@@ -10,6 +11,7 @@ namespace Core.Domain.UnitTests.Reservations;
 public class SeatLockServiceTests
 {
     private ConfigurationEntityModel Configuration { get; set; } = null!;
+    private Mock<IMediator> MockMediator { get; set; } = null!;
     private Mock<ISeatLocksDatabase> MockSeatLocksDatabase { get; set; } = null!;
     private Mock<ISeatsDatabase> MockSeatsDatabase { get; set; } = null!;
     private SeatLockService Subject { get; set; } = null!;
@@ -24,6 +26,8 @@ public class SeatLockServiceTests
             .Setup(m => m.FetchConfiguration())
             .ReturnsAsync(() => Configuration);
 
+        MockMediator = new Mock<IMediator>();
+
         MockSeatLocksDatabase = new();
 
         MockSeatsDatabase = new();
@@ -32,6 +36,7 @@ public class SeatLockServiceTests
             .ReturnsAsync(true);
 
         Subject = new(
+            MockMediator.Object,
             mockConfigurationDatabase.Object,
             MockSeatLocksDatabase.Object,
             MockSeatsDatabase.Object);
@@ -74,6 +79,9 @@ public class SeatLockServiceTests
 
         // Assert
         MockSeatsDatabase.Verify(m => m.ResetUnlockedSeatStatuses());
+        MockMediator.Verify(m => m.Publish(
+            It.IsAny<SeatStatusChangedNotification>(),
+            It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -114,6 +122,9 @@ public class SeatLockServiceTests
         MockSeatsDatabase.Verify(m => m.UpdateSeatStatus(
             It.Is<int>(p => p == SEAT_NUMBER),
             It.Is<string>(p => p == SeatStatus.Locked.ToString())));
+        MockMediator.Verify(m => m.Publish(
+            It.IsAny<SeatStatusChangedNotification>(),
+            It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]

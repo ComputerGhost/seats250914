@@ -3,6 +3,7 @@ using Core.Domain.Common.Enumerations;
 using Core.Domain.Common.Models.Entities;
 using Core.Domain.Common.Ports;
 using Core.Domain.DependencyInjection;
+using MediatR;
 using System.Diagnostics;
 
 namespace Core.Domain.Reservations;
@@ -10,15 +11,18 @@ namespace Core.Domain.Reservations;
 [ServiceImplementation]
 internal class SeatLockService : ISeatLockService
 {
+    private readonly IMediator _mediator;
     private readonly IConfigurationDatabase _configurationDatabase;
     private readonly ISeatLocksDatabase _seatLocksDatabase;
     private readonly ISeatsDatabase _seatsDatabase;
 
     public SeatLockService(
+        IMediator mediator,
         IConfigurationDatabase configurationDatabase, 
         ISeatLocksDatabase seatLocksDatabase,
         ISeatsDatabase seatsDatabase)
     {
+        _mediator = mediator;
         _configurationDatabase = configurationDatabase;
         _seatLocksDatabase = seatLocksDatabase;
         _seatsDatabase = seatsDatabase;
@@ -67,5 +71,7 @@ internal class SeatLockService : ISeatLockService
     {
         var result = await _seatsDatabase.UpdateSeatStatus(seatNumber, status.ToString());
         Debug.Assert(result, "Updating the seat status should not have failed here.");
+
+        await _mediator.Publish(new SeatStatusChangedNotification(seatNumber, status));
     }
 }

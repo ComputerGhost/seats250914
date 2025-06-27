@@ -17,7 +17,7 @@ public class AuthorizationCheckerTests
     private ConfigurationEntityModel Configuration { get; set; } = null!;
     private SeatLockEntityModel SeatLock { get; set; } = null!;
 
-    private IdentityModel MinimalIdentity { get; set; }
+    private IdentityModel MinimalIdentity { get; set; } = null!;
 
     [TestInitialize]
     public void Initialize()

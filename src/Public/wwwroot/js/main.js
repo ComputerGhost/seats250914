@@ -105,9 +105,7 @@ function SeatSelector($element) {
     this._$reservationPageUrl = $element.data("reservation-page-url");
 
     const seatForm = new SeatForm($element.find("form"));
-    const seatMap = new InteractiveSeatSelector(
-        $element.find(".interactive-seat-selector")
-    );
+    const seatMap = new SeatMap($element.find(".interactive-seat-selector"));
 
     // The seat map and the select need to be in sync.
     seatForm.onChange = (seatNumber) => seatMap.selectSeat(seatNumber - 1);
@@ -128,6 +126,14 @@ function SeatSelector($element) {
         const seatLock = JSON.stringify(responseData);
         setCookie("seatLock", seatLock, responseData.lockExpiration);
         document.location = that._$reservationPageUrl;
+    };
+
+    var realTimeUpdates = new RealTimeSeatUpdates();
+    realTimeUpdates.onSeatRefreshed = function (seatNumber, newStatus) {
+        const updatedSeat = seatMap.updateSeat(seatNumber - 1, newStatus);
+        if (updatedSeat) {
+            seatForm.updateSeat(updatedSeat);
+        }
     };
 
     // This encapsulates the form logic.
@@ -168,7 +174,8 @@ function SeatSelector($element) {
         };
 
         this.removeSeat = function (seatNumber) {
-            that._$selectElement.find("[value=" + seatNumber + "]").remove();
+            const seat = that._$selectElement.find(`[value=${seatNumber}]`);
+            seat && seat.remove();
         };
 
         this.selectSeat = function (seatNumber) {
@@ -196,6 +203,28 @@ function SeatSelector($element) {
                 });
         };
 
+        this.updateSeat = function (seat) {
+            if (seat.status !== "available") {
+                that.removeSeat(seat.index + 1);
+            } else {
+                var $nextOption;
+                that._$selectElement.children().each(function () {
+                    $nextOption = $(this);
+                    return $nextOption.text() <= seat.$element.text();
+                });
+
+                const $optionElement = $("<option>")
+                    .val(seat.index + 1)
+                    .text(seat.$element.text());
+
+                if (seat.$element.text() === $nextOption.text()) {
+                    $nextOption.replaceWith($optionElement);
+                } else {
+                    $optionElement.insertBefore($nextOption);
+                }
+            }
+        };
+
         this._handleConflict = function (requestData) {
             const template = that._$selectElement.data("conflict-text");
             that._$errorElement.text(
@@ -210,7 +239,7 @@ function SeatSelector($element) {
     }
 
     // This encapsulates the seat map logic.
-    function InteractiveSeatSelector($mapElement) {
+    function SeatMap($mapElement) {
         const that = this;
 
         this._initialFontSize = parseFloat($mapElement.css("font-size"));
@@ -256,7 +285,7 @@ function SeatSelector($element) {
         this.selectSeat = function (index) {
             var seat = that._seats[index];
             if (!seat) {
-                that._selection && this.deselectSeat(that._selection.index);
+                that._selection && that.deselectSeat(that._selection.index);
                 return;
             } else if (seat.status !== "available") {
                 return;
@@ -272,9 +301,21 @@ function SeatSelector($element) {
             that.onSelected && that.onSelected(seat);
         };
 
-        this.updateSeat = function (index, status) {
-            that._seats[index].status = status;
-            that._seats[index].$element.attr("class", "seat " + status);
+        this.updateSeat = function (index, newStatus) {
+            const seat = that._seats[index];
+            if (!seat) {
+                return false;
+            }
+
+            const actualStatus =
+                seat.status === "selected" ? "available" : seat.status;
+            if (actualStatus === newStatus) {
+                return false;
+            }
+
+            seat.status = newStatus;
+            seat.$element.attr("class", "seat " + newStatus);
+            return seat;
         };
 
         this._addSeatToMemory = function ($seatElement) {
@@ -307,5 +348,38 @@ function SeatSelector($element) {
                 $mapElement.css("font-size", newFontSize + "px");
             }
         };
+    }
+
+    // This handles the real time seat updates logic.
+    function RealTimeSeatUpdates() {
+        const that = this;
+        this.onSeatRefreshed = null;
+
+        this._connection = new signalR.HubConnectionBuilder()
+            .withUrl("/api/watch-seats")
+            .build();
+
+        this._start = async function () {
+            try {
+                await that._connection.start();
+                console.log("Connected to `watch-seats` endpoint.");
+            } catch (err) {
+                console.error(err);
+                setTimeout(() => that._start(), 5000);
+            }
+        };
+
+        this._connection.on("SEATS_UPDATED", (seatStatuses) => {
+            if (that.onSeatRefreshed === null) {
+                return;
+            }
+
+            Object.entries(seatStatuses).forEach(([seatNumber, newStatus]) => {
+                that.onSeatRefreshed(seatNumber, newStatus);
+            });
+        });
+
+        this._connection.onclose(() => that._start());
+        this._start();
     }
 }
