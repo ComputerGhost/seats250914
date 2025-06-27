@@ -32,8 +32,13 @@ internal class SeatLockService : ISeatLockService
     {
         var configuration = await _configurationDatabase.FetchConfiguration();
         var gracePeriod = TimeSpan.FromSeconds(configuration.GracePeriodSeconds);
-        await _seatLocksDatabase.ClearExpiredLocks(DateTimeOffset.UtcNow + gracePeriod);
-        await _seatsDatabase.ResetUnlockedSeatStatuses();
+
+        var expiredLocks = await _seatLocksDatabase.FetchExpiredLocks(DateTimeOffset.UtcNow + gracePeriod);
+        foreach (var expiredLock in expiredLocks)
+        {
+            await _seatLocksDatabase.DeleteLock(expiredLock.SeatNumber);
+            await UpdateSeatStatus(expiredLock.SeatNumber, SeatStatus.Available);
+        }
     }
 
     public async Task<SeatLockEntityModel?> LockSeat(int seatNumber, string ipAddress)

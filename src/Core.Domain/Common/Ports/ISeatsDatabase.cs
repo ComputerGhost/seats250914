@@ -20,11 +20,6 @@ public interface ISeatsDatabase
     Task<IEnumerable<SeatEntityModel>> ListSeats();
 
     /// <summary>
-    /// For seats that no longer have a lock, reset their statuses to 'Available'.
-    /// </summary>
-    Task ResetUnlockedSeatStatuses();
-
-    /// <summary>
     /// Updates the status of the seat.
     /// </summary>
     /// <returns>

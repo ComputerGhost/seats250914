@@ -29,6 +29,9 @@ public class SeatLockServiceTests
         MockMediator = new Mock<IMediator>();
 
         MockSeatLocksDatabase = new();
+        MockSeatLocksDatabase
+            .Setup(m => m.FetchExpiredLocks(It.IsAny<DateTimeOffset>()))
+            .ReturnsAsync([]);
 
         MockSeatsDatabase = new();
         MockSeatsDatabase
@@ -61,24 +64,35 @@ public class SeatLockServiceTests
     public async Task ClearExpiredLocks_ForExpiringLocks_ClearsExpiredLocks()
     {
         // Arrange
+        var expiredLock = new SeatLockEntityModel { SeatNumber = 1, };
+        MockSeatLocksDatabase
+            .Setup(m => m.FetchExpiredLocks(It.IsAny<DateTimeOffset>()))
+            .ReturnsAsync([expiredLock]);
 
         // Act
         await Subject.ClearExpiredLocks();
 
         // Assert
-        MockSeatLocksDatabase.Verify(m => m.ClearExpiredLocks(It.IsAny<DateTimeOffset>()));
+        MockSeatLocksDatabase.Verify(m => m.DeleteLock(
+            It.Is<int>(p => p == expiredLock.SeatNumber)));
     }
 
     [TestMethod]
     public async Task ClearExpiredLocks_ForExpiringLocks_ResetsSeatStatuses()
     {
         // Arrange
+        var expiredLock = new SeatLockEntityModel { SeatNumber = 1, };
+        MockSeatLocksDatabase
+            .Setup(m => m.FetchExpiredLocks(It.IsAny<DateTimeOffset>()))
+            .ReturnsAsync([expiredLock]);
 
         // Act
         await Subject.ClearExpiredLocks();
 
         // Assert
-        MockSeatsDatabase.Verify(m => m.ResetUnlockedSeatStatuses());
+        MockSeatsDatabase.Verify(m => m.UpdateSeatStatus(
+            It.Is<int>(p => p == expiredLock.SeatNumber),
+            It.Is<string>(p => p == SeatStatus.Available.ToString())));
         MockMediator.Verify(m => m.Publish(
             It.IsAny<SeatStatusChangedNotification>(),
             It.IsAny<CancellationToken>()));
