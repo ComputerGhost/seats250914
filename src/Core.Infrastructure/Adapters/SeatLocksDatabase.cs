@@ -47,7 +47,7 @@ internal class SeatLocksDatabase(IDbConnection connection) : ISeatLocksDatabase
     public async Task<IEnumerable<SeatLockEntityModel>> FetchExpiredLocks(DateTimeOffset beforeTime)
     {
         var sql = """
-            SELECT SeatLocks.*, Seats.Number
+            SELECT SeatLocks.*, Seats.Number SeatNumber
             FROM SeatLocks
             INNER JOIN Seats ON Seats.Id = SeatLocks.SeatId
             WHERE Expiration < @beforeTime
@@ -61,7 +61,7 @@ internal class SeatLocksDatabase(IDbConnection connection) : ISeatLocksDatabase
     public async Task<SeatLockEntityModel?> FetchSeatLock(int seatNumber)
     {
         var sql = """
-            SELECT SeatLocks.*, Seats.Number
+            SELECT SeatLocks.*, Seats.Number SeatNumber
             FROM SeatLocks
             INNER JOIN Seats ON Seats.Id = SeatLocks.SeatId
             WHERE Seats.Number = @seatNumber
