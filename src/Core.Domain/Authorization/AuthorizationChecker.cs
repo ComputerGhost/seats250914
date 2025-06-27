@@ -85,4 +85,27 @@ internal class AuthorizationChecker: IAuthorizationChecker
 
         return AuthorizationResult.Success;
     }
+
+    public async Task<AuthorizationResult> GetUnlockSeatAuthorization(int seatNumber, string key)
+    {
+        var configuration = await _configurationDatabase.FetchConfiguration();
+
+        var lockEntity = await _seatLocksDatabase.FetchSeatLock(seatNumber);
+        if (lockEntity == null)
+        {
+            return AuthorizationResult.SeatIsNotLocked;
+        }
+
+        if (!SeatKeyUtilities.VerifyKey(lockEntity.Key, key))
+        {
+            return AuthorizationResult.KeyIsInvalid;
+        }
+
+        if (lockEntity.Expiration.AddSeconds(configuration.GracePeriodSeconds) <= DateTime.UtcNow)
+        {
+            return AuthorizationResult.KeyIsExpired;
+        }
+
+        return AuthorizationResult.Success;
+    }
 }

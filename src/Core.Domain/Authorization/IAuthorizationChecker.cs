@@ -9,6 +9,7 @@ public interface IAuthorizationChecker
     /// <remarks>
     /// If the user is not staff, the IP address of the identity information is required.
     /// </remarks>
+    /// <param name="identity">Identity of the one locking the seat.</param>
     Task<AuthorizationResult> GetLockSeatAuthorization(IdentityModel identity);
 
     /// <summary>
@@ -22,4 +23,11 @@ public interface IAuthorizationChecker
     /// <param name="seatNumber">Number of the seat to check.</param>
     /// <param name="key">Key to unlock a hold on the seat.</param>
     Task<AuthorizationResult> GetReserveSeatAuthorization(IdentityModel identity, int seatNumber,  string key);
+
+    /// <summary>
+    /// Whether user can unlock a specific locked seat.
+    /// </summary>
+    /// <param name="seatNumber">Number of the seat to check.</param>
+    /// <param name="key">Key to unlock a hold on the seat.</param>
+    Task<AuthorizationResult> GetUnlockSeatAuthorization(int seatNumber, string key);
 }

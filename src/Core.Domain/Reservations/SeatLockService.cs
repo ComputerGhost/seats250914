@@ -54,6 +54,12 @@ internal class SeatLockService : ISeatLockService
         return lockEntity;
     }
 
+    public async Task UnlockSeat(int seatNumber)
+    {
+        await _seatLocksDatabase.DeleteLock(seatNumber);
+        await UpdateSeatStatus(seatNumber, SeatStatus.Available);
+    }
+
     private async Task<SeatLockEntityModel?> CreateLock(int seatNumber, string ipAddress)
     {
         var configuration = await _configurationDatabase.FetchConfiguration();
