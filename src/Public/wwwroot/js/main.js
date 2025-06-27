@@ -135,6 +135,7 @@ function SeatSelector($element) {
             seatForm.updateSeat(updatedSeat);
         }
     };
+    realTimeUpdates.start();
 
     // This encapsulates the form logic.
     function SeatForm($formElement) {
@@ -358,8 +359,21 @@ function SeatSelector($element) {
         this._connection = new signalR.HubConnectionBuilder()
             .withUrl("/api/watch-seats")
             .build();
+        this._connection.on("SEATS_UPDATED", (seatStatuses) =>
+            this._onSeatsRefreshed(seatStatuses)
+        );
 
-        this._start = async function () {
+        window.addEventListener("pageshow", () => that.reloadStatuses());
+
+        this.reloadStatuses = async function () {
+            if (that.onSeatRefreshed !== null) {
+                $.getJSON("/api/seat-statuses", (statuses) =>
+                    this._onSeatsRefreshed(statuses)
+                );
+            }
+        };
+
+        this.start = async function () {
             try {
                 await that._connection.start();
                 console.log("Connected to `watch-seats` endpoint.");
@@ -368,17 +382,14 @@ function SeatSelector($element) {
             }
         };
 
-        this._connection.on("SEATS_UPDATED", (seatStatuses) => {
-            if (that.onSeatRefreshed === null) {
-                return;
+        this._onSeatsRefreshed = function (seatStatuses) {
+            if (that.onSeatRefreshed !== null) {
+                Object.entries(seatStatuses).forEach(
+                    ([seatNumber, newStatus]) => {
+                        that.onSeatRefreshed(seatNumber, newStatus);
+                    }
+                );
             }
-
-            Object.entries(seatStatuses).forEach(([seatNumber, newStatus]) => {
-                that.onSeatRefreshed(seatNumber, newStatus);
-            });
-        });
-
-        this._connection.onclose(() => that._start());
-        this._start();
+        };
     }
 }

@@ -2,7 +2,7 @@
 using Public.Views.Shared.Components.Enumerations;
 using Core.Application.System;
 using Core.Domain.Scheduling;
-using Core.Domain.Common.Enumerations;
+using Public.Features.SeatSelection.Extensions;
 
 namespace Public.Features.SeatSelection.Models;
 
@@ -12,7 +12,7 @@ public class SeatSelectorViewModel
     {
         SeatStatuses = seatsList.Data.ToDictionary(
             seat => seat.SeatNumber,
-            seat => StatusEnumToString(seat.Status));
+            seat => seat.Status.ToCssClass());
 
         SystemStatus = systemStatus.Status switch
         {
@@ -61,17 +61,5 @@ public class SeatSelectorViewModel
     private static string FormatForParameter(DateTimeOffset when)
     {
         return when.ToString("yyyy-MM-ddTHH:mm");
-    }
-
-    private static string StatusEnumToString(SeatStatus statusEnum)
-    {
-        return statusEnum switch
-        {
-            SeatStatus.Available => "available",
-            SeatStatus.Locked => "on-hold",
-            SeatStatus.AwaitingPayment => "on-hold",
-            SeatStatus.ReservationConfirmed => "reserved",
-            _ => throw new NotImplementedException()
-        };
     }
 }
