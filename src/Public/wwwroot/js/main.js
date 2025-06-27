@@ -365,7 +365,6 @@ function SeatSelector($element) {
                 console.log("Connected to `watch-seats` endpoint.");
             } catch (err) {
                 console.error(err);
-                setTimeout(() => that._start(), 5000);
             }
         };
 

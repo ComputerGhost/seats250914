@@ -9,7 +9,27 @@ namespace Public.Hubs;
 
 public class SeatsHub : Hub
 {
+    public const int MAX_CONNECTIONS = 300;
     public const string SEATS_UPDATED = nameof(SEATS_UPDATED);
+
+    private static int _activeConnections = 0;
+    private static readonly object _lock = new();
+
+    public override Task OnConnectedAsync()
+    {
+        lock (_lock)
+        {
+            if (_activeConnections >= MAX_CONNECTIONS)
+            {
+                Context.Abort();
+                return Task.CompletedTask;
+            }
+
+            ++_activeConnections;
+        }
+
+        return base.OnConnectedAsync();
+    }
 
     [ServiceImplementation]
     private class SeatStatusChangeHandler : ISeatChangeHandler
