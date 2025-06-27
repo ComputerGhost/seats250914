@@ -3,6 +3,7 @@ using Core.Domain.Common.Models;
 using Core.Domain.Common.Models.Entities;
 using Core.Domain.Common.Ports;
 using Core.Domain.Reservations;
+using MediatR;
 using Moq;
 
 namespace Core.Domain.UnitTests.Reservations;
@@ -10,6 +11,7 @@ namespace Core.Domain.UnitTests.Reservations;
 [TestClass]
 public class ReservationServiceTests
 {
+    private Mock<IMediator> MockMediator { get; set; } = null!;
     private Mock<IReservationsDatabase> MockReservationsDatabase { get; set; } = null!;
     private Mock<ISeatLocksDatabase> MockSeatLocksDatabase { get; set; } = null!;
     private Mock<ISeatsDatabase> MockSeatsDatabase { get; set; } = null!;
@@ -20,6 +22,8 @@ public class ReservationServiceTests
     [TestInitialize]
     public void Initialize()
     {
+        MockMediator = new();
+
         MockReservationsDatabase = new();
         MockReservationsDatabase
             .Setup(m => m.FetchReservation(It.IsAny<int>()))
@@ -39,6 +43,7 @@ public class ReservationServiceTests
             .ReturnsAsync(true);
 
         Subject = new(
+            MockMediator.Object,
             MockReservationsDatabase.Object, 
             MockSeatLocksDatabase.Object, 
             MockSeatsDatabase.Object);
@@ -89,6 +94,9 @@ public class ReservationServiceTests
         MockSeatsDatabase.Verify(m => m.UpdateSeatStatus(
             It.Is<int>(p => p == SEAT_NUMBER),
             It.Is<string>(p => p == SeatStatus.ReservationConfirmed.ToString())));
+        MockMediator.Verify(m => m.Publish(
+            It.IsAny<SeatStatusChangedNotification>(),
+            It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -155,6 +163,9 @@ public class ReservationServiceTests
         MockSeatsDatabase.Verify(m => m.UpdateSeatStatus(
             It.Is<int>(p => p == SEAT_NUMBER),
             It.Is<string>(p => p == SeatStatus.Available.ToString())));
+        MockMediator.Verify(m => m.Publish(
+            It.IsAny<SeatStatusChangedNotification>(),
+            It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -250,6 +261,9 @@ public class ReservationServiceTests
         MockSeatsDatabase.Verify(m => m.UpdateSeatStatus(
             It.Is<int>(p => p == SEAT_NUMBER),
             It.Is<string>(p => p == SeatStatus.AwaitingPayment.ToString())));
+        MockMediator.Verify(m => m.Publish(
+            It.IsAny<SeatStatusChangedNotification>(),
+            It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -298,6 +312,9 @@ public class ReservationServiceTests
         // Assert
         MockSeatsDatabase.Verify(
             m => m.UpdateSeatStatus(It.IsAny<int>(), It.IsAny<string>()),
+            Times.Never);
+        MockMediator.Verify(
+            m => m.Publish(It.IsAny<SeatStatusChangedNotification>(), It.IsAny<CancellationToken>()),
             Times.Never);
     }
 }

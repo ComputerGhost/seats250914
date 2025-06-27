@@ -1,7 +1,10 @@
 using Core.Application;
+using Core.Domain.DependencyInjection;
 using Presentation.Shared.Localization.Extensions;
 using Presentation.Shared.LockCleanup;
+using Public.Hubs;
 using System.Globalization;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMvc();
@@ -19,9 +22,12 @@ builder.Services.AddMyLocalization(options =>
     ];
     options.DefaultCulture = new CultureInfo("en");
 });
+builder.Services.AddServiceImplementations(Assembly.GetExecutingAssembly());
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 app.MapControllers();
+app.MapHub<SeatsHub>("/api/watch-seats");
 app.UseStaticFiles();
 //app.UseExceptionHandler("/Error");
 //app.UseStatusCodePagesWithReExecute("/Error/{0}");

@@ -3,6 +3,7 @@ using Core.Domain.Common.Models;
 using Core.Domain.Common.Models.Entities;
 using Core.Domain.Common.Ports;
 using Core.Domain.DependencyInjection;
+using MediatR;
 using System.Diagnostics;
 
 namespace Core.Domain.Reservations;
@@ -10,15 +11,18 @@ namespace Core.Domain.Reservations;
 [ServiceImplementation]
 internal class ReservationService : IReservationService
 {
+    private readonly IMediator _mediator;
     private readonly IReservationsDatabase _reservationsDatabase;
     private readonly ISeatLocksDatabase _seatLocksDatabase;
     private readonly ISeatsDatabase _seatsDatabase;
 
     public ReservationService(
+        IMediator mediator,
         IReservationsDatabase reservationsDatabase,
         ISeatLocksDatabase seatLocksDatabase,
         ISeatsDatabase seatsDatabase)
     {
+        _mediator = mediator;
         _reservationsDatabase = reservationsDatabase;
         _seatLocksDatabase = seatLocksDatabase;
         _seatsDatabase = seatsDatabase;
@@ -99,5 +103,7 @@ internal class ReservationService : IReservationService
     {
         var result = await _seatsDatabase.UpdateSeatStatus(seatNumber, status.ToString());
         Debug.Assert(result, $"Updating the status of seat {seatNumber} should not have failed here.");
+
+        await _mediator.Publish(new SeatStatusChangedNotification(seatNumber, status));
     }
 }

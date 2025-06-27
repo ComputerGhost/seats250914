@@ -1,6 +1,5 @@
 ﻿using Core.Domain.DependencyInjection;
 using Core.Infrastructure;
-using MediatR.Behaviors.Authorization.Extensions.DependencyInjection;
 using MediatR.Extensions.FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -25,9 +24,6 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddFluentValidation([assembly]);
-
-        services.AddMediatorAuthorization(assembly);
-        services.AddAuthorizersFromAssembly(assembly);
 
         return services;
     }

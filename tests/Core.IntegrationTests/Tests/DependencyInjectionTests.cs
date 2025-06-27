@@ -44,6 +44,9 @@ public class DependencyInjectionTests
             return [];
         }
 
-        return constructor.GetParameters().Select(x => x.ParameterType);
+        return constructor
+            .GetParameters()
+            .Where(p => !p.IsOptional)
+            .Select(p => p.ParameterType);
     }
 }

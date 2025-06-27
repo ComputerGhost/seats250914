@@ -13,15 +13,6 @@ public interface ISeatLocksDatabase
      */
 
     /// <summary>
-    /// Deletes locks from the database that have expired.
-    /// </summary>
-    /// <remarks>
-    /// Recommended to pass the current date plus the expiration timespan.
-    /// </remarks>
-    /// <param name="beforeTime">Locks expiring before this time will be deleted.</param>
-    Task ClearExpiredLocks(DateTimeOffset beforeTime);
-
-    /// <summary>
     /// Marks a lock as not expiring.
     /// </summary>
     /// <remarks>
@@ -50,6 +41,14 @@ public interface ISeatLocksDatabase
     /// <param name="seatLockEntity">Information for the lock to create.</param>
     /// <returns>True if successful; false if the seat doesn't exist or is already locked.</returns>
     Task<bool> LockSeat(SeatLockEntityModel seatLockEntity);
+
+    /// <summary>
+    /// Fetches locks from the database that have expired.
+    /// </summary>
+    /// <remarks>
+    /// Recommended to pass the current date plus the expiration timespan.
+    /// </remarks>
+    Task<IEnumerable<SeatLockEntityModel>> FetchExpiredLocks(DateTimeOffset beforeTime);
 
     /// <summary>
     /// Returns the lock assigned to the locked seat.
