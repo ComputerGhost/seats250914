@@ -5,6 +5,9 @@ public class SaveConfigurationValidator : AbstractValidator<SaveConfigurationCom
 {
     public SaveConfigurationValidator()
     {
+        RuleFor(p => p.ScheduledCloseTimeZone)
+            .Must(BeValidTimeZone);
+
         RuleFor(p => p.ScheduledOpenTimeZone)
             .Must(BeValidTimeZone);
 

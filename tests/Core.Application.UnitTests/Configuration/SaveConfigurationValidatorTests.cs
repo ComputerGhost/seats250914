@@ -13,6 +13,7 @@ public class SaveConfigurationValidatorTests
     {
         Command = new SaveConfigurationCommand
         {
+            ScheduledCloseTimeZone = "UTC",
             ScheduledOpenTimeZone = "UTC",
         };
 
@@ -23,6 +24,7 @@ public class SaveConfigurationValidatorTests
     public void Model_WhenValid_Passes()
     {
         // Arrange
+        Command.ScheduledCloseTimeZone = "UTC";
         Command.ScheduledOpenTimeZone = "UTC";
 
         // Act
@@ -48,6 +50,32 @@ public class SaveConfigurationValidatorTests
 
         // Assert
         Assert.AreEqual(pass, result.IsValid);
+    }
+
+    [TestMethod]
+    public void ScheduledCloseTimeZone_WhenInvalid_Fails()
+    {
+        // Arrange
+        Command.ScheduledCloseTimeZone = "invalid";
+
+        // Act
+        var result = Subject.Validate(Command);
+
+        // Assert
+        Assert.IsFalse(result.IsValid);
+    }
+
+    [TestMethod]
+    public void ScheduledCloseTimeZone_WhenEmpty_Fails()
+    {
+        // Arrange
+        Command.ScheduledCloseTimeZone = "";
+
+        // Act
+        var result = Subject.Validate(Command);
+
+        // Assert
+        Assert.IsFalse(result.IsValid);
     }
 
     [TestMethod]

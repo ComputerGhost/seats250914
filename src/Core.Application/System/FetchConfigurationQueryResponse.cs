@@ -10,6 +10,7 @@ public class FetchConfigurationQueryResponse
 
     private FetchConfigurationQueryResponse()
     {
+        ScheduledCloseTimeZone = "UTC";
         ScheduledOpenTimeZone = "UTC";
     }
 
@@ -21,6 +22,8 @@ public class FetchConfigurationQueryResponse
         MaxSeatsPerPerson = entityModel.MaxSeatsPerPerson;
         MaxSeatsPerIPAddress = entityModel.MaxSeatsPerIPAddress;
         MaxSecondsToConfirmSeat = entityModel.MaxSecondsToConfirmSeat;
+        ScheduledCloseDateTime = entityModel.ScheduledCloseDateTime;
+        ScheduledCloseTimeZone = entityModel.ScheduledCloseTimeZone;
         ScheduledOpenDateTime = entityModel.ScheduledOpenDateTime;
         ScheduledOpenTimeZone = entityModel.ScheduledOpenTimeZone;
     }
@@ -61,6 +64,16 @@ public class FetchConfigurationQueryResponse
     /// A grace period should be added to this but not shown to the user.
     /// </remarks>
     public int MaxSecondsToConfirmSeat { get; set; }
+
+    /// <summary>
+    /// Instant in time in which reservations should close.
+    /// </summary>
+    public DateTimeOffset ScheduledCloseDateTime { get; set; }
+
+    /// <summary>
+    /// Timezone to be used to display <see cref="ScheduledCloseDateTime"/>
+    /// </summary>
+    public string ScheduledCloseTimeZone { get; set; }
 
     /// <summary>
     /// Instant in time in which reservations should open.
