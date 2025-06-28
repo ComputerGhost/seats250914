@@ -26,6 +26,15 @@
                 </div>
             </div>
 
+            <div class="mb-3">
+                <label asp-for="ScheduledCloseDate" class="form-label">Scheduled close date</label>
+                <div class="input-group">
+                    <input asp-for="ScheduledCloseDate" class="form-control" aria-label="Scheduled close date" required>
+                    <input asp-for="ScheduledCloseTime" step="1" class="form-control" aria-label="Scheduled close time" required>
+                    <select asp-for="ScheduledCloseTimeZone" asp-items="Model.ValidTimeZones" class="form-select" aria-label="Scheduled close time zone" required></select>
+                </div>
+            </div>
+
             <fieldset class="border rounded-3 p-3 mb-3">
                 <legend class="float-none w-auto m-0 px-3 fs-6">강제 예약 설정</legend>
                 <div class="form-check">
@@ -82,7 +91,7 @@
 
             <div class="mb-3">
                 <label asp-for="GracePeriodSeconds" class="form-label">Grace period (in seconds)</label>
-                <input asp-for="GracePeriodSeconds" class="form-control w-auto" aria-describedby="GracePeriodSeconds-help min="0" required>
+                <input asp-for="GracePeriodSeconds" class="form-control w-auto" aria-describedby="GracePeriodSeconds-help" min="0" required>
                 <div id="GracePeriodSeconds-help" class="form-text">
                     This time is added to any time limits to account for delays over the Internet.
                 </div>

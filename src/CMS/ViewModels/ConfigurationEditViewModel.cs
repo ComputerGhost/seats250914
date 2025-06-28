@@ -21,6 +21,9 @@ public class ConfigurationEditViewModel
         MaxSeatsPerPerson = queryResponse.MaxSeatsPerPerson;
         MaxSeatsPerIPAddress = queryResponse.MaxSeatsPerIPAddress;
         MaxSecondsToConfirmSeat = queryResponse.MaxSecondsToConfirmSeat;
+        ScheduledCloseDate = queryResponse.ScheduledCloseDateTime.DateTime;
+        ScheduledCloseTime = queryResponse.ScheduledCloseDateTime.DateTime;
+        ScheduledCloseTimeZone = queryResponse.ScheduledCloseTimeZone;
         ScheduledOpenDate = queryResponse.ScheduledOpenDateTime.DateTime;
         ScheduledOpenTime = queryResponse.ScheduledOpenDateTime.DateTime;
         ScheduledOpenTimeZone = queryResponse.ScheduledOpenTimeZone;
@@ -48,6 +51,18 @@ public class ConfigurationEditViewModel
     public int MaxSecondsToConfirmSeat { get; set; }
 
     [DataType(DataType.Date)]
+    public DateTime ScheduledCloseDate { get; set; }
+
+    [DataType(DataType.Time)]
+    [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm:ss}")]
+    public DateTime ScheduledCloseTime { get; set; }
+
+    /// <summary>
+    /// Time zone of scheduled close date. For options see <see cref="ValidTimeZones"/>.
+    /// </summary>
+    public string ScheduledCloseTimeZone { get; set; } = null!;
+
+    [DataType(DataType.Date)]
     public DateTime ScheduledOpenDate { get; set; }
 
     [DataType(DataType.Time)]
@@ -67,6 +82,7 @@ public class ConfigurationEditViewModel
     public SaveConfigurationCommand ToSaveCommand()
     {
         var scheduledOpenDateTime = GetDateTimeOffset(ScheduledOpenDate, ScheduledOpenTime, ScheduledOpenTimeZone);
+        var scheduledCloseDateTime = GetDateTimeOffset(ScheduledCloseDate, ScheduledCloseTime, ScheduledCloseTimeZone);
 
         return new SaveConfigurationCommand
         {
@@ -76,6 +92,8 @@ public class ConfigurationEditViewModel
             MaxSeatsPerPerson = MaxSeatsPerPerson,
             MaxSeatsPerIPAddress = MaxSeatsPerIPAddress,
             MaxSecondsToConfirmSeat = MaxSecondsToConfirmSeat,
+            ScheduledCloseDateTime = scheduledCloseDateTime,
+            ScheduledCloseTimeZone = ScheduledCloseTimeZone,
             ScheduledOpenDateTime = scheduledOpenDateTime,
             ScheduledOpenTimeZone = ScheduledOpenTimeZone,
         };

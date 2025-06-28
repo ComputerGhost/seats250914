@@ -38,6 +38,16 @@ public class SaveConfigurationCommand : IRequest
     public int MaxSecondsToConfirmSeat { get; set; }
 
     /// <summary>
+    /// Instant in time in which reservations should close.
+    /// </summary>
+    public DateTimeOffset ScheduledCloseDateTime { get; set; }
+
+    /// <summary>
+    /// Timezone to be used to display <see cref="ScheduledCloseDateTime"/>
+    /// </summary>
+    public string ScheduledCloseTimeZone { get; set; } = null!;
+
+    /// <summary>
     /// Instant in time in which reservations should open.
     /// </summary>
     public DateTimeOffset ScheduledOpenDateTime { get; set; }
@@ -59,9 +69,7 @@ public class SaveConfigurationCommand : IRequest
             MaxSecondsToConfirmSeat = MaxSecondsToConfirmSeat,
             ScheduledOpenDateTime = ScheduledOpenDateTime,
             ScheduledOpenTimeZone = ScheduledOpenTimeZone,
-
-            // TODO: Set these properly. I have a ticket to do it already. Somewhere.
-            ScheduledCloseDateTime = ScheduledOpenDateTime.AddMonths(1),
+            ScheduledCloseDateTime = ScheduledOpenDateTime,
             ScheduledCloseTimeZone = ScheduledOpenTimeZone,
         };
     }
