@@ -81,8 +81,6 @@ public class AccountsController(IMediator mediator, IStringLocalizer<AccountsCon
     [HttpPost("{login}/edit")]
     public async Task<IActionResult> Edit(string login, [FromForm] AccountEditViewModel model)
     {
-        Debug.Assert(login == model.Login, "The route parameter `login` and the view model's `Login` are not equal.");
-
         return model.Action switch
         {
             "UpdateAccount" => await UpdateAccount(),
