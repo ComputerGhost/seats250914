@@ -79,6 +79,14 @@
                     좌석을 클릭하면 일시적으로 보류 상태가 되며, 이 시간 안에 확정하지 않으면 자동으로 해제됩니다.
                 </div>
             </div>
+
+            <div class="mb-3">
+                <label asp-for="GracePeriodSeconds" class="form-label">Grace period (in seconds)</label>
+                <input asp-for="GracePeriodSeconds" class="form-control w-auto" aria-describedby="GracePeriodSeconds-help min="0" required>
+                <div id="GracePeriodSeconds-help" class="form-text">
+                    This time is added to any time limits to account for delays over the Internet.
+                </div>
+            </div>
         </section>
 
         <hr>
