@@ -26,7 +26,6 @@ public class ConfigurationController(IMediator mediator) : Controller
         }
 
         await mediator.Send(model.ToSaveCommand());
-
-        return View(model);
+        return View(model.WithSuccessfulSave());
     }
 }

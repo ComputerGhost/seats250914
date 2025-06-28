@@ -30,7 +30,9 @@ public class ConfigurationEditViewModel
             : OVERRIDE_NONE;
     }
 
-    /* Form options */
+    /* Form options and display */
+
+    public bool IsSaveSuccessful { get; private set; } = false;
 
     public IEnumerable<SelectListItem> ValidTimeZones => TimeZoneInfo.GetSystemTimeZones()
         .Select(tz => new SelectListItem(tz.DisplayName, tz.Id));
@@ -77,6 +79,12 @@ public class ConfigurationEditViewModel
             ScheduledOpenDateTime = scheduledOpenDateTime,
             ScheduledOpenTimeZone = ScheduledOpenTimeZone,
         };
+    }
+
+    public ConfigurationEditViewModel WithSuccessfulSave()
+    {
+        IsSaveSuccessful = true;
+        return this;
     }
 
     private static DateTimeOffset GetDateTimeOffset(DateTime dateSource, DateTime timeSource, string timeZoneId)
