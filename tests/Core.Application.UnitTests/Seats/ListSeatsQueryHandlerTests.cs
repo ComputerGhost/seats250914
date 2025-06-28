@@ -40,12 +40,49 @@ public class ListSeatsQueryHandlerTests
     [DataRow(SeatStatus.Locked, "Locked")]
     [DataRow(SeatStatus.AwaitingPayment, "AwaitingPayment")]
     [DataRow(SeatStatus.ReservationConfirmed, "ReservationConfirmed")]
-    public async Task Handle_WhenSeatStatus_ReturnsSeatWithStatus(SeatStatus expectedStatus, string databaseStatus)
+    public async Task Handle_WhenSeatWithStatusExists_ReturnsSeatWithStatus(SeatStatus expectedStatus, string databaseStatus)
     {
         // Arrange
         var query = new ListSeatsQuery();
         MockSeatsDatabase
             .Setup(m => m.ListSeats())
+            .ReturnsAsync([new SeatEntityModel { Status = databaseStatus }]);
+
+        // Act
+        var result = await Subject.Handle(query, CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(1, result.Data.Count());
+        Assert.AreEqual(expectedStatus, result.Data.First().Status);
+    }
+
+    [TestMethod]
+    public async Task Handle_WhenStatusFilter_AndNoSeats_ReturnsEmptySet()
+    {
+        // Arrange
+        var query = new ListSeatsQuery { StatusFilter = SeatStatus.Available };
+        MockSeatsDatabase
+            .Setup(m => m.ListSeats(It.IsAny<string>()))
+            .ReturnsAsync(Array.Empty<SeatEntityModel>());
+
+        // Act
+        var result = await Subject.Handle(query, CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(0, result.Data.Count());
+    }
+
+    [DataTestMethod]
+    [DataRow(SeatStatus.Available, "Available")]
+    [DataRow(SeatStatus.Locked, "Locked")]
+    [DataRow(SeatStatus.AwaitingPayment, "AwaitingPayment")]
+    [DataRow(SeatStatus.ReservationConfirmed, "ReservationConfirmed")]
+    public async Task Handle_WhenStatusFilter_AndSeatWithStatusExists_ReturnsSeatWithStatus(SeatStatus expectedStatus, string databaseStatus)
+    {
+        // Arrange
+        var query = new ListSeatsQuery { StatusFilter = SeatStatus.Available };
+        MockSeatsDatabase
+            .Setup(m => m.ListSeats(It.IsAny<string>()))
             .ReturnsAsync([new SeatEntityModel { Status = databaseStatus }]);
 
         // Act

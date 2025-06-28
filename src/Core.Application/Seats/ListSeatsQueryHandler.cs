@@ -14,7 +14,9 @@ internal class ListSeatsQueryHandler : IRequestHandler<ListSeatsQuery, ListSeats
 
     public async Task<ListSeatsQueryResponse> Handle(ListSeatsQuery request, CancellationToken cancellationToken)
     {
-        var seatEntities = await _seatsDatabase.ListSeats();
+        var seatEntities = (request.StatusFilter == null)
+            ? await _seatsDatabase.ListSeats()
+            : await _seatsDatabase.ListSeats(request.StatusFilter.ToString()!);
 
         return new ListSeatsQueryResponse
         {

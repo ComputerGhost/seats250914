@@ -1,4 +1,5 @@
 ﻿using Core.Application.Reservations;
+using Core.Application.Seats;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,10 +11,18 @@ public class ReservationCreateViewModel
     {
     }
 
+    public ReservationCreateViewModel(ListSeatsQueryResponse queryResponse)
+    {
+        ValidSeatNumbers = queryResponse.Data.Select(i => new SelectListItem
+        {
+            Text = i.SeatNumber.ToString(),
+            Value = i.SeatNumber.ToString()
+        });
+    }
+
     /* Form options */
 
-    public IEnumerable<SelectListItem> ValidSeatNumbers => Enumerable.Range(1, 100)
-        .Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString(), });
+    public IEnumerable<SelectListItem> ValidSeatNumbers { get; init; } = null!;
 
     /* Form fields */
 
