@@ -4,6 +4,14 @@
         <h1>좌석 예약 시스템 설정</h1>
     </header>
 
+    @if (Model.IsSaveSuccessful)
+    {
+        <div class="alert alert-success alert-dismissible">
+            The configuration was saved successfully.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <form method="post">
 
         <section>

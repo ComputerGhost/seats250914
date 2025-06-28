@@ -1,5 +1,4 @@
 ﻿using Core.Application.Accounts;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 
 namespace CMS.ViewModels;
@@ -26,7 +25,7 @@ public class AccountEditViewModel
 
     /* Change password */
 
-    public bool IsPasswordChangeSuccessful { get; set; } = false;
+    public bool IsPasswordChangeSuccessful { get; private set; } = false;
 
     [DataType(DataType.Password)]
     public string Password { get; set; } = "";
