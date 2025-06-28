@@ -1,11 +1,11 @@
 ﻿@model AccountEditViewModel;
 
-<form method="post">
-    <div class="container">
-        <header class="mb-3">
-            <h1>관리자 계정 편집</h1>
-        </header>
+<div class="container">
+    <header class="mb-3">
+        <h1>관리자 계정 편집</h1>
+    </header>
 
+    <form method="post">
         <section class="mb-3">
             <div class="row mb-3">
                 <div class="col-md-6 mb-3 mb-md-0">
@@ -26,9 +26,11 @@
 
             <button name="Action" value="UpdateAccount" type="submit" class="btn btn-primary">업데이트</button>
         </section>
+    </form>
 
-        <hr>
+    <hr>
 
+    <form method="post">
         <section>
             <h2 class="h4">비밀번호 변경</h2>
 
@@ -49,6 +51,6 @@
 
             <button name="Action" value="ChangePassword" type="submit" class="btn btn-secondary">비밀번호 변경</button>
         </section>
+    </form>
 
-    </div>
-</form>
+</div>
