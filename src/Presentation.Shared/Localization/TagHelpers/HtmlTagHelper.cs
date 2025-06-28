@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Presentation.Shared.Localization.Extensions;
 
-namespace Public.Features.Localization.TagHelpers;
+namespace Presentation.Shared.Localization.TagHelpers;
 
 public class HtmlTagHelper : TagHelper
 {

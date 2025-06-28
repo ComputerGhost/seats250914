@@ -2,4 +2,12 @@
     $primary: #c090b0,
 );
 
-$accent: #f2e0a1;
+// I want link colors to be the standard blue.
+$link-color: #0000ff;
+a {
+    color: $link-color;
+
+    &:hover {
+        color: shift-color($link-color, 20%);
+    }
+}
