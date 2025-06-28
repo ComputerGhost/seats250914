@@ -1,7 +1,11 @@
-﻿using MediatR;
+﻿using Core.Domain.Common.Enumerations;
+using MediatR;
 
 namespace Core.Application.Seats;
 public class ListSeatsQuery : IRequest<ListSeatsQueryResponse>
 {
-    // There are no parameters. All seats are always returned.
+    /// <summary>
+    /// Optional filter by status.
+    /// </summary>
+    public SeatStatus? StatusFilter { get; set; } = null;
 }

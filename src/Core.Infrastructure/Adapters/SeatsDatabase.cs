@@ -48,6 +48,21 @@ internal class SeatsDatabase(IDbConnection connection) : ISeatsDatabase
         return await connection.QueryAsync<SeatEntityModel>(sql);
     }
 
+    public async Task<IEnumerable<SeatEntityModel>> ListSeats(string status)
+    {
+        var sql = """
+            SELECT Seats.Number, SeatStatuses.Status
+            FROM Seats
+            LEFT JOIN SeatStatuses ON SeatStatuses.Id = Seats.SeatStatusId
+            WHERE SeatStatuses.Status = @status
+            ORDER BY Seats.Number
+            """;
+        return await connection.QueryAsync<SeatEntityModel>(sql, new
+        {
+            status,
+        });
+    }
+
     public async Task<bool> UpdateSeatStatus(int seatNumber, string seatStatus)
     {
         var sql = """

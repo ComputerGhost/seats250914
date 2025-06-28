@@ -1,5 +1,7 @@
 ﻿using CMS.ViewModels;
 using Core.Application.Reservations;
+using Core.Application.Seats;
+using Core.Domain.Common.Enumerations;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Presentation.Shared.FrameworkEnhancements.Extensions;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace CMS.Controllers;
 
@@ -22,9 +25,13 @@ public class ReservationsController(IMediator mediator, IStringLocalizer<Reserva
     }
 
     [HttpGet("new")]
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        var model = new ReservationCreateViewModel();
+        var activeSeats = await mediator.Send(new ListSeatsQuery
+        {
+            StatusFilter = SeatStatus.Available,
+        });
+        var model = new ReservationCreateViewModel(activeSeats);
         return View(model);
     }
 
