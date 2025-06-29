@@ -75,6 +75,15 @@ public class AuthController(IMediator mediator, IStringLocalizer<AuthController>
     }
 
     [HttpGet("sign-out")]
+    public new async Task<IActionResult> SignOut_old()
+    {
+        var authService = new AuthenticationService(HttpContext);
+        await authService.SignOut();
+
+        return RedirectToAction(nameof(SignIn));
+    }
+
+    [HttpPost("sign-out")]
     public new async Task<IActionResult> SignOut()
     {
         var authService = new AuthenticationService(HttpContext);
