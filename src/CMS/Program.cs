@@ -1,10 +1,14 @@
 using CMS.Features.Authentication;
 using Core.Application;
+using Microsoft.AspNetCore.Mvc;
 using Presentation.Shared.Localization.Extensions;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddMvc();
+builder.Services.AddMvc(options =>
+{
+    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+});
 builder.Services.AddCore(options =>
 {
     builder.Configuration.Bind("InfrastructureOptions", options);
