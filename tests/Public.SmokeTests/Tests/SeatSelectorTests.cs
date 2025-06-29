@@ -19,9 +19,9 @@ public class SeatSelectorTests : TestBase
         Driver = CreateDriver("en");
         Driver.Navigate().GoToUrl(TargetUrl);
 
-        SeatMap = Driver.FindElement(By.Id("seat-map"))
-            .FindElement(By.ClassName("audience"));
-        Dropdown = new SelectElement(Driver.FindElement(By.Id("seat")));
+        var section = Driver.FindElement(By.Id("reserve-a-seat"));
+        SeatMap = section.FindElement(By.ClassName("audience"));
+        Dropdown = new SelectElement(section.FindElement(By.ClassName("form-select")));
     }
 
     [TestCleanup]
