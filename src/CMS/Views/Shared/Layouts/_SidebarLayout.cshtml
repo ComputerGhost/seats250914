@@ -69,10 +69,12 @@
                         <i class="bi bi-person" aria-hidden="true"></i>
                         계정정보 수정
                     </a>
-                    <a asp-controller="Auth" asp-action="SignOut" class="dropdown-item">
-                        <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
-                        로그아웃
-                    </a>
+                    <form asp-action="SignOut" asp-controller="Auth" method="post">
+                        <button class="dropdown-item">
+                            <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+                            로그아웃
+                        </button>
+                    </form>
                 </li>
             </ul>
         </div>
