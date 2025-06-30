@@ -2,6 +2,7 @@ using CMS.Features.Authentication;
 using Core.Application;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Shared.Localization.Extensions;
+using Presentation.Shared.Logging.Extensions;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,10 @@ builder.Services.AddMyLocalization(options =>
 {
     options.SupportedCultures = [ new CultureInfo("ko"), ];
     options.DefaultCulture = new CultureInfo("ko");
+});
+builder.Services.AddMyLogging(options =>
+{
+    builder.Configuration.Bind("MyLogging", options);
 });
 
 var app = builder.Build();

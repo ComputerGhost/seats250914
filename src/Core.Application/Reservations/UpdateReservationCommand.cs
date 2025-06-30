@@ -2,7 +2,7 @@
 using MediatR;
 
 namespace Core.Application.Reservations;
-public class UpdateReservationCommand : IRequest<ErrorOr<Success>>
+public class UpdateReservationCommand : IRequest<ErrorOr<Updated>>
 {
     /// <summary>
     /// The primary key of the reservation.

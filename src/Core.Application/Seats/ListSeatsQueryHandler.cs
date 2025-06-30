@@ -1,22 +1,27 @@
 ﻿using Core.Domain.Common.Enumerations;
+using Core.Domain.Common.Models.Entities;
 using Core.Domain.Common.Ports;
 using MediatR;
+using Serilog;
 
 namespace Core.Application.Seats;
-internal class ListSeatsQueryHandler : IRequestHandler<ListSeatsQuery, ListSeatsQueryResponse>
+internal class ListSeatsQueryHandler(ISeatsDatabase seatsDatabase)
+    : IRequestHandler<ListSeatsQuery, ListSeatsQueryResponse>
 {
-    private readonly ISeatsDatabase _seatsDatabase;
-
-    public ListSeatsQueryHandler(ISeatsDatabase seatsDatabase)
-    {
-        _seatsDatabase = seatsDatabase;
-    }
-
     public async Task<ListSeatsQueryResponse> Handle(ListSeatsQuery request, CancellationToken cancellationToken)
     {
-        var seatEntities = (request.StatusFilter == null)
-            ? await _seatsDatabase.ListSeats()
-            : await _seatsDatabase.ListSeats(request.StatusFilter.ToString()!);
+        IEnumerable<SeatEntityModel> seatEntities;
+        if (request.StatusFilter == null)
+        {
+            Log.Information("Listing all seats.");
+            seatEntities = await seatsDatabase.ListSeats();
+        }
+        else
+        {
+            var statusFilter = request.StatusFilter.ToString()!;
+            Log.Information("Listing seats filtered by {statusFilter}.", statusFilter);
+            seatEntities = await seatsDatabase.ListSeats(statusFilter);
+        }
 
         return new ListSeatsQueryResponse
         {

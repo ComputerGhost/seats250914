@@ -6,16 +6,9 @@ namespace CMS.Features.Authentication;
 /// <summary>
 /// Use this with a verified user.
 /// </summary>
-public class AuthenticationService
+public class AuthenticationService(HttpContext httpContext)
 {
-    private readonly HttpContext _httpContext;
-
-    public AuthenticationService(HttpContext httpContext)
-    {
-        _httpContext = httpContext;
-    }
-
-    public string? Username => _httpContext.User.Identity?.Name;
+    public string? Username => httpContext.User.Identity?.Name;
 
     public Task SignIn(string name)
     {
@@ -24,11 +17,11 @@ public class AuthenticationService
         ];
         var identity = new ClaimsIdentity(claims, "MyAuthenticationScheme");
         var principal = new ClaimsPrincipal(identity);
-        return _httpContext.SignInAsync(principal);
+        return httpContext.SignInAsync(principal);
     }
 
     public Task SignOut()
     {
-        return _httpContext.SignOutAsync();
+        return httpContext.SignOutAsync();
     }
 }

@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using Serilog;
 
 namespace CMS.Controllers;
 
@@ -14,9 +15,12 @@ public class AuthController(IMediator mediator, IStringLocalizer<AuthController>
     [HttpGet("setup")]
     public async Task<IActionResult> SetUp([FromServices] IOptions<AuthenticationOptions> authenticationOptions)
     {
+        Log.Information("Setting up system.");
+
         var accounts = await mediator.Send(new ListAccountsQuery());
         if (accounts.Data.Any())
         {
+            Log.Error("The system is already set up. Aborting setup.");
             return StatusCode(StatusCodes.Status423Locked);
         }
 
@@ -35,9 +39,11 @@ public class AuthController(IMediator mediator, IStringLocalizer<AuthController>
     [HttpGet("sign-in")]
     public async Task<IActionResult> SignIn()
     {
+        Log.Information("Verifying that there are existing accounts.");
         var accounts = await mediator.Send(new ListAccountsQuery());
         if (!accounts.Data.Any())
         {
+            Log.Information("Redirecting to setup endpoint.");
             return RedirectToAction(nameof(SetUp));
         }
 
@@ -74,18 +80,11 @@ public class AuthController(IMediator mediator, IStringLocalizer<AuthController>
         }
     }
 
-    [HttpGet("sign-out")]
-    public new async Task<IActionResult> SignOut_old()
-    {
-        var authService = new AuthenticationService(HttpContext);
-        await authService.SignOut();
-
-        return RedirectToAction(nameof(SignIn));
-    }
-
     [HttpPost("sign-out")]
     public new async Task<IActionResult> SignOut()
     {
+        Log.Information("Signing out user {Name}.", User.Identity?.Name);
+
         var authService = new AuthenticationService(HttpContext);
         await authService.SignOut();
 

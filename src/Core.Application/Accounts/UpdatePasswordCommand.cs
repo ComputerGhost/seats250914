@@ -2,7 +2,7 @@
 using MediatR;
 
 namespace Core.Application.Accounts;
-public class UpdatePasswordCommand : IRequest<ErrorOr<Success>>
+public class UpdatePasswordCommand : IRequest<ErrorOr<Updated>>
 {
     /// <summary>
     /// Login of the user to update.

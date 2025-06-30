@@ -33,7 +33,7 @@ public class UpdateReservationCommandHandlerTests
 
         // Asert
         Assert.IsFalse(result.IsError);
-        Assert.AreEqual(Result.Success, result.Value);
+        Assert.AreEqual(Result.Updated, result.Value);
     }
 
     [TestMethod]

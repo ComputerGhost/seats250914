@@ -3,19 +3,17 @@ using Core.Domain.Common.Exceptions;
 using Core.Domain.Common.Ports;
 using ErrorOr;
 using MediatR;
+using Serilog;
 
 namespace Core.Application.Accounts;
-internal class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, ErrorOr<Created>>
+internal class CreateAccountCommandHandler(IAccountsDatabase accountsDatabase)
+    : IRequestHandler<CreateAccountCommand, ErrorOr<Created>>
 {
-    private readonly IAccountsDatabase _accountsDatabase;
-
-    public CreateAccountCommandHandler(IAccountsDatabase accountsDatabase)
-    {
-        _accountsDatabase = accountsDatabase;
-    }
-
     public async Task<ErrorOr<Created>> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
     {
+        Log.Information("Creating account {Login}.", request.Login);
+        Log.Debug("Account data being saved is {@request}", request);
+
         try
         {
             var hashedPassword = HashPassword(request.Password);
@@ -24,6 +22,7 @@ internal class CreateAccountCommandHandler : IRequestHandler<CreateAccountComman
         }
         catch (AccountAlreadyExistsException)
         {
+            Log.Warning("The account {Login} could not be created because it already exists.", request.Login);
             return Error.Conflict($"An account already exists with the login '{request.Login}'.");
         }
     }
@@ -31,7 +30,7 @@ internal class CreateAccountCommandHandler : IRequestHandler<CreateAccountComman
     private async Task CreateAccount(CreateAccountCommand request, string hashedPassword)
     {
         var accountEntity = request.ToAccountEntityModel();
-        await _accountsDatabase.CreateAccount(accountEntity, hashedPassword);
+        await accountsDatabase.CreateAccount(accountEntity, hashedPassword);
     }
 
     private static string HashPassword(string password)

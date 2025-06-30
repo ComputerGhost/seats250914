@@ -1,22 +1,19 @@
 ﻿using Core.Domain.Common.Ports;
 using ErrorOr;
 using MediatR;
+using Serilog;
 
 namespace Core.Application.Accounts;
-internal class FetchAccountQueryHandler : IRequestHandler<FetchAccountQuery, ErrorOr<FetchAccountQueryResponse>>
+internal class FetchAccountQueryHandler(IAccountsDatabase accountsDatabase) : IRequestHandler<FetchAccountQuery, ErrorOr<FetchAccountQueryResponse>>
 {
-    private readonly IAccountsDatabase _accountsDatabase;
-
-    public FetchAccountQueryHandler(IAccountsDatabase accountsDatabase)
-    {
-        _accountsDatabase = accountsDatabase;
-    }
-
     public async Task<ErrorOr<FetchAccountQueryResponse>> Handle(FetchAccountQuery request, CancellationToken cancellationToken)
     {
-        var accountEntity = await _accountsDatabase.FetchAccount(request.Login);
+        Log.Information("Fetching account information for {Login}", request.Login);
+
+        var accountEntity = await accountsDatabase.FetchAccount(request.Login);
         if (accountEntity == null)
         {
+            Log.Information("Account {Login} was not found.", request.Login);
             return Error.NotFound();
         }
 

@@ -1,21 +1,22 @@
 ﻿using Core.Domain.Common.Ports;
 using ErrorOr;
 using MediatR;
+using Serilog;
 
 namespace Core.Application.Accounts;
-internal class UpdateAccountCommandHandler : IRequestHandler<UpdateAccountCommand, ErrorOr<Updated>>
+internal class UpdateAccountCommandHandler(IAccountsDatabase accountsDatabase)
+    : IRequestHandler<UpdateAccountCommand, ErrorOr<Updated>>
 {
-    private readonly IAccountsDatabase _accountsDatabase;
-
-    public UpdateAccountCommandHandler(IAccountsDatabase accountsDatabase)
-    {
-        _accountsDatabase = accountsDatabase;
-    }
-
     public async Task<ErrorOr<Updated>> Handle(UpdateAccountCommand request, CancellationToken cancellationToken)
     {
+        Log.Information("Updating account {Login}.", request.Login);
+        Log.Debug("Account data being saved is {@request}.", request);
+
         var accountEntity = request.ToAccountEntityModel();
-        return (await _accountsDatabase.UpdateAccount(accountEntity))
-            ? Result.Updated : Error.NotFound();
+        if (await accountsDatabase.UpdateAccount(accountEntity))
+            return Result.Updated;
+
+        Log.Warning("The account {Login} could not be updated because it does not exist.", request.Login);
+        return Error.NotFound();
     }
 }

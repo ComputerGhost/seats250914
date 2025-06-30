@@ -3,6 +3,7 @@ using Core.Domain.Common.Models;
 using Core.Domain.Reservations;
 using ErrorOr;
 using MediatR;
+using Serilog;
 
 namespace Core.Application.Reservations;
 internal class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, ErrorOr<int>>
@@ -18,16 +19,20 @@ internal class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, E
 
     public async Task<ErrorOr<int>> Handle(ReserveSeatCommand request, CancellationToken cancellationToken)
     {
+        Log.Information("Reserving seat {SeatNumber} for identity {Identity}.", request.SeatNumber, request.SeatNumber);
+
         var unauthorizedMessage = $"User is not authorized to reserve seat {request.SeatNumber}.";
         
         if (!await CanReserveSeat(request.Identity, request.SeatNumber, request.SeatKey))
         {
+            Log.Warning("User is not authorized to reserve seat {SeatNumber}.", request.SeatNumber);
             return Error.Unauthorized(unauthorizedMessage);
         }
 
         var reservationId = await _reservationService.ReserveSeat(request.SeatNumber, request.Identity);
         if (reservationId == null)
         {
+            Log.Warning("User's authorization to reserve seat {SeatNumber} expired moments ago.", request.SeatNumber);
             return Error.Failure(unauthorizedMessage);
         }
 
