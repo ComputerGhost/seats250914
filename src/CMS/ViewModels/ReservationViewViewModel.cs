@@ -5,7 +5,7 @@ namespace CMS.ViewModels;
 
 public class ReservationViewViewModel
 {
-    public ReservationViewViewModel(FetchReservationQueryResponse fetchReservationQueryResponse)
+    public ReservationViewViewModel(int reservationId, FetchReservationQueryResponse fetchReservationQueryResponse)
     {
         Email = fetchReservationQueryResponse.Email;
         Name = fetchReservationQueryResponse.Name;
@@ -14,6 +14,8 @@ public class ReservationViewViewModel
         ReservationStatus = fetchReservationQueryResponse.Status;
         ReservedAt = fetchReservationQueryResponse.ReservedAt.ToString("yyyy-MM-ddTHH:mm:ss");
         SeatNumber = fetchReservationQueryResponse.SeatNumber;
+
+        ReservationId = reservationId;
     }
 
     /// <summary>
@@ -45,6 +47,11 @@ public class ReservationViewViewModel
     /// Number of the seat reserved.
     /// </summary>
     public int SeatNumber { get; set; }
+
+    /// <summary>
+    /// Display only. Id of the reservation.
+    /// </summary>
+    public int ReservationId { get; set; }
 
     /// <summary>
     /// Status of the reservation.

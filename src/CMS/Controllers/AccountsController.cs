@@ -114,7 +114,7 @@ public class AccountsController(IMediator mediator, IStringLocalizer<AccountsCon
             });
 
             return result.Match<IActionResult>(
-                result => RedirectToAction(nameof(Details), new { Login = login }),
+                result => RedirectToAction(nameof(Details), new { login }),
                 errors => errors.First().Type switch
                 {
                     ErrorType.NotFound => NotFound(),

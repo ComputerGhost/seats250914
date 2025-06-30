@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Presentation.Shared.FrameworkEnhancements.Extensions;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace CMS.Controllers;
 
@@ -62,7 +61,7 @@ public class ReservationsController(IMediator mediator, IStringLocalizer<Reserva
     {
         var result = await mediator.Send(new FetchReservationQuery(reservationId));
         return result.Match<IActionResult>(
-            result => View(new ReservationViewViewModel(result)),
+            result => View(new ReservationViewViewModel(reservationId, result)),
             errors => errors.First().Type switch
             {
                 ErrorType.NotFound => NotFound(),
@@ -99,5 +98,32 @@ public class ReservationsController(IMediator mediator, IStringLocalizer<Reserva
             var command = new RejectReservationCommand(reservationId);
             return mediator.Send(command);
         }
+    }
+
+    [HttpGet("{reservationId}/edit")]
+    public async Task<IActionResult> Edit(int reservationId)
+    {
+        var result = await mediator.Send(new FetchReservationQuery(reservationId));
+        return result.Match<IActionResult>(
+            result => View(new ReservationEditViewModel(result)),
+            errors => errors.First().Type switch
+            {
+                ErrorType.NotFound => NotFound(),
+                _ => throw new NotImplementedException(),
+            });
+    }
+
+    [HttpPost("{reservationId}/edit")]
+    public async Task<IActionResult> Edit(int reservationId, [FromForm] ReservationEditViewModel model)
+    {
+        var result = await mediator.Send(model.ToUpdateReservationCommand(reservationId));
+
+        return result.Match<IActionResult>(
+            result => RedirectToAction(nameof(Details), new { reservationId }),
+            errors => errors.First().Type switch
+            {
+                ErrorType.NotFound => NotFound(),
+                _ => throw new NotImplementedException(),
+            });
     }
 }

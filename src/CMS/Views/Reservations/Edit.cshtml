@@ -1,0 +1,37 @@
+﻿@model ReservationEditViewModel;
+<div class="container">
+    <header class="mb-3">
+        <h1>Edit reservation</h1>
+    </header>
+
+    <section>
+        <form method="post">
+            <div class="mb-3">
+                <label asp-for="SeatNumber" class="form-label">좌석 선택</label>
+                <input asp-for="SeatNumber" class="form-control" disabled>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">예약자</label>
+                <input asp-for="Name" class="form-control" required maxlength="50">
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">예약자 메일</label>
+                <input asp-for="Email" class="form-control" required maxlength="255">
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PhoneNumber" class="form-label">예약자 번호</label>
+                <input asp-for="PhoneNumber" class="form-control" maxlength="15">
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PreferredLanguage" class="form-label">선호 언어</label>
+                <input asp-for="PreferredLanguage" class="form-control" required maxlength="50">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update reservation</button>
+        </form>
+    </section>
+</div>

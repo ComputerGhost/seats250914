@@ -78,9 +78,14 @@
         <form asp-action="UpdateStatus" method="post">
             @if (Model.ReservationStatus == ReservationStatus.AwaitingPayment)
             {
-                <button name="action" value="approve" type="submit" class="btn btn-primary">예약 승인</button>
+                <button name="action" value="approve" type="submit" class="btn btn-success">예약 승인</button>
                 <button name="action" value="reject" type="submit" class="btn btn-danger">예약 거절</button>
             }
+            <a
+                asp-action="Edit"
+                asp-route-reservationId="@Model.ReservationId"
+                class="btn btn-outline-primary"
+            >Edit reservation</a>
         </form>
     </section>
 </div>
