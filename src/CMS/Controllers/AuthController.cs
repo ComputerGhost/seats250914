@@ -39,9 +39,11 @@ public class AuthController(IMediator mediator, IStringLocalizer<AuthController>
     [HttpGet("sign-in")]
     public async Task<IActionResult> SignIn()
     {
+        Log.Information("Verifying that there are existing accounts.");
         var accounts = await mediator.Send(new ListAccountsQuery());
         if (!accounts.Data.Any())
         {
+            Log.Information("Redirecting to setup endpoint.");
             return RedirectToAction(nameof(SetUp));
         }
 

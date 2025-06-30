@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Presentation.Shared.Logging.Enrichers;
 using Presentation.Shared.Logging.Models;
 using Serilog;
 using Serilog.Events;
@@ -11,14 +12,19 @@ public static class ServiceCollectionExtensions
         var options = new LoggingOptions();
         configure(options);
 
+        const string outputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj} {Properties}{NewLine}{Exception}";
+
         var loggerConfiguration = new LoggerConfiguration()
+            .Enrich.WithThreadId()
+            .Enrich.With<UserNameEnricher>()
             .MinimumLevel.Debug()
-            .WriteTo.Console();
+            .WriteTo.Console(outputTemplate: outputTemplate);
 
         if (options.LogDirectory != null)
         {
             loggerConfiguration.WriteTo.File(
                 Path.Combine(options.LogDirectory, "log-.txt"),
+                outputTemplate: outputTemplate,
                 restrictedToMinimumLevel: LogEventLevel.Information,
                 retainedFileCountLimit: 10,
                 rollingInterval: RollingInterval.Day
@@ -26,6 +32,8 @@ public static class ServiceCollectionExtensions
         }
 
         Log.Logger = loggerConfiguration.CreateLogger();
+
+        services.AddHttpContextAccessor();
 
         return services;
     }
