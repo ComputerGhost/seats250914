@@ -2,21 +2,23 @@
 using Core.Domain.Common.Ports;
 using ErrorOr;
 using MediatR;
+using Serilog;
 
 namespace Core.Application.Accounts;
-internal class UpdatePasswordCommandHandler : IRequestHandler<UpdatePasswordCommand, ErrorOr<Success>>
+internal class UpdatePasswordCommandHandler(IAccountsDatabase accountsDatabase)
+    : IRequestHandler<UpdatePasswordCommand, ErrorOr<Updated>>
 {
-    private readonly IAccountsDatabase _accountsDatabase;
-
-    public UpdatePasswordCommandHandler(IAccountsDatabase accountsDatabase)
+    public async Task<ErrorOr<Updated>> Handle(UpdatePasswordCommand request, CancellationToken cancellationToken)
     {
-        _accountsDatabase = accountsDatabase;
-    }
+        Log.Information("Updating password for account {Login}", request.Login);
 
-    public async Task<ErrorOr<Success>> Handle(UpdatePasswordCommand request, CancellationToken cancellationToken)
-    {
         var hashedPassword = new PasswordHasher().HashPassword(request.Password);
-        return (await _accountsDatabase.UpdatePassword(request.Login, hashedPassword))
-            ? Result.Success : Error.NotFound();
+        if (await accountsDatabase.UpdatePassword(request.Login, hashedPassword))
+        {
+            return Result.Updated;
+        }
+
+        Log.Warning("The password for the account {Login} could not be updated because it does not exist.", request.Login);
+        return Error.NotFound();
     }
 }

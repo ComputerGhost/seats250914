@@ -23,7 +23,7 @@ public class UpdatePasswordCommandHandlerTests
     }
 
     [TestMethod]
-    public async Task Handle_WhenAccountExists_ReturnsSuccess()
+    public async Task Handle_WhenAccountExists_ReturnsUpdated()
     {
         // Arrange
         MockAccountsDatabase
@@ -35,7 +35,7 @@ public class UpdatePasswordCommandHandlerTests
 
         // Assert
         Assert.IsFalse(result.IsError);
-        Assert.AreEqual(Result.Success, result.Value);
+        Assert.AreEqual(Result.Updated, result.Value);
     }
 
     [TestMethod]

@@ -1,20 +1,16 @@
 ﻿using Core.Domain.Common.Enumerations;
 using Core.Domain.Common.Ports;
 using MediatR;
+using Serilog;
 
 namespace Core.Application.Reservations;
-internal class ListReservationsQueryHandler : IRequestHandler<ListReservationsQuery, ListReservationsQueryResponse>
+internal class ListReservationsQueryHandler(IReservationsDatabase reservationsDatabase)
+    : IRequestHandler<ListReservationsQuery, ListReservationsQueryResponse>
 {
-    private readonly IReservationsDatabase _reservationsDatabase;
-
-    public ListReservationsQueryHandler(IReservationsDatabase reservationsDatabase)
-    {
-        _reservationsDatabase = reservationsDatabase;
-    }
-
     public async Task<ListReservationsQueryResponse> Handle(ListReservationsQuery request, CancellationToken cancellationToken)
     {
-        var reservationEntities = await _reservationsDatabase.ListReservations();
+        Log.Information("Listing all reservations.");
+        var reservationEntities = await reservationsDatabase.ListReservations();
 
         return new ListReservationsQueryResponse
         {

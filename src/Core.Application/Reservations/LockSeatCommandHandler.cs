@@ -3,6 +3,7 @@ using Core.Domain.Common.Models;
 using Core.Domain.Reservations;
 using ErrorOr;
 using MediatR;
+using Serilog;
 
 namespace Core.Application.Reservations;
 internal class LockSeatCommandHandler : IRequestHandler<LockSeatCommand, ErrorOr<LockSeatCommandResponse>>
@@ -18,8 +19,11 @@ internal class LockSeatCommandHandler : IRequestHandler<LockSeatCommand, ErrorOr
 
     public async Task<ErrorOr<LockSeatCommandResponse>> Handle(LockSeatCommand request, CancellationToken cancellationToken)
     {
+        Log.Information("Locking seat {SeatNumber} for {@Identity}.", request.IpAddress, request.Identity);
+
         if (!await CanLockSeat(request.Identity))
         {
+            Log.Information("Could not lock seat {SeatNumber} because user is not authorized.", request.SeatNumber);
             return Error.Unauthorized($"User is not authorized to lock seat {request.SeatNumber}.");
         }
 
@@ -27,6 +31,7 @@ internal class LockSeatCommandHandler : IRequestHandler<LockSeatCommand, ErrorOr
         var lockEntity = await _seatLockService.LockSeat(request.SeatNumber, request.IpAddress);
         if (lockEntity == null)
         {
+            Log.Information("Could not lock seat {SeatNumber} because it is already locked.", request.SeatNumber);
             return Error.Conflict();
         }
 

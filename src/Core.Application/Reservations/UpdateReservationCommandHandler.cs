@@ -2,19 +2,17 @@
 using Core.Domain.Common.Ports;
 using ErrorOr;
 using MediatR;
+using Serilog;
 
 namespace Core.Application.Reservations;
-internal class UpdateReservationCommandHandler : IRequestHandler<UpdateReservationCommand, ErrorOr<Success>>
+internal class UpdateReservationCommandHandler(IReservationsDatabase reservationsDatabase)
+    : IRequestHandler<UpdateReservationCommand, ErrorOr<Updated>>
 {
-    private readonly IReservationsDatabase _reservationsDatabase;
-
-    public UpdateReservationCommandHandler(IReservationsDatabase reservationsDatabase)
+    public async Task<ErrorOr<Updated>> Handle(UpdateReservationCommand request, CancellationToken cancellationToken)
     {
-        _reservationsDatabase = reservationsDatabase;
-    }
+        Log.Information("Updating reservation {ReservationId}.", request.ReservationId);
+        Log.Debug("Reservation data being saved is {@request}.", request);
 
-    public async Task<ErrorOr<Success>> Handle(UpdateReservationCommand request, CancellationToken cancellationToken)
-    {
         var reservationEntity = new ReservationEntityModel
         {
             Email = request.Email,
@@ -24,7 +22,12 @@ internal class UpdateReservationCommandHandler : IRequestHandler<UpdateReservati
             PreferredLanguage = request.PreferredLanguage,
             SeatNumber = request.SeatNumber,
         };
-        var result = await _reservationsDatabase.UpdateReservation(reservationEntity);
-        return result ? Result.Success : Error.NotFound();
+        if (await reservationsDatabase.UpdateReservation(reservationEntity))
+        {
+            return Result.Updated;
+        }
+
+        Log.Warning("The reservation {ReservationId} could not be udpated because it does not exist.", request.ReservationId);
+        return Error.NotFound();
     }
 }

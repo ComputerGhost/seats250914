@@ -1,21 +1,20 @@
 ﻿using Core.Domain.Common.Ports;
 using MediatR;
+using Serilog;
 
 namespace Core.Application.System;
-internal class SaveConfigurationHandler : IRequestHandler<SaveConfigurationCommand>
+internal class SaveConfigurationHandler(IConfigurationDatabase configurationDatabase)
+    : IRequestHandler<SaveConfigurationCommand>
 {
-    private readonly IConfigurationDatabase _configurationDatabase;
-
-    public SaveConfigurationHandler(IConfigurationDatabase configurationDatabase)
-    {
-        _configurationDatabase = configurationDatabase;
-    }
-
     public async Task Handle(SaveConfigurationCommand request, CancellationToken cancellationToken)
     {
+        Log.Information("Saving system configuration.");
+        Log.Debug("Configuration data being saved is {@request}.", request);
+
         var entityModel = request.ToConfigurationEntityModel();
-        if (!await _configurationDatabase.SaveConfiguration(entityModel))
+        if (!await configurationDatabase.SaveConfiguration(entityModel))
         {
+            Log.Error("Saving the configuration failed unexpectedly.");
             throw new Exception("Saving the configuration failed unexpectedly.");
         }
     }

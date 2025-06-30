@@ -2,6 +2,7 @@
 using Core.Domain.Reservations;
 using ErrorOr;
 using MediatR;
+using Serilog;
 
 namespace Core.Application.Reservations;
 internal class UnlockSeatCommandHandler : IRequestHandler<UnlockSeatCommand, ErrorOr<Success>>
@@ -17,8 +18,11 @@ internal class UnlockSeatCommandHandler : IRequestHandler<UnlockSeatCommand, Err
 
     public async Task<ErrorOr<Success>> Handle(UnlockSeatCommand request, CancellationToken cancellationToken)
     {
+        Log.Information("Unlocking seat {SeatNumber}.", request.SeatNumber);
+
         if (!await CanUnlockSeat(request.SeatNumber, request.SeatKey))
         {
+            Log.Warning("User is not authorized to unlock seat {SeatNumber}.", request.SeatNumber);
             return Error.Unauthorized($"User is not authorized to reserve seat {request.SeatNumber}.");
         }
 

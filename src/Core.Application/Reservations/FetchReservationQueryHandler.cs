@@ -2,22 +2,20 @@
 using Core.Domain.Common.Ports;
 using ErrorOr;
 using MediatR;
+using Serilog;
 
 namespace Core.Application.Reservations;
-public class FetchReservationQueryHandler : IRequestHandler<FetchReservationQuery, ErrorOr<FetchReservationQueryResponse>>
+public class FetchReservationQueryHandler(IReservationsDatabase reservationsDatabase)
+    : IRequestHandler<FetchReservationQuery, ErrorOr<FetchReservationQueryResponse>>
 {
-    private readonly IReservationsDatabase _reservationsDatabase;
-
-    public FetchReservationQueryHandler(IReservationsDatabase reservationsDatabase)
-    {
-        _reservationsDatabase = reservationsDatabase;
-    }
-
     public async Task<ErrorOr<FetchReservationQueryResponse>> Handle(FetchReservationQuery request, CancellationToken cancellationToken)
     {
-        var reservationEntity = await _reservationsDatabase.FetchReservation(request.ReservationId);
+        Log.Information("Fetching reservation {ReservationId} data.", request.ReservationId);
+
+        var reservationEntity = await reservationsDatabase.FetchReservation(request.ReservationId);
         if (reservationEntity == null)
         {
+            Log.Warning("Reservation {ReservationId} data could not be fetched because it does not exist.", request.ReservationId);
             return Error.NotFound();
         }
 

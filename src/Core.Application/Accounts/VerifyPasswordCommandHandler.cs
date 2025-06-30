@@ -2,24 +2,21 @@
 using Core.Domain.Common.Ports;
 using ErrorOr;
 using MediatR;
+using Serilog;
 
 namespace Core.Application.Accounts;
-internal class VerifyPasswordCommandHandler : IRequestHandler<VerifyPasswordCommand, ErrorOr<Success>>
+internal class VerifyPasswordCommandHandler(IAccountsDatabase accountsDatabase)
+    : IRequestHandler<VerifyPasswordCommand, ErrorOr<Success>>
 {
     const string FAILURE_MESSAGE = "The password for {0} could not be verified.";
 
-    private readonly IAccountsDatabase _accountsDatabase;
-
-    public VerifyPasswordCommandHandler(IAccountsDatabase accountsDatabase)
-    {
-        _accountsDatabase = accountsDatabase;
-    }
-
     public async Task<ErrorOr<Success>> Handle(VerifyPasswordCommand request, CancellationToken cancellationToken)
     {
+        Log.Information("Verifying password for login {Login}.", request.Login);
+
         var failureMessage = string.Format(FAILURE_MESSAGE, request.Login);
 
-        var hashedPassword = await _accountsDatabase.FetchPasswordhash(request.Login);
+        var hashedPassword = await accountsDatabase.FetchPasswordhash(request.Login);
         if (hashedPassword == null)
         {
             /**
@@ -32,12 +29,14 @@ internal class VerifyPasswordCommandHandler : IRequestHandler<VerifyPasswordComm
              * be different, so I should again consider whether or not to 
              * secure against the possible timing attack here.
              */
+            Log.Warning("Password verification for {Login} failed because the account does not exist.", request.Login);
             return Error.Failure(failureMessage);
         }
 
         var result = new PasswordHasher().VerifyPassword(hashedPassword, request.Password);
         if (result == false)
         {
+            Log.Warning("Password verification for {Login} failed. The password was invalid.", request.Login);
             return Error.Failure(failureMessage);
         }
 
