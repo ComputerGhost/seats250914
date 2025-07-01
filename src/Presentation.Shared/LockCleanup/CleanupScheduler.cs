@@ -3,6 +3,7 @@ using Core.Application.Reservations;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace Presentation.Shared.LockCleanup;
 public class CleanupScheduler : BackgroundService
@@ -28,6 +29,8 @@ public class CleanupScheduler : BackgroundService
     {
         var secondsToExpire = await GetLockExpirationSeconds() + ProcessingDelaySeconds;
         var when = DateTimeOffset.UtcNow.AddSeconds(secondsToExpire);
+
+        Log.Information("Scheduling a cleanup for {secondsToExpire} seconds from now.", secondsToExpire);
 
         lock (_scheduleLock)
         {
@@ -57,6 +60,8 @@ public class CleanupScheduler : BackgroundService
 
     private async Task CleanExpiredLocks(CancellationToken stoppingToken)
     {
+        Log.Information("Cleaning up expired locks.");
+
         using var scope = _services.CreateScope();
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
         await mediator.Send(new ClearExpiredLocksCommand(), stoppingToken);
