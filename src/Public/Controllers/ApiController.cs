@@ -1,5 +1,6 @@
 ﻿using Core.Application.Reservations;
 using Core.Application.Seats;
+using Core.Domain.Authorization;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Presentation.Shared.FrameworkEnhancements.Extensions;
 using Presentation.Shared.LockCleanup;
 using Public.Features.SeatSelection.Extensions;
 using Public.Models.DTOs;
+using System.Diagnostics;
 
 namespace Public.Controllers;
 
@@ -44,9 +46,22 @@ public class ApiController(IMediator mediator) : Controller
             result => Results.Ok(result),
             error => error.First().Type switch
             {
-                ErrorType.NotFound => Results.NotFound(),
                 ErrorType.Conflict => Results.Conflict(),
+                ErrorType.NotFound => Results.NotFound(),
+                ErrorType.Unauthorized => Unauthorized(error.First()),
                 _ => throw new NotImplementedException(),
             });
+    }
+
+    private static IResult Unauthorized(Error authError)
+    {
+        Debug.Assert(authError.Metadata != null);
+        Debug.Assert(authError.Metadata["details"] != null);
+        var authResult = (AuthorizationResult)authError.Metadata["details"];
+
+        return Results.Json(
+            authResult,
+            statusCode: StatusCodes.Status403Forbidden
+        );
     }
 }

@@ -10,6 +10,9 @@ namespace Core.Application.Reservations;
 /// <remarks>
 /// If two people simultaneously reserve a seat, only one will be successful.
 /// An error result will be returned for the losing person.
+/// <br /><br />
+/// If `Error.Unauthorized` is returned, then the metadata will have an 
+/// `AuthorizationResult` under the "details" key.
 /// </remarks>
 public class LockSeatCommand : IRequest<ErrorOr<LockSeatCommandResponse>>
 {

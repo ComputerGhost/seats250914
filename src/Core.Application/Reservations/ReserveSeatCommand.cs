@@ -10,6 +10,9 @@ namespace Core.Application.Reservations;
 /// <remarks>
 /// A lock is required to reserve a seat.
 /// See <see cref="LockSeatCommand"/> for how to lock a seat.
+/// <br /><br />
+/// If `Error.Unauthorized` is returned, then the metadata will have an 
+/// `AuthorizationResult` under the "details" key.
 /// </remarks>
 public class ReserveSeatCommand : IRequest<ErrorOr<int>>
 {

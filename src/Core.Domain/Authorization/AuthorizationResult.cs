@@ -10,7 +10,7 @@ public struct AuthorizationResult
 
     public static AuthorizationResult Success => new() { IsAuthorized = true, };
 
-    private static AuthorizationResult Failure(AuthorizationRejectionReason reason) => new()
+    public static AuthorizationResult Failure(AuthorizationRejectionReason reason) => new()
     {
         IsAuthorized = false,
         FailureReason = reason,

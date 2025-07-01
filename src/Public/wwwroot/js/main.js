@@ -100,7 +100,7 @@ window.addEventListener("load", function () {
  * See the associated component and view for the rest of the code.
  * This is the JavaScript for the client-side behavior.
  */
-function SeatSelector($element) {
+function SeatSelector($element, errorMap) {
     const that = this;
     this._$reservationPageUrl = $element.data("reservation-page-url");
 
@@ -198,7 +198,9 @@ function SeatSelector($element) {
                     that._handleSuccess(requestData, responseData);
                 })
                 .fail(function (xhr) {
-                    if (xhr.status === 409) {
+                    if (xhr.status === 403) {
+                        that._handleUnauthorized(xhr.responseJSON);
+                    } else if (xhr.status === 409) {
                         that._handleConflict(requestData);
                     }
                 });
@@ -226,8 +228,13 @@ function SeatSelector($element) {
             }
         };
 
+        this._handleUnauthorized = function (responseJson) {
+            const template = errorMap[403][responseJson.failureReason];
+            that._$errorElement.text(template);
+        };
+
         this._handleConflict = function (requestData) {
-            const template = that._$selectElement.data("conflict-text");
+            const template = errorMap[403];
             that._$errorElement.text(
                 template.replace("{}", requestData.seatNumber)
             );

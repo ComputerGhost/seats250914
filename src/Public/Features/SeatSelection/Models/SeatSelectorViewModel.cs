@@ -22,8 +22,6 @@ public class SeatSelectorViewModel
             _ => Enum.Parse<SystemStatus>(systemStatus.Status.ToString())
         };
 
-        // TODO: Handle "Closing soon".
-
         CloseTimeDisplay = FormatForDisplay(systemStatus.ScheduledCloseDateTime, systemStatus.ScheduledCloseTimeZone);
         CloseTimeParameter = FormatForParameter(systemStatus.ScheduledCloseDateTime);
         CloseTimeZone = systemStatus.ScheduledCloseTimeZone;

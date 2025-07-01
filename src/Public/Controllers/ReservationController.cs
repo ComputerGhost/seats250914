@@ -1,8 +1,10 @@
 ﻿using Core.Application.Reservations;
+using Core.Domain.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Shared.FrameworkEnhancements.Extensions;
 using Public.Models.ViewModels;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace Public.Controllers;
@@ -75,22 +77,27 @@ public class ReservationController(IMediator mediator) : Controller
     private async Task<IActionResult> ReserveSeat_Submit(ReserveSeatViewModel model)
     {
         var seatLock = GetSeatLockFromCookie();
-        if (seatLock != null)
+        if (seatLock == null)
         {
-            // The seat lock will be verified by the reservation code.
-            var ipAddress = Request.GetClientIpAddress();
-            var command = model.ToReserveSeatCommand(ipAddress, seatLock);
-            var result = await mediator.Send(command);
-
-            Response.Cookies.Delete("seatLock");
-
-            if (!result.IsError)
-            {
-                return RedirectToAction(nameof(MakePayment));
-            }
+            return RedirectToAction(nameof(TimeExpired));
         }
 
-        return RedirectToAction(nameof(TimeExpired));
+        // The seat lock will be verified by the reservation code.
+        var ipAddress = Request.GetClientIpAddress();
+        var command = model.ToReserveSeatCommand(ipAddress, seatLock);
+        var result = await mediator.Send(command);
+        if (result.IsError)
+        {
+            Debug.Assert(result.FirstError.Metadata != null);
+            Debug.Assert(result.FirstError.Metadata["details"] != null);
+            var authResult = (AuthorizationResult)result.FirstError.Metadata["details"];
+            model.FailureReason = authResult.FailureReason;
+            return View(model);
+        }
+
+        Response.Cookies.Delete("seatLock");
+
+        return RedirectToAction(nameof(MakePayment));
     }
 
     [HttpGet("payment")]

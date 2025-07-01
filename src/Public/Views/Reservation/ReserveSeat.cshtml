@@ -1,4 +1,5 @@
-﻿@inject IViewLocalizer Localizer;
+﻿@using Core.Domain.Authorization
+@inject IViewLocalizer Localizer;
 @model ReserveSeatViewModel;
 
 @section Scripts
@@ -17,13 +18,28 @@
 <div class="container py-3">
     <h1>@Localizer["Seat Reservation"]</h1>
 
-    <section>
-        @Localizer["<!-- seat information -->",
-            Model.SeatNumber,
-            Model.TimeUntilExpirationText,
-            Model.TimeUntilExpirationPeriod
-        ]
-    </section>
+    @switch (Model.FailureReason)
+    {
+        case AuthorizationRejectionReason.KeyIsInvalid:
+            @Localizer["<!-- AuthorizationResult.KeyIsInvalid -->"]
+            break;
+
+        case AuthorizationRejectionReason.ReservationsAreClosed:
+            @Localizer["<!-- AuthorizationResult.ReservationsAreClosed -->"]
+            break;
+
+        case AuthorizationRejectionReason.TooManyReservationsForEmail:
+            @Localizer["<!-- AuthorizationResult.TooManyReservationsForEmail -->"]
+            break;
+
+        default:
+            @Localizer["<!-- seat information -->",
+                Model.SeatNumber,
+                Model.TimeUntilExpirationText,
+                Model.TimeUntilExpirationPeriod
+            ]
+            break;
+    }
     
     <form method="post">
         <section>
