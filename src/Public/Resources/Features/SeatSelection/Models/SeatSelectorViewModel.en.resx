@@ -174,4 +174,10 @@
   <data name="&lt;!-- reserve seat disclosure --&gt;" xml:space="preserve">
     <value>When you click "{0}", we will save and use your data in order to process your request. For more information about what we collect, please read our &lt;a href="~/legal/privacy-policy"&gt;Privacy Policy&lt;/a&gt;.</value>
   </data>
+  <data name="&lt;!--unauthorized:ReservationsAreClosed--&gt;" xml:space="preserve">
+    <value>Reservations are closed.</value>
+  </data>
+  <data name="&lt;!--unauthorized:TooManySeatLocksForIpAddress--&gt;" xml:space="preserve">
+    <value>Too many reservations have been submitted from your IP Address.</value>
+  </data>
 </root>

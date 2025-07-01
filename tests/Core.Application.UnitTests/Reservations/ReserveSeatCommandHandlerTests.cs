@@ -55,4 +55,29 @@ public class ReserveSeatCommandHandlerTests
             m => m.ReserveSeat(It.IsAny<int>(), It.IsAny<IdentityModel>()),
             Times.Never);
     }
+
+    [DataTestMethod]
+    [DataRow(AuthorizationRejectionReason.KeyIsInvalid)]
+    [DataRow(AuthorizationRejectionReason.KeyIsExpired)]
+    [DataRow(AuthorizationRejectionReason.ReservationsAreClosed)]
+    [DataRow(AuthorizationRejectionReason.SeatIsNotLocked)]
+    [DataRow(AuthorizationRejectionReason.TooManyReservationsForEmail)]
+    [DataRow(AuthorizationRejectionReason.TooManySeatLocksForIpAddress)]
+    public async Task Handle_WhenNotAuthorizedToReserveSeat_ReturnsDetailsInMetadata(AuthorizationRejectionReason rejectionReason)
+    {
+        // Arrange
+        MockAuthorizationChecker
+            .Setup(m => m.GetReserveSeatAuthorization(It.IsAny<IdentityModel>(), It.IsAny<int>(), It.IsAny<string>()))
+            .ReturnsAsync(AuthorizationResult.Failure(rejectionReason));
+
+        // Act
+        var result = await Subject.Handle(new ReserveSeatCommand(), CancellationToken.None);
+
+        // Assert
+        Assert.IsTrue(result.IsError);
+        Assert.IsNotNull(result.FirstError.Metadata);
+        Assert.IsNotNull(result.FirstError.Metadata["details"]);
+        var details = (AuthorizationResult)result.FirstError.Metadata["details"];
+        Assert.AreEqual(rejectionReason, details.FailureReason);
+    }
 }

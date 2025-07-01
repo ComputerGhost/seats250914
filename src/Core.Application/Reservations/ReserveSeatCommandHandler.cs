@@ -1,5 +1,4 @@
 ﻿using Core.Domain.Authorization;
-using Core.Domain.Common.Models;
 using Core.Domain.Reservations;
 using ErrorOr;
 using MediatR;
@@ -21,27 +20,33 @@ internal class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, E
     {
         Log.Information("Reserving seat {SeatNumber} for identity {Identity}.", request.SeatNumber, request.SeatNumber);
 
-        var unauthorizedMessage = $"User is not authorized to reserve seat {request.SeatNumber}.";
-        
-        if (!await CanReserveSeat(request.Identity, request.SeatNumber, request.SeatKey))
+        var authResult = await _authorizationChecker.GetReserveSeatAuthorization(request.Identity, request.SeatNumber, request.SeatKey);
+        if (!authResult.IsAuthorized)
         {
-            Log.Warning("User is not authorized to reserve seat {SeatNumber}.", request.SeatNumber);
-            return Error.Unauthorized(unauthorizedMessage);
+            return Unauthorized(request.SeatNumber, authResult);
         }
 
         var reservationId = await _reservationService.ReserveSeat(request.SeatNumber, request.Identity);
         if (reservationId == null)
         {
-            Log.Warning("User's authorization to reserve seat {SeatNumber} expired moments ago.", request.SeatNumber);
-            return Error.Failure(unauthorizedMessage);
+            return UnauthorizedJustNow(request.SeatNumber);
         }
 
         return reservationId.Value;
     }
 
-    private async Task<bool> CanReserveSeat(IdentityModel identity, int seatNumber, string key)
+    private static Error Unauthorized(int seatNumber, AuthorizationResult authResult)
     {
-        var result = await _authorizationChecker.GetReserveSeatAuthorization(identity, seatNumber, key);
-        return result.IsAuthorized;
+        var reason = authResult.FailureReason.ToString();
+        Log.Information("User is not authorized to reserve seat {SeatNumber} because {reason}.", seatNumber, reason);
+        return Error.Unauthorized(metadata: new Dictionary<string, object> { { "details", authResult } });
+    }
+
+    private static Error UnauthorizedJustNow(int seatNumber)
+    {
+        Log.Warning("User failed to reserve seat {SeatNumber}. Their seat key probably expired just now.", seatNumber);
+        return Error.Unauthorized(metadata: new Dictionary<string, object> {
+            { "details", AuthorizationResult.KeyIsExpired }
+        });
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Core.Domain.Authorization;
-using Core.Domain.Common.Models;
 using Core.Domain.Reservations;
 using ErrorOr;
 using MediatR;
@@ -21,18 +20,17 @@ internal class LockSeatCommandHandler : IRequestHandler<LockSeatCommand, ErrorOr
     {
         Log.Information("Locking seat {SeatNumber} for {@Identity}.", request.IpAddress, request.Identity);
 
-        if (!await CanLockSeat(request.Identity))
+        var authResult = await _authorizationCheck.GetLockSeatAuthorization(request.Identity);
+        if (!authResult.IsAuthorized)
         {
-            Log.Information("Could not lock seat {SeatNumber} because user is not authorized.", request.SeatNumber);
-            return Error.Unauthorized($"User is not authorized to lock seat {request.SeatNumber}.");
+            return Unauthorized(request.SeatNumber, authResult);
         }
 
         // This is where the magic happens. Only one person can lock each seat.
         var lockEntity = await _seatLockService.LockSeat(request.SeatNumber, request.IpAddress);
         if (lockEntity == null)
         {
-            Log.Information("Could not lock seat {SeatNumber} because it is already locked.", request.SeatNumber);
-            return Error.Conflict();
+            return SeatTaken(request.SeatNumber);
         }
 
         return new LockSeatCommandResponse
@@ -43,9 +41,16 @@ internal class LockSeatCommandHandler : IRequestHandler<LockSeatCommand, ErrorOr
         };
     }
 
-    public async Task<bool> CanLockSeat(IdentityModel identity)
+    private static Error SeatTaken(int seatNumber)
     {
-        var result = await _authorizationCheck.GetLockSeatAuthorization(identity);
-        return result.IsAuthorized;
+        Log.Information("Could not lock seat {seatNumber} because it is already locked.", seatNumber);
+        return Error.Conflict();
+    }
+
+    private static Error Unauthorized(int seatNumber, AuthorizationResult authResult)
+    {
+        var reason = authResult.FailureReason.ToString();
+        Log.Information("User is not authorized to lock seat {SeatNumber} because {reason}.", seatNumber, reason);
+        return Error.Unauthorized(metadata: new Dictionary<string, object> { { "details", authResult } });
     }
 }

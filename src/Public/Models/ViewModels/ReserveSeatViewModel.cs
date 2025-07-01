@@ -1,4 +1,5 @@
 ﻿using Core.Application.Reservations;
+using Core.Domain.Authorization;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 
@@ -7,6 +8,9 @@ namespace Public.Models.ViewModels;
 public class ReserveSeatViewModel
 {
     /* Display only */
+
+    [BindNever]
+    public AuthorizationRejectionReason? FailureReason { get; set; }
 
     [BindNever]
     public required TimeSpan TimeUntilExpiration { get; set; }
