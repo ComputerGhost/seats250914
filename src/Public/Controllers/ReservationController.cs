@@ -2,7 +2,9 @@
 using Core.Domain.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Presentation.Shared.FrameworkEnhancements.Extensions;
+using Public.Models;
 using Public.Models.ViewModels;
 using System.Diagnostics;
 using System.Text.Json;
@@ -101,9 +103,12 @@ public class ReservationController(IMediator mediator) : Controller
     }
 
     [HttpGet("payment")]
-    public IActionResult MakePayment()
+    public IActionResult MakePayment([FromServices] IOptions<PaymentConfig> options)
     {
-        return View();
+        return View(new MakePaymentViewModel
+        {
+            PaymentFormUrl = options.Value.PaymentFormUrl,
+        });
     }
 
     /// <summary>

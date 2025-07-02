@@ -4,6 +4,7 @@ using Presentation.Shared.Localization.Extensions;
 using Presentation.Shared.LockCleanup;
 using Presentation.Shared.Logging.Extensions;
 using Public.Hubs;
+using Public.Models;
 using System.Globalization;
 using System.Reflection;
 
@@ -29,6 +30,7 @@ builder.Services.AddMyLocalization(options =>
 });
 builder.Services.AddServiceImplementations(Assembly.GetExecutingAssembly());
 builder.Services.AddSignalR();
+builder.Services.Configure<PaymentConfig>(builder.Configuration.GetSection("Payment"));
 
 var app = builder.Build();
 app.MapControllers();
