@@ -1,22 +1,21 @@
-/// <binding BeforeBuild='buildStyles' Clean='cleanStyles' />
-/**
- * My stylesheets need preprocessing, but my script files are simple enough to just include as-is.
- * Therefore, this gulpfile configuration only includes tasks for processing stylesheets.
- */
+/// <binding BeforeBuild='buildStyles, buildScripts' Clean='cleanStyles, cleanScripts' />
 "use strict";
 
 const gulp = require("gulp"),
     clean = require("gulp-clean"),
     cssmin = require("gulp-cssmin"),
     rename = require("gulp-rename"),
-    sass = require("gulp-sass")(require("sass"));
+    sass = require("gulp-sass")(require("sass")),
+    terser = require("gulp-terser");
 
 var paths = {
     webroot: "./wwwroot/",
 };
 
-paths.scss = paths.webroot + "scss/**/*.scss";
 paths.cssOutput = paths.webroot + "css/";
+paths.scss = paths.webroot + "scss/**/*.scss";
+paths.js = paths.webroot + "js/**/*.js";
+paths.jsOutput = paths.webroot + "js/";
 
 async function buildStyles() {
     const sassOptions = {
@@ -31,13 +30,29 @@ async function buildStyles() {
         .pipe(gulp.dest(paths.cssOutput));
 }
 
+async function cleanScripts() {
+    return gulp
+        .src(paths.jsOutput + "*.min.css", { allowEmpty: true, read: false })
+        .pipe(clean());
+}
+
 async function cleanStyles() {
     return gulp
         .src(paths.cssOutput + "*.min.css", { allowEmpty: true, read: false })
         .pipe(clean());
 }
 
+async function minifyJs() {
+    return gulp
+        .src([paths.js, "!**/*.min.js"]) // Avoid re-minifying already minified files
+        .pipe(terser())
+        .pipe(rename({ suffix: ".min" }))
+        .pipe(gulp.dest(paths.jsOutput));
+}
+
+exports.buildScripts = minifyJs;
 exports.buildStyles = buildStyles;
+exports.cleanScripts = cleanScripts;
 exports.cleanStyles = cleanStyles;
 exports.watch = function () {
     gulp.watch(paths.scss, buildStyles);

@@ -1,6 +1,41 @@
-@forward "../lib/bootstrap/scss/bootstrap" with (
-    $primary: #c090b0,
-);
+$enable-dark-mode: false;
+$enable-validation-icons: false;
+$primary: #c090b0;
+
+/* from bootstrap.scss file */
+
+@import "../lib/bootstrap/scss/mixins/banner";
+@include bsBanner("");
+
+// Configuration
+@import "../lib/bootstrap/scss/functions";
+@import "../lib/bootstrap/scss/variables";
+@import "../lib/bootstrap/scss/maps";
+@import "../lib/bootstrap/scss/mixins";
+@import "../lib/bootstrap/scss/utilities";
+
+// Layout & components
+@import "../lib/bootstrap/scss/root";
+@import "../lib/bootstrap/scss/reboot";
+@import "../lib/bootstrap/scss/type";
+@import "../lib/bootstrap/scss/images";
+@import "../lib/bootstrap/scss/containers";
+@import "../lib/bootstrap/scss/grid";
+@import "../lib/bootstrap/scss/forms";
+@import "../lib/bootstrap/scss/buttons";
+@import "../lib/bootstrap/scss/dropdown";
+@import "../lib/bootstrap/scss/nav";
+@import "../lib/bootstrap/scss/navbar";
+@import "../lib/bootstrap/scss/alert";
+@import "../lib/bootstrap/scss/close";
+
+// Helpers
+@import "../lib/bootstrap/scss/helpers";
+
+// Utilities
+@import "../lib/bootstrap/scss/utilities/api";
+
+/* --- */
 
 // I want link colors to be the standard blue.
 $link-color: #0000ff;
