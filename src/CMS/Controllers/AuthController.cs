@@ -1,6 +1,7 @@
 ﻿using CMS.ViewModels;
 using Core.Application.Accounts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
@@ -80,6 +81,7 @@ public class AuthController(IMediator mediator, IStringLocalizer<AuthController>
         }
     }
 
+    [Authorize]
     [HttpPost("sign-out")]
     public new async Task<IActionResult> SignOut()
     {
