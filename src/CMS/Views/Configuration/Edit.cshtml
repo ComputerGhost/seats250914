@@ -7,8 +7,8 @@
     @if (Model.IsSaveSuccessful)
     {
         <div class="alert alert-success alert-dismissible">
-            The configuration was saved successfully.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            구성이 성공적으로 저장되었습니다.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="닫기"></button>
         </div>
     }
 
@@ -20,18 +20,18 @@
             <div class="mb-3">
                 <label asp-for="ScheduledOpenDate" class="form-label">예약 오픈 예정일시</label>
                 <div class="input-group">
-                    <input asp-for="ScheduledOpenDate" class="form-control" aria-label="Scheduled open date" required>
-                    <input asp-for="ScheduledOpenTime" step="1" class="form-control" aria-label="Scheduled open time" required>
-                    <select asp-for="ScheduledOpenTimeZone" asp-items="Model.ValidTimeZones" class="form-select" aria-label="Scheduled open time zone" required></select>
+                    <input asp-for="ScheduledOpenDate" class="form-control" aria-label="예약 오픈 날짜" required>
+                    <input asp-for="ScheduledOpenTime" step="1" class="form-control" aria-label="예약 오픈 시간" required>
+                    <select asp-for="ScheduledOpenTimeZone" asp-items="Model.ValidTimeZones" class="form-select" aria-label="예약 오픈 시간대" required></select>
                 </div>
             </div>
 
             <div class="mb-3">
-                <label asp-for="ScheduledCloseDate" class="form-label">Scheduled close date</label>
+                <label asp-for="ScheduledCloseDate" class="form-label">예약 마감 예정일시</label>
                 <div class="input-group">
-                    <input asp-for="ScheduledCloseDate" class="form-control" aria-label="Scheduled close date" required>
-                    <input asp-for="ScheduledCloseTime" step="1" class="form-control" aria-label="Scheduled close time" required>
-                    <select asp-for="ScheduledCloseTimeZone" asp-items="Model.ValidTimeZones" class="form-select" aria-label="Scheduled close time zone" required></select>
+                    <input asp-for="ScheduledCloseDate" class="form-control" aria-label="예약 마감 날짜" required>
+                    <input asp-for="ScheduledCloseTime" step="1" class="form-control" aria-label="예약 마감 시간" required>
+                    <select asp-for="ScheduledCloseTimeZone" asp-items="Model.ValidTimeZones" class="form-select" aria-label="예약 마감 시간대" required></select>
                 </div>
             </div>
 
@@ -90,10 +90,10 @@
             </div>
 
             <div class="mb-3">
-                <label asp-for="GracePeriodSeconds" class="form-label">Grace period (in seconds)</label>
+                <label asp-for="GracePeriodSeconds" class="form-label">유예 기간 (초)</label>
                 <input asp-for="GracePeriodSeconds" class="form-control w-auto" aria-describedby="GracePeriodSeconds-help" min="0" required>
                 <div id="GracePeriodSeconds-help" class="form-text">
-                    This time is added to any time limits to account for delays over the Internet.
+                    이 시간은 인터넷 지연을 고려하여 위해 모든 시간 제한에 추가됩니다.
                 </div>
             </div>
         </section>
