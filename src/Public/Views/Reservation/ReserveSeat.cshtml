@@ -66,10 +66,10 @@
                 </div>
             </div>
             <div class="mb-3">
-                <label asp-for="PreferredLanguage" class="form-label">@Localizer["Preferred language"]</label>
-                <select asp-for="PreferredLanguage" required>
-                    <option value="English">English</option>
-                    <option value="Korean">한국어</option>
+                <label asp-for="PreferredLanguageAbbreviated" class="form-label">@Localizer["Preferred language"]</label>
+                <select asp-for="PreferredLanguageAbbreviated" class="form-select" required>
+                    <option value="en">English</option>
+                    <option value="ko">한국어</option>
                 </select>
             </div>
         </section>

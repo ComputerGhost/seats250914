@@ -7,6 +7,12 @@ namespace Public.Models.ViewModels;
 
 public class ReserveSeatViewModel
 {
+    public ReserveSeatViewModel()
+    {
+        var culture = Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
+        PreferredLanguageAbbreviated = culture;
+    }
+
     /* Display only */
 
     [BindNever]
@@ -36,10 +42,17 @@ public class ReserveSeatViewModel
     [DataType(DataType.PhoneNumber)]
     public string? PhoneNumber { get; set; }
 
-    public string PreferredLanguage { get; set; } = null!;
+    public string PreferredLanguageAbbreviated { get; set; }
 
     public ReserveSeatCommand ToReserveSeatCommand(string ipAddress, LockSeatCommandResponse seatLock)
     {
+        var preferredLangauge = PreferredLanguageAbbreviated switch
+        {
+            "en" => "English",
+            "ko" => "한국어",
+            _ => throw new NotImplementedException($"Language abbreviation ${PreferredLanguageAbbreviated} is not valid."),
+        };
+
         return new ReserveSeatCommand
         {
             IpAddress = ipAddress,
@@ -47,7 +60,7 @@ public class ReserveSeatViewModel
             Email = Email,
             Name = Name,
             PhoneNumber = PhoneNumber,
-            PreferredLanguage = PreferredLanguage,
+            PreferredLanguage = preferredLangauge,
             SeatKey = seatLock.SeatKey,
             SeatNumber = seatLock.SeatNumber,
         };
