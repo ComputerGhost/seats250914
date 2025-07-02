@@ -8,19 +8,12 @@ namespace CMS.Controllers;
 
 [Authorize]
 [Route("/")]
-public class HomeController : Controller
+public class HomeController(IMediator mediator) : Controller
 {
-    private readonly IMediator _mediator;
-
-    public HomeController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var test = await _mediator.Send(new TestDatabaseQuery());
+        var test = await mediator.Send(new TestDatabaseQuery());
         return View(new TestDatabaseViewModel
         {
             Success = !test.IsError,

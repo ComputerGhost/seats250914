@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using Presentation.Shared.Localization.Extensions;
 using Presentation.Shared.Localization.Models;
 
-namespace Publish.Localization.ViewComponents;
+namespace Public.ViewComponents;
 
 /// <summary>
 /// Dropdown menu to select a culture.

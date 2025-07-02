@@ -35,7 +35,13 @@ builder.Services.Configure<PaymentConfig>(builder.Configuration.GetSection("Paym
 var app = builder.Build();
 app.MapControllers();
 app.MapHub<SeatsHub>("/api/watch-seats");
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        ctx.Context.Response.Headers.Append("Cache-Control", "immutable,max-age=31536000,public");
+    }
+});
 //app.UseExceptionHandler("/Error");
 //app.UseStatusCodePagesWithReExecute("/Error/{0}");
 app.UseMyLocalization();

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace CMS.Features.Authentication;
+namespace Presentation.Shared.Authentication;
 
 /// <summary>
 /// Use this with a verified user.
@@ -15,9 +17,9 @@ public class AuthenticationService(HttpContext httpContext)
         IEnumerable<Claim> claims = [
             new Claim(ClaimTypes.Name, name),
         ];
-        var identity = new ClaimsIdentity(claims, "MyAuthenticationScheme");
+        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var principal = new ClaimsPrincipal(identity);
-        return httpContext.SignInAsync(principal);
+        return httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
     }
 
     public Task SignOut()

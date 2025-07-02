@@ -46,21 +46,6 @@
     padding: 3rem;
 }
 
-%hero-vertical {
-    display: block;
-    height: auto;
-
-    .hero-image-container {
-        padding: 1rem 3rem;
-        aspect-ratio: initial;
-    }
-
-    .hero-image {
-        width: 100%;
-        height: auto;
-    }
-}
-
 @supports (height: 100dvh) {
     .hero {
         height: 100dvh;
