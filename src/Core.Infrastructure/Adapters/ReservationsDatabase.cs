@@ -62,7 +62,7 @@ internal class ReservationsDatabase(IDbConnection connection) : IReservationsDat
             FROM Reservations
             LEFT JOIN Seats ON Seats.Id = Reservations.SeatId
             LEFT JOIN ReservationStatuses ON ReservationStatuses.Id = Reservations.ReservationStatusId
-            ORDER BY Reservations.ReservedAt DESC
+            ORDER BY Reservations.ReservedAt ASC
             """;
         return await connection.QueryAsync<ReservationEntityModel>(sql);
     }
