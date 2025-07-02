@@ -1,6 +1,6 @@
 ﻿using Core.Domain.Common.Enumerations;
 
-namespace Public.Features.SeatSelection.Extensions;
+namespace Public.Extensions;
 
 public static class SeatStatusExtensions
 {

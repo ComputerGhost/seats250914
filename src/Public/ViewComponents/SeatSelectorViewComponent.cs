@@ -2,9 +2,9 @@
 using Core.Application.System;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Public.Features.SeatSelection.Models;
+using Public.Models.ViewModels;
 
-namespace Public.Features.SeatSelection.ViewComponents;
+namespace Public.ViewComponents;
 
 /// <summary>
 /// Widget to select a seat

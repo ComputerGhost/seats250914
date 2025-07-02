@@ -2,9 +2,9 @@
 using Public.Views.Shared.Components.Enumerations;
 using Core.Application.System;
 using Core.Domain.Scheduling;
-using Public.Features.SeatSelection.Extensions;
+using Public.Extensions;
 
-namespace Public.Features.SeatSelection.Models;
+namespace Public.Models.ViewModels;
 
 public class SeatSelectorViewModel
 {

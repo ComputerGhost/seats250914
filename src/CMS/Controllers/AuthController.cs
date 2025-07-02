@@ -1,10 +1,10 @@
-﻿using CMS.Features.Authentication;
-using CMS.ViewModels;
+﻿using CMS.ViewModels;
 using Core.Application.Accounts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using Presentation.Shared.Authentication;
 using Serilog;
 
 namespace CMS.Controllers;

@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace CMS.Features.Authentication;
+namespace Presentation.Shared.Authentication;
 
 /// <summary>
 /// Use this with a verified user.

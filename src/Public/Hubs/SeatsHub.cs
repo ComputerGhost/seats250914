@@ -4,7 +4,7 @@ using Core.Domain.Common.Enumerations;
 using Core.Domain.DependencyInjection;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
-using Public.Features.SeatSelection.Extensions;
+using Public.Extensions;
 
 namespace Public.Hubs;
 

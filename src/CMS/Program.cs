@@ -1,6 +1,6 @@
-using CMS.Features.Authentication;
 using Core.Application;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Shared.Authentication;
 using Presentation.Shared.Localization.Extensions;
 using Presentation.Shared.Logging.Extensions;
 using System.Globalization;

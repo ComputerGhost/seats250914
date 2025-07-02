@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Shared.FrameworkEnhancements.Extensions;
 using Presentation.Shared.LockCleanup;
-using Public.Features.SeatSelection.Extensions;
+using Public.Extensions;
 using Public.Models.DTOs;
 using System.Diagnostics;
 

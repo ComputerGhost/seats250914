@@ -1,4 +1,6 @@
-﻿namespace CMS.Features.Authentication;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace Presentation.Shared.Authentication;
 
 public static class ServiceCollectionExtensions
 {

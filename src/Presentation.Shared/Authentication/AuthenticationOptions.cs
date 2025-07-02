@@ -1,4 +1,4 @@
-﻿namespace CMS.Features.Authentication;
+﻿namespace Presentation.Shared.Authentication;
 
 public class AuthenticationOptions
 {
