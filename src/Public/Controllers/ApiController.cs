@@ -36,21 +36,25 @@ public class ApiController(IMediator mediator) : Controller
             SeatNumber = request.SeatNumber,
         });
 
+        if (lockResult.IsError)
+        {
+            var error = lockResult.FirstError;
+            return error.Type switch
+            {
+                ErrorType.Conflict => Results.Conflict(),
+                ErrorType.NotFound => Results.NotFound(),
+                ErrorType.Unauthorized => Unauthorized(error),
+                _ => throw new NotImplementedException(),
+            };
+        }
+
         var cleanupScheduler = HttpContext.RequestServices
             .GetServices<IHostedService>()
             .OfType<CleanupScheduler>()
             .Single();
         await cleanupScheduler.ScheduleCleanup();
 
-        return lockResult.Match(
-            result => Results.Ok(result),
-            error => error.First().Type switch
-            {
-                ErrorType.Conflict => Results.Conflict(),
-                ErrorType.NotFound => Results.NotFound(),
-                ErrorType.Unauthorized => Unauthorized(error.First()),
-                _ => throw new NotImplementedException(),
-            });
+        return Results.Ok(lockResult.Value);
     }
 
     private static IResult Unauthorized(Error authError)
