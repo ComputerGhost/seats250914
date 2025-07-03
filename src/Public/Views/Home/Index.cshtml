@@ -1,5 +1,5 @@
 ﻿@inject IViewLocalizer Localizer;
-
+@model HomeViewModel;
 @section Scripts
 {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
@@ -57,7 +57,10 @@
             </div>
         </div>
 
-        <partial name="_MapWidget" />
+        @if (Model.ShouldRenderMap)
+        {
+            <partial name="_MapWidget" />
+        }
     </div>
 </section>
 
