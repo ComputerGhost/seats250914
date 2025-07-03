@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.Diagnostics;
 using System.Net;
 
 namespace Presentation.Shared.FrameworkEnhancements.Extensions;
@@ -15,18 +16,24 @@ public static class HttpRequestExtensions
     /// </remarks>
     public static string GetClientIpAddress(this HttpRequest request)
     {
-        var ipAddress = request.GetXForwardedFor()
-            // This should never be null when using TCP.
-            ?? request.HttpContext.Connection.RemoteIpAddress
-            // But just in case, we fall back to this.
-            ?? IPAddress.Loopback;
-        return ipAddress.MapToIPv4().ToString();
-    }
+        var cloudflareForwardedFor = request.Headers["CF-Connecting-IP"].FirstOrDefault();
+        if (cloudflareForwardedFor != null)
+        {
+            return cloudflareForwardedFor;
+        }
 
-    private static IPAddress? GetXForwardedFor(this HttpRequest request)
-    {
-        var headerValue = request.Headers["X-Forwarded-For"].FirstOrDefault();
-        var firstValue = headerValue?.Split(',').First();
-        return IPAddress.TryParse(firstValue, out var ip) ? ip : null;
+        var xForwardedFor = request.Headers["X-Forwarded-For"].FirstOrDefault();
+        if (xForwardedFor != null)
+        {
+            var firstInChain = xForwardedFor.Split(',').First();
+            if (IPAddress.TryParse(firstInChain, out var ip))
+            {
+                return ip.ToString();
+            }
+        }
+
+        var remoteIp = request.HttpContext.Connection.RemoteIpAddress;
+        Debug.Assert(remoteIp != null, "RemoteIpAddress should not be null when using TCP.");
+        return remoteIp.MapToIPv4().ToString();
     }
 }
