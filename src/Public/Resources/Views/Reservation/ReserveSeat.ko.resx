@@ -149,7 +149,7 @@
  &lt;p&gt;이 양식이 &lt;time class="countdown" datetime="{2}"&gt;{1}&lt;/time&gt; 내에 제출되지 않으면, 해당 좌석은 다른 팬에게 배정될 수 있습니다.&lt;/p&gt;
 &lt;/section&gt;</value>
   </data>
-  <data name="&lt;!--AuthorizationResult.ReservationsAreClosed --&gt;" xml:space="preserve">
+  <data name="&lt;!-- AuthorizationResult.ReservationsAreClosed --&gt;" xml:space="preserve">
     <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
     &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="닫기"&gt;&lt;/button&gt;
     좌석이 예약되지 않았습니다!

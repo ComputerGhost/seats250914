@@ -6,7 +6,6 @@ using Microsoft.Extensions.Options;
 using Presentation.Shared.FrameworkEnhancements.Extensions;
 using Public.Models;
 using Public.Models.ViewModels;
-using System.Diagnostics;
 using System.Text.Json;
 
 namespace Public.Controllers;
@@ -37,14 +36,10 @@ public class ReservationController(IMediator mediator) : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        // Trust the lock from the cookie since it's only used for display.
-        var timeUntilExpiration = seatLock.LockExpiration - DateTimeOffset.UtcNow;
-
         return View(new ReserveSeatViewModel
         {
             SeatNumber = seatLock.SeatNumber,
-            TimeUntilExpiration = timeUntilExpiration,
-        });
+        }.WithExpiration(seatLock.LockExpiration));
     }
 
     [HttpPost("new")]
@@ -90,11 +85,9 @@ public class ReservationController(IMediator mediator) : Controller
         var result = await mediator.Send(command);
         if (result.IsError)
         {
-            Debug.Assert(result.FirstError.Metadata != null);
-            Debug.Assert(result.FirstError.Metadata["details"] != null);
-            var authResult = (AuthorizationResult)result.FirstError.Metadata["details"];
-            model.FailureReason = authResult.FailureReason;
-            return View(model);
+            return View(model
+                .WithExpiration(seatLock.LockExpiration)
+                .WithError(result.FirstError));
         }
 
         Response.Cookies.Delete("seatLock");
