@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Public.Models.ViewModels;
 
 namespace Public.Controllers;
 
@@ -6,8 +7,11 @@ namespace Public.Controllers;
 public class HomeController : Controller
 {
     [HttpGet]
-    public IActionResult Index()
+    public IActionResult Index([FromQuery] bool renderMap = true)
     {
-        return View();
+        return View(new HomeViewModel
+        {
+            ShouldRenderMap = renderMap,
+        });
     }
 }
