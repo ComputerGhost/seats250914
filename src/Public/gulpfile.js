@@ -55,5 +55,6 @@ exports.buildStyles = buildStyles;
 exports.cleanScripts = cleanScripts;
 exports.cleanStyles = cleanStyles;
 exports.watch = function () {
+    gulp.watch([paths.js, "!**/*.min.js"], minifyJs);
     gulp.watch(paths.scss, buildStyles);
 };

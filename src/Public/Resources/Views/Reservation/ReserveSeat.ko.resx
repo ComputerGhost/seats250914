@@ -141,7 +141,7 @@
 &lt;/section&gt;</value>
   </data>
   <data name="&lt;!-- form disclosures --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;이 양식을 제출하면 귀하와 저희 간에 법적 효력을 지닌 계약이 체결됩니다. 또한, 양질의 서비스를 제공하기 위해 귀하의 정보를 저장하고 활용하게 됩니다. 자세한 내용은 &lt;a href="~/legal/terms-of-service"&gt;이용약관&lt;/a&gt; 및 &lt;a href="~/legal/privacy-policy"&gt;개인정보처리방침&lt;/a&gt;을 참고해주세요.&lt;/p&gt;</value>
+    <value>&lt;p&gt;이 양식을 제출하면 귀하와 저희 간에 법적 효력을 지닌 계약이 체결됩니다. 또한, 양질의 서비스를 제공하기 위해 귀하의 정보를 저장하고 활용하게 됩니다. 자세한 내용은 &lt;a href="/legal/terms-of-service"&gt;이용약관&lt;/a&gt; 및 &lt;a href="/legal/privacy-policy"&gt;개인정보처리방침&lt;/a&gt;을 참고해주세요.&lt;/p&gt;</value>
   </data>
   <data name="&lt;!-- seat information --&gt;" xml:space="preserve">
     <value>&lt;section&gt;
