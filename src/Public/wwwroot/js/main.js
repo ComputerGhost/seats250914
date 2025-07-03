@@ -315,10 +315,12 @@ function SeatSelector($element, errorMap) {
                 return false;
             }
 
-            const actualStatus =
-                seat.status === "selected" ? "available" : seat.status;
-            if (actualStatus === newStatus) {
-                return false;
+            if (seat.status === "selected") {
+                if (newStatus === "available") {
+                    return false;
+                } else {
+                    that.deselectSeat(index);
+                }
             }
 
             seat.status = newStatus;
