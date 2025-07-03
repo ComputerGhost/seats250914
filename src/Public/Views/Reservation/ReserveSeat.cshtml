@@ -9,7 +9,8 @@
             const periodUntilExpiration = "@Model.TimeUntilExpirationPeriod";
             const secondsUntilExpiration = periodToSeconds(periodUntilExpiration);
             setTimeout(function () {
-                window.location = "@Url.Action("TimeExpired")";
+                console.log('here');
+                //window.location = "@Url.Action("TimeExpired")";
             }, secondsUntilExpiration * 1000);
         });
     </script>
@@ -18,27 +19,27 @@
 <div class="container py-3">
     <h1>@Localizer["Seat Reservation"]</h1>
 
-    @switch (Model.FailureReason)
+    @if (Model.FailureReason == AuthorizationRejectionReason.KeyIsInvalid)
     {
-        case AuthorizationRejectionReason.KeyIsInvalid:
-            @Localizer["<!-- AuthorizationResult.KeyIsInvalid -->"]
-            break;
-
-        case AuthorizationRejectionReason.ReservationsAreClosed:
-            @Localizer["<!-- AuthorizationResult.ReservationsAreClosed -->"]
-            break;
-
-        case AuthorizationRejectionReason.TooManyReservationsForEmail:
-            @Localizer["<!-- AuthorizationResult.TooManyReservationsForEmail -->"]
-            break;
-
-        default:
+        <div>@Localizer["<!-- AuthorizationResult.KeyIsInvalid -->"]</div>
+    }
+    else if (Model.FailureReason == AuthorizationRejectionReason.ReservationsAreClosed)
+    {
+        <div>@Localizer["<!-- AuthorizationResult.ReservationsAreClosed -->"]</div>
+    }
+    else if (Model.FailureReason == AuthorizationRejectionReason.TooManyReservationsForEmail)
+    {
+        <div>@Localizer["<!-- AuthorizationResult.TooManyReservationsForEmail -->"]</div>
+    }
+    else
+    {
+        <div>
             @Localizer["<!-- seat information -->",
                 Model.SeatNumber,
                 Model.TimeUntilExpirationText,
                 Model.TimeUntilExpirationPeriod
             ]
-            break;
+        </div>
     }
     
     <form method="post">
