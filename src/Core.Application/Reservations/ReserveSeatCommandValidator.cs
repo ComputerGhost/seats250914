@@ -23,5 +23,8 @@ public class ReserveSeatCommandValidator : AbstractValidator<ReserveSeatCommand>
         RuleFor(p => p.PreferredLanguage)
             .MaximumLength(50)
             .NotEmpty();
+
+        RuleFor(p => p.SeatKey)
+            .NotEmpty();
     }
 }

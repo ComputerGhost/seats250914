@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
 using System.Collections.ObjectModel;
 
-namespace Public.FrontendIntegrationTests.NavBarTests;
+namespace Public.FrontendIntegrationTests.LocalizationTests;
 
 [TestClass]
 public class CultureSwitcherTests

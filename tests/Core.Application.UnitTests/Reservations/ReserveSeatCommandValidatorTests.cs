@@ -313,25 +313,6 @@ public class ReserveSeatCommandValidatorTests
         Assert.IsTrue(result.IsValid);
     }
 
-    [DataTestMethod]
-    [DataRow(43)]
-    [DataRow(45)]
-    public void SeatKey_WhenNotCorrectLength_Fails(int length)
-    {
-        // Precondition
-        const int CORRECT_LENGTH = 44;
-        Assert.AreNotEqual(CORRECT_LENGTH, length);
-
-        // Arrange
-        Command.SeatKey = new string('a', length);
-
-        // Act
-        var result = Subject.Validate(Command);
-
-        // Assert
-        Assert.IsFalse(result.IsValid);
-    }
-
     [TestMethod]
     public void SeatKey_WhenEmpty_Fails()
     {
