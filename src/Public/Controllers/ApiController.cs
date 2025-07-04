@@ -32,7 +32,6 @@ public class ApiController(IMediator mediator) : Controller
         var lockResult = await mediator.Send(new LockSeatCommand
         {
             IpAddress = ipAddress,
-            IsStaff = false,
             SeatNumber = request.SeatNumber,
         });
 

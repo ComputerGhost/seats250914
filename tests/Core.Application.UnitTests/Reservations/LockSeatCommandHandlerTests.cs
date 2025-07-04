@@ -11,16 +11,16 @@ namespace Core.Application.UnitTests.Reservations;
 public class LockSeatCommandHandlerTests
 {
     private Mock<IAuthorizationChecker> MockAuthorizationChecker { get; set; } = null!;
-    private Mock<ISeatLockService> MockSeatLockChecker { get; set; } = null!;
+    private Mock<ISeatLockService> MockSeatLockService { get; set; } = null!;
     private LockSeatCommandHandler Subject { get; set; } = null!;
 
     [TestInitialize]
     public void Initialize()
     {
         MockAuthorizationChecker = new();
-        MockSeatLockChecker = new();
+        MockSeatLockService = new();
 
-        Subject = new(MockAuthorizationChecker.Object, MockSeatLockChecker.Object);
+        Subject = new(MockAuthorizationChecker.Object, MockSeatLockService.Object);
     }
 
     [TestMethod]
@@ -51,7 +51,7 @@ public class LockSeatCommandHandlerTests
         var result = await Subject.Handle(new LockSeatCommand(), CancellationToken.None);
 
         // Assert
-        MockSeatLockChecker.Verify(
+        MockSeatLockService.Verify(
             m => m.LockSeat(It.IsAny<int>(), It.IsAny<string>()),
             Times.Never);
     }

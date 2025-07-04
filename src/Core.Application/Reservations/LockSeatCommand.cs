@@ -22,11 +22,6 @@ public class LockSeatCommand : IRequest<ErrorOr<LockSeatCommandResponse>>
     public string IpAddress { get; set; } = null!;
 
     /// <summary>
-    /// Whether the seat is being locked by staff instead of by the user.
-    /// </summary>
-    public bool IsStaff { get; set; }
-
-    /// <summary>
     /// The number of the seat to be locked.
     /// </summary>
     public int SeatNumber { get; set; }
@@ -34,6 +29,6 @@ public class LockSeatCommand : IRequest<ErrorOr<LockSeatCommandResponse>>
     internal IdentityModel Identity => new()
     {
         IpAddress = IpAddress,
-        IsStaff = IsStaff,
+        IsStaff = false,
     };
 }

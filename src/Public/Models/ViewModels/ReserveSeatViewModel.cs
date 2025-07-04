@@ -57,7 +57,6 @@ public class ReserveSeatViewModel
         return new ReserveSeatCommand
         {
             IpAddress = ipAddress,
-            IsStaff = false,
             Email = Email,
             Name = Name,
             PhoneNumber = PhoneNumber,

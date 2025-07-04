@@ -38,28 +38,15 @@ public class ReservationCreateViewModel
 
     public int SeatNumber { get; set; }
 
-    public LockSeatCommand ToLockSeatCommand(string ipAddress)
+    public AdminReserveSeatCommand ToReserveSeatCommand()
     {
-        return new LockSeatCommand
+        return new AdminReserveSeatCommand
         {
-            IpAddress = ipAddress,
-            IsStaff = true,
-            SeatNumber = SeatNumber,
-        };
-    }
-
-    public ReserveSeatCommand ToReserveSeatCommand(string ipAddress, LockSeatCommandResponse seatLock)
-    {
-        return new ReserveSeatCommand
-        {
-            IpAddress = ipAddress,
-            IsStaff = true,
             Email = Email,
             Name = Name,
             PhoneNumber = PhoneNumber,
             PreferredLanguage = PreferredLanguage,
-            SeatKey = seatLock.SeatKey,
-            SeatNumber = seatLock.SeatNumber,
+            SeatNumber = SeatNumber,
         };
     }
 }

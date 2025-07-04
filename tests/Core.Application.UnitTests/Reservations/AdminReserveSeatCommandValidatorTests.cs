@@ -1,23 +1,19 @@
 ﻿using Core.Application.Reservations;
 
 namespace Core.Application.UnitTests.Reservations;
-
-[TestClass]
-public class ReserveSeatCommandValidatorTests
+public class AdminReserveSeatCommandValidatorTests
 {
-    private ReserveSeatCommand Command { get; set; } = null!;
-    private ReserveSeatCommandValidator Subject { get; set; } = null!;
+    private AdminReserveSeatCommand Command { get; set; } = null!;
+    private AdminReserveSeatCommandValidator Subject { get; set; } = null!;
 
     [TestInitialize]
     public void Initialize()
     {
-        Command = new ReserveSeatCommand
+        Command = new AdminReserveSeatCommand
         {
-            Email = "email",
-            IpAddress = "-",
             Name = "name",
+            Email = "email",
             PreferredLanguage = "language",
-            SeatKey = new string('a', 44),
         };
 
         Subject = new();
@@ -71,61 +67,6 @@ public class ReserveSeatCommandValidatorTests
         // Arrange
         const int MAX_LENGTH = 255;
         Command.Email = new string('a', MAX_LENGTH + 1);
-
-        // Act
-        var result = Subject.Validate(Command);
-
-        // Assert
-        Assert.IsFalse(result.IsValid);
-    }
-
-    [TestMethod]
-    public void IpAddress_WhenNotEmpty_Passes()
-    {
-        // Arrange
-        Command.IpAddress = "Valid";
-
-        // Act
-        var result = Subject.Validate(Command);
-
-        // Assert
-        Assert.IsTrue(result.IsValid);
-    }
-
-    [TestMethod]
-    public void IpAddress_WhenEmpty_Fails()
-    {
-        // Arrange
-        Command.IpAddress = "";
-
-        // Act
-        var result = Subject.Validate(Command);
-
-        // Assert
-        Assert.IsFalse(result.IsValid);
-    }
-
-    [TestMethod]
-    public void IpAddress_WhenNull_Fails()
-    {
-        // Arrange
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-        Command.IpAddress = null;
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
-
-        // Act
-        var result = Subject.Validate(Command);
-
-        // Assert
-        Assert.IsFalse(result.IsValid);
-    }
-
-    [TestMethod]
-    public void IpAddress_WhenTooLong_Fails()
-    {
-        // Arrange
-        const int MAX_LENGTH = 45;
-        Command.IpAddress = new string('a', MAX_LENGTH + 1);
 
         // Act
         var result = Subject.Validate(Command);
@@ -291,67 +232,6 @@ public class ReserveSeatCommandValidatorTests
         // Arrange
         const int MAX_LENGTH = 50;
         Command.PreferredLanguage = new string('a', MAX_LENGTH + 1);
-
-        // Act
-        var result = Subject.Validate(Command);
-
-        // Assert
-        Assert.IsFalse(result.IsValid);
-    }
-
-    [TestMethod]
-    public void SeatKey_WhenCorrectLength_Passes()
-    {
-        // Arrange
-        const int CORRECT_LENGTH = 44;
-        Command.SeatKey = new string('a', CORRECT_LENGTH);
-
-        // Act
-        var result = Subject.Validate(Command);
-
-        // Assert
-        Assert.IsTrue(result.IsValid);
-    }
-
-    [DataTestMethod]
-    [DataRow(43)]
-    [DataRow(45)]
-    public void SeatKey_WhenNotCorrectLength_Fails(int length)
-    {
-        // Precondition
-        const int CORRECT_LENGTH = 44;
-        Assert.AreNotEqual(CORRECT_LENGTH, length);
-
-        // Arrange
-        Command.SeatKey = new string('a', length);
-
-        // Act
-        var result = Subject.Validate(Command);
-
-        // Assert
-        Assert.IsFalse(result.IsValid);
-    }
-
-    [TestMethod]
-    public void SeatKey_WhenEmpty_Fails()
-    {
-        // Arrange
-        Command.SeatKey = "";
-
-        // Act
-        var result = Subject.Validate(Command);
-
-        // Assert
-        Assert.IsFalse(result.IsValid);
-    }
-
-    [TestMethod]
-    public void SeatKey_WhenNull_Fails()
-    {
-        // Arrange
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-        Command.SeatKey = null;
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
         // Act
         var result = Subject.Validate(Command);

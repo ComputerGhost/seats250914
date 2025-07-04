@@ -7,29 +7,15 @@ namespace Core.Application.Reservations;
 /// <summary>
 /// Attempts to make a reservation. Returns the reservation id if successful.
 /// </summary>
-/// <remarks>
-/// A lock is required to reserve a seat.
-/// See <see cref="LockSeatCommand"/> for how to lock a seat.
-/// <br /><br />
-/// If `Error.Unauthorized` is returned, then the metadata will have an 
-/// `AuthorizationResult` under the "details" key.
-/// </remarks>
-public class ReserveSeatCommand : IRequest<ErrorOr<int>>
+public class AdminReserveSeatCommand : IRequest<ErrorOr<int>>
 {
-    /// <summary>
-    /// Ip address of the one reserving the seat.
-    /// </summary>
-    public string IpAddress { get; set; } = null!;
+    // We don't use the IP if it's from the admin.
+    internal readonly string IpAddress = "-";
 
     /// <summary>
     /// The number identifier of the seat to reserve.
     /// </summary>
     public int SeatNumber { get; set; }
-
-    /// <summary>
-    /// Key to authorize reserving the seat.
-    /// </summary>
-    public string SeatKey { get; set; } = null!;
 
     /// <summary>
     /// Name of the person reserving the seat.
@@ -54,7 +40,7 @@ public class ReserveSeatCommand : IRequest<ErrorOr<int>>
     internal IdentityModel Identity => new()
     {
         Email = Email,
-        IsStaff = false,
+        IsStaff = true,
         IpAddress = IpAddress,
         Name = Name,
         PhoneNumber = PhoneNumber,
