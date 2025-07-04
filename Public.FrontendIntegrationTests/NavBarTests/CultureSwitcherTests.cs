@@ -53,7 +53,7 @@ public class CultureSwitcherTests
     public void CultureSwitcher_WhenKoreanBrowser_CanSwapToEnglishAndBack()
     {
         // Arrange
-        _driver = new SeleniumWrapper(languageId: "en");
+        _driver = new SeleniumWrapper(languageId: "ko");
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
 
         // Assert initial state

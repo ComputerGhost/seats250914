@@ -15,20 +15,21 @@ internal class ConfigurationDatabase(IDbConnection connection) : IConfigurationD
 
     public async Task<ConfigurationEntityModel> FetchConfiguration()
     {
-        if (_cachedConfiguration == null)
+        var cachedConfiguration = _cachedConfiguration;
+        if (cachedConfiguration == null)
         {
             var sql = "SELECT TOP 1 * FROM Configuration ORDER BY DateSaved DESC";
             _cachedConfiguration = await connection.QueryFirstOrDefaultAsync<ConfigurationEntityModel>(sql)
                 ?? ConfigurationEntityModel.Default;
+            cachedConfiguration = _cachedConfiguration;
         }
 
-        return _cachedConfiguration;
+        return cachedConfiguration;
     }
 
     public async Task<bool> SaveConfiguration(ConfigurationEntityModel configuration)
     {
-        // Don't bother saving to _cachedConfiguration here,
-        // because it won't be fetched again in this scope.
+        _cachedConfiguration = null;
 
         var sql = """
             INSERT INTO Configuration (ForceCloseReservations, ForceOpenReservations, GracePeriodSeconds, MaxSeatsPerPerson, MaxSeatsPerIPAddress, MaxSecondsToConfirmSeat, ScheduledOpenDateTime, ScheduledOpenTimeZone, ScheduledCloseDateTime, ScheduledCloseTimeZone)

@@ -178,6 +178,6 @@
     <value>Reservations are closed.</value>
   </data>
   <data name="&lt;!--unauthorized:TooManySeatLocksForIpAddress--&gt;" xml:space="preserve">
-    <value>Too many reservations have been submitted from your IP Address.</value>
+    <value>Too many reservations have been submitted from your IP address.</value>
   </data>
 </root>

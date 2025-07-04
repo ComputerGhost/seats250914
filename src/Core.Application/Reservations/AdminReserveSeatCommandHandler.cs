@@ -1,6 +1,4 @@
-﻿using Core.Domain.Authorization;
-using Core.Domain.Common.Models.Entities;
-using Core.Domain.Reservations;
+﻿using Core.Domain.Reservations;
 using ErrorOr;
 using MediatR;
 using Serilog;
@@ -33,6 +31,8 @@ internal class AdminReserveSeatCommandHandler : IRequestHandler<AdminReserveSeat
 
         var reservationId = await _reservationService.ReserveSeat(request.SeatNumber, request.Identity);
         Debug.Assert(reservationId != null, "Reservation should not fail here.");
+
+        await _reservationService.ApproveReservation(reservationId.Value);
 
         return reservationId.Value;
     }

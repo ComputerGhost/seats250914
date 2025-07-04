@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System.Collections.ObjectModel;
 
 namespace Public.FrontendIntegrationTests.NavBarTests;
 
@@ -6,6 +7,10 @@ namespace Public.FrontendIntegrationTests.NavBarTests;
 public class NavBarMenuTests
 {
     private SeleniumWrapper _driver = null!;
+
+    private IWebElement NavBarMenu => _driver.FindElement(By.Id("navbar-menu"));
+    private IWebElement MenuToggle => NavBarMenu.FindElement(By.ClassName("navbar-toggler"));
+    private ReadOnlyCollection<IWebElement> NavLinks => NavBarMenu.FindElements(By.ClassName("nav-link"));
 
     [TestInitialize]
     public void Initialize()
@@ -26,12 +31,10 @@ public class NavBarMenuTests
         // Arrange
         _driver.ResizeToDesktop();
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
-        var menu = _driver.FindElement(By.Id("navbar-menu"));
-        var menuToggler = _driver.FindElement(By.ClassName("navbar-toggler"));
 
         // Assert initial state
-        Assert.IsFalse(menuToggler.Displayed);
-        Assert.IsTrue(menu.Displayed);
+        Assert.IsFalse(MenuToggle.Displayed);
+        Assert.IsTrue(NavBarMenu.Displayed);
     }
 
     [TestMethod]
@@ -40,56 +43,55 @@ public class NavBarMenuTests
         // Arrange
         _driver.ResizeToMobile();
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
-        var menu = _driver.FindElement(By.Id("navbar-menu"));
-        var menuToggler = _driver.FindElement(By.ClassName("navbar-toggler"));
 
         // Assert initial state
-        Assert.IsTrue(menuToggler.Displayed);
-        Assert.IsFalse(menu.Displayed);
+        Assert.IsTrue(MenuToggle.Displayed);
+        Assert.IsFalse(NavBarMenu.Displayed);
 
         // Act 1: Click to expand
-        menuToggler.Click();
-        Assert.IsTrue(menuToggler.Displayed);
-        Assert.IsTrue(menu.Displayed);
+        MenuToggle.Click();
+        Assert.IsTrue(MenuToggle.Displayed);
+        Assert.IsTrue(NavBarMenu.Displayed);
 
         // Act 2: Click to collapse
-        menuToggler.Click();
-        Assert.IsTrue(menuToggler.Displayed);
-        Assert.IsTrue(menu.Displayed);
+        MenuToggle.Click();
+        Assert.IsTrue(MenuToggle.Displayed);
+        Assert.IsTrue(NavBarMenu.Displayed);
     }
 
     [TestMethod]
     public void NavItem_WhenScrolledToSection_IsHighlighted()
     {
         // Arrange
-        var uriBuilder = new UriBuilder(ConfigurationAccessor.Instance.TargetUrl);
-        _driver.Navigate().GoToUrl(uriBuilder.ToString());
-        var menu = _driver.FindElement(By.Id("navbar-menu"));
-        var navLinks = menu.FindElements(By.ClassName("nav-link"));
+        _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
 
         // Assert initial state
-        Assert.IsTrue(menu.Displayed);
-        Assert.AreEqual(4, navLinks.Count);
-        Assert.IsTrue(navLinks[0].GetAttribute("class")!.EndsWith("active"));
+        Assert.IsTrue(NavBarMenu.Displayed);
+        Assert.AreEqual(4, NavLinks.Count);
+        Assert.IsTrue(NavLinks[0].GetAttribute("class")!.EndsWith("active"));
 
         // Act 1: Go to top
-        uriBuilder.Fragment = "#top";
-        _driver.Navigate().GoToUrl(uriBuilder.ToString());
-        Assert.IsTrue(navLinks[0].GetAttribute("class")!.EndsWith("active"));
+        ScrollTo("top");
+        Assert.IsTrue(_driver.WaitUntil(_ => NavLinks[0].GetAttribute("class")!.EndsWith("active")));
 
         // Act 2: Go to venue info
-        uriBuilder.Fragment = "venue-info";
-        _driver.Navigate().GoToUrl(uriBuilder.ToString());
-        Assert.IsTrue(navLinks[1].GetAttribute("class")!.EndsWith("active"));
+        ScrollTo("venue-info");
+        Assert.IsTrue(_driver.WaitUntil(_ => NavLinks[1].GetAttribute("class")!.EndsWith("active")));
 
         // Act 3: Go to event info
-        uriBuilder.Fragment = "event-info";
-        _driver.Navigate().GoToUrl(uriBuilder.ToString());
-        Assert.IsTrue(navLinks[2].GetAttribute("class")!.EndsWith("active"));
+        ScrollTo("event-info");
+        Assert.IsTrue(_driver.WaitUntil(_ => NavLinks[2].GetAttribute("class")!.EndsWith("active")));
 
         // Act 4: Go to reserve a seat
-        uriBuilder.Fragment = "reserve-a-seat";
-        _driver.Navigate().GoToUrl(uriBuilder.ToString());
-        Assert.IsTrue(navLinks[3].GetAttribute("class")!.EndsWith("active"));
+        _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
+        ScrollTo("reserve-seats");
+        Assert.IsTrue(_driver.WaitUntil(_ => NavLinks[3].GetAttribute("class")!.EndsWith("active")));
+
+        void ScrollTo(string fragment)
+        {
+            var uriBuilder = new UriBuilder(ConfigurationAccessor.Instance.TargetUrl);
+            uriBuilder.Fragment = fragment;
+            _driver.Navigate().GoToUrl(uriBuilder.ToString());
+        }
     }
 }

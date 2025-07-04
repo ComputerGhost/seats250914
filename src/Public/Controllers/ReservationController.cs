@@ -1,5 +1,4 @@
 ﻿using Core.Application.Reservations;
-using Core.Domain.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;

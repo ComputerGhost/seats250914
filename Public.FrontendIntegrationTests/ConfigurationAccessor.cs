@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Public.FrontendIntegrationTests;
 internal class ConfigurationAccessor
 {
-    private static readonly object _lock = new();
+    private static readonly Lock _lock = new();
     private static ConfigurationAccessor? _instance = null;
 
     private ConfigurationAccessor()

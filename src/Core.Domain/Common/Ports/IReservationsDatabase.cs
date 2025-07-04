@@ -19,6 +19,12 @@ public interface IReservationsDatabase
     Task<int> CreateReservation(ReservationEntityModel reservation);
 
     /// <summary>
+    /// Deletes all reservations. Use this with extreme caution.
+    /// </summary>
+    /// <returns>The number of reservations deleted.</returns>
+    Task<int> DeleteAllReservations();
+
+    /// <summary>
     /// List all reservations.
     /// </summary>
     Task<IEnumerable<ReservationEntityModel>> ListReservations();

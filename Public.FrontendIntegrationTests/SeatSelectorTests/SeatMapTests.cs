@@ -1,4 +1,8 @@
-﻿using OpenQA.Selenium;
+﻿using Core.Application.Reservations;
+using Core.Application.System;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
 namespace Public.FrontendIntegrationTests.SeatSelectorTests;
@@ -7,21 +11,33 @@ namespace Public.FrontendIntegrationTests.SeatSelectorTests;
 public class SeatMapTests
 {
     private SeleniumWrapper _driver = null!;
-    private IWebElement _seatMap = null!;
-    private SelectElement _dropdown = null!;
+    private IMediator _mediator = null!;
 
-    private IWebElement AvailableSeat => _seatMap.FindElement(By.ClassName("available"));
-    private IWebElement ReservedSeat => _seatMap.FindElement(By.ClassName("reserved"));
+    private static SaveConfigurationCommand WorkingSaveConfigurationCommand => new()
+    {
+        ForceCloseReservations = false,
+        ForceOpenReservations = true,
+        MaxSeatsPerIPAddress = int.MaxValue,
+        MaxSeatsPerPerson = int.MaxValue,
+        MaxSecondsToConfirmSeat = 3600,
+        ScheduledCloseTimeZone = "UTC",
+        ScheduledOpenTimeZone = "UTC",
+    };
+
+    private IWebElement Section => _driver.FindElement(By.Id("reserve-seats"));
+    private IWebElement AvailableSeat => Section.FindElement(By.CssSelector(".audience .available"));
+    private IWebElement ReservedSeat => Section.FindElement(By.CssSelector(".audience .reserved"));
+    private SelectElement Dropdown => new SelectElement(Section.FindElement(By.ClassName("form-select")));
 
     [TestInitialize]
-    public void Initialize()
+    public async Task Initialize()
     {
         _driver = new SeleniumWrapper();
-        _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
+        _mediator = ConfigurationAccessor.Instance.Services.GetService<IMediator>()!;
 
-        var section = _driver.FindElement(By.Id("reserve-a-seat"));
-        _seatMap = section.FindElement(By.ClassName("audience"));
-        _dropdown = new SelectElement(section.FindElement(By.ClassName("form-select")));
+        // Start with a clean slate.
+        await _mediator.Send(new DeleteAllReservationDataCommand());
+        await _mediator.Send(WorkingSaveConfigurationCommand);
     }
 
     [TestCleanup]
@@ -35,21 +51,25 @@ public class SeatMapTests
     public void AvailableSeat_WhenClicked_SelectsSeat()
     {
         // Arrange
+        _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
         var availableSeat = AvailableSeat;
 
         // Act
+        _driver.ScrollTo(availableSeat);
         availableSeat.Click();
 
         // Assert
         Assert.IsTrue(availableSeat.GetAttribute("class")?.Contains("selected"));
-        Assert.AreEqual(availableSeat.Text, _dropdown.SelectedOption.Text);
+        Assert.AreEqual(availableSeat.Text, Dropdown.SelectedOption.Text);
     }
 
     [TestMethod]
     public void SelectedSeat_WhenClicked_DeselectsSeat()
     {
         // Arrange
+        _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
         var availableSeat = AvailableSeat;
+        _driver.ScrollTo(availableSeat);
         availableSeat.Click(); // Make the seat selected
 
         // Act
@@ -57,21 +77,30 @@ public class SeatMapTests
 
         // Assert
         Assert.IsFalse(availableSeat.GetAttribute("class")?.Contains("selected"));
-        Assert.AreEqual("", _dropdown.SelectedOption.Text);
+        Assert.AreEqual("", Dropdown.SelectedOption.Text);
     }
 
     [TestMethod]
-    public void UnavailableSeat_WhenClicked_DoesNotSelectSeat()
+    public async Task UnavailableSeat_WhenClicked_DoesNotSelectSeat()
     {
         // Arrange
+        await _mediator.Send(new AdminReserveSeatCommand
+        {
+            SeatNumber = 1,
+            Name = "bob",
+            Email = "bob@example.com",
+            PreferredLanguage = "English",
+        });
+        _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
         var unavailableSeat = ReservedSeat;
 
         // Act
+        _driver.ScrollTo(unavailableSeat);
         unavailableSeat.Click();
 
         // Assert
         Assert.IsFalse(unavailableSeat.GetAttribute("class")?.Contains("selected"));
-        Assert.AreEqual("", _dropdown.SelectedOption.Text);
+        Assert.AreEqual("", Dropdown.SelectedOption.Text);
     }
 
     [TestMethod]
@@ -79,17 +108,21 @@ public class SeatMapTests
     {
         // Arrange
         const int MAX_SEATS = 1;
+        _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
         var firstSeat = AvailableSeat;
 
         // Act
+        _driver.ScrollTo(firstSeat);
         firstSeat.Click();
         for (int i = 1; i != MAX_SEATS + 1; ++i)
         {
-            AvailableSeat.Click();
+            var nextSeat = AvailableSeat;
+            _driver.ScrollTo(nextSeat);
+            nextSeat.Click();
         }
 
         // Assert
         Assert.IsFalse(firstSeat.GetAttribute("class")?.Contains("selected"));
-        Assert.AreNotEqual(firstSeat.Text, _dropdown.SelectedOption.Text);
+        Assert.AreNotEqual(firstSeat.Text, Dropdown.SelectedOption.Text);
     }
 }
