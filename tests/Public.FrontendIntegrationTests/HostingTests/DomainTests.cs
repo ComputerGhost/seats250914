@@ -1,37 +1,35 @@
-﻿using OpenQA.Selenium;
-using Public.SmokeTests.Utilities;
+﻿using System;
 using System.Net;
-using System.Threading.Tasks;
 
-namespace Public.SmokeTests.Tests;
+namespace Public.FrontendIntegrationTests.HostingTests;
 
+[LocalOnly(Mode = ConditionMode.Exclude)]
 [TestClass]
-[SmokeTest("These tests will only work on production.")]
-public class HostingTests : TestBase
+public class DomainTests
 {
-    private static IWebDriver Driver { get; set; } = null!;
-    
-    [ClassInitialize]
-    public static void Initialize(TestContext context)
+    private SeleniumWrapper _driver = null!;
+
+    [TestInitialize]
+    public void Initialize()
     {
-        Driver = CreateDriver("en");
+        _driver = new SeleniumWrapper(languageId: "en");
     }
 
-    [ClassCleanup]
-    public static void Cleanup()
+    [TestCleanup]
+    public void Cleanup()
     {
-        Driver.Quit();
-        Driver.Dispose();
+        _driver.Quit();
+        _driver.Dispose();
     }
 
     [TestMethod]
     public async Task WwwSubdomain_RedirectsToNoSubdomain()
     {
         // Arrange
-        var noSubdomain = TargetUrl;
-        var wwwSubdomain = new MyUriBuilder(TargetUrl)
-            .WithSubdomain("www")
-            .ToString();
+        var noSubdomain = ConfigurationAccessor.Instance.TargetUrl;
+        var uriBuilder = new UriBuilder(noSubdomain);
+        uriBuilder.Host = "www." + uriBuilder.Host;
+        var wwwSubdomain = uriBuilder.ToString();
 
         // Act
         using var httpClientHandler = new HttpClientHandler();
@@ -48,24 +46,22 @@ public class HostingTests : TestBase
     [TestMethod]
     public void NoSubdomain_RendersPublicWebsite()
     {
-        // Arrange
-        var noSubdomain = TargetUrl;
-
         // Act
-        Driver.Navigate().GoToUrl(noSubdomain);
+        _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
 
         // Assert
-        Assert.AreEqual("Hyelin Fanmeeting 2025", Driver.Title);
+        Assert.AreEqual("Hyelin Fanmeeting 2025", _driver.Title);
     }
 
     [TestMethod]
     public async Task Http_InvalidSubdomain_DoesNotRenderContent()
     {
         // Arrange
-        var invalidSubdomain = new MyUriBuilder(TargetUrl)
-            .WithScheme("http")
-            .WithSubdomain("invalid")
-            .ToString();
+        var uriBuilder = new UriBuilder(ConfigurationAccessor.Instance.TargetUrl);
+        uriBuilder.Host = "invalid." + uriBuilder.Host;
+        uriBuilder.Port = 80;
+        uriBuilder.Scheme = "http";
+        var invalidSubdomain = uriBuilder.ToString();
 
         // Act
         using var client = new HttpClient();
@@ -79,10 +75,11 @@ public class HostingTests : TestBase
     public async Task Https_InvalidSubdomain_DoesNotRenderContent()
     {
         // Arrange
-        var invalidSubdomain = new MyUriBuilder(TargetUrl)
-            .WithScheme("https")
-            .WithSubdomain("invalid")
-            .ToString();
+        var uriBuilder = new UriBuilder(ConfigurationAccessor.Instance.TargetUrl);
+        uriBuilder.Host = "invalid." + uriBuilder.Host;
+        uriBuilder.Port = 443;
+        uriBuilder.Scheme = "https";
+        var invalidSubdomain = uriBuilder.ToString();
 
         // Act
         using var httpClientHandler = new HttpClientHandler();

@@ -3,27 +3,20 @@
 /// <summary>
 /// Ignores a test unless running against localhost.
 /// </summary>
-public class LocalOnlyAttribute : ConditionBaseAttribute
+public class LocalOnlyAttribute(string? message = "") : ConditionBaseAttribute(ConditionMode.Include)
 {
-    public LocalOnlyAttribute() : this(string.Empty)
-    {
-    }
+    public override string? IgnoreMessage { get; } = message;
 
-    public LocalOnlyAttribute(string? message) : base(ConditionMode.Include)
-    {
-        IgnoreMessage = message;
-    }
-    
-    public override string? IgnoreMessage { get; }
+    public override string GroupName => (Mode == ConditionMode.Include) ? "Local Tests" : "Non-local Tests";
 
-    public override string GroupName => "Local Tests";
+    public ConditionMode Mode { get; set; }
 
     public override bool ShouldRun
     {
         get
         {
             var targetUri = new UriBuilder(ConfigurationAccessor.Instance.TargetUrl);
-            return targetUri.Host == "localhost";
+            return (Mode != ConditionMode.Include) ^ (targetUri.Host == "localhost");
         }
     }
 }

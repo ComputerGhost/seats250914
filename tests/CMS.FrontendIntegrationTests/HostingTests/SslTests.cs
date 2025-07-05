@@ -1,34 +1,35 @@
-﻿using CMS.SmokeTests.Utilities;
-using System.Net;
+﻿using System.Net;
 
-namespace CMS.SmokeTests.Tests;
+namespace CMS.FrontendIntegrationTests.HostingTests;
 
+[LocalOnly(Mode = ConditionMode.Exclude)]
 [TestClass]
-[SmokeTest("These tests will only work on production.")]
-public class SslTests : TestBase
+public class SslTests
 {
     [TestMethod]
     public async Task Https_IsDeliveredOverSecureConnection()
     {
         // Arrange
-        var signInUrl = TargetUrl + "/auth/sign-in";
+        var signInUrl = ConfigurationAccessor.Instance.TargetUrl + "/auth/sign-in";
+        Assert.AreEqual("https", new UriBuilder(signInUrl).Scheme); // Precondition
 
         // Act
         using var client = new HttpClient();
         var response = await client.GetAsync(signInUrl);
 
         // Assert
-        Assert.AreEqual("https", new UriBuilder(TargetUrl).Scheme);
         Assert.IsTrue(response.IsSuccessStatusCode);
+        Assert.AreEqual("https", response.RequestMessage?.RequestUri?.Scheme);
     }
 
     [TestMethod]
     public async Task Http_IsConvertedToHttps()
     {
         // Arrange
-        var insecureUrl = new MyUriBuilder(TargetUrl)
-            .WithScheme("http")
-            .ToString();
+        var uriBuilder = new UriBuilder(ConfigurationAccessor.Instance.TargetUrl);
+        uriBuilder.Scheme = "http";
+        uriBuilder.Port = 80;
+        var insecureUrl = uriBuilder.ToString();
 
         // Act
         using var httpClientHandler = new HttpClientHandler();
