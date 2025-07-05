@@ -46,9 +46,12 @@ public class ReservationFormTests
     [TestMethod]
     public void Cancel_WhenClicked_ReturnsToHome()
     {
-        // Act
+        // Act 1: Click cancel
         _driver.ScrollTo(Cancel);
         Cancel.Click();
+
+        // Act 2: Wait for page to load
+        _driver.WaitUntil(d => new UriBuilder(d.Url).Path == "/");
 
         // Assert
         Assert.AreEqual("Fall in Hyelin", Heading.Text);

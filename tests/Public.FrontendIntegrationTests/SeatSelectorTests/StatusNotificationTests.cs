@@ -15,11 +15,18 @@ public class StatusNotificationTests
     private SeleniumWrapper _driver = null!;
     private IMediator _mediator = null!;
 
+    // Root and above the seat map
     private IWebElement Section => _driver.FindElement(By.Id("reserve-seats"));
     private ReadOnlyCollection<IWebElement> Alerts => Section.FindElements(By.ClassName("alert"));
-    private ReadOnlyCollection<IWebElement> Selects => Section.FindElements(By.ClassName("form-select"));
+
+    // Seat map
     private IWebElement AvailableSeat => Section.FindElement(By.CssSelector(".audience .available"));
+
+    // Form on right side
+    private ReadOnlyCollection<IWebElement> Selects => Section.FindElements(By.ClassName("form-select"));
     private IWebElement Submit => Section.FindElement(By.ClassName("btn-primary"));
+    private IWebElement ValidationMessage => Section.FindElement(By.ClassName("text-danger"));
+
 
     [TestInitialize]
     public async Task Initialize()
@@ -162,22 +169,24 @@ public class StatusNotificationTests
     }
 
     [TestMethod]
-    public async Task Form_WhenMaxLocksForUser_RendersMaxLocks()
+    public async Task Form_WhenMaxLocksForIpAddress_RendersMaxLocks()
     {
         // Arrange
         var saveConfigurationCommand = TestDataSetup.WorkingSaveConfigurationCommand;
         saveConfigurationCommand.MaxSeatsPerIPAddress = 0;
         await _mediator.Send(saveConfigurationCommand);
 
-        // Act
+        // Act 1: Try to lock a seat
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl + "#reserve-seats");
         _driver.ScrollTo(AvailableSeat);
         AvailableSeat.Click();
         Submit.Click();
 
+        // Act 2: Wait for it to process
+        _driver.WaitUntil(_ => ValidationMessage.Displayed);
+
         // Assert
-        var errorMessage = Section.FindElement(By.ClassName("text-danger"));
-        Assert.IsTrue(errorMessage.Displayed);
-        Assert.AreEqual("Too many reservations have been submitted from your IP address.", errorMessage.Text);
+        Assert.IsTrue(ValidationMessage.Displayed);
+        Assert.AreEqual("Too many reservations have been submitted from your IP address.", ValidationMessage.Text);
     }
 }

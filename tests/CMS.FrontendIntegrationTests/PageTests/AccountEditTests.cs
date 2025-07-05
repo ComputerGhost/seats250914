@@ -59,21 +59,23 @@ public class AccountEditTests
         var login = await TestDataSetup.CreateTestAccount();
         var editUrl = ConfigurationAccessor.Instance.TargetUrl + $"/accounts/{login}/edit";
 
-        // Act 1: Disable user
+        // Act 1: Navigate to page
         _driver.Navigate().GoToUrl(editUrl);
+
+        // Act 2: Disable user
         EnabledCheck.Click();
         UpdateUserButton.Click();
 
-        // Assert 1: Check if disabled
+        // Assert: Check if disabled
         var userInfo = await _mediator.Send(new FetchAccountQuery(login));
         Assert.IsFalse(userInfo.Value.IsEnabled);
 
-        // Act 2: Enable user
+        // Act 3: Enable user
         _driver.Navigate().GoToUrl(editUrl);
         EnabledCheck.Click();
         UpdateUserButton.Click();
 
-        // Assert 2: Check if enabled
+        // Assert: Check if enabled
         userInfo = await _mediator.Send(new FetchAccountQuery(login));
         Assert.IsTrue(userInfo.Value.IsEnabled);
     }
@@ -87,20 +89,23 @@ public class AccountEditTests
         var editUrl = ConfigurationAccessor.Instance.TargetUrl + $"/accounts/{login}/edit";
         var password = TestDataSetup.GenerateSecurePassword();
 
-        // Act 1: Change password
+        // Act 1: Navigate to page
+        _driver.Navigate().GoToUrl(editUrl);
+
+        // Act 2: Change password
         PasswordText.SendKeys(password);
         UpdatePasswordButton.Click();
 
-        // Act 2: Sign out
+        // Act 3: Sign out
         _driver.Manage().Cookies.DeleteAllCookies();
 
-        // Act 2: Sign in as test user
+        // Act 4: Sign in as test user
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl + "/auth/sign-in");
         _driver.FindElement(By.Id("Login")).SendKeys(login);
         _driver.FindElement(By.Id("Password")).SendKeys(password);
         _driver.FindElement(By.Id("Password")).SendKeys(Keys.Return);
 
-        // Act 3: Wait for page to load
+        // Act 5: Wait for page to load
         _driver.WaitUntil(d => new UriBuilder(d.Url).Path == dashboardPath);
 
         // Assert

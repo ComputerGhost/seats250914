@@ -19,13 +19,11 @@ Payments and notifications will be handled externally. The payment statuses will
 
 ## Automated tests
 
-The project contains unit tests, integration tests, smoke tests, and manual tests.
+The solution contains several types of tests. Not all of them are useful all of the time.
 
-The unit tests and integration tests can be run automatically from Visual Studio.
+When making a pull request, run the unit tests as a quick check. Running the integration tests is optional for this scenario.
 
-The smoke tests can be run automatically from Visual Studio, but they require the website to be running at the same time. Running the website "without debugging" or configuring the tests to target a staging environment will set up the required test environment. This is complicated, so they are optional for PR's.
-
-The manual tests are only required for Production deployment. They are not a requirement for PR's.
+When deploying a website, run all of the automated tests and perform the manual tests. Do this before deployment. After deployment, configure integration tests for production and run them again, because they include some production smoke tests.
 
 
 ## Deploying
@@ -37,12 +35,12 @@ Nathan will do these steps. He's the only one with the server password...
  1. Copy/paste files to web server.
  1. Update database by running the migrator on it.
  1. Restart the website processes.
- 1. Do the manual tests on the live websites.
+ 1. Do the manual tests and smoke tests on the live websites.
 
 
 ## Contributing
 
  1. Make your changes in a new branch.
- 2. Run the unit tests and integration tests. (Ignore the manual tests and smoke tests.)
- 3. Make a PR, and link the issue number.
+ 2. Run the unit tests. (Ignore the manual tests and integration tests.)
+ 3. Make a PR, and link the issue.
  4. Nathan will merge it in.

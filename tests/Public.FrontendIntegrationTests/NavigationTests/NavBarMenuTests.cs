@@ -9,7 +9,7 @@ public class NavBarMenuTests
     private SeleniumWrapper _driver = null!;
 
     private IWebElement NavBarMenu => _driver.FindElement(By.Id("navbar-menu"));
-    private IWebElement MenuToggle => NavBarMenu.FindElement(By.ClassName("navbar-toggler"));
+    private IWebElement MenuToggle => _driver.FindElement(By.ClassName("navbar-toggler"));
     private ReadOnlyCollection<IWebElement> NavLinks => NavBarMenu.FindElements(By.ClassName("nav-link"));
 
     [TestInitialize]
