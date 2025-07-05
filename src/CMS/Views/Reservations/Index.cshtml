@@ -134,6 +134,9 @@
     <script>
         window.addEventListener("load", function() {
             var table = new DataTable("#index-table", {
+                language: {
+                    emptyTable: "아직 예약된 좌석이 없습니다.",
+                },
                 layout: {
                     topStart: null,
                     topEnd: null,
