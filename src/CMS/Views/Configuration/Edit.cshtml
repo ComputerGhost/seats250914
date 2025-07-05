@@ -7,7 +7,7 @@
     @if (Model.IsSaveSuccessful)
     {
         <div class="alert alert-success alert-dismissible">
-            구성이 성공적으로 저장되었습니다.
+            설정이 성공적으로 저장되었습니다.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="닫기"></button>
         </div>
     }
@@ -22,7 +22,7 @@
                 <div class="input-group">
                     <input asp-for="ScheduledOpenDate" class="form-control" aria-label="예약 오픈 날짜" required>
                     <input asp-for="ScheduledOpenTime" step="1" class="form-control" aria-label="예약 오픈 시간" required>
-                    <select asp-for="ScheduledOpenTimeZone" asp-items="Model.ValidTimeZones" class="form-select" aria-label="예약 오픈 시간대" required></select>
+                    <select asp-for="ScheduledOpenTimeZone" asp-items="Model.ValidTimeZones" class="form-select" aria-label="시간대 선택 (예: 한국 표준시, UTC 등)" required></select>
                 </div>
             </div>
 
@@ -31,7 +31,7 @@
                 <div class="input-group">
                     <input asp-for="ScheduledCloseDate" class="form-control" aria-label="예약 마감 날짜" required>
                     <input asp-for="ScheduledCloseTime" step="1" class="form-control" aria-label="예약 마감 시간" required>
-                    <select asp-for="ScheduledCloseTimeZone" asp-items="Model.ValidTimeZones" class="form-select" aria-label="예약 마감 시간대" required></select>
+                    <select asp-for="ScheduledCloseTimeZone" asp-items="Model.ValidTimeZones" class="form-select" aria-label="시간대 선택 (예: 한국 표준시, UTC 등)" required></select>
                 </div>
             </div>
 

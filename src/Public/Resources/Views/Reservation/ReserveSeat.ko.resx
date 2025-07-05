@@ -128,7 +128,7 @@
     &lt;hr&gt;
     &lt;p class="mb-0"&gt;
         &lt;i class="bi bi-bug"&gt;&lt;/i&gt;
-        이런 일은 절대 일어나서는 안 됩니다. 그래서 저희는 이 문제를 기록했고, 조사해 보겠습니다.
+        정상적으로 발생할 수 없는 상황이며, 해당 문제는 로그에 기록되었고 곧 확인하겠습니다.
     &lt;/p&gt;
 &lt;/section&gt;</value>
   </data>
@@ -136,8 +136,8 @@
     <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
     &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="닫기"&gt;&lt;/button&gt;
     좌석이 예약되지 않았습니다!
-    이메일에 대한 예약이 너무 많이 제출되었습니다.
-    모든 사람이 혜린을 볼 수 있도록 각 사람이 살 수 있는 좌석 수를 제한해야 합니다.
+    해당 이메일 주소로 너무 많은 예약이 접수되었습니다.
+    모든 분들이 혜린을 볼 수 있는 기회를 가질 수 있도록, 1인당 구매 가능한 좌석 수에 제한을 두고 있습니다.
 &lt;/section&gt;</value>
   </data>
   <data name="&lt;!-- form disclosures --&gt;" xml:space="preserve">
