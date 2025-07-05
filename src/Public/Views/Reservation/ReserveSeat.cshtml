@@ -9,8 +9,7 @@
             const periodUntilExpiration = "@Model.TimeUntilExpirationPeriod";
             const secondsUntilExpiration = periodToSeconds(periodUntilExpiration);
             setTimeout(function () {
-                console.log('here');
-                //window.location = "@Url.Action("TimeExpired")";
+                window.location = "@Url.Action("TimeExpired")";
             }, secondsUntilExpiration * 1000);
         });
     </script>

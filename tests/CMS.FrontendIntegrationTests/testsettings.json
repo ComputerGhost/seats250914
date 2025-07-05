@@ -1,0 +1,10 @@
+{
+  "InfrastructureOptions": {
+    // Please don't run this on Production. It does alter data while testing.
+    // Also, MAR is needed since some of the tests are multithreaded.
+    "DatabaseConnectionString": "Server=localhost;Database=Hyelin2025;User Id=sa;Password=Passw0rd;Trust Server Certificate=True;MultipleActiveResultSets=True"
+  },
+  "targetUrl": "https://localhost:7249",
+  "username": "initial",
+  "password": "initial"
+}

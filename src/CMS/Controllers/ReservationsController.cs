@@ -7,13 +7,11 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Presentation.Shared.FrameworkEnhancements.Extensions;
-using System.Diagnostics;
 
 namespace CMS.Controllers;
 
 [Authorize]
-[Route("/reservations/")]
+[Route("reservations")]
 public class ReservationsController(IMediator mediator, IStringLocalizer<ReservationsController> localizer) : Controller
 {
     [HttpGet]
@@ -37,23 +35,14 @@ public class ReservationsController(IMediator mediator, IStringLocalizer<Reserva
     [HttpPost("new")]
     public async Task<IActionResult> Create(ReservationCreateViewModel model)
     {
-        var ipAddress = Request.GetClientIpAddress();
-
-        var lockResult = await mediator.Send(model.ToLockSeatCommand(ipAddress));
-        if (lockResult.IsError)
-        {
-            return SeatConflict();
-        }
-
-        var reserveResult = await mediator.Send(model.ToReserveSeatCommand(ipAddress, lockResult.Value));
-        Debug.Assert(!reserveResult.IsError, "Reserving a seat should not be unsuccessful here.");
-        return RedirectToAction(nameof(Details), new { reservationId = reserveResult.Value });
-
-        IActionResult SeatConflict()
+        var reserveResult = await mediator.Send(model.ToReserveSeatCommand());
+        if (reserveResult.IsError)
         {
             ModelState.AddModelError(nameof(ReservationCreateViewModel.SeatNumber), localizer["Could not lock seat."]);
             return View(model);
         }
+
+        return RedirectToAction(nameof(Details), new { reservationId = reserveResult.Value });
     }
 
     [HttpGet("{reservationId}/details")]

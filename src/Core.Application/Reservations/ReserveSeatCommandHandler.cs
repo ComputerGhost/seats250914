@@ -18,7 +18,7 @@ internal class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, E
 
     public async Task<ErrorOr<int>> Handle(ReserveSeatCommand request, CancellationToken cancellationToken)
     {
-        Log.Information("Reserving seat {SeatNumber} for identity {Identity}.", request.SeatNumber, request.SeatNumber);
+        Log.Information("Reserving seat {SeatNumber} for identity {Identity}.", request.SeatNumber, request.Identity);
 
         var authResult = await _authorizationChecker.GetReserveSeatAuthorization(request.Identity, request.SeatNumber, request.SeatKey);
         if (!authResult.IsAuthorized)

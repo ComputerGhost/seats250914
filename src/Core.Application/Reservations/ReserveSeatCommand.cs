@@ -22,11 +22,6 @@ public class ReserveSeatCommand : IRequest<ErrorOr<int>>
     public string IpAddress { get; set; } = null!;
 
     /// <summary>
-    /// Whether the seat is being reserved by staff instead of by the user.
-    /// </summary>
-    public bool IsStaff { get; set; }
-
-    /// <summary>
     /// The number identifier of the seat to reserve.
     /// </summary>
     public int SeatNumber { get; set; }
@@ -59,7 +54,7 @@ public class ReserveSeatCommand : IRequest<ErrorOr<int>>
     internal IdentityModel Identity => new()
     {
         Email = Email,
-        IsStaff = IsStaff,
+        IsStaff = false,
         IpAddress = IpAddress,
         Name = Name,
         PhoneNumber = PhoneNumber,

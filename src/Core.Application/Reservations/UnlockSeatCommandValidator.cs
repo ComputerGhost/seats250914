@@ -6,7 +6,6 @@ public class UnlockSeatCommandValidator : AbstractValidator<UnlockSeatCommand>
     public UnlockSeatCommandValidator()
     {
         RuleFor(p => p.SeatKey)
-            .Length(44)
             .NotEmpty();
     }
 }

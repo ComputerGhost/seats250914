@@ -15,7 +15,6 @@ public class LockSeatCommandValidatorTests
         {
             SeatNumber = 1,
             IpAddress = "ip address",
-            IsStaff = true,
         };
 
         Subject = new();

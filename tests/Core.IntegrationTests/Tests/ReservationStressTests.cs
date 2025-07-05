@@ -94,7 +94,6 @@ public class ReservationStressTests
             var result = await mediator.Send(new ReserveSeatCommand
             {
                 Email = $"Email{seatNumber}@test.com",
-                IsStaff = true,
                 Name = $"Name {seatNumber}",
                 PreferredLanguage = "English",
                 SeatKey = seatKey,
@@ -110,7 +109,6 @@ public class ReservationStressTests
                 var result = await mediator.Send(new LockSeatCommand
                 {
                     IpAddress = "127.0.0.1",
-                    IsStaff = true,
                     SeatNumber = i,
                 });
                 if (!result.IsError)
