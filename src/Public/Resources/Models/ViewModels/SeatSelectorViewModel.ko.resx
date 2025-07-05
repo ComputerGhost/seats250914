@@ -175,9 +175,9 @@
     <value>"{0}"을(를) 클릭하시면, 요청을 처리하기 위해 귀하의 데이터를 저장하고 사용할 수 있습니다. 저희가 수집하는 정보에 대한 자세한 내용은 &lt;a href="/legal/privacy-policy"&gt;개인정보처리방침&lt;/a&gt;을 확인해 주세요.</value>
   </data>
   <data name="&lt;!--unauthorized:ReservationsAreClosed--&gt;" xml:space="preserve">
-    <value>Reservations are closed.</value>
+    <value>예약이 마감되었습니다.</value>
   </data>
   <data name="&lt;!--unauthorized:TooManySeatLocksForIpAddress--&gt;" xml:space="preserve">
-    <value>Too many reservations have been submitted from your IP Address.</value>
+    <value>IP에서 너무 많은 예약이 제출되었습니다.</value>
   </data>
 </root>

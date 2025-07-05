@@ -119,25 +119,25 @@
   </resheader>
   <data name="&lt;!-- AuthorizationResult.KeyIsInvalid --&gt;" xml:space="preserve">
     <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
-    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"&gt;&lt;/button&gt;
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="닫기"&gt;&lt;/button&gt;
     &lt;p&gt;
-        Your seat was not reserved!
-        The technical reason is your browser tried to use the wrong key to access your seat.
-        Please return to the &lt;a asp-controller="Home" asp-index="Index"&gt;home page&lt;/a&gt; and try again.
+        좌석이 예약되지 않았습니다!
+        기술적인 이유는 브라우저가 잘못된 키를 사용하여 좌석에 접근하려고 했기 때문입니다.
+        &lt;a asp-controller="Home" asp-index="Index"&gt;홈으로&lt;/a&gt; 돌아가서 다시 시도해 주세요.
     &lt;/p&gt;
     &lt;hr&gt;
     &lt;p class="mb-0"&gt;
         &lt;i class="bi bi-bug"&gt;&lt;/i&gt;
-        This should never happen, so we have logged this issue and will look into it.
+        정상적으로 발생할 수 없는 상황이며, 해당 문제는 로그에 기록되었고 곧 확인하겠습니다.
     &lt;/p&gt;
 &lt;/section&gt;</value>
   </data>
   <data name="&lt;!-- AuthorizationResult.TooManyReservationsForEmail --&gt;" xml:space="preserve">
     <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
-    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"&gt;&lt;/button&gt;
-    Your seat was not reserved!
-    Too many reservations have been submitted for your email address.
-    We have to limit the number of seats that each person can buy so that everyone has a chance to see Hyelin.
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="닫기"&gt;&lt;/button&gt;
+    좌석이 예약되지 않았습니다!
+    해당 이메일 주소로 너무 많은 예약이 접수되었습니다.
+    모든 분들이 혜린을 볼 수 있는 기회를 가질 수 있도록, 1인당 구매 가능한 좌석 수에 제한을 두고 있습니다.
 &lt;/section&gt;</value>
   </data>
   <data name="&lt;!-- form disclosures --&gt;" xml:space="preserve">
@@ -151,10 +151,10 @@
   </data>
   <data name="&lt;!-- AuthorizationResult.ReservationsAreClosed --&gt;" xml:space="preserve">
     <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
-    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"&gt;&lt;/button&gt;
-    Your seat was not reserved!
-    Reservations have been closed.
-    Please return to the &lt;a asp-controller="Home" asp-index="Index"&gt;home page&lt;/a&gt; to view the schedule and alerts.
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="닫기"&gt;&lt;/button&gt;
+    좌석이 예약되지 않았습니다!
+    예약이 마감되었습니다.
+    일정 및 알림을 보려면 &lt;a asp-controller="Home" asp-index="Index"&gt;홈으로&lt;/a&gt; 돌아가 주세요.
 &lt;/section&gt;</value>
   </data>
   <data name="Cancel" xml:space="preserve">
