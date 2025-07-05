@@ -15,17 +15,6 @@ public class StatusNotificationTests
     private SeleniumWrapper _driver = null!;
     private IMediator _mediator = null!;
 
-    private static SaveConfigurationCommand WorkingSaveConfigurationCommand => new()
-    {
-        ForceCloseReservations = false,
-        ForceOpenReservations = true,
-        MaxSeatsPerIPAddress = int.MaxValue,
-        MaxSeatsPerPerson = int.MaxValue,
-        MaxSecondsToConfirmSeat = 3600,
-        ScheduledCloseTimeZone = "UTC",
-        ScheduledOpenTimeZone = "UTC",
-    };
-
     private IWebElement Section => _driver.FindElement(By.Id("reserve-seats"));
     private ReadOnlyCollection<IWebElement> Alerts => Section.FindElements(By.ClassName("alert"));
     private ReadOnlyCollection<IWebElement> Selects => Section.FindElements(By.ClassName("form-select"));
@@ -39,8 +28,8 @@ public class StatusNotificationTests
         _mediator = ConfigurationAccessor.Instance.Services.GetService<IMediator>()!;
 
         // Start with a clean slate.
-        await _mediator.Send(new DeleteAllReservationDataCommand());
-        await _mediator.Send(WorkingSaveConfigurationCommand);
+        await TestDataSetup.DeleteAllReservations();
+        await _mediator.Send(TestDataSetup.WorkingSaveConfigurationCommand);
     }
 
     [TestCleanup]
@@ -65,7 +54,7 @@ public class StatusNotificationTests
     public async Task Alert_WhenClosedPerSchedule_RendersPermanentlyClosed()
     {
         // Arrange
-        var saveConfigurationCommand = WorkingSaveConfigurationCommand;
+        var saveConfigurationCommand = TestDataSetup.WorkingSaveConfigurationCommand;
         saveConfigurationCommand.ForceOpenReservations = false;
         saveConfigurationCommand.ScheduledOpenDateTime = DateTime.Now.AddDays(-2);
         saveConfigurationCommand.ScheduledCloseDateTime = DateTime.Now.AddDays(-1);
@@ -84,7 +73,7 @@ public class StatusNotificationTests
     public async Task Alert_WhenClosedManually_RendersTemporarilyClosed()
     {
         // Arrange
-        var saveConfigurationCommand = WorkingSaveConfigurationCommand;
+        var saveConfigurationCommand = TestDataSetup.WorkingSaveConfigurationCommand;
         saveConfigurationCommand.ForceCloseReservations = true;
         saveConfigurationCommand.ForceOpenReservations = false;
         await _mediator.Send(saveConfigurationCommand);
@@ -176,7 +165,7 @@ public class StatusNotificationTests
     public async Task Form_WhenMaxLocksForUser_RendersMaxLocks()
     {
         // Arrange
-        var saveConfigurationCommand = WorkingSaveConfigurationCommand;
+        var saveConfigurationCommand = TestDataSetup.WorkingSaveConfigurationCommand;
         saveConfigurationCommand.MaxSeatsPerIPAddress = 0;
         await _mediator.Send(saveConfigurationCommand);
 

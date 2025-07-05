@@ -9,7 +9,7 @@ using Microsoft.Extensions.Localization;
 namespace CMS.Controllers;
 
 [Authorize]
-[Route("/accounts/")]
+[Route("accounts")]
 public class AccountsController(IMediator mediator, IStringLocalizer<AccountsController> localizer) : Controller
 {
     [HttpGet("new")]

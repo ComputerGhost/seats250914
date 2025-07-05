@@ -10,7 +10,7 @@ using Serilog;
 
 namespace CMS.Controllers;
 
-[Route("/auth/")]
+[Route("auth")]
 public class AuthController(IMediator mediator, IStringLocalizer<AuthController> localizer) : Controller
 {
     [HttpGet("setup")]

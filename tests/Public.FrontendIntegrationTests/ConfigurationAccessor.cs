@@ -11,9 +11,7 @@ internal class ConfigurationAccessor
     private ConfigurationAccessor()
     {
         var configurationManager = new ConfigurationManager();
-        configurationManager
-            .AddJsonFile("testsettings.json")
-            .AddEnvironmentVariables();
+        configurationManager.AddJsonFile("testsettings.json");
 
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddCore(options =>

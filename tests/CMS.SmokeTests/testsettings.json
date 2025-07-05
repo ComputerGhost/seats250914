@@ -1,3 +1,5 @@
 {
-  "targetUrl": "https://localhost:7249"
+  "targetUrl": "https://localhost:7249",
+  "username": "initial",
+  "password": "initial"
 }

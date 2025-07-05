@@ -11,9 +11,7 @@ internal class ConfigurationAccessor
     private ConfigurationAccessor()
     {
         var configurationManager = new ConfigurationManager();
-        configurationManager
-            .AddJsonFile("testsettings.json")
-            .AddEnvironmentVariables();
+        configurationManager.AddJsonFile("testsettings.json");
 
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddCore(options =>
@@ -22,12 +20,16 @@ internal class ConfigurationAccessor
         });
 
         TargetUrl = configurationManager["targetUrl"]!;
+        Username = configurationManager["username"]!;
+        Password = configurationManager["password"]!;
 
         Services = serviceCollection.BuildServiceProvider();
     }
 
     public IServiceProvider Services { get; set; }
-    public string TargetUrl { get; set; }
+    public string TargetUrl { get; private set; }
+    public string Username { get; private set; }
+    public string Password { get; private set; }
 
     public static ConfigurationAccessor Instance
     {

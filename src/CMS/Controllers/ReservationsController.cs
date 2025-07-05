@@ -7,13 +7,11 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Presentation.Shared.FrameworkEnhancements.Extensions;
-using System.Diagnostics;
 
 namespace CMS.Controllers;
 
 [Authorize]
-[Route("/reservations/")]
+[Route("reservations")]
 public class ReservationsController(IMediator mediator, IStringLocalizer<ReservationsController> localizer) : Controller
 {
     [HttpGet]

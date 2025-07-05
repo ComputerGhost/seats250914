@@ -1,5 +1,4 @@
 ﻿using Core.Application.Reservations;
-using Core.Application.System;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using OpenQA.Selenium;
@@ -13,21 +12,10 @@ public class SeatMapTests
     private SeleniumWrapper _driver = null!;
     private IMediator _mediator = null!;
 
-    private static SaveConfigurationCommand WorkingSaveConfigurationCommand => new()
-    {
-        ForceCloseReservations = false,
-        ForceOpenReservations = true,
-        MaxSeatsPerIPAddress = int.MaxValue,
-        MaxSeatsPerPerson = int.MaxValue,
-        MaxSecondsToConfirmSeat = 3600,
-        ScheduledCloseTimeZone = "UTC",
-        ScheduledOpenTimeZone = "UTC",
-    };
-
     private IWebElement Section => _driver.FindElement(By.Id("reserve-seats"));
     private IWebElement AvailableSeat => Section.FindElement(By.CssSelector(".audience .available"));
     private IWebElement ReservedSeat => Section.FindElement(By.CssSelector(".audience .reserved"));
-    private SelectElement Dropdown => new SelectElement(Section.FindElement(By.ClassName("form-select")));
+    private SelectElement Dropdown => new(Section.FindElement(By.ClassName("form-select")));
 
     [TestInitialize]
     public async Task Initialize()
@@ -36,8 +24,8 @@ public class SeatMapTests
         _mediator = ConfigurationAccessor.Instance.Services.GetService<IMediator>()!;
 
         // Start with a clean slate.
-        await _mediator.Send(new DeleteAllReservationDataCommand());
-        await _mediator.Send(WorkingSaveConfigurationCommand);
+        await TestDataSetup.DeleteAllReservations();
+        await _mediator.Send(TestDataSetup.WorkingSaveConfigurationCommand);
     }
 
     [TestCleanup]

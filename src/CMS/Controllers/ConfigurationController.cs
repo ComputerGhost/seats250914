@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CMS.Controllers;
 
 [Authorize]
-[Route("/configuration/")]
+[Route("configuration")]
 public class ConfigurationController(IMediator mediator) : Controller
 {
     [HttpGet]

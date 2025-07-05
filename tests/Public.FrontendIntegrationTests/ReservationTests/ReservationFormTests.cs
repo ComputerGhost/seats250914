@@ -1,5 +1,4 @@
 ﻿using Core.Application.Reservations;
-using Core.Application.System;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -16,17 +15,6 @@ public class ReservationFormTests
     private SeleniumWrapper _driver = null!;
     private IMediator _mediator = null!;
 
-    private static SaveConfigurationCommand WorkingSaveConfigurationCommand => new()
-    {
-        ForceCloseReservations = false,
-        ForceOpenReservations = true,
-        MaxSeatsPerIPAddress = int.MaxValue,
-        MaxSeatsPerPerson = int.MaxValue,
-        MaxSecondsToConfirmSeat = 3600,
-        ScheduledCloseTimeZone = "UTC",
-        ScheduledOpenTimeZone = "UTC",
-    };
-
     private ReadOnlyCollection<IWebElement> Alerts => _driver.FindElements(By.ClassName("alert"));
     private IWebElement Heading => _driver.FindElement(By.TagName("h1"));
     private IWebElement Cancel => _driver.FindElement(By.ClassName("btn-secondary"));
@@ -39,8 +27,8 @@ public class ReservationFormTests
         _mediator = ConfigurationAccessor.Instance.Services.GetService<IMediator>()!;
 
         // Start with a clean slate.
-        await _mediator.Send(new DeleteAllReservationDataCommand());
-        await _mediator.Send(WorkingSaveConfigurationCommand);
+        await TestDataSetup.DeleteAllReservations();
+        await _mediator.Send(TestDataSetup.WorkingSaveConfigurationCommand);
 
         // Lock a seat and navigate to the page.
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
@@ -99,7 +87,7 @@ public class ReservationFormTests
     public async Task Page_WhenReservationsClosed_RendersReservationsClosed()
     {
         // Arrange
-        var saveConfigurationCommand = WorkingSaveConfigurationCommand;
+        var saveConfigurationCommand = TestDataSetup.WorkingSaveConfigurationCommand;
         saveConfigurationCommand.ForceCloseReservations = true;
         saveConfigurationCommand.ForceOpenReservations = false;
         await _mediator.Send(saveConfigurationCommand);
@@ -118,7 +106,7 @@ public class ReservationFormTests
     public async Task Page_WhenMaxReservationsForUser_RendersMaxReservations()
     {
         // Arrange
-        var saveConfigurationCommand = WorkingSaveConfigurationCommand;
+        var saveConfigurationCommand = TestDataSetup.WorkingSaveConfigurationCommand;
         saveConfigurationCommand.MaxSeatsPerPerson = 0;
         await _mediator.Send(saveConfigurationCommand);
 
@@ -140,7 +128,7 @@ public class ReservationFormTests
     public async Task Page_WhenExpired_RedirectsToTimeout()
     {
         // Arrange 1: Expiration config
-        var saveConfigurationCommand = WorkingSaveConfigurationCommand;
+        var saveConfigurationCommand = TestDataSetup.WorkingSaveConfigurationCommand;
         saveConfigurationCommand.MaxSecondsToConfirmSeat = 0;
         saveConfigurationCommand.GracePeriodSeconds = 0;
         await _mediator.Send(saveConfigurationCommand);

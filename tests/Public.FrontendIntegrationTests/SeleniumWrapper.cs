@@ -30,9 +30,7 @@ internal class SeleniumWrapper : ChromeDriver
 
     public void ScrollTo(IWebElement element)
     {
-        var javaScript = this as IJavaScriptExecutor
-            ?? throw new NotImplementedException("The browser driver does not support JavaScript.");
-        javaScript.ExecuteScript("arguments[0].scrollIntoView(true);", element);
+        ExecuteScript("arguments[0].scrollIntoView(true);", element);
 
         // Take no action for 1 second.
         // Trying to click or doing any polling during this time will stop the scrolling.
