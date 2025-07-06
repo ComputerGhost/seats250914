@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Domain", "src\Core.Dom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Domain.UnitTests", "tests\Core.Domain.UnitTests\Core.Domain.UnitTests.csproj", "{F031141F-04A6-4051-B9CD-3977E00114E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.IntegrationTests", "tests\Core.IntegrationTests\Core.IntegrationTests.csproj", "{74E9AAA0-1A27-45D6-A5DD-18A952A54B98}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Infrastructure", "src\Core.Infrastructure\Core.Infrastructure.csproj", "{96F9090F-7FDB-446C-8C32-B93CC1209B2F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Application.UnitTests", "tests\Core.Application.UnitTests\Core.Application.UnitTests.csproj", "{98D0879A-4C1C-4CD8-9F06-505F09CB02F1}"
@@ -31,9 +29,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.Shared", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.Shared.UnitTests", "tests\Presentation.Shared.UnitTests\Presentation.Shared.UnitTests.csproj", "{272042FE-B029-49F3-A1BC-5391A1CD13C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Public.FrontendIntegrationTests", "tests\Public.FrontendIntegrationTests\Public.FrontendIntegrationTests.csproj", "{BC4DEA45-18B4-8589-BA07-BC7FEECA8BDE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Public.IntegrationTests", "tests\Public.IntegrationTests\Public.IntegrationTests.csproj", "{BC4DEA45-18B4-8589-BA07-BC7FEECA8BDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMS.FrontendIntegrationTests", "tests\CMS.FrontendIntegrationTests\CMS.FrontendIntegrationTests.csproj", "{A1B4A18E-AF21-4725-9799-CFD54FCDDD61}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMS.IntegrationTests", "tests\CMS.IntegrationTests\CMS.IntegrationTests.csproj", "{A1B4A18E-AF21-4725-9799-CFD54FCDDD61}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,10 +59,6 @@ Global
 		{F031141F-04A6-4051-B9CD-3977E00114E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F031141F-04A6-4051-B9CD-3977E00114E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F031141F-04A6-4051-B9CD-3977E00114E0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74E9AAA0-1A27-45D6-A5DD-18A952A54B98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74E9AAA0-1A27-45D6-A5DD-18A952A54B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74E9AAA0-1A27-45D6-A5DD-18A952A54B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74E9AAA0-1A27-45D6-A5DD-18A952A54B98}.Release|Any CPU.Build.0 = Release|Any CPU
 		{96F9090F-7FDB-446C-8C32-B93CC1209B2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{96F9090F-7FDB-446C-8C32-B93CC1209B2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96F9090F-7FDB-446C-8C32-B93CC1209B2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -103,7 +97,6 @@ Global
 		{34A03A37-B98C-4C2A-A1C9-9E075F250842} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{3F33B6F8-B616-4C5C-A792-396F29B8D65C} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{F031141F-04A6-4051-B9CD-3977E00114E0} = {0D1CCD8C-16C6-4C41-9C22-D0D3C5A29698}
-		{74E9AAA0-1A27-45D6-A5DD-18A952A54B98} = {0D1CCD8C-16C6-4C41-9C22-D0D3C5A29698}
 		{96F9090F-7FDB-446C-8C32-B93CC1209B2F} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{98D0879A-4C1C-4CD8-9F06-505F09CB02F1} = {0D1CCD8C-16C6-4C41-9C22-D0D3C5A29698}
 		{D80951A5-E7F3-42A5-B000-69B35254C4E4} = {75EC31C6-6883-40B2-9B7D-B31865781312}
