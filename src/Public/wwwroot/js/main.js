@@ -141,6 +141,8 @@ function SeatSelector($element, errorMap) {
     function SeatForm($formElement) {
         const that = this;
 
+        this._isSubmitting = false;
+
         this._$formElement = $formElement;
         this._$selectElement = $formElement.find("select");
         this._$errorElement = $("<div>")
@@ -188,6 +190,9 @@ function SeatSelector($element, errorMap) {
             const formEntries = formData.entries();
             const requestData = Object.fromEntries(formEntries);
 
+            if (that._isSubmitting) return;
+            that._isSubmitting = true;
+
             $.ajax({
                 url: $formElement.attr("action"),
                 method: $formElement.attr("method").toUpperCase(),
@@ -203,6 +208,9 @@ function SeatSelector($element, errorMap) {
                     } else if (xhr.status === 409) {
                         that._handleConflict(requestData);
                     }
+                })
+                .always(function () {
+                    that._isSubmitting = false;
                 });
         };
 

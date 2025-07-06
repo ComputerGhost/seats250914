@@ -1,5 +1,6 @@
 using Core.Application;
 using Core.Domain.DependencyInjection;
+using Presentation.Shared.FrameworkEnhancements.Filters;
 using Presentation.Shared.Localization.Extensions;
 using Presentation.Shared.LockCleanup;
 using Presentation.Shared.Logging.Extensions;
@@ -9,7 +10,11 @@ using System.Globalization;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddMvc();
+builder.Services.AddMvc(options =>
+{
+    options.Filters.Add<SerilogExceptionLoggingFilter>();
+    options.Filters.Add<ValidationExceptionFilter>();
+});
 builder.Services.AddCleanupScheduler(options => options.MaxWaitSeconds = 60 * 60);
 builder.Services.AddCore(options =>
 {
@@ -42,7 +47,7 @@ app.UseStaticFiles(new StaticFileOptions
         ctx.Context.Response.Headers.Append("Cache-Control", "immutable,max-age=31536000,public");
     }
 });
-//app.UseExceptionHandler("/Error");
-//app.UseStatusCodePagesWithReExecute("/Error/{0}");
+app.UseExceptionHandler("/Error");
+app.UseStatusCodePagesWithReExecute("/Error/{0}");
 app.UseMyLocalization();
 app.Run();

@@ -1,6 +1,7 @@
 using Core.Application;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Shared.Authentication;
+using Presentation.Shared.FrameworkEnhancements.Filters;
 using Presentation.Shared.Localization.Extensions;
 using Presentation.Shared.Logging.Extensions;
 using System.Globalization;
@@ -9,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMvc(options =>
 {
     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+    options.Filters.Add<SerilogExceptionLoggingFilter>();
+    options.Filters.Add<ValidationExceptionFilter>();
 });
 builder.Services.AddCore(options =>
 {

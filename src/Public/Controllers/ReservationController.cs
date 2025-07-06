@@ -72,6 +72,12 @@ public class ReservationController(IMediator mediator) : Controller
 
     private async Task<IActionResult> ReserveSeat_Submit(ReserveSeatViewModel model)
     {
+        // Frontend should've handled this, but double-check here.
+        if (!model.AgreeToTerms)
+        {
+            return BadRequest();
+        }
+
         var seatLock = GetSeatLockFromCookie();
         if (seatLock == null)
         {
@@ -80,13 +86,13 @@ public class ReservationController(IMediator mediator) : Controller
 
         // The seat lock will be verified by the reservation code.
         var ipAddress = Request.GetClientIpAddress();
-        var command = model.ToReserveSeatCommand(ipAddress, seatLock);
-        var result = await mediator.Send(command);
+        var result = await mediator.Send(model.ToReserveSeatCommand(ipAddress, seatLock));
         if (result.IsError)
         {
-            return View(model
-                .WithExpiration(seatLock.LockExpiration)
-                .WithError(result.FirstError));
+            model.SeatNumber = seatLock.SeatNumber;
+            model.WithExpiration(seatLock.LockExpiration);
+            model.WithError(result.FirstError);
+            return View(model);
         }
 
         Response.Cookies.Delete("seatLock");

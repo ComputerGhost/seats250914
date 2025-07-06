@@ -4,6 +4,7 @@ using Core.Domain.Common.Models.Entities;
 using Core.Domain.Common.Ports;
 using Core.Domain.DependencyInjection;
 using MediatR;
+using Serilog;
 using System.Diagnostics;
 
 namespace Core.Domain.Reservations;
@@ -61,7 +62,7 @@ internal class ReservationService : IReservationService
     {
         await _seatLocksDatabase.ClearLockExpiration(seatNumber);
 
-        // Race condition check -- make sure the lock still exists.
+        // Race condition check -- make sure the lock didn't just expire.
         if (await _seatLocksDatabase.FetchSeatLock(seatNumber) == null)
         {
             return null;
@@ -69,12 +70,15 @@ internal class ReservationService : IReservationService
 
         var reservationId = await CreateReservation(seatNumber, identity);
 
-        await UpdateSeatStatus(seatNumber, SeatStatus.AwaitingPayment);
+        if (reservationId != null)
+        {
+            await UpdateSeatStatus(seatNumber, SeatStatus.AwaitingPayment);
+        }
 
         return reservationId;
     }
 
-    private async Task<int> CreateReservation(int seatNumber, IdentityModel identity)
+    private async Task<int?> CreateReservation(int seatNumber, IdentityModel identity)
     {
         Debug.Assert(identity.Name != null);
         Debug.Assert(identity.Email != null);
@@ -90,7 +94,14 @@ internal class ReservationService : IReservationService
             PreferredLanguage = identity.PreferredLanguage,
             Status = ReservationStatus.AwaitingPayment.ToString(),
         };
-        return await _reservationsDatabase.CreateReservation(entityModel);
+
+        var result = await _reservationsDatabase.CreateReservation(entityModel);
+        if (result == null)
+        {
+            Log.Error("Reservation creation failed for seat {seatNumber}. It's likely that the seat key is already used.");
+        }
+
+        return result;
     }
 
     private async Task UpdateReservationStatus(int reservationId, ReservationStatus status)

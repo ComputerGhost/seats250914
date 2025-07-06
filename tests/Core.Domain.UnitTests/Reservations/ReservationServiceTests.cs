@@ -5,6 +5,7 @@ using Core.Domain.Common.Ports;
 using Core.Domain.Reservations;
 using MediatR;
 using Moq;
+using System.Formats.Asn1;
 
 namespace Core.Domain.UnitTests.Reservations;
 
@@ -25,6 +26,9 @@ public class ReservationServiceTests
         MockMediator = new();
 
         MockReservationsDatabase = new();
+        MockReservationsDatabase
+            .Setup(m => m.CreateReservation(It.IsAny<ReservationEntityModel>()))
+            .ReturnsAsync(1);
         MockReservationsDatabase
             .Setup(m => m.FetchReservation(It.IsAny<int>()))
             .ReturnsAsync(new ReservationEntityModel());
@@ -305,6 +309,26 @@ public class ReservationServiceTests
         MockSeatLocksDatabase
             .Setup(m => m.FetchSeatLock(It.IsAny<int>()))
             .ReturnsAsync((SeatLockEntityModel?)null);
+
+        // Act
+        var result = await Subject.ReserveSeat(1, MinimalIdentity);
+
+        // Assert
+        MockSeatsDatabase.Verify(
+            m => m.UpdateSeatStatus(It.IsAny<int>(), It.IsAny<string>()),
+            Times.Never);
+        MockMediator.Verify(
+            m => m.Publish(It.IsAny<SeatStatusChangedNotification>(), It.IsAny<CancellationToken>()),
+            Times.Never);
+    }
+
+    [TestMethod]
+    public async Task ReserveSeat_WhenDatabaseConflict_DoesNotUpdateSeatStatus()
+    {
+        // Arrange
+        MockReservationsDatabase
+            .Setup(m => m.CreateReservation(It.IsAny<ReservationEntityModel>()))
+            .ReturnsAsync((int?)null);
 
         // Act
         var result = await Subject.ReserveSeat(1, MinimalIdentity);

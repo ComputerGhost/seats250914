@@ -1,6 +1,5 @@
 ﻿using Core.Application.Reservations;
 using Core.Application.Seats;
-using Core.Application.System;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using OpenQA.Selenium;
