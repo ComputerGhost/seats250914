@@ -1,16 +1,192 @@
-﻿@model TestDatabaseViewModel;
+﻿@model HomeIndexViewModel;
 
 <div class="container">
-    <h1>Test of CMS</h1>
-    
-    <div class="card">
-        <div class="card-body">
-            <h2 class="h5 card-title">Database</h2>
-            <p>Database connected: <code>@Model.Success</code></p>
-            @if (!Model.Success)
-            {
-                <p>Error: <code>@Model.Error</code></p>
-            }
+    <h1 class="mb-3">
+        Dashboard
+        <span class="badge @(Model.Success ? "bg-success" : "bg-danger") text-white align-middle ms-3 fs-6 px-3 py-1 rounded-pill">
+            @(Model.Success ? "서버 정상" : "서버 오류")
+        </span>
+    </h1>
+
+    <!-- Event summary card -->
+    <div class="card p-3 d-flex flex-row align-items-start justify-content-between mb-3">
+        <div class="position-relative me-3" style="flex-shrink: 0;">
+            <picture>
+                <!-- Use WebP format for modern browsers -->
+                <source srcset="images/poster-672w.webp" type="image/webp">
+                <!-- Fallback to JPG for older browsers -->
+                <img src="images/poster-672w.jpg"
+                    alt="Event image"
+                    class="rounded"
+                    style="width: 120px; max-height: 120px; object-fit: cover;">
+            </picture>
+        </div>
+        <div class="flex-grow-1 d-flex flex-column justify-content-between">
+            <div>
+                <h2 class="h5 mb-1 fw-bold d-flex align-items-center justify-content-between">
+                    2025 EXID 혜린 팬미팅 [Fall In Hyelin]
+
+                    <!-- Reservation status badge (whether reservation is currently open) -->
+                    @if (Model.IsOpen)
+                    {
+                        <span class="badge bg-success ms-2">예약 진행 중</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary ms-2">예약 비활성화</span>
+                    }
+                </h5>
+
+                <div class="text-muted small mb-2">
+                    <i class="bi bi-calendar-event me-1"></i>
+                    2025-06-29 20:00 ~ 2025-09-13 17:00
+                </div>
+            </div>
+
+            
+            <div class="position-absolute bottom-0 end-0 m-3 text-muted small">
+                <i class="bi bi-person-circle me-1"></i>
+                관리자: @User.Identity?.Name
+            </div>
         </div>
     </div>
+
+
+    <!-- Reservation count summary -->
+    <div class="row row-cols-2 row-cols-md-4 g-3">
+        <div class="col">
+            <div class="border rounded text-center p-3 bg-light">
+                <div class="fw-bold text-secondary small">전체 좌석 수</div>
+                <div class="fs-5 fw-bold text-dark">@Model.TotalSeats</div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="border rounded text-center p-3 bg-success bg-opacity-10">
+                <div class="fw-bold text-success small">확정된 예약</div>
+                <div class="fs-5 fw-bold text-success">@Model.Confirmed</div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="border rounded text-center p-3 bg-warning bg-opacity-10">
+                <div class="fw-bold text-warning small">승인 대기</div>
+                <div class="fs-5 fw-bold text-warning">@Model.Pending</div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="border rounded text-center p-3 bg-danger bg-opacity-10">
+                <div class="fw-bold text-danger small">미배정</div>
+                <div class="fs-5 fw-bold text-danger">@Model.Unassigned</div>
+            </div>
+        </div>
+    </div>
+    <!-- reservation status graph -->
+    <div class="card mt-4">
+        <div class="card-body">
+            <h6 class="fw-bold mb-3">좌석 예약 현황 그래프</h6>
+            <canvas id="stackedSeatChart" height="50"></canvas>
+        </div>
+    </div>
+
+    <!-- Reservation configuration summary -->
+    <div class="card mt-4">
+        <div class="card-body">
+            <h6 class="fw-bold mb-3">예약 설정 요약</h6>
+
+            <ul class="list-group list-group-flush small">
+                @if (Model.IsScheduled)
+                {
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>예약 열림</span>
+                        <span>@Model.ScheduledOpen?.ToString("yyyy-MM-dd HH:mm:ss") (UTC)</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>예약 닫힘</span>
+                        <span>@Model.ScheduledClose?.ToString("yyyy-MM-dd HH:mm:ss") (UTC)</span>
+                    </li>
+                }
+                else
+                {
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>예약 상태</span>
+                        <span class="fw-bold @(Model.IsOpenNow ? "text-success" : "text-secondary")">
+                            @(Model.IsOpenNow ? "예약 열림 (즉시)" : "예약 닫힘 (즉시)")
+                        </span>
+                    </li>
+                }
+
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>1인당 최대 예약 가능 좌석</span>
+                    <span>@Model.MaxPerUser</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>IP당 최대 예약</span>
+                    <span>@Model.MaxPerIp</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>보류 시간</span>
+                    <span>@(Model.HoldSeconds)초 + 여유 @(@Model.GraceSeconds)초</span>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+
 </div>
+
+<!-- Uses Chart.js to render horizontal stacked bar for seat status -->
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const ctx = document.getElementById('stackedSeatChart').getContext('2d');
+    const stackedSeatChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['좌석 예약 현황'],
+            datasets: [
+                {
+                    label: '확정',
+                    data: [@Model.Confirmed],
+                    backgroundColor: '#198754'
+                },
+                {
+                    label: '승인 대기',
+                    data: [@Model.Pending],
+                    backgroundColor: '#ffc107'
+                },
+                {
+                    label: '미배정',
+                    data: [@Model.Unassigned],
+                    backgroundColor: '#6c757d'
+                }
+            ]
+        },
+        options: {
+            indexAxis: 'y', 
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                },
+                legend: {
+                    position: 'top'
+                }
+            },
+            scales: {
+                x: {
+                    stacked: true,
+                    max: @Model.TotalSeats,
+                    beginAtZero: true
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        }
+    });
+});
+</script>
+}
+

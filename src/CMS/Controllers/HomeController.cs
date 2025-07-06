@@ -14,7 +14,7 @@ public class HomeController(IMediator mediator) : Controller
     public async Task<IActionResult> Index()
     {
         var test = await mediator.Send(new TestDatabaseQuery());
-        return View(new TestDatabaseViewModel
+        return View(new HomeIndexViewModel
         {
             Success = !test.IsError,
             Error = test.IsError ? test.Errors.FirstOrDefault().Description : null,
