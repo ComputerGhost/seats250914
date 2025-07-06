@@ -27,7 +27,7 @@ function setCookie(key, value, expires) {
  *
  * This converts a static time display into a countdown timer.
  *
- * To use, simply add the `countdown` CSS class to a `<time`> element that has
+ * To use, simply add the `countdown` CSS class to a `<time>` element that has
  * a period for its `datetime` attribute, formatted according to HTML5 specs.
  *
  * NOTE: Periods longer than PT59M59S are not supported.
@@ -141,6 +141,8 @@ function SeatSelector($element, errorMap) {
     function SeatForm($formElement) {
         const that = this;
 
+        this._isSubmitting = false;
+
         this._$formElement = $formElement;
         this._$selectElement = $formElement.find("select");
         this._$errorElement = $("<div>")
@@ -188,6 +190,9 @@ function SeatSelector($element, errorMap) {
             const formEntries = formData.entries();
             const requestData = Object.fromEntries(formEntries);
 
+            if (that._isSubmitting) return;
+            that._isSubmitting = true;
+
             $.ajax({
                 url: $formElement.attr("action"),
                 method: $formElement.attr("method").toUpperCase(),
@@ -203,6 +208,9 @@ function SeatSelector($element, errorMap) {
                     } else if (xhr.status === 409) {
                         that._handleConflict(requestData);
                     }
+                })
+                .always(function () {
+                    that._isSubmitting = false;
                 });
         };
 

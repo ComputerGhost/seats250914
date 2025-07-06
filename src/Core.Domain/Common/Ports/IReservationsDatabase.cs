@@ -12,11 +12,13 @@ public interface IReservationsDatabase
     /// Creates a reservation. The seat must have already been locked.
     /// </summary>
     /// <remarks>
-    /// WARNING: This does not verify ownership of the seat lock.
+    /// If this is called twice for the same reservation somehow,
+    /// then it will return null for one of them.
+    /// It checks uniqueness based on `SeatLockId`.
     /// </remarks>
     /// <param name="reservation">Reservation to save.</param>
-    /// <returns>Id of the created reservation.</returns>
-    Task<int> CreateReservation(ReservationEntityModel reservation);
+    /// <returns>Id of the created reservation, null if failure.</returns>
+    Task<int?> CreateReservation(ReservationEntityModel reservation);
 
     /// <summary>
     /// List all reservations.

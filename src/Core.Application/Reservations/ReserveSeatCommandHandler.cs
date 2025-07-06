@@ -38,13 +38,13 @@ internal class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, E
     private static Error Unauthorized(int seatNumber, AuthorizationResult authResult)
     {
         var reason = authResult.FailureReason.ToString();
-        Log.Information("User is not authorized to reserve seat {SeatNumber} because {reason}.", seatNumber, reason);
+        Log.Information("User is not authorized to reserve seat {seatNumber} because {reason}.", seatNumber, reason);
         return Error.Unauthorized(metadata: new Dictionary<string, object> { { "details", authResult } });
     }
 
     private static Error UnauthorizedJustNow(int seatNumber)
     {
-        Log.Warning("User failed to reserve seat {SeatNumber}. Their seat key probably expired just now.", seatNumber);
+        Log.Warning("User failed to reserve seat {seatNumber}. Their seat key probably expired just now.", seatNumber);
         return Error.Unauthorized(metadata: new Dictionary<string, object> {
             { "details", AuthorizationResult.KeyIsExpired }
         });

@@ -87,6 +87,28 @@ public class ReservationFormTests
     }
 
     [TestMethod]
+    public async Task Submit_WhenSeatIsWrong_RendersKeyIsInvalid()
+    {
+        // Arrange 1: Set up an invalid key
+        var seatLock = await LockSeat(2);
+        seatLock.SeatNumber = 1;
+        SetLockCookie(seatLock);
+
+        // Act 1: Refresh the page, but it trusts the user key at first.
+        _driver.Navigate().Refresh();
+        Assert.AreEqual(0, Alerts.Count);
+
+        // Act 2: Submit the form to get the error.
+        PopulateForm();
+        _driver.ScrollTo(Submit);
+        Submit.Click();
+
+        // Assert
+        Assert.AreEqual(1, Alerts.Count);
+        Assert.IsTrue(Alerts[0].Text.Contains("wrong key"));
+    }
+
+    [TestMethod]
     public async Task Page_WhenReservationsClosed_RendersReservationsClosed()
     {
         // Arrange

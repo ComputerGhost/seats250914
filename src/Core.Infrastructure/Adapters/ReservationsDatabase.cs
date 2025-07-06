@@ -1,7 +1,9 @@
-﻿using Core.Domain.Common.Models.Entities;
+﻿using Core.Domain.Common.Exceptions;
+using Core.Domain.Common.Models.Entities;
 using Core.Domain.Common.Ports;
 using Core.Domain.DependencyInjection;
 using Dapper;
+using Microsoft.Data.SqlClient;
 using System.Data;
 
 namespace Core.Infrastructure.Adapters;
@@ -21,7 +23,7 @@ internal class ReservationsDatabase(IDbConnection connection) : IReservationsDat
         return await connection.ExecuteScalarAsync<int>(sql, new { emailAddress });
     }
 
-    public async Task<int> CreateReservation(ReservationEntityModel reservation)
+    public async Task<int?> CreateReservation(ReservationEntityModel reservation)
     {
         // This assumes that the seat number and status exist.
         var sql = """
@@ -37,7 +39,16 @@ internal class ReservationsDatabase(IDbConnection connection) : IReservationsDat
             LEFT JOIN ReservationStatuses ON ReservationStatuses.Status = @status
             WHERE Seats.Number = @seatNumber
             """;
-        return await connection.ExecuteScalarAsync<int>(sql, reservation);
+
+        try
+        {
+            return await connection.ExecuteScalarAsync<int>(sql, reservation);
+        }
+        // Catch unique constraint violations.
+        catch (SqlException ex) when (ex.Number is 2601 or 2627)
+        {
+            return null;
+        }
     }
 
     public async Task<ReservationEntityModel?> FetchReservation(int reservationId)

@@ -70,8 +70,11 @@ public class AccountEditTests
         var userInfo = await _mediator.Send(new FetchAccountQuery(login));
         Assert.IsFalse(userInfo.Value.IsEnabled);
 
-        // Act 3: Enable user
+        // Act 3: Go to another page (so we can detect navigation), then return.
+        _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
         _driver.Navigate().GoToUrl(editUrl);
+
+        // Act 3: Enable user
         EnabledCheck.Click();
         UpdateUserButton.Click();
 
