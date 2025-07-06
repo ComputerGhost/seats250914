@@ -27,7 +27,7 @@ function setCookie(key, value, expires) {
  *
  * This converts a static time display into a countdown timer.
  *
- * To use, simply add the `countdown` CSS class to a `<time`> element that has
+ * To use, simply add the `countdown` CSS class to a `<time>` element that has
  * a period for its `datetime` attribute, formatted according to HTML5 specs.
  *
  * NOTE: Periods longer than PT59M59S are not supported.
