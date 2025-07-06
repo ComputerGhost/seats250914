@@ -1,10 +1,10 @@
-﻿public class TestDatabaseViewModel
+﻿public class HomeIndexViewModel
 {
     public bool Success { get; set; } = true;
     public string? Error { get; set; } = null;
 
     // Dummy flag indicating if reservations are currently open
-    public bool is_open { get; set; } = true;
+    public bool IsOpen { get; set; } = true;
 
     // Dummy seat reservation data
     public int TotalSeats { get; set; } = 100;

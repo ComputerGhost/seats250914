@@ -1,4 +1,4 @@
-﻿@model TestDatabaseViewModel;
+﻿@model HomeIndexViewModel;
 
 <div class="container">
     <h1 class="mb-3">
@@ -7,24 +7,27 @@
             @(Model.Success ? "서버 정상" : "서버 오류")
         </span>
     </h1>
-    </h1>
 
     <!-- Event summary card -->
     <div class="card p-3 d-flex flex-row align-items-start justify-content-between mb-3">
         <div class="position-relative me-3" style="flex-shrink: 0;">
-            <img src="~/images/poster-672w.webp"
-                alt="이벤트 이미지"
-                class="rounded"
-                style="width: 120px; max-height: 120px; object-fit: cover;">
+            <picture>
+                <!-- Use WebP format for modern browsers -->
+                <source srcset="images/poster-672w.webp" type="image/webp">
+                <!-- Fallback to JPG for older browsers -->
+                <img src="images/poster-672w.jpg"
+                    alt="Event image"
+                    class="rounded"
+                    style="width: 120px; max-height: 120px; object-fit: cover;">
+            </picture>
         </div>
-
         <div class="flex-grow-1 d-flex flex-column justify-content-between">
             <div>
-                <h5 class="mb-1 fw-bold d-flex align-items-center justify-content-between">
+                <h2 class="h5 mb-1 fw-bold d-flex align-items-center justify-content-between">
                     2025 EXID 혜린 팬미팅 [Fall In Hyelin]
 
                     <!-- Reservation status badge (whether reservation is currently open) -->
-                    @if (Model.is_open)
+                    @if (Model.IsOpen)
                     {
                         <span class="badge bg-success ms-2">예약 진행 중</span>
                     }
