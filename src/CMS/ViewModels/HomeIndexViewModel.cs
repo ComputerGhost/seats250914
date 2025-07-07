@@ -1,25 +1,53 @@
-﻿public class HomeIndexViewModel
-{
-    public bool Success { get; set; } = true;
-    public string? Error { get; set; } = null;
+﻿using Core.Application.Seats;
+using Core.Application.System;
+using Core.Domain.Common.Enumerations;
+using System.Diagnostics;
 
-    // Dummy flag indicating if reservations are currently open
+namespace CMS.ViewModels;
+public class HomeIndexViewModel
+{
+    public HomeIndexViewModel(FetchConfigurationQueryResponse configuration, ListSeatsQueryResponse seats)
+    {
+        Success = true; // Always true. If the db fails, we won't get here.
+
+        IsOpen = configuration.AreReservationsOpen;
+
+        TotalSeats = seats.Data.Count();
+        Confirmed = seats.Data.Where(s => s.Status == SeatStatus.ReservationConfirmed).Count();
+        Pending = seats.Data.Where(s => s.Status == SeatStatus.AwaitingPayment).Count();
+        Unassigned = seats.Data.Where(s => s.Status == SeatStatus.Available || s.Status == SeatStatus.Locked).Count();
+        Debug.Assert(Unassigned + Pending + Confirmed == TotalSeats, "A seat status is not being counted.");
+
+        IsScheduled = !configuration.ForceOpenReservations && !configuration.ForceCloseReservations;
+        ScheduledClose = configuration.ScheduledCloseDateTime.ToUniversalTime();
+        ScheduledOpen = configuration.ScheduledOpenDateTime.ToUniversalTime();
+
+        IsOpenNow = configuration.AreReservationsOpen;
+        MaxPerIp = configuration.MaxSeatsPerIPAddress;
+        MaxPerIp = configuration.MaxSeatsPerIPAddress;
+        HoldSeconds = configuration.MaxSecondsToConfirmSeat;
+        GraceSeconds = configuration.GracePeriodSeconds;
+    }
+
+    public bool Success { get; set; }
+
+    // If reservations are currently open
     public bool IsOpen { get; set; } = true;
 
-    // Dummy seat reservation data
-    public int TotalSeats { get; set; } = 100;
-    public int Confirmed { get; set; } = 40;
-    public int Pending { get; set; } = 30;
-    public int Unassigned { get; set; } = 30;
+    // Seat reservation data
+    public int TotalSeats { get; set; }
+    public int Confirmed { get; set; }
+    public int Pending { get; set; }
+    public int Unassigned { get; set; }
 
-    // Dummy reservation configuration settings
-    public bool IsScheduled { get; set; } = true;  // Whether reservation is scheduled or immediate
-    public DateTime? ScheduledOpen { get; set; } = new DateTime(2025, 07, 05, 18, 02, 30);
-    public DateTime? ScheduledClose { get; set; } = new DateTime(2025, 07, 06, 23, 59, 00);
+    // Reservation configuration settings
+    public bool IsScheduled { get; set; }  // Whether reservation is scheduled or immediate
+    public DateTimeOffset ScheduledOpen { get; set; }
+    public DateTimeOffset ScheduledClose { get; set; }
 
-    public bool IsOpenNow { get; set; } = false; 
-    public int MaxPerUser { get; set; } = 4;
-    public int MaxPerIp { get; set; } = 10;
-    public int HoldSeconds { get; set; } = 600;
-    public int GraceSeconds { get; set; } = 4;
+    public bool IsOpenNow { get; set; }
+    public int MaxPerUser { get; set; }
+    public int MaxPerIp { get; set; }
+    public int HoldSeconds { get; set; }
+    public int GraceSeconds { get; set; }
 }

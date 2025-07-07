@@ -1,4 +1,5 @@
 ﻿using Core.Domain.Common.Models.Entities;
+using Core.Domain.Scheduling;
 
 namespace Core.Application.System;
 public class FetchConfigurationQueryResponse
@@ -6,7 +7,11 @@ public class FetchConfigurationQueryResponse
     /// <summary>
     /// Minimal valid configuration, useful for unit tests.
     /// </summary>
-    public static FetchConfigurationQueryResponse DefaultForTesting => new();
+    public static FetchConfigurationQueryResponse DefaultForTesting => new()
+    {
+        AreReservationsOpen = true,
+        ReservationsStatus = ReservationsStatus.OpenedManually,
+    };
 
     private FetchConfigurationQueryResponse()
     {
@@ -27,6 +32,16 @@ public class FetchConfigurationQueryResponse
         ScheduledOpenDateTime = entityModel.ScheduledOpenDateTime;
         ScheduledOpenTimeZone = entityModel.ScheduledOpenTimeZone;
     }
+
+    /// <summary>
+    /// Whether the reservations are open or not.
+    /// </summary>
+    public required bool AreReservationsOpen { get; set; }
+
+    /// <summary>
+    /// Current status of the reservations system.
+    /// </summary>
+    public required ReservationsStatus ReservationsStatus { get; set; }
 
     /// <summary>
     /// Disable reservations regardless of schedule.
