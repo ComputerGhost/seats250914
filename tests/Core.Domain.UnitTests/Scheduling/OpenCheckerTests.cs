@@ -156,7 +156,6 @@ public class OpenCheckerTests
     }
 
     [TestMethod]
-    [Ignore("We don't have 'opening later' functionality yet.")]
     public async Task CalculateStatus_WhenNotYetOpen_ReturnsOpeningLater()
     {
         // Arrange
@@ -195,6 +194,24 @@ public class OpenCheckerTests
     {
         // Arrange
         Configuration.ForceOpenReservations = true;
+        var subject = await OpenChecker.FromDatabase(
+            MockConfigurationDatabase.Object,
+            MockSeatsDatabase.Object);
+
+        // Act
+        var result = await subject.CalculateStatus();
+
+        // Assert
+        Assert.AreEqual(ReservationsStatus.OpenedManually, result);
+    }
+
+    [TestMethod]
+    public async Task CalculateStatus_WhenForcedOpen_AndNotInDateRange_ReturnsOpenedManually()
+    {
+        // Arrange
+        Configuration.ForceOpenReservations = true;
+        Configuration.ScheduledOpenDateTime = DateTime.UtcNow.AddYears(-1);
+        Configuration.ScheduledCloseDateTime = DateTime.UtcNow.AddMonths(-1);
         var subject = await OpenChecker.FromDatabase(
             MockConfigurationDatabase.Object,
             MockSeatsDatabase.Object);

@@ -57,13 +57,32 @@ public class StatusNotificationTests
     }
 
     [TestMethod]
+    public async Task Alert_WhenOpeningSoon_RendersOpeningSoon()
+    {
+        // Arrange
+        var saveConfigurationCommand = TestDataSetup.WorkingSaveConfigurationCommand;
+        saveConfigurationCommand.ForceOpenReservations = false;
+        saveConfigurationCommand.ScheduledOpenDateTime = DateTimeOffset.Now.AddDays(1);
+        saveConfigurationCommand.ScheduledCloseDateTime = DateTimeOffset.Now.AddDays(2);
+        await _mediator.Send(saveConfigurationCommand);
+
+        // Act
+        _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl + "#reserve-seats");
+
+        // Assert
+        Assert.AreEqual(1, Alerts.Count);
+        Assert.AreEqual("Reservations will open soon!", Alerts[0].FindElement(By.TagName("h3")).Text);
+        Assert.IsFalse(Selects.FirstOrDefault()?.Displayed ?? false);
+    }
+
+    [TestMethod]
     public async Task Alert_WhenClosedPerSchedule_RendersPermanentlyClosed()
     {
         // Arrange
         var saveConfigurationCommand = TestDataSetup.WorkingSaveConfigurationCommand;
         saveConfigurationCommand.ForceOpenReservations = false;
-        saveConfigurationCommand.ScheduledOpenDateTime = DateTime.Now.AddDays(-2);
-        saveConfigurationCommand.ScheduledCloseDateTime = DateTime.Now.AddDays(-1);
+        saveConfigurationCommand.ScheduledOpenDateTime = DateTimeOffset.Now.AddDays(-2);
+        saveConfigurationCommand.ScheduledCloseDateTime = DateTimeOffset.Now.AddDays(-1);
         await _mediator.Send(saveConfigurationCommand);
 
         // Act
@@ -82,6 +101,26 @@ public class StatusNotificationTests
         var saveConfigurationCommand = TestDataSetup.WorkingSaveConfigurationCommand;
         saveConfigurationCommand.ForceCloseReservations = true;
         saveConfigurationCommand.ForceOpenReservations = false;
+        await _mediator.Send(saveConfigurationCommand);
+
+        // Act
+        _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl + "#reserve-seats");
+
+        // Assert
+        Assert.AreEqual(1, Alerts.Count);
+        Assert.AreEqual("Reservations are closed!", Alerts[0].FindElement(By.TagName("h3")).Text);
+        Assert.IsFalse(Selects.FirstOrDefault()?.Displayed ?? false);
+    }
+
+    [TestMethod]
+    public async Task Alert_WhenClosedManually_AndOpenDateInFuture_RendersTemporarilyClosed()
+    {
+        // Arrange
+        var saveConfigurationCommand = TestDataSetup.WorkingSaveConfigurationCommand;
+        saveConfigurationCommand.ForceCloseReservations = true;
+        saveConfigurationCommand.ForceOpenReservations = false;
+        saveConfigurationCommand.ScheduledOpenDateTime = DateTimeOffset.Now.AddDays(1);
+        saveConfigurationCommand.ScheduledCloseDateTime = DateTimeOffset.Now.AddDays(2);
         await _mediator.Send(saveConfigurationCommand);
 
         // Act
