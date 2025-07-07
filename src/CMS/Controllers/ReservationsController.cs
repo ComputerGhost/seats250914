@@ -7,6 +7,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Serilog;
+using System.Net;
 
 namespace CMS.Controllers;
 
@@ -22,6 +24,31 @@ public class ReservationsController(IMediator mediator, IStringLocalizer<Reserva
         {
             Search = search,
         });
+    }
+
+    [HttpPost("approve")]
+    public async Task<IActionResult> Approve(string reservationIds)
+    {
+        Log.Information("Approving reservations in batch: {reservationIds", reservationIds);
+
+        var parsedIds = reservationIds.Split(',').Select(id =>
+        {
+            if (!int.TryParse(id, out int parsedId))
+            {
+                Log.Warning("Reservation id {id} is not valid. Aborting batch approval.", id);
+                throw new HttpRequestException("Reservation ids must be integers.", null, HttpStatusCode.BadRequest);
+            }
+
+            return parsedId;
+        });
+
+        foreach (var reservationId in parsedIds)
+        {
+            var command = new ApproveReservationCommand(reservationId);
+            var result = await mediator.Send(command);
+        }
+
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpGet("new")]
