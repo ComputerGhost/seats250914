@@ -30,7 +30,7 @@ internal class FetchReservationsStatusQueryHandler : IRequestHandler<FetchReserv
             ScheduledOpenTimeZone = openChecker.ScheduledOpenTimeZone,
         };
 
-        Log.Debug("Reservations system status is {response}.", response);
+        Log.Debug("Reservations system status is {@response}.", response);
         return response;
     }
 }

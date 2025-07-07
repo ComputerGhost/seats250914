@@ -167,12 +167,7 @@ function SeatSelector($element, errorMap) {
 
         this.addSeats = function (seats) {
             $.each(seats, function (_, seat) {
-                if (seat.status === "available") {
-                    const $optionElement = $("<option>")
-                        .val(seat.index + 1)
-                        .text(seat.$element.text());
-                    that._$selectElement.append($optionElement);
-                }
+                that.updateSeat(seat);
             });
         };
 
@@ -217,22 +212,28 @@ function SeatSelector($element, errorMap) {
         this.updateSeat = function (seat) {
             if (seat.status !== "available") {
                 that.removeSeat(seat.index + 1);
-            } else {
-                var $nextOption;
-                that._$selectElement.children().each(function () {
-                    $nextOption = $(this);
-                    return $nextOption.text() <= seat.$element.text();
-                });
+                return;
+            }
 
-                const $optionElement = $("<option>")
-                    .val(seat.index + 1)
-                    .text(seat.$element.text());
-
-                if (seat.$element.text() === $nextOption.text()) {
-                    $nextOption.replaceWith($optionElement);
-                } else {
-                    $optionElement.insertBefore($nextOption);
+            var $prevOption = null;
+            that._$selectElement.children().each(function () {
+                const $currentOption = $(this);
+                if ($currentOption.text() !== "") {
+                    const currentValue = parseInt($currentOption.text());
+                    const seatValue = parseInt(seat.$element.text());
+                    if (currentValue > seatValue) return false;
                 }
+                $prevOption = $currentOption;
+            });
+
+            const $newOption = $("<option>")
+                .val(seat.index + 1)
+                .text(seat.$element.text());
+
+            if ($prevOption.text() === $newOption.text()) {
+                $prevOption.replaceWith($newOption);
+            } else {
+                $newOption.insertAfter($prevOption);
             }
         };
 

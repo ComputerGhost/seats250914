@@ -14,7 +14,7 @@ public class SeatFormTests
     private IMediator _mediator = null!;
 
     private IWebElement Section => _driver.FindElement(By.Id("reserve-seats"));
-    private SelectElement Dropdown => new(Section.FindElement(By.ClassName("form-select")));
+    private SelectElement Select => new(Section.FindElement(By.ClassName("form-select")));
     private IWebElement Submit => Section.FindElement(By.ClassName("btn-primary"));
 
     [TestInitialize]
@@ -39,13 +39,28 @@ public class SeatFormTests
     }
 
     [TestMethod]
+    public void Select_HasOrderedAndUniqueItems()
+    {
+        // Arrange
+        var expected = Enumerable.Range(1, 100).Select(x => x.ToString());
+
+        // Act
+        var actual = Select.Options.Select(option => option.Text);
+
+        // Assert
+        Assert.AreEqual(101, actual.Count());
+        Assert.AreEqual("", actual.First());
+        Assert.IsTrue(Enumerable.SequenceEqual(expected, actual.Skip(1)));
+    }
+
+    [TestMethod]
     public void Submit_WhenClicked_AndFormIsValid_GoesToReservationForm()
     {
         // Arrange
         const string reservationPath = "/reservation/new";
 
         // Act 1: Fill out and submit form
-        Dropdown.SelectByIndex(1);
+        Select.SelectByIndex(1);
         _driver.ScrollTo(Submit);
         Submit.Click();
 
@@ -63,7 +78,7 @@ public class SeatFormTests
         const string reservationPath = "/reservation/new";
 
         // Act 1: Fill out form
-        Dropdown.SelectByIndex(1);
+        Select.SelectByIndex(1);
 
         // Act 2: Submit the form twice...
         // The website is too damn fast to use `Submit.Click()` for this.
