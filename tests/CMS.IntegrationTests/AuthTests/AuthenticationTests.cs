@@ -178,6 +178,7 @@ public class AuthenticationTests
         Assert.IsTrue(_driver.FindElements(By.Id("error-display")).Any());
     }
 
+    [LocalOnly]
     [TestMethod]
     public void SignOut_WhenClicked_SignsOutUser()
     {

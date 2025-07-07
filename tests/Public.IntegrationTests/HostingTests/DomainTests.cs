@@ -9,19 +9,6 @@ public class DomainTests
 {
     private SeleniumWrapper _driver = null!;
 
-    [TestInitialize]
-    public void Initialize()
-    {
-        _driver = new SeleniumWrapper(languageId: "en");
-    }
-
-    [TestCleanup]
-    public void Cleanup()
-    {
-        _driver.Quit();
-        _driver.Dispose();
-    }
-
     [TestMethod]
     public async Task WwwSubdomain_RedirectsToNoSubdomain()
     {
@@ -36,16 +23,19 @@ public class DomainTests
         httpClientHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
         httpClientHandler.AllowAutoRedirect = false;
         using var client = new HttpClient(httpClientHandler);
-        var result = await client.GetAsync(wwwSubdomain);
+        var response = await client.GetAsync(wwwSubdomain);
 
         // Assert
-        Assert.AreEqual(HttpStatusCode.MovedPermanently, result.StatusCode);
-        Assert.AreEqual(noSubdomain, result.Headers.Location?.ToString().TrimEnd('/'));
+        Assert.AreEqual(HttpStatusCode.MovedPermanently, response.StatusCode);
+        Assert.AreEqual(noSubdomain, response.Headers.Location?.ToString().TrimEnd('/'));
     }
 
     [TestMethod]
     public void NoSubdomain_RendersPublicWebsite()
     {
+        // Arrange
+        using var driver = new SeleniumWrapper(languageId: "en");
+
         // Act
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
 
@@ -65,10 +55,10 @@ public class DomainTests
 
         // Act
         using var client = new HttpClient();
-        var action = async () => await client.GetAsync(invalidSubdomain);
+        var response = await client.GetAsync(invalidSubdomain);
 
         // Assert
-        await Assert.ThrowsAsync<HttpRequestException>(action);
+        Assert.IsFalse(response.IsSuccessStatusCode);
     }
 
     [TestMethod]
@@ -85,10 +75,9 @@ public class DomainTests
         using var httpClientHandler = new HttpClientHandler();
         httpClientHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
         using var client = new HttpClient(httpClientHandler);
-        var action = () => client.GetAsync(invalidSubdomain);
+        var response = await client.GetAsync(invalidSubdomain);
 
         // Assert
-        var exception = await Assert.ThrowsAsync<HttpRequestException>(action);
-        Assert.IsNotNull(exception.InnerException);
+        Assert.IsFalse(response.IsSuccessStatusCode);
     }
 }

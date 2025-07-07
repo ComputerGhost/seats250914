@@ -53,11 +53,14 @@ public class ConfigurationEditTests
     public void ConfigForm_WhenSubmitted_ShowsConfirmationAlert()
     {
         // Act 1: Populate the form to minimal required values
-        MaxSeatsPerPerson.SendKeys("1");
-        MaxSeatsPerIPAddress.SendKeys("1");
+        _driver.SetValue(MaxSeatsPerPerson, "1");
+        _driver.SetValue(MaxSeatsPerIPAddress, "1");
 
         // Act 2: Submit
         SubmitButton.Submit();
+
+        // Act 3: Wait for page to load
+        _driver.WaitUntil(d => d.FindElements(By.ClassName("alert-success")).Any());
 
         // Assert: Should not throw exception
         _driver.FindElement(By.ClassName("alert-success"));
