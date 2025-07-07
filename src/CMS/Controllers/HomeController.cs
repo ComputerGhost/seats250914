@@ -1,4 +1,5 @@
 ﻿using CMS.ViewModels;
+using Core.Application.Seats;
 using Core.Application.System;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -13,11 +14,8 @@ public class HomeController(IMediator mediator) : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var test = await mediator.Send(new TestDatabaseQuery());
-        return View(new HomeIndexViewModel
-        {
-            Success = !test.IsError,
-            Error = test.IsError ? test.Errors.FirstOrDefault().Description : null,
-        });
+        var configuration = await mediator.Send(new FetchConfigurationQuery());
+        var seats = await mediator.Send(new ListSeatsQuery());
+        return View(new HomeIndexViewModel(configuration, seats));
     }
 }

@@ -5,14 +5,14 @@ using Core.Domain.Common.Ports;
 namespace Core.Domain.Scheduling;
 public class OpenChecker
 {
-    public static OpenChecker FromConfiguration(ConfigurationEntityModel configuration)
+    public static OpenChecker FromConfiguration(ConfigurationEntityModel configuration, ISeatsDatabase? seatsDatabase = null)
     {
-        return new(configuration, null);
+        return new(configuration, seatsDatabase);
     }
 
-    public static async Task<OpenChecker> FromDatabase(IConfigurationDatabase configuratinDatabase, ISeatsDatabase seatsDatabase)
+    public static async Task<OpenChecker> FromDatabase(IConfigurationDatabase configurationDatabase, ISeatsDatabase seatsDatabase)
     {
-        var configuration = await configuratinDatabase.FetchConfiguration();
+        var configuration = await configurationDatabase.FetchConfiguration();
         return new(configuration, seatsDatabase);
     }
 

@@ -35,7 +35,7 @@
                     {
                         <span class="badge bg-secondary ms-2">예약 비활성화</span>
                     }
-                </h5>
+                </h2>
 
                 <div class="text-muted small mb-2">
                     <i class="bi bi-calendar-event me-1"></i>
@@ -97,11 +97,11 @@
                 {
                     <li class="list-group-item d-flex justify-content-between">
                         <span>예약 열림</span>
-                        <span>@Model.ScheduledOpen?.ToString("yyyy-MM-dd HH:mm:ss") (UTC)</span>
+                        <span>@Model.ScheduledOpen.ToString("yyyy-MM-dd HH:mm:ss") (UTC)</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
                         <span>예약 닫힘</span>
-                        <span>@Model.ScheduledClose?.ToString("yyyy-MM-dd HH:mm:ss") (UTC)</span>
+                        <span>@Model.ScheduledClose.ToString("yyyy-MM-dd HH:mm:ss") (UTC)</span>
                     </li>
                 }
                 else
