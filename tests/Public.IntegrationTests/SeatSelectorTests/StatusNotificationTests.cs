@@ -3,7 +3,6 @@ using Core.Application.Seats;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using OpenQA.Selenium;
-using System.Collections.ObjectModel;
 
 namespace Public.IntegrationTests.SeatSelectorTests;
 
@@ -16,13 +15,14 @@ public class StatusNotificationTests
 
     // Root and above the seat map
     private IWebElement Section => _driver.FindElement(By.Id("reserve-seats"));
-    private ReadOnlyCollection<IWebElement> Alerts => Section.FindElements(By.ClassName("alert"));
+    private IWebElement Alert => Section.FindElement(By.ClassName("alert"));
+    private IWebElement TimeDisplay => Section.FindElement(By.TagName("time"));
 
     // Seat map
     private IWebElement AvailableSeat => Section.FindElement(By.CssSelector(".audience .available"));
 
     // Form on right side
-    private ReadOnlyCollection<IWebElement> Selects => Section.FindElements(By.ClassName("form-select"));
+    private IWebElement Select => Section.FindElement(By.ClassName("form-select"));
     private IWebElement Submit => Section.FindElement(By.ClassName("btn-primary"));
     private IWebElement ValidationMessage => Section.FindElement(By.ClassName("text-danger"));
 
@@ -52,8 +52,8 @@ public class StatusNotificationTests
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl + "#reserve-seats");
 
         // Assert
-        Assert.AreEqual(0, Alerts.Count);
-        Assert.IsTrue(Selects.FirstOrDefault()?.Displayed ?? false);
+        Assert.Throws<NoSuchElementException>(() => Alert);
+        Assert.IsNotNull(Select);
     }
 
     [TestMethod]
@@ -63,16 +63,19 @@ public class StatusNotificationTests
         var saveConfigurationCommand = TestDataSetup.WorkingSaveConfigurationCommand;
         saveConfigurationCommand.ForceOpenReservations = false;
         saveConfigurationCommand.ScheduledOpenDateTime = DateTimeOffset.Now.AddDays(1);
+        saveConfigurationCommand.ScheduledOpenTimeZone = "Pacific Standard Time";
         saveConfigurationCommand.ScheduledCloseDateTime = DateTimeOffset.Now.AddDays(2);
+        saveConfigurationCommand.ScheduledCloseTimeZone = "Pacific Standard Time";
         await _mediator.Send(saveConfigurationCommand);
 
         // Act
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl + "#reserve-seats");
 
         // Assert
-        Assert.AreEqual(1, Alerts.Count);
-        Assert.AreEqual("Reservations will open soon!", Alerts[0].FindElement(By.TagName("h3")).Text);
-        Assert.IsFalse(Selects.FirstOrDefault()?.Displayed ?? false);
+        Assert.IsNotNull(Alert);
+        Assert.AreEqual("Reservations will open soon!", Alert.FindElement(By.TagName("h3")).Text);
+        Assert.Contains("UTC-07:00", TimeDisplay.Text);
+        Assert.IsFalse(Select.Displayed);
     }
 
     [TestMethod]
@@ -89,9 +92,9 @@ public class StatusNotificationTests
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl + "#reserve-seats");
 
         // Assert
-        Assert.AreEqual(1, Alerts.Count);
-        Assert.AreEqual("Reservations are closed!", Alerts[0].FindElement(By.TagName("h3")).Text);
-        Assert.IsFalse(Selects.FirstOrDefault()?.Displayed ?? false);
+        Assert.IsNotNull(Alert);
+        Assert.AreEqual("Reservations are closed!", Alert.FindElement(By.TagName("h3")).Text);
+        Assert.IsFalse(Select.Displayed);
     }
 
     [TestMethod]
@@ -107,9 +110,9 @@ public class StatusNotificationTests
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl + "#reserve-seats");
 
         // Assert
-        Assert.AreEqual(1, Alerts.Count);
-        Assert.AreEqual("Reservations are closed!", Alerts[0].FindElement(By.TagName("h3")).Text);
-        Assert.IsFalse(Selects.FirstOrDefault()?.Displayed ?? false);
+        Assert.IsNotNull(Alert);
+        Assert.AreEqual("Reservations are closed!", Alert.FindElement(By.TagName("h3")).Text);
+        Assert.IsFalse(Select.Displayed);
     }
 
     [TestMethod]
@@ -127,9 +130,9 @@ public class StatusNotificationTests
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl + "#reserve-seats");
 
         // Assert
-        Assert.AreEqual(1, Alerts.Count);
-        Assert.AreEqual("Reservations are closed!", Alerts[0].FindElement(By.TagName("h3")).Text);
-        Assert.IsFalse(Selects.FirstOrDefault()?.Displayed ?? false);
+        Assert.IsNotNull(Alert);
+        Assert.AreEqual("Reservations are closed!", Alert.FindElement(By.TagName("h3")).Text);
+        Assert.IsFalse(Select.Displayed);
     }
 
     [TestMethod]
@@ -152,10 +155,10 @@ public class StatusNotificationTests
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl + "#reserve-seats");
 
         // Assert
-        Assert.AreEqual(1, Alerts.Count);
-        Assert.AreEqual("We're out of seats!", Alerts[0].FindElement(By.TagName("h3")).Text);
-        Assert.IsFalse(Alerts[0].FindElement(By.TagName("p")).Text.Contains("check back later"));
-        Assert.IsFalse(Selects.FirstOrDefault()?.Displayed ?? false);
+        Assert.IsNotNull(Alert);
+        Assert.AreEqual("We're out of seats!", Alert.FindElement(By.TagName("h3")).Text);
+        Assert.IsFalse(Alert.FindElement(By.TagName("p")).Text.Contains("check back later"));
+        Assert.IsFalse(Select.Displayed);
     }
 
     [TestMethod]
@@ -176,10 +179,10 @@ public class StatusNotificationTests
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl + "#reserve-seats");
 
         // Assert
-        Assert.AreEqual(1, Alerts.Count);
-        Assert.AreEqual("We're out of seats!", Alerts[0].FindElement(By.TagName("h3")).Text);
-        Assert.IsTrue(Alerts[0].FindElement(By.TagName("p")).Text.Contains("check back later"));
-        Assert.IsFalse(Selects.FirstOrDefault()?.Displayed ?? false);
+        Assert.IsNotNull(Alert);
+        Assert.AreEqual("We're out of seats!", Alert.FindElement(By.TagName("h3")).Text);
+        Assert.IsTrue(Alert.FindElement(By.TagName("p")).Text.Contains("check back later"));
+        Assert.IsFalse(Select.Displayed);
     }
 
     [TestMethod]
@@ -200,10 +203,10 @@ public class StatusNotificationTests
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl + "#reserve-seats");
 
         // Assert
-        Assert.AreEqual(1, Alerts.Count);
-        Assert.AreEqual("We're out of seats!", Alerts[0].FindElement(By.TagName("h3")).Text);
-        Assert.IsTrue(Alerts[0].FindElement(By.TagName("p")).Text.Contains("check back later"));
-        Assert.IsFalse(Selects.FirstOrDefault()?.Displayed ?? false);
+        Assert.IsNotNull(Alert);
+        Assert.AreEqual("We're out of seats!", Alert.FindElement(By.TagName("h3")).Text);
+        Assert.IsTrue(Alert.FindElement(By.TagName("p")).Text.Contains("check back later"));
+        Assert.IsFalse(Select.Displayed);
     }
 
     [TestMethod]
