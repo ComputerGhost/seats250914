@@ -59,27 +59,29 @@ public class ConfigurationEditTests
         // Act 2: Submit
         SubmitButton.Submit();
 
-        // Assert
-        var alerts = _driver.FindElements(By.ClassName("alert-success"));
-        Assert.AreEqual(1, alerts.Count);
+        // Assert: Should not throw exception
+        _driver.FindElement(By.ClassName("alert-success"));
     }
 
     [TestMethod]
     public async Task ConfigForm_WhenSubmitted_SavesConfig()
     {
         // Arrange
+        var targetTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+        var targetCloseDateTime = DateTimeOffset.Now.AddMonths(1).AddMinutes(1);
+        var targetOpenDateTime = DateTimeOffset.Now.AddDays(-1).AddMinutes(-1);
         var targetConfig = new SaveConfigurationCommand
         {
             ForceCloseReservations = true,
             ForceOpenReservations = false,
             GracePeriodSeconds = 2,
-            MaxSeatsPerIPAddress = 100,
-            MaxSeatsPerPerson = 100,
+            MaxSeatsPerIPAddress = 20,
+            MaxSeatsPerPerson = 10,
             MaxSecondsToConfirmSeat = 600,
-            ScheduledCloseDateTime = DateTimeOffset.Now.AddMonths(1).AddMinutes(1),
-            ScheduledCloseTimeZone = "Pacific Standard Time",
-            ScheduledOpenDateTime = DateTimeOffset.Now.AddDays(-1).AddMinutes(-1),
-            ScheduledOpenTimeZone = "Pacific Standard Time",
+            ScheduledCloseDateTime = TimeZoneInfo.ConvertTime(targetCloseDateTime, targetTimeZone),
+            ScheduledCloseTimeZone = targetTimeZone.Id,
+            ScheduledOpenDateTime = TimeZoneInfo.ConvertTime(targetOpenDateTime, targetTimeZone),
+            ScheduledOpenTimeZone = targetTimeZone.Id,
         };
 
         // Act 1: Reset config and refresh
@@ -96,21 +98,20 @@ public class ConfigurationEditTests
             ScheduledOpenDateTime = DateTimeOffset.Now,
             ScheduledOpenTimeZone = "UTC",
         });
-        _driver.Navigate().GoToUrl(ConfigurationUrl);
-        _driver.WaitUntil(d => new UriBuilder(d.Url).Path == ConfigurationPath);
+        _driver.Refresh();
 
         // Act 2: Populate form data and submit
-        _driver.SetDateField(ScheduledOpenDate, targetConfig.ScheduledOpenDateTime);
-        ScheduledOpenTime.SendKeys(targetConfig.ScheduledOpenDateTime.ToString("HH:mm:ss"));
+        _driver.SetValue(ScheduledOpenDate, targetConfig.ScheduledOpenDateTime.ToString("yyyy-MM-dd"));
+        _driver.SetValue(ScheduledOpenTime, targetConfig.ScheduledOpenDateTime.ToString("HH:mm:ss"));
         ScheduledOpenTimeZone.SelectByValue(targetConfig.ScheduledOpenTimeZone);
-        _driver.SetDateField(ScheduledCloseDate, targetConfig.ScheduledCloseDateTime);
-        ScheduledCloseTime.SendKeys(targetConfig.ScheduledCloseDateTime.ToString("HH:mm:ss"));
+        _driver.SetValue(ScheduledCloseDate, targetConfig.ScheduledCloseDateTime.ToString("yyyy-MM-dd"));
+        _driver.SetValue(ScheduledCloseTime, targetConfig.ScheduledCloseDateTime.ToString("HH:mm:ss"));
         ScheduledCloseTimeZone.SelectByValue(targetConfig.ScheduledCloseTimeZone);
         ScheduleOverrides[2].Click();
-        MaxSeatsPerPerson.SendKeys(targetConfig.MaxSeatsPerPerson.ToString());
-        MaxSeatsPerIPAddress.SendKeys(targetConfig.MaxSeatsPerIPAddress.ToString());
-        MaxSecondsToConfirmSeat.SendKeys(targetConfig.MaxSecondsToConfirmSeat.ToString());
-        GracePeriodSeconds.SendKeys(targetConfig.GracePeriodSeconds.ToString());
+        _driver.SetValue(MaxSeatsPerPerson, targetConfig.MaxSeatsPerPerson.ToString());
+        _driver.SetValue(MaxSeatsPerIPAddress, targetConfig.MaxSeatsPerIPAddress.ToString());
+        _driver.SetValue(MaxSecondsToConfirmSeat, targetConfig.MaxSecondsToConfirmSeat.ToString());
+        _driver.SetValue(GracePeriodSeconds, targetConfig.GracePeriodSeconds.ToString());
         _driver.ScrollTo(SubmitButton);
         SubmitButton.Click();
 
@@ -119,8 +120,7 @@ public class ConfigurationEditTests
         Assert.AreEqual(1, _driver.FindElements(By.ClassName("alert-success")).Count);
 
         // Act 3: Reload the page
-        _driver.Navigate().GoToUrl(ConfigurationUrl);
-        _driver.WaitUntil(d => new UriBuilder(d.Url).Path == ConfigurationPath);
+        _driver.Refresh();
 
         // Assert form is valid
         Assert.AreEqual(targetConfig.ScheduledOpenDateTime.ToString("yyyy-MM-dd"), ScheduledOpenDate.GetAttribute("value"));
@@ -129,10 +129,10 @@ public class ConfigurationEditTests
         Assert.AreEqual(targetConfig.ScheduledCloseDateTime.ToString("yyyy-MM-dd"), ScheduledCloseDate.GetAttribute("value"));
         Assert.AreEqual(targetConfig.ScheduledCloseDateTime.ToString("HH:mm:ss"), ScheduledCloseTime.GetAttribute("value"));
         Assert.AreEqual(targetConfig.ScheduledCloseTimeZone, ScheduledCloseTimeZone.SelectedOption.GetAttribute("value"));
-        Assert.AreEqual("checked", ScheduleOverrides[2].GetAttribute("checked"));
-        Assert.AreEqual(targetConfig.MaxSeatsPerPerson.ToString(), MaxSeatsPerPerson.Text);
-        Assert.AreEqual(targetConfig.MaxSeatsPerIPAddress.ToString(), MaxSeatsPerIPAddress.Text);
-        Assert.AreEqual(targetConfig.MaxSecondsToConfirmSeat.ToString(), MaxSecondsToConfirmSeat.Text);
-        Assert.AreEqual(targetConfig.GracePeriodSeconds.ToString(), GracePeriodSeconds.Text);
+        Assert.IsTrue(bool.TryParse(ScheduleOverrides[2].GetAttribute("checked"), out bool value) && value);
+        Assert.AreEqual(targetConfig.MaxSeatsPerPerson.ToString(), MaxSeatsPerPerson.GetAttribute("value"));
+        Assert.AreEqual(targetConfig.MaxSeatsPerIPAddress.ToString(), MaxSeatsPerIPAddress.GetAttribute("value"));
+        Assert.AreEqual(targetConfig.MaxSecondsToConfirmSeat.ToString(), MaxSecondsToConfirmSeat.GetAttribute("value"));
+        Assert.AreEqual(targetConfig.GracePeriodSeconds.ToString(), GracePeriodSeconds.GetAttribute("value"));
     }
 }

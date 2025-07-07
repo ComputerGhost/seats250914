@@ -38,8 +38,8 @@ public class AccountEditTests
     {
         // Arrange
         var login = await TestDataSetup.CreateTestAccount();
-        var editUrl = ConfigurationAccessor.Instance.TargetUrl + $"/accounts/{login}/edit";
         var detailsPath = $"/accounts/{login}/details";
+        var editUrl = ConfigurationAccessor.Instance.TargetUrl + $"/accounts/{login}/edit";
 
         // Act 1: Load page and submit form
         _driver.Navigate().GoToUrl(editUrl);
@@ -57,26 +57,24 @@ public class AccountEditTests
     {
         // Arrange
         var login = await TestDataSetup.CreateTestAccount();
+        var detailsPath = $"/accounts/{login}/details";
         var editUrl = ConfigurationAccessor.Instance.TargetUrl + $"/accounts/{login}/edit";
 
-        // Act 1: Navigate to page
+        // Act 1: Disable user
         _driver.Navigate().GoToUrl(editUrl);
-
-        // Act 2: Disable user
         EnabledCheck.Click();
         UpdateUserButton.Click();
+        _driver.WaitUntil(d => new UriBuilder(d.Url).Path == detailsPath);
 
         // Assert: Check if disabled
         var userInfo = await _mediator.Send(new FetchAccountQuery(login));
         Assert.IsFalse(userInfo.Value.IsEnabled);
 
-        // Act 3: Go to another page (so we can detect navigation), then return.
-        _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
+        // Act 2: Enable user
         _driver.Navigate().GoToUrl(editUrl);
-
-        // Act 3: Enable user
         EnabledCheck.Click();
         UpdateUserButton.Click();
+        _driver.WaitUntil(d => new UriBuilder(d.Url).Path == detailsPath);
 
         // Assert: Check if enabled
         userInfo = await _mediator.Send(new FetchAccountQuery(login));

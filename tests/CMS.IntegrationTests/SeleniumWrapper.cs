@@ -24,6 +24,22 @@ internal class SeleniumWrapper : ChromeDriver
         return options;
     }
 
+    public void Refresh()
+    {
+        var currentUrl = Url;
+        var currentPath = new UriBuilder(currentUrl).Path;
+        var replacementUrl = ConfigurationAccessor.Instance.TargetUrl + "/loading";
+        var replacementPath = "/loading";
+
+        // Load another page.
+        Navigate().GoToUrl(replacementUrl);
+        WaitUntil(d => new UriBuilder(d.Url).Path == replacementPath);
+
+        // Go back to the original page.
+        Navigate().GoToUrl(currentUrl);
+        WaitUntil(d => new UriBuilder(d.Url).Path == currentPath);
+    }
+
     public void ResizeToDesktop()
     {
         Manage().Window.Size = new Size(DESKTOP_WIDTH, DESKTOP_HEIGHT);
@@ -43,12 +59,12 @@ internal class SeleniumWrapper : ChromeDriver
         WaitUntil(_ => false, 1);
     }
 
-    public void SetDateField(IWebElement inputElement, DateTimeOffset date)
+    /// <summary>
+    /// Sets the value of an element directly.
+    /// </summary>
+    public void SetValue(IWebElement inputElement, string value)
     {
-        // We can't just type the keys because the format can differ between computers.
-        // So instead we use JS to set it.
-        var formattedDate = date.ToString("yyyy-MM-dd");
-        ExecuteScript($"arguments[0].value = '{formattedDate}';", inputElement);
+        ExecuteScript($"arguments[0].value = '{value}';", inputElement);
     }
 
     public void SignIn()
@@ -67,7 +83,7 @@ internal class SeleniumWrapper : ChromeDriver
     {
         var wait = new WebDriverWait(this, TimeSpan.FromSeconds(maxSeconds))
         {
-            PollingInterval = TimeSpan.FromMilliseconds(300),
+            PollingInterval = TimeSpan.FromMilliseconds(100),
         };
 
         try
