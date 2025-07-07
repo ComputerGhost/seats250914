@@ -1,8 +1,8 @@
 ﻿using Core.Application.Seats;
-using Public.Views.Shared.Components.Enumerations;
 using Core.Application.System;
 using Core.Domain.Scheduling;
 using Public.Extensions;
+using Public.Models.Enumerations;
 
 namespace Public.Models.ViewModels;
 

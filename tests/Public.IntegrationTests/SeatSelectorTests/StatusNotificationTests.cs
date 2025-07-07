@@ -57,6 +57,25 @@ public class StatusNotificationTests
     }
 
     [TestMethod]
+    public async Task Alert_whenOpeningSoon_RendersOpeningSoon()
+    {
+        // Arrange
+        var saveConfigurationCommand = TestDataSetup.WorkingSaveConfigurationCommand;
+        saveConfigurationCommand.ForceOpenReservations = false;
+        saveConfigurationCommand.ScheduledOpenDateTime = DateTime.Now.AddDays(-2);
+        saveConfigurationCommand.ScheduledCloseDateTime = DateTime.Now.AddDays(1);
+        await _mediator.Send(saveConfigurationCommand);
+
+        // Act
+        _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl + "#reserve-seats");
+
+        // Assert
+        Assert.AreEqual(1, Alerts.Count);
+        Assert.AreEqual("Reservations will open", Alerts[0].FindElement(By.TagName("h3")).Text);
+        Assert.IsFalse(Selects.FirstOrDefault()?.Displayed ?? false);
+    }
+
+    [TestMethod]
     public async Task Alert_WhenClosedPerSchedule_RendersPermanentlyClosed()
     {
         // Arrange

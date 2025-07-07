@@ -156,7 +156,6 @@ public class OpenCheckerTests
     }
 
     [TestMethod]
-    [Ignore("We don't have 'opening later' functionality yet.")]
     public async Task CalculateStatus_WhenNotYetOpen_ReturnsOpeningLater()
     {
         // Arrange
