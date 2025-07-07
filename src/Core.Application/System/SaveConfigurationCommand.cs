@@ -69,8 +69,8 @@ public class SaveConfigurationCommand : IRequest
             MaxSecondsToConfirmSeat = MaxSecondsToConfirmSeat,
             ScheduledOpenDateTime = ScheduledOpenDateTime,
             ScheduledOpenTimeZone = ScheduledOpenTimeZone,
-            ScheduledCloseDateTime = ScheduledOpenDateTime,
-            ScheduledCloseTimeZone = ScheduledOpenTimeZone,
+            ScheduledCloseDateTime = ScheduledCloseDateTime,
+            ScheduledCloseTimeZone = ScheduledCloseTimeZone,
         };
     }
 }
