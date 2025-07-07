@@ -73,7 +73,7 @@ public class SslTests
         var targetUrl = ConfigurationAccessor.Instance.TargetUrl;
         var uriBuilder = new UriBuilder(targetUrl);
         uriBuilder.Host = "www." + uriBuilder.Host;
-        uriBuilder.Port = 870;
+        uriBuilder.Port = 80;
         uriBuilder.Scheme = "http";
         var wwwSubdomain = uriBuilder.ToString();
 
