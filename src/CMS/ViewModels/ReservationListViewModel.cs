@@ -19,6 +19,11 @@ public class ReservationListViewModel
 
     public IEnumerable<ListItem> Items { get; set; } = null!;
 
+    /// <summary>
+    /// Initial search filter.
+    /// </summary>
+    public required string Search { get; set; } = null!;
+
     public struct ListItem
     {
         public string Name { get; set; }

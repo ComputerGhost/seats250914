@@ -47,7 +47,7 @@
                 <span class="input-group-text">
                     <i id="search-label" class="bi bi-search" role="img" aria-label="검색"></i>
                 </span>
-                <input class="form-control" type="search" id="search" aria-labelledby="search-label">
+                <input asp-for="Search" type="search" class="form-control" aria-labelledby="search-label">
             </div>
 
             <table class="table table-hover" id="index-table">
@@ -150,9 +150,12 @@
                 },
             });
 
-            $("#search").on("keyup", function () {
+            $("#Search").on("keyup", function () {
                 table.search(this.value).draw();
             });
+
+            // Initial search of what is prefilled in the search box.
+            table.search($("#Search").val()).draw();
         });
     </script>
 }
