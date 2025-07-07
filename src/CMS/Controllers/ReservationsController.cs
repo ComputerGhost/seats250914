@@ -15,10 +15,13 @@ namespace CMS.Controllers;
 public class ReservationsController(IMediator mediator, IStringLocalizer<ReservationsController> localizer) : Controller
 {
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index([FromQuery] string search = "")
     {
         var reservations = await mediator.Send(new ListReservationsQuery());
-        return View(new ReservationListViewModel(reservations));
+        return View(new ReservationListViewModel(reservations)
+        {
+            Search = search,
+        });
     }
 
     [HttpGet("new")]
