@@ -43,7 +43,15 @@
             aria-labelledby="seats-tab"
             tabindex="0"
         >
-            <div class="input-group">
+
+            <div id="action-buttons">
+                <form asp-action="Approve" method="post">
+                    <input id="reservationIds" name="reservationIds" type="hidden">
+                    <button id="approve" type="submit" class="btn btn-success">선택한 예약 승인</button>
+                </form>
+            </div>
+
+            <div id="search-input-group" class="input-group">
                 <span class="input-group-text">
                     <i id="search-label" class="bi bi-search" role="img" aria-label="검색"></i>
                 </span>
@@ -53,9 +61,10 @@
             <table class="table table-hover" id="index-table">
                 <thead>
                     <tr>
+                        <th scole="col"><span class="d-none">선택</span></th>
                         <th scope="col">좌석</th>
                         <th scope="col">예약 신청 시간</th>
-                        <th class="col">승인 상태</th>
+                        <th scope="col">승인 상태</th>
                         <th scope="col">예약자</th>
                         <td scope="col" data-dt-order="disable"></td>
                     </tr>
@@ -68,8 +77,11 @@
                 <tbody>
                     @foreach (var reservation in Model.Items)
                     {
-                        <tr>
+                        <tr data-status="@reservation.ReservationStatus">
                             <td scope="row">
+                                <span class="d-none">@reservation.ReservationId</span>
+                            </td>
+                            <td>
                                 @reservation.SeatNumber
                             </td>
                             <td>
@@ -125,26 +137,45 @@
 
 @section Styles
 {
-    <link rel="stylesheet" href="//cdn.datatables.net/2.3.1/css/dataTables.dataTables.min.css">
+    <link href="https://cdn.datatables.net/v/bs5/dt-2.3.2/sl-3.0.1/datatables.min.css" rel="stylesheet" integrity="sha384-vKpZSS3SMUjQu3fJQnU1tQD0j+0b3asU6w42bFIUJ+jzaEKGjamW/s7IiLDnoZES" crossorigin="anonymous">
 }
 
 @section Scripts
 {
-    <script defer src="//cdn.datatables.net/2.3.1/js/dataTables.min.js"></script>
+    <script defer src="https://cdn.datatables.net/v/bs5/dt-2.3.2/sl-3.0.1/datatables.min.js" integrity="sha384-oR152peSCPCKnUMWgxu58ydkSvhCdmp2eB4rMFcNcNmutqU1DOn6qMCay8AiNI/K" crossorigin="anonymous"></script>
     <script>
         window.addEventListener("load", function() {
             var table = new DataTable("#index-table", {
+                columnDefs: [
+                    {
+                        orderable: false,
+                        render: DataTable.render.select(),
+                        targets: 0,
+                    },
+                ],
                 language: {
                     emptyTable: "아직 예약된 좌석이 없습니다.",
+                    select: {
+                        aria: {
+                            headerCheckbox: "전체 선택",
+                            rowCheckbox: "선택",
+                        },
+                    },
                 },
                 layout: {
-                    topStart: null,
-                    topEnd: null,
+                    topStart: $("#action-buttons"),
+                    topEnd: $("#search-input-group"),
                     bottomStart: null,
                     bottomEnd: null,
                 },
+                order: [[1, 'asc']],
                 ordering: {
                     indicators: false,
+                },
+                paging: false,
+                select: {
+                    selectable: (_, tr) => $(tr).data("status") === "@ReservationStatus.AwaitingPayment",
+                    style: "multi",
                 },
             });
 
@@ -154,6 +185,15 @@
 
             // Initial search of what is prefilled in the search box.
             table.search($("#Search").val()).draw();
+
+            // Approve selected logic
+            $("#approve").click((e) => {
+                var selectedRows = table.rows({ selected: true }).data().toArray();
+                var selectedIds = selectedRows.map(row => parseInt($(row[0]).text()));
+                $("#reservationIds").val(selectedIds);
+            });
+
+            window.table = table;
         });
     </script>
 }
