@@ -1,4 +1,4 @@
-﻿namespace Public.Views.Shared.Components.Enumerations;
+﻿namespace Public.Models.Enumerations;
 
 public enum SystemStatus
 {

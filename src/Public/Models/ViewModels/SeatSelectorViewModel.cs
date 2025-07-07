@@ -1,8 +1,8 @@
 ﻿using Core.Application.Seats;
-using Public.Views.Shared.Components.Enumerations;
 using Core.Application.System;
 using Core.Domain.Scheduling;
 using Public.Extensions;
+using Public.Models.Enumerations;
 
 namespace Public.Models.ViewModels;
 
@@ -51,9 +51,16 @@ public class SeatSelectorViewModel
         var localTime = TimeZoneInfo.ConvertTime(when, tz);
         var offset = tz.GetUtcOffset(localTime);
 
-        var timeFormat = "yyyy-MM-dd HH:mm";
-        var offsetFormat = (offset < TimeSpan.Zero ? @"\-" : "") + @"hh\:mm";
-        return $"{localTime.ToString(timeFormat)} UTC{offset.ToString(offsetFormat)}";
+        var timeDisplay = localTime.ToString("yyyy-MM-dd HH:mm");
+
+        var offsetDisplay = offset.TotalSeconds switch
+        {
+            < 0 => "UTC-" + offset.ToString(@"hh\:mm"),
+            > 0 => "UTC+" + offset.ToString(@"hh\:mm"),
+            _ => "UTC",
+        };
+
+        return $"{timeDisplay} {offsetDisplay}";
     }
 
     private static string FormatForParameter(DateTimeOffset when)

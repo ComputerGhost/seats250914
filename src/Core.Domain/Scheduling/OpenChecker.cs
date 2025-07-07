@@ -17,6 +17,7 @@ public class OpenChecker
     }
 
     private readonly ISeatsDatabase? _seatsDatabase;
+    private readonly DateTimeOffset _now = DateTimeOffset.UtcNow;
 
     private OpenChecker(ConfigurationEntityModel configuration, ISeatsDatabase? seatsDatabase)
     {
@@ -45,8 +46,7 @@ public class OpenChecker
             return IsForcedOpen;
         }
 
-        var now = DateTime.UtcNow;
-        return ScheduledOpenDateTime < now && now < ScheduledCloseDateTime;
+        return ScheduledOpenDateTime < _now && _now < ScheduledCloseDateTime;
     }
 
     public async Task<ReservationsStatus> CalculateStatus()
@@ -56,11 +56,19 @@ public class OpenChecker
             throw new InvalidOperationException("The seats database adapter must be specified to use `CalculateStatus`.");
         }
 
-        if (!AreReservationsOpen())
+        if (IsForcedClosed)
         {
-            return IsForcedClosed
-                ? ReservationsStatus.ClosedManually
-                : ReservationsStatus.ClosedPerSchedule;
+            return ReservationsStatus.ClosedManually;
+        }
+
+        if (!IsForcedOpen && _now > ScheduledCloseDateTime)
+        {
+            return ReservationsStatus.ClosedPerSchedule;
+        }
+
+        if (!IsForcedOpen && _now < ScheduledOpenDateTime)
+        {
+            return ReservationsStatus.OpeningLater;
         }
 
         if (await _seatsDatabase.CountSeats(SeatStatus.Available.ToString()) == 0)
