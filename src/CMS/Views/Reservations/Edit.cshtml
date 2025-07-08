@@ -31,6 +31,7 @@
                 <input asp-for="PreferredLanguage" class="form-control" required maxlength="50">
             </div>
 
+            <a asp-action="Details" asp-route-reservationId="@Model.ReservationId" class="btn btn-secondary">Cancel</a>
             <button type="submit" class="btn btn-primary">Update reservation</button>
         </form>
     </section>

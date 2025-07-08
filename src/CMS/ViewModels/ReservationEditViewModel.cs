@@ -1,5 +1,4 @@
 ﻿using Core.Application.Reservations;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 
 namespace CMS.ViewModels;
@@ -10,8 +9,9 @@ public class ReservationEditViewModel
     {
     }
 
-    public ReservationEditViewModel(FetchReservationQueryResponse queryResponse)
+    public ReservationEditViewModel(int reservationId, FetchReservationQueryResponse queryResponse)
     {
+        ReservationId = reservationId;
         SeatNumber = queryResponse.SeatNumber;
         Email = queryResponse.Email;
         Name = queryResponse.Name;
@@ -20,6 +20,8 @@ public class ReservationEditViewModel
     }
 
     /* Display only */
+
+    public int ReservationId { get; set; }
 
     public int SeatNumber { get; set; }
 
