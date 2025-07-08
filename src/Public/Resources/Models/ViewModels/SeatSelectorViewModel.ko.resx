@@ -180,4 +180,10 @@
   <data name="&lt;!--unauthorized:TooManySeatLocksForIpAddress--&gt;" xml:space="preserve">
     <value>IP에서 너무 많은 예약이 제출되었습니다.</value>
   </data>
+  <data name="JavaScript is disabled!" xml:space="preserve">
+    <value>JavaScript is disabled!</value>
+  </data>
+  <data name="Your browser doesn't support JavaScript or has disabled scripts on this page." xml:space="preserve">
+    <value>Your browser doesn't support JavaScript or has disabled scripts on this page.</value>
+  </data>
 </root>
