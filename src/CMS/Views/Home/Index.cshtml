@@ -55,22 +55,22 @@
     <!-- Reservation count summary -->
     <div class="row row-cols-2 row-cols-md-4 g-3">
         <div class="col">
-            <div class="border rounded text-center p-3 bg-light">
+            <a asp-controller="Reservations" asp-action="Index" class="d-block border rounded text-center p-3 bg-light text-decoration-none">
                 <div class="fw-bold text-secondary small">전체 좌석 수</div>
                 <div class="fs-5 fw-bold text-dark">@Model.TotalSeats</div>
-            </div>
+            </a>
         </div>
         <div class="col">
-            <div class="border rounded text-center p-3 bg-success bg-opacity-10">
+            <a asp-controller="Reservations" asp-action="Index" asp-route-search="승인됨" class="d-block border rounded text-center p-3 bg-success bg-opacity-10 text-decoration-none">
                 <div class="fw-bold text-success small">확정된 예약</div>
                 <div class="fs-5 fw-bold text-success">@Model.Confirmed</div>
-            </div>
+            </a>
         </div>
         <div class="col">
-            <div class="border rounded text-center p-3 bg-warning bg-opacity-10">
+            <a asp-controller="Reservations" asp-action="Index" asp-route-search="승인 대기" class="d-block border rounded text-center p-3 bg-warning bg-opacity-10 text-decoration-none">
                 <div class="fw-bold text-warning small">승인 대기</div>
                 <div class="fs-5 fw-bold text-warning">@Model.Pending</div>
-            </div>
+            </a>
         </div>
         <div class="col">
             <div class="border rounded text-center p-3 bg-danger bg-opacity-10">
