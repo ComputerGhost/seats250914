@@ -180,4 +180,10 @@
   <data name="&lt;!--unauthorized:TooManySeatLocksForIpAddress--&gt;" xml:space="preserve">
     <value>Too many reservations have been submitted from your IP address.</value>
   </data>
+  <data name="JavaScript is disabled!" xml:space="preserve">
+    <value>JavaScript is disabled!</value>
+  </data>
+  <data name="Your browser doesn't support JavaScript or has disabled scripts on this page." xml:space="preserve">
+    <value>Your browser doesn't support JavaScript or has disabled scripts on this page.</value>
+  </data>
 </root>
