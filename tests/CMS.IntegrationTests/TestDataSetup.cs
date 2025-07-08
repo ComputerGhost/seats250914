@@ -1,5 +1,7 @@
 ﻿using Core.Application.Accounts;
+using Core.Application.Seats;
 using Core.Domain.Authentication;
+using Core.Domain.Reservations;
 using Core.Infrastructure;
 using Dapper;
 using MediatR;
@@ -38,6 +40,21 @@ internal static class TestDataSetup
         }
 
         return TEST_USER_LOGIN;
+    }
+
+    public static async Task DeleteAllReservations()
+    {
+        using (var connection = new SqlConnection(ConnectionString))
+        {
+            await connection.ExecuteAsync("DELETE FROM Reservations");
+        }
+
+        var seatLockService = ConfigurationAccessor.Instance.Services.GetService<ISeatLockService>()!;
+        var seats = await Mediator.Send(new ListSeatsQuery());
+        foreach (var seat in seats.Data)
+        {
+            await seatLockService.UnlockSeat(seat.SeatNumber);
+        }
     }
 
     public static async Task DeleteTestAccount()

@@ -23,10 +23,10 @@ public class SeatSelectorViewModel
         };
 
         CloseTimeDisplay = FormatForDisplay(systemStatus.ScheduledCloseDateTime, systemStatus.ScheduledCloseTimeZone);
-        CloseTimeParameter = FormatForParameter(systemStatus.ScheduledCloseDateTime);
+        CloseTimeParameter = systemStatus.ScheduledCloseDateTime.ToString("s");
         CloseTimeZone = systemStatus.ScheduledCloseTimeZone;
         OpenTimeDisplay = FormatForDisplay(systemStatus.ScheduledOpenDateTime, systemStatus.ScheduledOpenTimeZone);
-        OpenTimeParameter = FormatForParameter(systemStatus.ScheduledOpenDateTime);
+        OpenTimeParameter = systemStatus.ScheduledOpenDateTime.ToString("s");
         OpenTimeZone = systemStatus.ScheduledOpenTimeZone;
     }
 
@@ -61,10 +61,5 @@ public class SeatSelectorViewModel
         };
 
         return $"{timeDisplay} {offsetDisplay}";
-    }
-
-    private static string FormatForParameter(DateTimeOffset when)
-    {
-        return when.ToString("yyyy-MM-ddTHH:mm");
     }
 }

@@ -11,7 +11,7 @@ public class ReservationListViewModel
         {
             Name = source.Name,
             ReservationId = source.ReservationId,
-            ReservedAt = source.ReservedAt.ToString("yyyy-MM-ddTHH:mm:ss"),
+            ReservedAt = source.ReservedAt.ToString("s"),
             ReservationStatus = source.Status,
             SeatNumber = source.SeatNumber,
         });

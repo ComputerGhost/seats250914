@@ -10,7 +10,7 @@
 
         <dl class="row">
             <dt class="col-sm-5">좌석:</dt>
-            <dd class="col-sm-7">@Model.SeatNumber</dd>
+            <dd id="SeatNumber" class="col-sm-7">@Model.SeatNumber</dd>
 
             <dt class="col-sm-5">승인 상태:</dt>
             <dd class="col-sm-7">
@@ -46,16 +46,16 @@
 
         <dl class="row">
             <dt class="col-sm-5">이름:</dt>
-            <dd class="col-sm-7">@Model.Name</dd>
+            <dd id="Name" class="col-sm-7">@Model.Name</dd>
 
             <dt class="col-sm-5">메일:</dt>
-            <dd class="col-sm-7">@Model.Email</dd>
+            <dd id="Email" class="col-sm-7">@Model.Email</dd>
 
             <dt class="col-sm-5">전화번호:</dt>
-            <dd class="col-sm-7">@Model.PhoneNumber</dd>
+            <dd id="PhoneNumber" class="col-sm-7">@Model.PhoneNumber</dd>
 
             <dt class="col-sm-5">선호언어:</dt>
-            <dd class="col-sm-7">@Model.PreferredLanguage</dd>
+            <dd id="PreferredLanguage" class="col-sm-7">@Model.PreferredLanguage</dd>
         </dl>
     </section>
 
@@ -67,7 +67,7 @@
         <dl class="row">
             <dt class="col-sm-5">예약 신청 시간:</dt>
             <dd class="col-sm-7">
-                <time datetime="@Model.ReservedAt">@Model.ReservedAt</time>
+                <time id="ReservedAt" datetime="@Model.ReservedAt">@Model.ReservedAt</time>
             </dd>
         </dl>
     </section>
@@ -84,7 +84,7 @@
             <a
                 asp-action="Edit"
                 asp-route-reservationId="@Model.ReservationId"
-                class="btn btn-outline-primary"
+                class="btn btn-primary"
             >Edit reservation</a>
         </form>
     </section>

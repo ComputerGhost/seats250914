@@ -124,7 +124,7 @@ public class ReservationsController(IMediator mediator, IStringLocalizer<Reserva
     {
         var result = await mediator.Send(new FetchReservationQuery(reservationId));
         return result.Match<IActionResult>(
-            result => View(new ReservationEditViewModel(result)),
+            result => View(new ReservationEditViewModel(reservationId, result)),
             errors => errors.First().Type switch
             {
                 ErrorType.NotFound => NotFound(),

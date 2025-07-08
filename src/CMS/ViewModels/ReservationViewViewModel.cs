@@ -12,7 +12,7 @@ public class ReservationViewViewModel
         PhoneNumber = fetchReservationQueryResponse.PhoneNumber;
         PreferredLanguage = fetchReservationQueryResponse.PreferredLanguage;
         ReservationStatus = fetchReservationQueryResponse.Status;
-        ReservedAt = fetchReservationQueryResponse.ReservedAt.ToString("yyyy-MM-ddTHH:mm:ss");
+        ReservedAt = fetchReservationQueryResponse.ReservedAt.ToString("s");
         SeatNumber = fetchReservationQueryResponse.SeatNumber;
 
         ReservationId = reservationId;
