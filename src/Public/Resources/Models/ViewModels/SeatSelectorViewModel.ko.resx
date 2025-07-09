@@ -181,9 +181,9 @@
     <value>IP에서 너무 많은 예약이 제출되었습니다.</value>
   </data>
   <data name="JavaScript is disabled!" xml:space="preserve">
-    <value>JavaScript is disabled!</value>
+    <value>자바스크립트 오류</value>
   </data>
   <data name="Your browser doesn't support JavaScript or has disabled scripts on this page." xml:space="preserve">
-    <value>Your browser doesn't support JavaScript or has disabled scripts on this page.</value>
+    <value>브라우저에서 자바스크립트를 지원하지 않거나 이 페이지에서 스크립트를 비활성화했습니다.</value>
   </data>
 </root>
