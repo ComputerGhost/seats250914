@@ -1,0 +1,31 @@
+@using Core.Application.Reservations
+@model FetchReservationQueryResponse;
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Hyelin Fanmeeting 2025 Reservation Request</title>
+    </head>
+    <body style="font-family: sans-serif; font-size: 16px; line-height: 1.5em; color: #333;">
+        <p>Hi @Model.Name,</p>
+
+        <p>Thank you for submitting your reservation request!</p>
+
+        <p>
+            Your seat number is <strong>@Model.SeatNumber</strong>.
+			This number is reserved for you while we wait for your payment to be confirmed.
+        </p>
+
+        <p>
+            Once your payment is successful, you'll receive a separate email confirming that your seat has been officially approved.
+        </p>
+		
+		<p>
+			If you have any questions, feel free to contact us at <a href="mailto:hyelinikid@gmail.com">hyelinikid@gmail</a>.
+		</p>
+
+		<p>
+			Thank you.
+		</p>
+    </body>
+</html>

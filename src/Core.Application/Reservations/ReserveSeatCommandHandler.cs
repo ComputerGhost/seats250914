@@ -1,4 +1,6 @@
 ﻿using Core.Domain.Authorization;
+using Core.Domain.Common.Enumerations;
+using Core.Domain.Common.Ports;
 using Core.Domain.Reservations;
 using ErrorOr;
 using MediatR;
@@ -8,11 +10,13 @@ namespace Core.Application.Reservations;
 internal class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, ErrorOr<int>>
 {
     private readonly IAuthorizationChecker _authorizationChecker;
+    private readonly IEmailsDatabase _emailsDatabase;
     private readonly IReservationService _reservationService;
 
-    public ReserveSeatCommandHandler(IAuthorizationChecker authorizationCheck, IReservationService reservationService)
+    public ReserveSeatCommandHandler(IAuthorizationChecker authorizationCheck, IEmailsDatabase emailsDatabase, IReservationService reservationService)
     {
         _authorizationChecker = authorizationCheck;
+        _emailsDatabase = emailsDatabase;
         _reservationService = reservationService;
     }
 
@@ -31,6 +35,9 @@ internal class ReserveSeatCommandHandler : IRequestHandler<ReserveSeatCommand, E
         {
             return UnauthorizedJustNow(request.SeatNumber);
         }
+
+        Log.Information("Enqueueing email for reserved seat {SeatNumber} under reservation id {Value}.", request.SeatNumber, reservationId.Value);
+        await _emailsDatabase.EnqueueEmail(EmailType.UserSubmittedReservation.ToString(), reservationId.Value);
 
         return reservationId.Value;
     }

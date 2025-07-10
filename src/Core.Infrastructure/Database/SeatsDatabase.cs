@@ -4,7 +4,7 @@ using Core.Domain.DependencyInjection;
 using Dapper;
 using System.Data;
 
-namespace Core.Infrastructure.Adapters;
+namespace Core.Infrastructure.Database;
 
 [ServiceImplementation]
 internal class SeatsDatabase(IDbConnection connection) : ISeatsDatabase

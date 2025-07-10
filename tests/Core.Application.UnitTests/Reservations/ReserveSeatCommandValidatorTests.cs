@@ -27,7 +27,7 @@ public class ReserveSeatCommandValidatorTests
     public void Email_WhenNotEmpty_Passes()
     {
         // Arrange
-        const int MAX_LENGTH = 255;
+        const int MAX_LENGTH = 254;
         Command.Email = new string('a', MAX_LENGTH);
 
         // Act
@@ -69,7 +69,7 @@ public class ReserveSeatCommandValidatorTests
     public void Email_WhenTooLong_Fails()
     {
         // Arrange
-        const int MAX_LENGTH = 255;
+        const int MAX_LENGTH = 254;
         Command.Email = new string('a', MAX_LENGTH + 1);
 
         // Act

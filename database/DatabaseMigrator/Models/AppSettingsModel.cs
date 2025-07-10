@@ -1,5 +1,5 @@
 ﻿namespace DatabaseMigrator.Models;
-internal class ConfigModel
+internal class AppSettingsModel
 {
     public InfrastructureOptions InfrastructureOptions { get; set; } = null!;
 }

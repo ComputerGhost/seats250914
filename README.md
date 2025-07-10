@@ -9,12 +9,23 @@ Payments and notifications will be handled externally. The payment statuses will
 
 ## Running the website
 
+For simply running the websites, follow these steps:
+
  1. Clone the repository.
  1. Set up a local SQL Express database. If needed, override the connection string.
 	* The default connection string is `Server=localhost;Database=Hyelin2025;User Id=sa;Password=Passw0rd;Trust Server Certificate=True`.
 	* A custom connection string can be specified with the `InfrastructureOptions__DatabaseConnectionString` environment variable.
  1. Run the "DatabaseMigrator" project in "database/".
  1. Run one or both of the website projects--"CMS" and "Public" in "src/".
+
+Optionally, to also run the email service, follow these steps:
+
+ 1. Set up a local SMTP server. If needed, override the default email settings.
+	* Papercut SMTP is the easiest to set up and works out of the box.
+	* Custom configurations, if needed, can be set via environment variables.
+ 1. Run the console app `EmailSender`.
+
+Default settings are in the "appsettings.json" files. Custom settings should be set via environment variables. Please do not commit per-user configs or actual secrets into source control.
 
 
 ## Automated tests
@@ -31,10 +42,10 @@ When deploying a website, run all of the automated tests and perform the manual 
 Nathan will do these steps. He's the only one with the server password...
 
  1. Run the automated tests, then do the manual tests locally.
- 1. Publish both website projects.
+ 1. Publish all of the website and tool projects.
  1. Copy/paste files to web server.
  1. Update database by running the migrator on it.
- 1. Restart the website processes.
+ 1. Restart the website and tool services.
  1. Do the manual tests and smoke tests on the live websites.
 
 

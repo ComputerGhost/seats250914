@@ -6,7 +6,7 @@ public class ReserveSeatCommandValidator : AbstractValidator<ReserveSeatCommand>
     public ReserveSeatCommandValidator()
     {
         RuleFor(p => p.Email)
-            .MaximumLength(255)
+            .MaximumLength(254)
             .NotEmpty();
 
         RuleFor(p => p.IpAddress)

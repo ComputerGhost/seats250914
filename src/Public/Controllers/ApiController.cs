@@ -1,5 +1,6 @@
 ﻿using Core.Application.Reservations;
 using Core.Application.Seats;
+using Core.Application.System;
 using Core.Domain.Authorization;
 using ErrorOr;
 using MediatR;
