@@ -9,7 +9,7 @@ internal class SaveConfigurationHandler(IConfigurationDatabase configurationData
     public async Task Handle(SaveConfigurationCommand request, CancellationToken cancellationToken)
     {
         Log.Information("Saving system configuration.");
-        Log.Debug("Configuration data being saved is {@request}.", request);
+        Log.Debug("Configuration data being saved is: {@request}", request);
 
         var entityModel = request.ToConfigurationEntityModel();
         if (!await configurationDatabase.SaveConfiguration(entityModel))

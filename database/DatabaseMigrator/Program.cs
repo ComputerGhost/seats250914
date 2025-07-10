@@ -9,7 +9,7 @@ using var serviceProvider = CreateServices(config);
 using var scope = serviceProvider.CreateScope();
 UpdateDatabase(scope.ServiceProvider);
 
-static ServiceProvider CreateServices(ConfigModel config)
+static ServiceProvider CreateServices(AppSettingsModel config)
 {
     return new ServiceCollection()
         .AddFluentMigratorCore()
@@ -22,13 +22,13 @@ static ServiceProvider CreateServices(ConfigModel config)
         .BuildServiceProvider(false);
 }
 
-static ConfigModel LoadConfiguration()
+static AppSettingsModel LoadConfiguration()
 {
     var configurationManager = new ConfigurationManager();
     configurationManager
         .AddJsonFile("appsettings.json")
         .AddEnvironmentVariables();
-    return configurationManager.Get<ConfigModel>()
+    return configurationManager.Get<AppSettingsModel>()
         ?? throw new Exception("Config file format is invalid.");
 }
 

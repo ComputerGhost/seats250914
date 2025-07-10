@@ -1,12 +1,11 @@
-﻿using Core.Domain.Common.Exceptions;
-using Core.Domain.Common.Models.Entities;
+﻿using Core.Domain.Common.Models.Entities;
 using Core.Domain.Common.Ports;
 using Core.Domain.DependencyInjection;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
-namespace Core.Infrastructure.Adapters;
+namespace Core.Infrastructure.Database;
 
 [ServiceImplementation]
 internal class ReservationsDatabase(IDbConnection connection) : IReservationsDatabase

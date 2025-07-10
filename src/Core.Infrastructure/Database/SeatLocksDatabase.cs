@@ -5,7 +5,7 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
-namespace Core.Infrastructure.Adapters;
+namespace Core.Infrastructure.Database;
 
 [ServiceImplementation]
 internal class SeatLocksDatabase(IDbConnection connection) : ISeatLocksDatabase

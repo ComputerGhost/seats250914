@@ -21,6 +21,9 @@ public class FetchReservationQueryResponse
     /// <summary>
     /// Preferred langauge of the person reserving the seat.
     /// </summary>
+    /// <remarks>
+    /// Use the two-character language id (such as "ko" or "en").
+    /// </remarks>
     public string PreferredLanguage { get; set; } = null!;
 
     /// <summary>
