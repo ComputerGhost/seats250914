@@ -9,7 +9,7 @@ namespace EmailSender;
 internal class Worker(IServiceProvider services) : BackgroundService
 {
     const int MAX_ATTEMPTS = 3;
-    const int POLLING_DELAY = 10;
+    const int POLLING_DELAY = 60;
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {

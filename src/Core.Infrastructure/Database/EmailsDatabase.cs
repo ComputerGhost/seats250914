@@ -30,7 +30,7 @@ internal class EmailsDatabase(IDbConnection connection) : IEmailsDatabase
             SELECT EmailTypes.Name EmailType, EmailQueue.*
             FROM EmailQueue
             LEFT JOIN EmailTypes ON EmailTypes.Id = EmailQueue.EmailTypeId
-            WHERE EmailQueue.AttemptCount < @maxAttemptCount
+            WHERE IsSent = 0 AND EmailQueue.AttemptCount < @maxAttemptCount
             """;
         return await connection.QueryAsync<QueuedEmailEntity>(sql, new
         {
@@ -59,7 +59,7 @@ internal class EmailsDatabase(IDbConnection connection) : IEmailsDatabase
         var now = DateTimeOffset.UtcNow;
         var sql = """
             UPDATE EmailQueue SET
-                AttemptCount = AttemptCount + 1
+                AttemptCount = AttemptCount + 1,
                 LastAttempt = @now,
                 IsSent = 1
             WHERE Id = @emailId

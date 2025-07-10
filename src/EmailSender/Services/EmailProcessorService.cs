@@ -14,7 +14,7 @@ internal partial class EmailProcessorService(
     public async Task<bool> Process(ListPendingEmailsQueryResponseItem email, CancellationToken cancellationToken)
     {
         var attemptNumber = email.AttemptCount + 1;
-        Log.Information("Processing email with Id {Id} for attempt #{attemptNumber}.", email.Id, attemptNumber);
+        Log.Information("Email #{Id} is being processed for attempt #{attemptNumber}.", email.Id, attemptNumber);
 
         // TODO: We want a logarithmic tapering off of attempts.
         // Also, do we do that tapering off here or in the worker class?
@@ -24,7 +24,7 @@ internal partial class EmailProcessorService(
             switch (email.EmailType)
             {
                 case EmailType.UserSubmittedReservation:
-                    await Process_UserSubmittedReservation(email, cancellationToken);
+                    await CreateAndSend_UserSubmittedReservation(email, cancellationToken);
                     break;
                 default:
                     throw new NotImplementedException();
@@ -42,7 +42,7 @@ internal partial class EmailProcessorService(
         }
         catch (Exception ex)
         {
-            Log.Error("Email with Id {Id} failed with exception message: {@Message}", email.Id, ex.Message);
+            Log.Error("Email #{Id} failed with exception message: {@Message}", email.Id, ex.Message);
             Log.Debug("Stack trace is: {StackTrace}", ex.StackTrace);
             // Do not pass the cancellation token here. We want to do this if we get here.
             await mediator.Send(new MarkEmailAsFailedCommand(email.Id));
@@ -53,24 +53,44 @@ internal partial class EmailProcessorService(
     [GeneratedRegex(@"<title>(.*?)<\/title>")]
     private static partial Regex TitleRegex();
 
-    private async Task Process_UserSubmittedReservation(ListPendingEmailsQueryResponseItem email, CancellationToken cancellationToken)
+    private async Task CreateAndSend_UserSubmittedReservation(ListPendingEmailsQueryResponseItem email, CancellationToken cancellationToken)
     {
         const EmailType type = EmailType.UserSubmittedReservation;
-        Log.Information("Email resolved as type {type}.", type);
+        Log.Information("Email #{Id} was resolved as type {type}.", email.Id, type);
 
         var result = await mediator.Send(new FetchReservationQuery(email.ReferenceId), cancellationToken);
-        if (!result.IsError)
+        if (result.IsError)
         {
-            return;
+            throw new Exception($"Reservation #{email.ReferenceId} could not be loaded.");
         }
 
         var reservation = result.Value;
 
         const string TEMPLATE_NAME = "UserSubmittedReservation";
-        var languageId = result.Value.PreferredLanguage;
+        var languageId = NormalizeLanguage(result.Value.PreferredLanguage);
         var body = await templateService.Render(TEMPLATE_NAME, languageId, reservation);
-        var subject = TitleRegex().Match(body).Value;
+        var subject = TitleRegex().Match(body).Groups[1].Value;
 
         await sender.SendEmail(reservation.Email, subject, body, cancellationToken);
+    }
+
+    /// <summary>
+    ///  Convert various language strings into their two-character id.
+    /// </summary>
+    /// <param name="language"></param>
+    /// <returns></returns>
+    private string NormalizeLanguage(string language)
+    {
+        if (language.Length == 2)
+        {
+            return language.ToLower();
+        }
+
+        return language.ToLower() switch
+        {
+            "english" or "영어" => "en",
+            "korean" or "한국어" => "ko",
+            _ => "en",
+        };
     }
 }
