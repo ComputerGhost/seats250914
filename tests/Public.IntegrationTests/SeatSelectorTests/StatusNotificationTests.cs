@@ -75,7 +75,7 @@ public class StatusNotificationTests
         Assert.IsNotNull(Alert);
         Assert.AreEqual("Reservations will open soon!", Alert.FindElement(By.TagName("h3")).Text);
         Assert.Contains("UTC-07:00", TimeDisplay.Text);
-        Assert.IsFalse(Select.Displayed);
+        Assert.Throws<NoSuchElementException>(() => Select);
     }
 
     [TestMethod]
@@ -94,7 +94,7 @@ public class StatusNotificationTests
         // Assert
         Assert.IsNotNull(Alert);
         Assert.AreEqual("Reservations are closed!", Alert.FindElement(By.TagName("h3")).Text);
-        Assert.IsFalse(Select.Displayed);
+        Assert.Throws<NoSuchElementException>(() => Select);
     }
 
     [TestMethod]
@@ -112,7 +112,7 @@ public class StatusNotificationTests
         // Assert
         Assert.IsNotNull(Alert);
         Assert.AreEqual("Reservations are closed!", Alert.FindElement(By.TagName("h3")).Text);
-        Assert.IsFalse(Select.Displayed);
+        Assert.Throws<NoSuchElementException>(() => Select);
     }
 
     [TestMethod]
@@ -132,7 +132,7 @@ public class StatusNotificationTests
         // Assert
         Assert.IsNotNull(Alert);
         Assert.AreEqual("Reservations are closed!", Alert.FindElement(By.TagName("h3")).Text);
-        Assert.IsFalse(Select.Displayed);
+        Assert.Throws<NoSuchElementException>(() => Select);
     }
 
     [TestMethod]
@@ -158,7 +158,7 @@ public class StatusNotificationTests
         Assert.IsNotNull(Alert);
         Assert.AreEqual("We're out of seats!", Alert.FindElement(By.TagName("h3")).Text);
         Assert.IsFalse(Alert.FindElement(By.TagName("p")).Text.Contains("check back later"));
-        Assert.IsFalse(Select.Displayed);
+        Assert.Throws<NoSuchElementException>(() => Select);
     }
 
     [TestMethod]
@@ -182,7 +182,7 @@ public class StatusNotificationTests
         Assert.IsNotNull(Alert);
         Assert.AreEqual("We're out of seats!", Alert.FindElement(By.TagName("h3")).Text);
         Assert.IsTrue(Alert.FindElement(By.TagName("p")).Text.Contains("check back later"));
-        Assert.IsFalse(Select.Displayed);
+        Assert.Throws<NoSuchElementException>(() => Select);
     }
 
     [TestMethod]
@@ -206,7 +206,7 @@ public class StatusNotificationTests
         Assert.IsNotNull(Alert);
         Assert.AreEqual("We're out of seats!", Alert.FindElement(By.TagName("h3")).Text);
         Assert.IsTrue(Alert.FindElement(By.TagName("p")).Text.Contains("check back later"));
-        Assert.IsFalse(Select.Displayed);
+        Assert.Throws<NoSuchElementException>(() => Select);
     }
 
     [TestMethod]
