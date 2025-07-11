@@ -5,8 +5,6 @@ internal class EmailOptions
 
     public int ServerPort { get; set; } = 25;
 
-    public bool UseSsl { get; set; } = false;
-
     /// <summary>
     /// Username to sign into sender email account.
     /// </summary>
