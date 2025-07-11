@@ -14,7 +14,6 @@ internal class SmtpEmailSender(IOptions<EmailOptions> options)
         var senderEmail = options.Value.SenderEmail;
         var serverHost = options.Value.ServerHost;
         var serverPort = options.Value.ServerPort;
-        var useSsl = options.Value.UseSsl;
         var username = options.Value.Username;
         var password = options.Value.Password;
 
@@ -27,7 +26,7 @@ internal class SmtpEmailSender(IOptions<EmailOptions> options)
         message.Body = new TextPart(TextFormat.Html) { Text = htmlBody };
 
         using var client = new SmtpClient();
-        await client.ConnectAsync(serverHost, serverPort, useSsl, cancellationToken);
+        await client.ConnectAsync(serverHost, serverPort, false, cancellationToken);
 
         if (!string.IsNullOrEmpty(username))
         {
