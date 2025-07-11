@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="&lt;!-- event information --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;2025년 9월 14일, 마포 H-STAGE에서 열리는 "Fall in Hyelin" 팬미팅에서 혜린과 사랑에 빠져보세요. 입장은 오후 2시(KST), 팬미팅은 오후 3시(KST)에 시작됩니다.&lt;/p&gt;</value>
+    <value />
   </data>
   <data name="&lt;!-- hero content --&gt;" xml:space="preserve">
     <value>&lt;p&gt;2025년 9월 14일, 혜린이의 특별한 파티에 여러분을 초대합니다.&lt;/p&gt;
@@ -126,13 +126,13 @@
 &lt;p&gt;올가을, 혜린이에게 푹 빠져보세요!&lt;/p&gt;</value>
   </data>
   <data name="&lt;!-- seat instructions --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;좌석을 선택한 후 결제를 진행해주세요. 좌석을 예약하시려면 &lt;a asp-controller="Legal" asp-action="TermsOfService"&gt;이용 약관&lt;/a&gt;에 동의하셔야 합니다. 예약은 24시간 이내에 확정됩니다.&lt;/p&gt;</value>
+    <value />
   </data>
   <data name="&lt;!--venue address--&gt;" xml:space="preserve">
     <value>서울특별시 마포구 와우산로 97 지하 2층</value>
   </data>
   <data name="&lt;!--venue directions--&gt;" xml:space="preserve">
-    <value>H-STAGE는 홍익대학교 정문 앞 하나은행 건물 지하 2층에 위치해 있습니다. 주차장 입구 옆에 있는 "H-STAGE" 간판을 찾은 후, 외부 계단을 따라 두 층 내려가면 야외 휴게 공간과 입구를 볼 수 있습니다.</value>
+    <value />
   </data>
   <data name="&lt;!--venue picture credit--&gt;" xml:space="preserve">
     <value>H-STAGE 건물 정면. 사진 출처: &lt;a href="https://theplay.or.kr/소극장/"&gt;H-STAGE 웹페이지&lt;/a&gt;.</value>

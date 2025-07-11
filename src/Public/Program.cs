@@ -35,7 +35,7 @@ builder.Services.AddMyLocalization(options =>
 });
 builder.Services.AddServiceImplementations(Assembly.GetExecutingAssembly());
 builder.Services.AddSignalR();
-builder.Services.Configure<PaymentConfig>(builder.Configuration.GetSection("Payment"));
+builder.Services.Configure<Config>(builder.Configuration.GetSection("Config"));
 
 var app = builder.Build();
 app.MapControllers();

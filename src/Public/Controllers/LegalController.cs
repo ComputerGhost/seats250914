@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Public.Models;
+using Public.Models.ViewModels;
 
 namespace Public.Controllers;
 
@@ -12,8 +15,11 @@ public class LegalController : Controller
     }
 
     [HttpGet("terms-of-service")]
-    public IActionResult TermsOfService()
+    public IActionResult TermsOfService([FromServices] IOptions<Config> config)
     {
-        return View();
+        return View(new TermsOfServiceViewModel
+        {
+            OrganizerEmail = config.Value.OrganizerEmail
+        });
     }
 }

@@ -25,7 +25,7 @@ public class ReservationController(IMediator mediator) : Controller
     }
 
     [HttpGet("new")]
-    public IActionResult ReserveSeat()
+    public IActionResult ReserveSeat([FromServices] IOptions<Config> config)
     {
         var seatLock = GetSeatLockFromCookie();
         if (seatLock == null || seatLock.LockExpiration < DateTime.UtcNow)
@@ -37,6 +37,7 @@ public class ReservationController(IMediator mediator) : Controller
 
         return View(new ReserveSeatViewModel
         {
+            OrganizerEmail = config.Value.OrganizerEmail,
             SeatNumber = seatLock.SeatNumber,
         }.WithExpiration(seatLock.LockExpiration));
     }
@@ -101,7 +102,7 @@ public class ReservationController(IMediator mediator) : Controller
     }
 
     [HttpGet("payment")]
-    public IActionResult MakePayment([FromServices] IOptions<PaymentConfig> options)
+    public IActionResult MakePayment([FromServices] IOptions<Config> options)
     {
         return View(new MakePaymentViewModel
         {
