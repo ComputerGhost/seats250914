@@ -2,6 +2,8 @@
 
 public class HomeViewModel
 {
+    public required string OrganizerEmail { get; set; } = null!;
+
     /// <summary>
     /// Disable the Kakao maps embed.
     /// </summary>

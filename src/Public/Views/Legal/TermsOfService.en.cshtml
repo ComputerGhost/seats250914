@@ -1,62 +1,124 @@
-﻿@{
+﻿@model TermsOfServiceViewModel;
+@{
     ViewData["Title"] = "Terms of Service";
 }
 <article class="container py-3">
     <header>
         <h1>Terms of Service</h1>
         <p>
-            Last updated: 2025-06-04
+            Last updated: 2025-07-10
         </p>
     </header>
 
     <section>
-        <h2>Scope</h2>
         <p>
-            The scope of these terms of service encompasses this website, the event, and everything related to the event.
-        </p>
-        <p>
+            The scope of these terms of service is this website, the event, and everything related to the event.
             This is an agreement between you and us.
-            You, by using this website, are bound by these terms of service implicitly.
-            You, if you have reserved a seat via this website, are bound by these terms of service explicitly.
-            We, the organizer of the event and the creator of this website, are bound by these terms of service too.
+            By using this website, you are bound by these terms of service implicitly.
+            If you have reserved a seat, you are bound by these terms of service explicitly.
+        </p>
+        <p>
+            Please follow any additional instructions from staff at the venue.
+        </p>
+        <p>
+            If you need to contact us for any reason, please send us an email at <a href="mailto:@Model.OrganizerEmail">@Model.OrganizerEmail</a>.
         </p>
     </section>
 
     <section>
-        <h2>Our Promises</h2>
+        <h2>Tickets and Seating</h2>
         <p>
-            For the website, we promise to meet or exceed industry standards for securing your data that we collect.
-            We reference the Open Web Application Security Project (OWASP) to define "industry standards".
-            If a data breach does occur, we will attempt to notify you within 14 days of its discovery.
+            When purchasing a ticket from this website, an email will be sent to the email that you provide to confirm your seat number.
+            Please check your spam box if you do not receive it within a few minutes.
+            We are not liable for undeliverable or unread emails.
         </p>
         <p>
-            For the event, we promise to prioritize Hyelin's goal of enjoying spending time with fans.
-            Secondary to that, we promise to prioritize the audience's enjoyment of the event.
+            Tickets can be picked up at the Will Call window starting 1 hour before the event.
+            There is a limit of 4 tickets per person.
+            You must have proof of ID (government photo ID) and purchase information.
+            After claiming a physical ticket, it cannot be reprinted if you lose it.
+        </p>
+        <p>
+            You may enter the venue starting 30 minutes before the event.
+            Please enter the venue no more than 10 minutes before the event.
+            Only those with a ticket will be permitted to enter.
+            Once the event begins, entering the venue may be limited.
+        </p>
+        <p>
+            All of the seats in this event are designated.
+            You must only take the seat indicated on your ticket, and you must not change seats afterward.
+        </p>
+        <p>
+            The view may be limited from certain seats due to stage equipment or filming equipment.
+            You are not eligible for a refund or seat change on the day of the event because of an obstructed view.
+        </p>
+        <p>
+            If you need accessibility accommodations, please reach out to us via email before reserving your ticket.
         </p>
     </section>
 
     <section>
-        <h2>Your Promises</h2>
+        <h2>Fan Letters and Gifts</h2>
         <p>
-            You promise to not do any actions that prevent others from making use of this website or enjoying the event.
+            On the day of the event, a fan letter or gift may be submitted from 30 minutes until 10 minutes before the event starts.
+            Please do not submit cash, wreaths, flower bouquets, perishable goods, or similar materials.
+            The gifts will be delivered to the artists after the event.
         </p>
         <p>
-            You promise to not purchase a reservation only to resell it.
+            If you wish to organize a fan support event, please reach out to us via email.
+        </p>
+    </section>
+
+    <section>
+        <h2>Filming and Streaming</h2>
+        <p>
+            You cannot record, film, stream, or do any activity that violates copyright infringement laws during this event.
+            Failure to comply to this rule will result in being asked to delete the contents and leave the venue.
+            You will not be eligible for a refund or exchange for this.
+        </p>
+        <p>
+            This event will be recorded and live streamed by us.
+            By purchasing a ticket, you consent to be filmed.
+            We reserve the right to use the recording or live stream for commercial purposes.
+        </p>
+    </section>
+
+    <section>
+        <h2>Prohibited Items</h2>
+        <p>
+            Do not bring any glass bottles, fireworks, flower bouquets, balloons, or any other material that could be dangerous or disruptive to the event.
+            Beverages are not permitted except for a bottled water with a cap.
+        </p>
+    </section>
+
+    <section>
+        <h2>Refunds</h2>
+
+        <p>Please email us to request a refund. The amount of the refund follows the schedule below:</p>
+
+        <p>
+            Until September 4: full refund.<br>
+            From September 5 through September 7: 10% deduction before refund.<br>
+            From September 8 through September 11: 20% deduction before refund.<br>
+            From September 12 through September 13: 30% deduction before refund.
+        </p>
+
+        <p>
+            Please note that a refund will not be issued on the day of the event.
         </p>
     </section>
 
     <section>
         <h2>Enforcement</h2>
         <p>
-            We, the organizer of the event and the creator of this website, can enforce these terms of service by refusing service or through litigation.
+            We can enforce these terms of service by refusing service or through litigation.
             For violations that do not significantly affect the experience of others, these terms of service will be enforced by a refusal of service, possibly without a refund.
             For violations that do significantly affect the experience of others, these terms of service may be additionally enforced through litigation at our discretion.
         </p>
         <p>
-            You, a user of this website or attendee of the event, can enforce these terms of service through litigation.
-            We request that any issues be attempted to be resolved through communication with us first, though it is your right to skip straight to the extreme.
+            You can enforce these terms of service through litigation.
+            We request that any issues be attempted to be resolved through communication with us first.
             In any case, the amount of damages rewarded to you is not to exceed the cost of the reservation.
         </p>
     </section>
-
 </article>

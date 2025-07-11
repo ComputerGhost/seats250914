@@ -31,55 +31,50 @@
     </div>
 </section>
 
-<section id="venue-info">
-    <div class="container py-5">
-        <div class="row mb-3">
-            <div class="col-sm-8">
-                <h2>@Localizer["Venue Information"]</h2>
+<section id="venue-info" class="container py-5">
+    <div class="row mb-3">
+        <div class="col-sm-8">
+            <h2>@Localizer["Venue Information"]</h2>
 
-                <address>
-                    <strong>H-STAGE</strong><br>
-                    @Localizer["Address:"] @Localizer["<!--venue address-->"]<br>
-                    @Localizer["Website:"] &lt;<a href="https://theplay.or.kr/소극장/">https://theplay.or.kr/소극장/</a>&gt;
-                </address>
+            <address>
+                <strong>H-STAGE HONGDAE</strong><br>
+                @Localizer["Address:"] @Localizer["<!--venue address-->"]<br>
+                @Localizer["Website:"] &lt;<a href="https://theplay.or.kr/소극장/">https://theplay.or.kr/소극장/</a>&gt;
+            </address>
 
-                <p>@Localizer["<!--venue directions-->"]</p>
-            </div>
-
-            <div class="col-sm-4">
-                <figure class="figure">
-                    <picture>
-                        <source type="image/webp" srcset="~/images/h-stage-building.webp">
-                        <img src="~/images/h-stage-building.jpg" class="figure-img img-fluid rounded" alt="Front of event building"/>
-                    </picture>
-                    <figcaption class="figure-caption">@Localizer["<!--venue picture credit-->"]</figcaption>
-                </figure>
-            </div>
+            <p>@Localizer["<!--venue directions-->"]</p>
         </div>
 
-        @if (Model.ShouldRenderMap)
-        {
-            <partial name="_MapWidget" />
-        }
+        <div class="col-sm-4">
+            <figure class="figure">
+                <picture>
+                    <source type="image/webp" srcset="~/images/h-stage-building.webp">
+                    <img src="~/images/h-stage-building.jpg" class="figure-img img-fluid rounded" alt="Front of event building"/>
+                </picture>
+                <figcaption class="figure-caption">@Localizer["<!--venue picture credit-->"]</figcaption>
+            </figure>
+        </div>
     </div>
+
+    @if (Model.ShouldRenderMap)
+    {
+        <partial name="_MapWidget" />
+    }
 </section>
 
-<section id="event-info" class="container-fluid text-bg-light py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-6">
+<section id="event-info" class="text-bg-light py-5">
+    <div class="container">
             <h2>@Localizer["Event Information"]</h2>
-            @Localizer["<!-- event information -->"]
-        </div>
+            @Localizer["<!-- event information -->", Model.OrganizerEmail]
     </div>
 </section>
 
-<section id="reserve-seats" class="container-xxl py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-6">
-            <h2>@Localizer["Reserve a Seat"]</h2>
-            @Localizer["<!-- seat instructions -->"]
-        </div>
-
+<section id="reserve-seats">
+    <div class="container py-5">
+        <h2>@Localizer["Reserve a Seat"]</h2>
+        @Localizer["<!-- seat instructions -->"]
+    </div>
+    <div class="container-xxl pb-5">
         <div class="col-12">
             @await Component.InvokeAsync("SeatSelector", new { idPrefix = "seat-selector" })
         </div>

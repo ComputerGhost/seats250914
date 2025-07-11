@@ -38,13 +38,14 @@
     }
     else
     {
-        <div>
+        <section>
             @Localizer["<!-- seat information -->",
                 Model.SeatNumber,
                 Model.TimeUntilExpirationText,
-                Model.TimeUntilExpirationPeriod
+                Model.TimeUntilExpirationPeriod,
+                Model.OrganizerEmail
             ]
-        </div>
+        </section>
     }
     
     <form method="post">

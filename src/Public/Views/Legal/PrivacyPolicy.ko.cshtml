@@ -1,4 +1,5 @@
-﻿@{
+﻿@model PrivacyPolicyViewModel;
+@{
     ViewData["Title"] = "개인정보처리방침";
 }
 <article class="container py-3">
@@ -79,7 +80,7 @@
         </p>
         <p>
             좌석 예약을 시작한 사용자가 제공한 개인정보는, 해당 본인이 요청하는 경우 삭제가 가능합니다.  
-            삭제를 원하시는 분은 &lt;<a href="mailto:hyelinikid@gmail.com">hyelinikid@gmail.com</a>&gt;으로 영어 또는 한국어로 삭제 요청 이메일을 보내주세요.  
+            삭제를 원하시는 분은 &lt;<a href="mailto:@Model.OrganizerEmail">@Model.OrganizerEmail</a>&gt;으로 영어 또는 한국어로 삭제 요청 이메일을 보내주세요.  
             단, 개인정보 삭제 시 해당 이벤트에 대한 예약 정보도 함께 삭제되며, 이는 예약이 취소됨을 의미합니다.
         </p>
     </section>

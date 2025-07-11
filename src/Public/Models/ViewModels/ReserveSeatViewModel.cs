@@ -27,6 +27,9 @@ public class ReserveSeatViewModel
     public string TimeUntilExpirationPeriod => _timeUntilExpiration.ToString(@"\P\Tmm\Mss\S");
 
     [BindNever]
+    public required string OrganizerEmail { get; set; } = null!;
+
+    [BindNever]
     public required int SeatNumber { get; set; }
 
     /* Form fields */
