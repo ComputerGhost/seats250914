@@ -6,16 +6,19 @@ using Public.Models.ViewModels;
 namespace Public.Controllers;
 
 [Route("legal")]
-public class LegalController : Controller
+public class LegalController(IOptions<Config> config) : Controller
 {
     [HttpGet("privacy-policy")]
     public IActionResult PrivacyPolicy()
     {
-        return View();
+        return View(new PrivacyPolicyViewModel
+        {
+            OrganizerEmail = config.Value.OrganizerEmail
+        });
     }
 
     [HttpGet("terms-of-service")]
-    public IActionResult TermsOfService([FromServices] IOptions<Config> config)
+    public IActionResult TermsOfService()
     {
         return View(new TermsOfServiceViewModel
         {
