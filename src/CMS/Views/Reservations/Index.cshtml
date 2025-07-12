@@ -85,7 +85,7 @@
                                 @reservation.SeatNumber
                             </td>
                             <td>
-                                <time datetime="@reservation.ReservedAt">@reservation.ReservedAt</time>
+                                <time datetime="@reservation.ReservedAtParameter">@reservation.ReservedAtDisplay</time>
                             </td>
                             <td>
                                 @if (reservation.ReservationStatus == ReservationStatus.ReservationConfirmed)

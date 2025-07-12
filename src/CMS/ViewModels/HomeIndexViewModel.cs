@@ -1,6 +1,7 @@
 ﻿using Core.Application.Seats;
 using Core.Application.System;
 using Core.Domain.Common.Enumerations;
+using Presentation.Shared.FrameworkEnhancements.Extensions;
 using System.Diagnostics;
 
 namespace CMS.ViewModels;
@@ -19,8 +20,10 @@ public class HomeIndexViewModel
         Debug.Assert(Unassigned + Pending + Confirmed == TotalSeats, "A seat status is not being counted.");
 
         IsScheduled = !configuration.ForceOpenReservations && !configuration.ForceCloseReservations;
-        ScheduledClose = configuration.ScheduledCloseDateTime.ToUniversalTime();
-        ScheduledOpen = configuration.ScheduledOpenDateTime.ToUniversalTime();
+        ScheduledClose = configuration.ScheduledCloseDateTime;
+        ScheduledCloseTimeZone = configuration.ScheduledCloseTimeZone;
+        ScheduledOpen = configuration.ScheduledOpenDateTime;
+        ScheduledOpenTimeZone = configuration.ScheduledOpenTimeZone;
 
         IsOpenNow = configuration.AreReservationsOpen;
         MaxPerIp = configuration.MaxSeatsPerIPAddress;
@@ -43,7 +46,11 @@ public class HomeIndexViewModel
     // Reservation configuration settings
     public bool IsScheduled { get; set; }  // Whether reservation is scheduled or immediate
     public DateTimeOffset ScheduledOpen { get; set; }
+    public string ScheduledOpenTimeZone { get; set; }
+    public string ScheduledOpenDisplay => ScheduledOpen.ToNormalizedString(ScheduledOpenTimeZone);
     public DateTimeOffset ScheduledClose { get; set; }
+    public string ScheduledCloseTimeZone { get; set; }
+    public string ScheduledCloseDisplay => ScheduledClose.ToNormalizedString(ScheduledCloseTimeZone);
 
     public bool IsOpenNow { get; set; }
     public int MaxPerUser { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Core.Application.Reservations;
 using Core.Domain.Common.Enumerations;
+using Presentation.Shared.FrameworkEnhancements.Extensions;
 
 namespace CMS.ViewModels;
 
@@ -12,7 +13,8 @@ public class ReservationViewViewModel
         PhoneNumber = fetchReservationQueryResponse.PhoneNumber;
         PreferredLanguage = fetchReservationQueryResponse.PreferredLanguage;
         ReservationStatus = fetchReservationQueryResponse.Status;
-        ReservedAt = fetchReservationQueryResponse.ReservedAt.ToString("s");
+        ReservedAtDisplay = fetchReservationQueryResponse.ReservedAt.ToNormalizedString();
+        ReservedAtParameter = fetchReservationQueryResponse.ReservedAt.ToString("s");
         SeatNumber = fetchReservationQueryResponse.SeatNumber;
 
         ReservationId = reservationId;
@@ -41,7 +43,12 @@ public class ReservationViewViewModel
     /// <summary>
     /// When the reservation was made, formatted for display.
     /// </summary>
-    public string ReservedAt { get; set; } = null!;
+    public string ReservedAtDisplay { get; set; } = null!;
+
+    /// <summary>
+    /// When the reservation was made, formatted for time parameter.
+    /// </summary>
+    public string ReservedAtParameter { get; set; } = null!;
 
     /// <summary>
     /// Number of the seat reserved.
