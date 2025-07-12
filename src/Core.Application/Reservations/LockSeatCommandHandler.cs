@@ -18,7 +18,7 @@ internal class LockSeatCommandHandler : IRequestHandler<LockSeatCommand, ErrorOr
 
     public async Task<ErrorOr<LockSeatCommandResponse>> Handle(LockSeatCommand request, CancellationToken cancellationToken)
     {
-        Log.Information("Locking seat {SeatNumber} for {@Identity}.", request.IpAddress, request.Identity);
+        Log.Information("Locking seat {SeatNumber} for {@Identity}.", request.SeatNumber, request.Identity);
 
         var authResult = await _authorizationCheck.GetLockSeatAuthorization(request.Identity);
         if (!authResult.IsAuthorized)
