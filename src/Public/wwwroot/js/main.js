@@ -142,6 +142,7 @@ function SeatSelector($element, errorMap) {
         const that = this;
 
         this._isSubmitting = false;
+        this._isActive = $formElement.length === 1;
 
         this._$formElement = $formElement;
         this._$selectElement = $formElement.find("select");
@@ -161,55 +162,30 @@ function SeatSelector($element, errorMap) {
         this._$formElement.on("submit", function (e) {
             if (this.checkValidity()) {
                 e.preventDefault();
-                that.submit();
+                that._submit();
             }
         });
 
         this.addSeats = function (seats) {
+            if (!that._isActive) return;
             $.each(seats, function (_, seat) {
                 that.updateSeat(seat);
             });
         };
 
         this.removeSeat = function (seatNumber) {
+            if (!that._isActive) return;
             const seat = that._$selectElement.find(`[value=${seatNumber}]`);
             seat && seat.remove();
         };
 
         this.selectSeat = function (seatNumber) {
+            if (!that._isActive) return;
             that._$selectElement.val(seatNumber);
         };
 
-        this.submit = function () {
-            const formData = new FormData(that._$formElement[0]);
-            const formEntries = formData.entries();
-            const requestData = Object.fromEntries(formEntries);
-
-            if (that._isSubmitting) return;
-            that._isSubmitting = true;
-
-            $.ajax({
-                url: $formElement.attr("action"),
-                method: $formElement.attr("method").toUpperCase(),
-                contentType: "application/json",
-                data: JSON.stringify(requestData),
-            })
-                .done(function (responseData) {
-                    that._handleSuccess(requestData, responseData);
-                })
-                .fail(function (xhr) {
-                    if (xhr.status === 403) {
-                        that._handleUnauthorized(xhr.responseJSON);
-                    } else if (xhr.status === 409) {
-                        that._handleConflict(requestData);
-                    }
-                })
-                .always(function () {
-                    that._isSubmitting = false;
-                });
-        };
-
         this.updateSeat = function (seat) {
+            if (!that._isActive) return;
             if (seat.status !== "available") {
                 that.removeSeat(seat.index + 1);
                 return;
@@ -252,6 +228,35 @@ function SeatSelector($element, errorMap) {
 
         this._handleSuccess = function (requestData, responseData) {
             that.onSuccess && that.onSuccess(requestData, responseData);
+        };
+
+        this._submit = function () {
+            const formData = new FormData(that._$formElement[0]);
+            const formEntries = formData.entries();
+            const requestData = Object.fromEntries(formEntries);
+
+            if (that._isSubmitting) return;
+            that._isSubmitting = true;
+
+            $.ajax({
+                url: $formElement.attr("action"),
+                method: $formElement.attr("method").toUpperCase(),
+                contentType: "application/json",
+                data: JSON.stringify(requestData),
+            })
+                .done(function (responseData) {
+                    that._handleSuccess(requestData, responseData);
+                })
+                .fail(function (xhr) {
+                    if (xhr.status === 403) {
+                        that._handleUnauthorized(xhr.responseJSON);
+                    } else if (xhr.status === 409) {
+                        that._handleConflict(requestData);
+                    }
+                })
+                .always(function () {
+                    that._isSubmitting = false;
+                });
         };
     }
 
