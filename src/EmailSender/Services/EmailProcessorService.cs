@@ -13,22 +13,17 @@ internal partial class EmailProcessorService(
 {
     public async Task<bool> Process(ListPendingEmailsQueryResponseItem email, CancellationToken cancellationToken)
     {
+        if (CalculateNextAttemptTime(email.AttemptCount) > DateTimeOffset.Now)
+        {
+            return false;
+        }
+
         var attemptNumber = email.AttemptCount + 1;
         Log.Information("Email #{Id} is being processed for attempt #{attemptNumber}.", email.Id, attemptNumber);
 
-        // TODO: We want a logarithmic tapering off of attempts.
-        // Also, do we do that tapering off here or in the worker class?
-
         try
         {
-            switch (email.EmailType)
-            {
-                case EmailType.UserSubmittedReservation:
-                    await CreateAndSend_UserSubmittedReservation(email, cancellationToken);
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
+            await CreateAndSend(email, cancellationToken);
 
             if (cancellationToken.IsCancellationRequested)
             {
@@ -52,6 +47,24 @@ internal partial class EmailProcessorService(
 
     [GeneratedRegex(@"<title>(.*?)<\/title>")]
     private static partial Regex TitleRegex();
+
+    private DateTimeOffset CalculateNextAttemptTime(int attemptCount)
+    {
+        List<int> delays = [0, 600, 1800];
+        var delay = (attemptCount < delays.Count) ? delays[attemptCount] : delays[^1];
+        return DateTimeOffset.Now.AddSeconds(delay);
+    }
+
+    private Task CreateAndSend(ListPendingEmailsQueryResponseItem email, CancellationToken cancellationToken)
+    {
+        switch (email.EmailType)
+        {
+            case EmailType.UserSubmittedReservation:
+                return CreateAndSend_UserSubmittedReservation(email, cancellationToken);
+            default:
+                throw new NotImplementedException();
+        }
+    }
 
     private async Task CreateAndSend_UserSubmittedReservation(ListPendingEmailsQueryResponseItem email, CancellationToken cancellationToken)
     {
