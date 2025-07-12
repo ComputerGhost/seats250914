@@ -46,7 +46,11 @@ internal static class TestDataSetup
     {
         using (var connection = new SqlConnection(ConnectionString))
         {
-            await connection.ExecuteAsync("DELETE FROM Reservations");
+            var sql = """
+                DELETE FROM Reservations;
+                DELETE FROM EmailQueue;
+                """;
+            await connection.ExecuteAsync(sql);
         }
 
         var seatLockService = ConfigurationAccessor.Instance.Services.GetService<ISeatLockService>()!;
