@@ -12,6 +12,7 @@ public class AccountEditTests
     private SeleniumWrapper _driver = null!;
     private IMediator _mediator = null!;
 
+    private IWebElement Alert => _driver.FindElement(By.ClassName("alert"));
     private IWebElement EnabledCheck => _driver.FindElement(By.Id("IsEnabled"));
     private IWebElement PasswordText => _driver.FindElement(By.Id("Password"));
     private IWebElement UpdatePasswordButton => _driver.FindElement(By.ClassName("btn-secondary"));
@@ -96,6 +97,7 @@ public class AccountEditTests
         // Act 2: Change password
         PasswordText.SendKeys(password);
         UpdatePasswordButton.Click();
+        _driver.WaitUntil(d => Alert.Displayed);
 
         // Act 3: Sign out
         _driver.Manage().Cookies.DeleteAllCookies();

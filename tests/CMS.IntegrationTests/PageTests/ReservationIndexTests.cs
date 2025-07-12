@@ -65,6 +65,7 @@ public class ReservationIndexTests
 
         // Act: Wait for navigation
         _driver.WaitUntil(d => new UriBuilder(d.Url).Query != "test");
+        _driver.WaitUntil(d => Rows.Count == 3);
 
         // Assert
         Assert.AreEqual("승인됨", Status(TARGET_INDEX1).Text);

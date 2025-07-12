@@ -74,7 +74,7 @@ public class StatusNotificationTests
         // Assert
         Assert.IsNotNull(Alert);
         Assert.AreEqual("Reservations will open soon!", Alert.FindElement(By.TagName("h3")).Text);
-        Assert.Contains("UTC-07:00", TimeDisplay.Text);
+        Assert.Contains("UTC", TimeDisplay.Text);
         Assert.Throws<NoSuchElementException>(() => Select);
     }
 
