@@ -1,6 +1,7 @@
 ﻿using Core.Application.Seats;
 using Core.Application.System;
 using Core.Domain.Scheduling;
+using Presentation.Shared.FrameworkEnhancements.Extensions;
 using Public.Extensions;
 using Public.Models.Enumerations;
 
@@ -22,10 +23,10 @@ public class SeatSelectorViewModel
             _ => Enum.Parse<SystemStatus>(systemStatus.Status.ToString())
         };
 
-        CloseTimeDisplay = FormatForDisplay(systemStatus.ScheduledCloseDateTime, systemStatus.ScheduledCloseTimeZone);
+        CloseTimeDisplay = systemStatus.ScheduledCloseDateTime.ToNormalizedString(systemStatus.ScheduledCloseTimeZone);
         CloseTimeParameter = systemStatus.ScheduledCloseDateTime.ToString("s");
         CloseTimeZone = systemStatus.ScheduledCloseTimeZone;
-        OpenTimeDisplay = FormatForDisplay(systemStatus.ScheduledOpenDateTime, systemStatus.ScheduledOpenTimeZone);
+        OpenTimeDisplay = systemStatus.ScheduledOpenDateTime.ToNormalizedString(systemStatus.ScheduledOpenTimeZone);
         OpenTimeParameter = systemStatus.ScheduledOpenDateTime.ToString("s");
         OpenTimeZone = systemStatus.ScheduledOpenTimeZone;
     }
@@ -44,22 +45,4 @@ public class SeatSelectorViewModel
     public IDictionary<int, string> SeatStatuses { get; init; } = new Dictionary<int, string>();
     public SystemStatus SystemStatus { get; init; }
     public bool IsOpen => SystemStatus == SystemStatus.Open;
-
-    private static string FormatForDisplay(DateTimeOffset when, string timeZone)
-    {
-        var tz = TimeZoneInfo.FindSystemTimeZoneById(timeZone);
-        var localTime = TimeZoneInfo.ConvertTime(when, tz);
-        var offset = tz.GetUtcOffset(localTime);
-
-        var timeDisplay = localTime.ToString("yyyy-MM-dd HH:mm");
-
-        var offsetDisplay = offset.TotalSeconds switch
-        {
-            < 0 => "UTC-" + offset.ToString(@"hh\:mm"),
-            > 0 => "UTC+" + offset.ToString(@"hh\:mm"),
-            _ => "UTC",
-        };
-
-        return $"{timeDisplay} {offsetDisplay}";
-    }
 }
