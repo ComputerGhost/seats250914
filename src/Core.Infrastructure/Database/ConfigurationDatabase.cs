@@ -32,8 +32,8 @@ internal class ConfigurationDatabase(IDbConnection connection) : IConfigurationD
         _cachedConfiguration = null;
 
         var sql = """
-            INSERT INTO Configuration (ForceCloseReservations, ForceOpenReservations, GracePeriodSeconds, MaxSeatsPerPerson, MaxSeatsPerIPAddress, MaxSecondsToConfirmSeat, ScheduledOpenDateTime, ScheduledOpenTimeZone, ScheduledCloseDateTime, ScheduledCloseTimeZone)
-            VALUES (@ForceCloseReservations, @ForceOpenReservations, @GracePeriodSeconds, @MaxSeatsPerPerson, @MaxSeatsPerIPAddress, @MaxSecondsToConfirmSeat, @ScheduledOpenDateTime, @ScheduledOpenTimeZone, @ScheduledCloseDateTime, @ScheduledCloseTimeZone);
+            INSERT INTO Configuration (ForceCloseReservations, ForceOpenReservations, GracePeriodSeconds, MaxSeatsPerPerson, MaxSeatsPerIPAddress, MaxSeatsPerReservation, MaxSecondsToConfirmSeat, ScheduledOpenDateTime, ScheduledOpenTimeZone, ScheduledCloseDateTime, ScheduledCloseTimeZone)
+            VALUES (@ForceCloseReservations, @ForceOpenReservations, @GracePeriodSeconds, @MaxSeatsPerPerson, @MaxSeatsPerIPAddress, @MaxSeatsPerReservation, @MaxSecondsToConfirmSeat, @ScheduledOpenDateTime, @ScheduledOpenTimeZone, @ScheduledCloseDateTime, @ScheduledCloseTimeZone);
             """;
         return await connection.ExecuteAsync(sql, configuration) > 0;
     }

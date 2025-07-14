@@ -18,8 +18,9 @@ public class ConfigurationEditViewModel
     public ConfigurationEditViewModel(FetchConfigurationQueryResponse queryResponse)
     {
         GracePeriodSeconds = queryResponse.GracePeriodSeconds;
-        MaxSeatsPerPerson = queryResponse.MaxSeatsPerPerson;
         MaxSeatsPerIPAddress = queryResponse.MaxSeatsPerIPAddress;
+        MaxSeatsPerPerson = queryResponse.MaxSeatsPerPerson;
+        MaxSeatsPerReservation = queryResponse.MaxSeatsPerReservation;
         MaxSecondsToConfirmSeat = queryResponse.MaxSecondsToConfirmSeat;
         ScheduledCloseDate = queryResponse.ScheduledCloseDateTime.DateTime;
         ScheduledCloseTime = queryResponse.ScheduledCloseDateTime.DateTime;
@@ -44,9 +45,11 @@ public class ConfigurationEditViewModel
 
     public int GracePeriodSeconds { get; set; }
 
+    public int MaxSeatsPerIPAddress { get; set; }
+
     public int MaxSeatsPerPerson { get; set; }
 
-    public int MaxSeatsPerIPAddress { get; set; }
+    public int MaxSeatsPerReservation { get; set; }
 
     public int MaxSecondsToConfirmSeat { get; set; }
 
@@ -89,8 +92,9 @@ public class ConfigurationEditViewModel
             ForceCloseReservations = ScheduleOverride == OVERRIDE_CLOSE,
             ForceOpenReservations = ScheduleOverride == OVERRIDE_OPEN,
             GracePeriodSeconds = GracePeriodSeconds,
-            MaxSeatsPerPerson = MaxSeatsPerPerson,
             MaxSeatsPerIPAddress = MaxSeatsPerIPAddress,
+            MaxSeatsPerPerson = MaxSeatsPerPerson,
+            MaxSeatsPerReservation = MaxSeatsPerReservation,
             MaxSecondsToConfirmSeat = MaxSecondsToConfirmSeat,
             ScheduledCloseDateTime = scheduledCloseDateTime,
             ScheduledCloseTimeZone = ScheduledCloseTimeZone,
