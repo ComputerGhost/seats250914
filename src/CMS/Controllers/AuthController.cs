@@ -38,6 +38,7 @@ public class AuthController(IMediator mediator, IStringLocalizer<AuthController>
     }
 
     [HttpGet("sign-in")]
+    [HttpHead("sign-in")]
     public async Task<IActionResult> SignIn()
     {
         Log.Information("Verifying that there are existing accounts.");

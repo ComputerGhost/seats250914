@@ -12,6 +12,7 @@ namespace CMS.Controllers;
 public class HomeController(IMediator mediator) : Controller
 {
     [HttpGet]
+    [HttpHead]
     public async Task<IActionResult> Index()
     {
         var configuration = await mediator.Send(new FetchConfigurationQuery());

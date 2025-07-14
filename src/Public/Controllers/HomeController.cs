@@ -9,6 +9,7 @@ namespace Public.Controllers;
 public class HomeController : Controller
 {
     [HttpGet]
+    [HttpHead]
     public IActionResult Index([FromServices] IOptions<Config> config, [FromQuery] bool renderMap = true)
     {
         return View(new HomeViewModel
