@@ -6,8 +6,9 @@ public class ConfigurationEntityModel
         ForceCloseReservations = true,
         ForceOpenReservations = false,
         GracePeriodSeconds = 4,
-        MaxSeatsPerPerson = 4,
         MaxSeatsPerIPAddress = 10,
+        MaxSeatsPerPerson = 4,
+        MaxSeatsPerReservation = 1,
         MaxSecondsToConfirmSeat = 600,
         ScheduledCloseDateTime = DateTimeOffset.UtcNow.AddMonths(1),
         ScheduledCloseTimeZone = "UTC",
@@ -34,14 +35,19 @@ public class ConfigurationEntityModel
     public int GracePeriodSeconds { get; set; }
 
     /// <summary>
+    /// Maximum seats per IP Address.
+    /// </summary>
+    public int MaxSeatsPerIPAddress { get; set; }
+
+    /// <summary>
     /// Maximum seats per person.
     /// </summary>
     public int MaxSeatsPerPerson { get; set; }
 
     /// <summary>
-    /// Maximum seats per IP Address.
+    /// Maximum seats per reservation.
     /// </summary>
-    public int MaxSeatsPerIPAddress { get; set; }
+    public int MaxSeatsPerReservation { get; set; }
 
     /// <summary>
     /// Maximum seconds for the user to confirm their seat.

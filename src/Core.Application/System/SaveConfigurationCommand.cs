@@ -20,14 +20,19 @@ public class SaveConfigurationCommand : IRequest
     public int GracePeriodSeconds { get; set; }
 
     /// <summary>
+    /// Maximum seats per IP Address.
+    /// </summary>
+    public int MaxSeatsPerIPAddress { get; set; }
+
+    /// <summary>
     /// Maximum seats per person.
     /// </summary>
     public int MaxSeatsPerPerson { get; set; }
 
     /// <summary>
-    /// Maximum seats per IP Address.
+    /// Maximum seats per reservation.
     /// </summary>
-    public int MaxSeatsPerIPAddress { get; set; }
+    public int MaxSeatsPerReservation { get; set; }
 
     /// <summary>
     /// Maximum seconds for the user to confirm their seat.
@@ -64,8 +69,9 @@ public class SaveConfigurationCommand : IRequest
             ForceCloseReservations = ForceCloseReservations,
             ForceOpenReservations = ForceOpenReservations,
             GracePeriodSeconds = GracePeriodSeconds,
-            MaxSeatsPerPerson = MaxSeatsPerPerson,
             MaxSeatsPerIPAddress = MaxSeatsPerIPAddress,
+            MaxSeatsPerPerson = MaxSeatsPerPerson,
+            MaxSeatsPerReservation = MaxSeatsPerReservation,
             MaxSecondsToConfirmSeat = MaxSecondsToConfirmSeat,
             ScheduledOpenDateTime = ScheduledOpenDateTime,
             ScheduledOpenTimeZone = ScheduledOpenTimeZone,

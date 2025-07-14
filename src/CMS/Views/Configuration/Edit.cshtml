@@ -64,8 +64,8 @@
             <h2 class="h5">예약 제한 설정</h2>
 
             <div class="mb-3">
-                <label class="form-label" for="limitSeatsPerTransaction">1회 예약 시 예약할 수 있는 최대 좌석 수</label>
-                <input class="form-control w-auto" id="limitSeatsPerTransaction" value="1" disabled>
+                <label asp-for="MaxSeatsPerReservation" class="form-label">1회 예약 시 예약할 수 있는 최대 좌석 수</label>
+                <input asp-for="MaxSeatsPerReservation" class="form-control w-auto" min="1" max="100">
             </div>
 
             <div class="mb-3">

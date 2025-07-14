@@ -24,8 +24,9 @@ public class FetchConfigurationQueryResponse
         ForceCloseReservations = entityModel.ForceCloseReservations;
         ForceOpenReservations = entityModel.ForceOpenReservations;
         GracePeriodSeconds = entityModel.GracePeriodSeconds;
-        MaxSeatsPerPerson = entityModel.MaxSeatsPerPerson;
         MaxSeatsPerIPAddress = entityModel.MaxSeatsPerIPAddress;
+        MaxSeatsPerReservation = entityModel.MaxSeatsPerReservation;
+        MaxSeatsPerPerson = entityModel.MaxSeatsPerPerson;
         MaxSecondsToConfirmSeat = entityModel.MaxSecondsToConfirmSeat;
         ScheduledCloseDateTime = entityModel.ScheduledCloseDateTime;
         ScheduledCloseTimeZone = entityModel.ScheduledCloseTimeZone;
@@ -63,14 +64,19 @@ public class FetchConfigurationQueryResponse
     public int GracePeriodSeconds { get; set; }
 
     /// <summary>
+    /// Maximum seats per IP Address.
+    /// </summary>
+    public int MaxSeatsPerIPAddress { get; set; }
+
+    /// <summary>
     /// Maximum seats per person.
     /// </summary>
     public int MaxSeatsPerPerson { get; set; }
 
     /// <summary>
-    /// Maximum seats per IP Address.
+    /// Maximum seats per reservation.
     /// </summary>
-    public int MaxSeatsPerIPAddress { get; set; }
+    public int MaxSeatsPerReservation { get; set; }
 
     /// <summary>
     /// Maximum seconds for the user to confirm their seat.

@@ -23,6 +23,7 @@ public class ConfigurationEditTests
     private ReadOnlyCollection<IWebElement> ScheduleOverrides => _driver.FindElements(By.Id("ScheduleOverride"));
     private IWebElement MaxSeatsPerPerson => _driver.FindElement(By.Id("MaxSeatsPerPerson"));
     private IWebElement MaxSeatsPerIPAddress => _driver.FindElement(By.Id("MaxSeatsPerIPAddress"));
+    private IWebElement MaxSeatsPerReservation => _driver.FindElement(By.Id("MaxSeatsPerReservation"));
     private IWebElement MaxSecondsToConfirmSeat => _driver.FindElement(By.Id("MaxSecondsToConfirmSeat"));
     private IWebElement GracePeriodSeconds => _driver.FindElement(By.Id("GracePeriodSeconds"));
     private IWebElement SubmitButton => _driver.FindElement(By.ClassName("btn-primary"));
@@ -79,6 +80,7 @@ public class ConfigurationEditTests
             ForceOpenReservations = false,
             GracePeriodSeconds = 2,
             MaxSeatsPerIPAddress = 20,
+            MaxSeatsPerReservation = 3,
             MaxSeatsPerPerson = 10,
             MaxSecondsToConfirmSeat = 600,
             ScheduledCloseDateTime = TimeZoneInfo.ConvertTime(targetCloseDateTime, targetTimeZone),
@@ -95,6 +97,7 @@ public class ConfigurationEditTests
             GracePeriodSeconds = 0,
             MaxSeatsPerIPAddress = 0,
             MaxSeatsPerPerson = 0,
+            MaxSeatsPerReservation = 0,
             MaxSecondsToConfirmSeat = 0,
             ScheduledCloseDateTime = DateTimeOffset.Now,
             ScheduledCloseTimeZone = "UTC",
@@ -111,6 +114,7 @@ public class ConfigurationEditTests
         _driver.SetValue(ScheduledCloseTime, targetConfig.ScheduledCloseDateTime.ToString("HH:mm:ss"));
         ScheduledCloseTimeZone.SelectByValue(targetConfig.ScheduledCloseTimeZone);
         ScheduleOverrides[2].Click();
+        _driver.SetValue(MaxSeatsPerReservation, targetConfig.MaxSeatsPerReservation.ToString());
         _driver.SetValue(MaxSeatsPerPerson, targetConfig.MaxSeatsPerPerson.ToString());
         _driver.SetValue(MaxSeatsPerIPAddress, targetConfig.MaxSeatsPerIPAddress.ToString());
         _driver.SetValue(MaxSecondsToConfirmSeat, targetConfig.MaxSecondsToConfirmSeat.ToString());
@@ -133,6 +137,7 @@ public class ConfigurationEditTests
         Assert.AreEqual(targetConfig.ScheduledCloseDateTime.ToString("HH:mm:ss"), ScheduledCloseTime.GetAttribute("value"));
         Assert.AreEqual(targetConfig.ScheduledCloseTimeZone, ScheduledCloseTimeZone.SelectedOption.GetAttribute("value"));
         Assert.IsTrue(bool.TryParse(ScheduleOverrides[2].GetAttribute("checked"), out bool value) && value);
+        Assert.AreEqual(targetConfig.MaxSeatsPerReservation.ToString(), MaxSeatsPerReservation.GetAttribute("value"));
         Assert.AreEqual(targetConfig.MaxSeatsPerPerson.ToString(), MaxSeatsPerPerson.GetAttribute("value"));
         Assert.AreEqual(targetConfig.MaxSeatsPerIPAddress.ToString(), MaxSeatsPerIPAddress.GetAttribute("value"));
         Assert.AreEqual(targetConfig.MaxSecondsToConfirmSeat.ToString(), MaxSecondsToConfirmSeat.GetAttribute("value"));
