@@ -9,6 +9,7 @@ namespace Public.Controllers;
 public class LegalController(IOptions<Config> config) : Controller
 {
     [HttpGet("privacy-policy")]
+    [HttpHead("privacy-policy")]
     public IActionResult PrivacyPolicy()
     {
         return View(new PrivacyPolicyViewModel
@@ -18,6 +19,7 @@ public class LegalController(IOptions<Config> config) : Controller
     }
 
     [HttpGet("terms-of-service")]
+    [HttpHead("terms-of-service")]
     public IActionResult TermsOfService()
     {
         return View(new TermsOfServiceViewModel
