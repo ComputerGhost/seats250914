@@ -12,7 +12,7 @@
 
         <button
             class="seat @status"
-            data-index="@(number - 1)"
+            data-number="@number"
             data-status="@status"
         >@number</button>
     }
@@ -121,6 +121,7 @@ else if (Model.SystemStatus == SystemStatus.ClosedManually)
     class="row lazy-loaded"
     data-onload="loadSeatingWidget"
     data-priority="1"
+    data-max-seat-selections="@Model.MaxSeatSelections"
     data-reservation-page-url="@Model.UrlForReservationPage"
 >
 
@@ -295,7 +296,6 @@ else if (Model.SystemStatus == SystemStatus.ClosedManually)
         <script>
             var showIfScriptsEnabled = function ($element)
             {
-                console.log($element);
                 $element.removeClass("d-none");
             }
         </script>
@@ -317,15 +317,18 @@ else if (Model.SystemStatus == SystemStatus.ClosedManually)
                 <form action="@Model.UrlForLockSeat" method="post">
                     <div class="d-flex flex-column">
                         <div class="mb-3">
-                            <label for="@(Model.IdPrefix)-seat" class="form-label w-100">
+                            <label for="@(Model.IdPrefix)-seat-1" class="form-label w-100">
                                 @Localizer["Seat"]
                             </label>
-                            <select class="form-select"
-                                    id="@(Model.IdPrefix)-seat"
-                                    name="seatNumber"
-                                    required>
-                                <option></option>
-                            </select>
+                            @for (int i = 1; i <= @Model.MaxSeatSelections; ++i)
+                            {
+                                <select class="form-select"
+                                        id="@(Model.IdPrefix)-seat-@(i)"
+                                        name="seatNumber"
+                                        required>
+                                    <option></option>
+                                </select>
+                            }
                         </div>
                         <button class="btn btn-primary">@Localizer["Reserve Seat"]</button>
                         <p class="form-text mb-0">
