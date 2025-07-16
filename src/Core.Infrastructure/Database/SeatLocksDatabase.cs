@@ -23,6 +23,19 @@ internal class SeatLocksDatabase(IDbConnection connection) : ISeatLocksDatabase
         });
     }
 
+    public async Task<int> ClearLockExpirations(IEnumerable<int> seatNumbers)
+    {
+        var sql = """
+            UPDATE SeatLocks
+            SET Expiration = NULL
+            WHERE SeatId IN (SELECT Id FROM Seats WHERE Number IN @seatNumbers)
+            """;
+        return await connection.ExecuteAsync(sql, new
+        {
+            seatNumbers,
+        });
+    }
+
     public async Task<int> CountLocksForIpAddress(string ipAddress)
     {
         var sql = "SELECT COUNT(*) FROM SeatLocks WHERE IpAddress = @ipAddress";
@@ -42,6 +55,18 @@ internal class SeatLocksDatabase(IDbConnection connection) : ISeatLocksDatabase
         {
             seatNumber,
         }) > 0;
+    }
+
+    public async Task<int> DeleteLocks(IEnumerable<int> seatNumbers)
+    {
+        var sql = """
+            DELETE FROM SeatLocks
+            WHERE SeatId = (SELECT Id FROM Seats WHERE Number IN @seatNumbers)
+            """;
+        return await connection.ExecuteAsync(sql, new
+        {
+            seatNumbers,
+        });
     }
 
     public async Task<IEnumerable<SeatLockEntityModel>> FetchExpiredLocks(DateTimeOffset beforeTime)

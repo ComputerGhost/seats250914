@@ -18,7 +18,7 @@ internal class AdminReserveSeatCommandHandler : IRequestHandler<AdminReserveSeat
 
     public async Task<ErrorOr<int>> Handle(AdminReserveSeatCommand request, CancellationToken cancellationToken)
     {
-        Log.Information("Locking seat {SeatNumber} for admin identity {Identity}.", request.SeatNumber, request.Identity);
+        Log.Information("Locking seat {SeatNumber} for admin identity {@Identity}.", request.SeatNumber, request.Identity);
 
         // This is where the magic happens. Only one person can lock each seat.
         var lockEntity = await _seatLockService.LockSeat(request.SeatNumber, request.IpAddress);
@@ -27,7 +27,7 @@ internal class AdminReserveSeatCommandHandler : IRequestHandler<AdminReserveSeat
             return SeatTaken(request.SeatNumber);
         }
 
-        Log.Information("Reserving seat {SeatNumber} for admin identity {Identity}.", request.SeatNumber, request.Identity);
+        Log.Information("Reserving seat {SeatNumber} for admin identity {@Identity}.", request.SeatNumber, request.Identity);
 
         var reservationId = await _reservationService.ReserveSeat(request.SeatNumber, request.Identity);
         Debug.Assert(reservationId != null, "Reservation should not fail here.");

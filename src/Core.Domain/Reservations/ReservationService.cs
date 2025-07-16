@@ -78,6 +78,35 @@ internal class ReservationService : IReservationService
         return reservationId;
     }
 
+    public async Task<int?> ReserveSeats(IList<int> seatNumbers, IdentityModel identity)
+    {
+        // Note the first seat for backwards compatibility.
+        // This can be deleted nearer the end of the sprint.
+        var compatSeat = seatNumbers.First();
+
+        var reservationId = await CreateReservation(compatSeat, identity);
+        if (reservationId == null)
+        {
+            return null;
+        }
+
+        if (await _seatLocksDatabase.ClearLockExpirations(seatNumbers) != seatNumbers.Count)
+        {
+            Log.Warning("A reservation could not be made for seats {seatNumbers} because the locks expired before processing completed.");
+            await _seatLocksDatabase.DeleteLocks(seatNumbers);
+            return null;
+        }
+
+        await _reservationsDatabase.AttachSeatsToReservation(reservationId.Value, seatNumbers);
+
+        foreach (var seatNumber in seatNumbers)
+        {
+            await UpdateSeatStatus(seatNumber, SeatStatus.AwaitingPayment);
+        }
+
+        return reservationId;
+    }
+
     private async Task<int?> CreateReservation(int seatNumber, IdentityModel identity)
     {
         Debug.Assert(identity.Name != null);

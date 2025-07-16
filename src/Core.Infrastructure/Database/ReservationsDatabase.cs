@@ -4,12 +4,29 @@ using Core.Domain.DependencyInjection;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Diagnostics;
 
 namespace Core.Infrastructure.Database;
 
 [ServiceImplementation]
 internal class ReservationsDatabase(IDbConnection connection) : IReservationsDatabase
 {
+    public async Task AttachSeatsToReservation(int reservationId, IEnumerable<int> seatNumbers)
+    {
+        var sql = """
+            INSERT INTO ReservationSeatLocks (ReservationId, SeatLockId)
+            SELECT @reservationId, SeatLocks.Id
+            FROM SeatLocks
+            LEFT JOIN Seats ON Seats.Id = SeatLocks.SeatId
+            WHERE Seats.Number IN @seatNumbers
+            """;
+        var affectedRows = await connection.ExecuteAsync(sql, new
+        {
+            reservationId,
+            seatNumbers,
+        });
+    }
+
     public async Task<int> CountActiveReservationsForEmailAddress(string emailAddress)
     {
         var sql = """
