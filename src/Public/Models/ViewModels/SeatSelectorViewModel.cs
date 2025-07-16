@@ -35,7 +35,6 @@ public class SeatSelectorViewModel
 
     public required string UrlForReservationPage { get; init; }
     public required string UrlForLockSeat { get; init; }
-    public required string IdPrefix { get; init; }
 
     public string CloseTimeDisplay { get; init; }
     public string CloseTimeParameter { get; init; }

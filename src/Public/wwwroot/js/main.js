@@ -101,9 +101,8 @@ window.addEventListener("load", function () {
  * This is the JavaScript for the client-side behavior.
  */
 function SeatSelector($root, errorMap) {
-    var that = this;
-
     // Properties
+    var isSubmitting = false;
     const seats = [];
     var selected = [];
 
@@ -111,6 +110,9 @@ function SeatSelector($root, errorMap) {
     const $seatMap = $root.find(".interactive-seat-selector");
     const $form = $root.find("form");
     const $selects = $form.find(".form-select");
+    const $error = $("<div>")
+        .addClass("form-text text-danger")
+        .insertAfter($selects);
 
     // Load config
     const maxSelections = $root.data("max-seat-selections");
@@ -121,6 +123,8 @@ function SeatSelector($root, errorMap) {
     // Wire up events
     $(window).resize(handleWindowResize);
     handleWindowResize();
+    $selects.change(handleSelectChange);
+    $form.on("submit", handleFormSubmit);
 
     // Parse seat map into sorted memory, and add click handler
     $seatMap.find(".seat").each((_, seatElement) => {
@@ -141,10 +145,11 @@ function SeatSelector($root, errorMap) {
         const isAvailable = seat.status === "available";
         $selects.each((_, selectElement) => {
             const $option = $("<option>")
-                .val(seat.number)
-                .text(seat.number)
+                .data("status", seat.status)
                 .prop("disabled", !isAvailable)
-                .prop("hidden", !isAvailable);
+                .prop("hidden", !isAvailable)
+                .text(seat.number)
+                .val(seat.number);
             $(selectElement).append($option);
         });
     });
@@ -160,34 +165,76 @@ function SeatSelector($root, errorMap) {
         $selects.each((_, selectElement) => {
             const $select = $(selectElement);
             if ($select.val() === targetSeat.number.toString()) {
-                $select.val("");
+                $select.val("").data("value", "");
                 return false;
             }
         });
     }
 
-    function selectSeat(targetSeat, originator) {
+    function selectSeat(targetSeat) {
         targetSeat.status = "selected";
         targetSeat.$element.removeClass("available").addClass("selected");
 
         selected.push(targetSeat);
         if (selected.length > maxSelections) {
-            const deselectedSeat = selected.shift();
-            deselectSeat(deselectedSeat);
+            deselectSeat(selected.shift());
         }
 
-        if (originator !== "select") {
-            $selects.each((_, selectElement) => {
-                const $select = $(selectElement);
-                if ($select.val() === "") {
-                    $select.val(targetSeat.number);
-                    return false;
+        // Set the next empty select to the target seat.
+        $selects.each((_, selectElement) => {
+            const $select = $(selectElement);
+            if ($select.val() === "") {
+                $select.val(targetSeat.number).data("value", targetSeat.number);
+                return false;
+            }
+        });
+    }
+
+    function fixDuplicates() {
+        $selects.each((ai, a) => {
+            $selects.each((bi, b) => {
+                if (ai !== bi) {
+                    const $b = $(b);
+                    if ($(a).val() === $b.val()) {
+                        $b.val("").data("value", "");
+                    }
                 }
             });
-        }
+        });
     }
 
     /* Event handling */
+
+    function handleFormSubmit(e) {
+        if (!this.checkValidity()) {
+            return;
+        }
+
+        e.preventDefault();
+
+        if (isSubmitting) return;
+        isSubmitting = true;
+
+        $.ajax({
+            url: $form.attr("action"),
+            method: $form.attr("method").toUpperCase(),
+            data: $form.serialize(),
+        })
+            .done((responseJson) => {
+                const seatLocks = JSON.stringify(responseJson);
+                setCookie("seatLocks", seatLocks, seatLocks.lockExpiration);
+                document.location = reservationPageUrl;
+            })
+            .fail((xhr) => {
+                if (xhr.status === 403 /* unauthorized */) {
+                    $error.text(errorMap[403][xhr.responseJson.failureReason]);
+                } else if (xhr.status === 409 /* conflict */) {
+                    const seatNumber = xhr.responseJson.seatNumber;
+                    $error.text(errorMap[403].replace("{}", seatNumber));
+                }
+            })
+            .always(() => (isSubmitting = false));
+    }
 
     function handleSeatClick() {
         const seat = seats[$(this).data("number") - 1];
@@ -199,7 +246,19 @@ function SeatSelector($root, errorMap) {
     }
 
     function handleSelectChange() {
-        // todo
+        const $select = $(this);
+        const previousValue = $select.data("value");
+        const newValue = $select.val();
+
+        if (newValue) {
+            previousValue && deselectSeat(seats[previousValue - 1]);
+            selectSeat(seats[newValue - 1]);
+            fixDuplicates();
+        } else if (previousValue) {
+            deselectSeat(seats[previousValue - 1]);
+        }
+
+        $select.data("value", newValue);
     }
 
     function handleWindowResize() {

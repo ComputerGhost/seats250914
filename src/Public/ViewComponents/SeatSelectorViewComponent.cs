@@ -20,8 +20,7 @@ public class SeatSelectorViewComponent(IMediator mediator) : ViewComponent
         var systemStatus = await mediator.Send(new FetchReservationsStatusQuery());
         return View(new SeatSelectorViewModel(seatsList, systemStatus)
         {
-            IdPrefix = idPrefix,
-            UrlForLockSeat = Url.Action("LockSeat", "Api")!,
+            UrlForLockSeat = Url.Action("LockSeats", "Api")!,
             UrlForReservationPage = Url.Action("ReserveSeat", "Reservation")!,
         });
     }

@@ -56,6 +56,37 @@ public class ApiController(IMediator mediator) : Controller
         return Results.Ok(lockResult.Value);
     }
 
+    [HttpPost("lock-seats")]
+    public async Task<IResult> LockSeats([FromForm] IEnumerable<int> seatNumbers)
+    {
+        var ipAddress = Request.GetClientIpAddress();
+        var lockResult = await mediator.Send(new LockSeatsCommand
+        {
+            IpAddress= ipAddress,
+            SeatNumbers = seatNumbers,
+        });
+
+        if (lockResult.IsError)
+        {
+            var error = lockResult.FirstError;
+            return error.Type switch
+            {
+                ErrorType.Conflict => Results.Conflict(error.Metadata),
+                ErrorType.NotFound => Results.NotFound(),
+                ErrorType.Unauthorized => Unauthorized(error),
+                _ => throw new NotImplementedException(),
+            };
+        }
+
+        var cleanupScheduler = HttpContext.RequestServices
+            .GetServices<IHostedService>()
+            .OfType<CleanupScheduler>()
+            .Single();
+        await cleanupScheduler.ScheduleCleanup();
+
+        return Results.Ok(lockResult.Value);
+    }
+
     private static IResult Unauthorized(Error authError)
     {
         Debug.Assert(authError.Metadata != null);

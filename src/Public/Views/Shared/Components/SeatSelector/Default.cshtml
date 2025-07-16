@@ -317,15 +317,12 @@ else if (Model.SystemStatus == SystemStatus.ClosedManually)
                 <form action="@Model.UrlForLockSeat" method="post">
                     <div class="d-flex flex-column">
                         <div class="mb-3">
-                            <label for="@(Model.IdPrefix)-seat-1" class="form-label w-100">
+                            <label for="seat-1" class="form-label w-100">
                                 @Localizer["Seat"]
                             </label>
                             @for (int i = 1; i <= @Model.MaxSeatSelections; ++i)
                             {
-                                <select class="form-select"
-                                        id="@(Model.IdPrefix)-seat-@(i)"
-                                        name="seatNumber"
-                                        required>
+                                <select class="form-select" id="seat-@(i)" name="seatNumbers" required="@(i == 1)">
                                     <option></option>
                                 </select>
                             }

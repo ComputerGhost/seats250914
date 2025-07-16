@@ -1,0 +1,58 @@
+﻿using Core.Domain.Common.Models;
+using ErrorOr;
+using MediatR;
+
+namespace Core.Application.Reservations;
+
+/// <summary>
+/// Attempts to make a reservation. Returns the reservation id if successful.
+/// </summary>
+/// <remarks>
+/// A lock is required to reserve a seat.
+/// See <see cref="LockSeatCommand"/> for how to lock a seat.
+/// <br /><br />
+/// If `Error.Unauthorized` is returned, then the metadata will have an 
+/// `AuthorizationResult` under the "details" key.
+/// </remarks>
+public class ReserveSeatsCommand : IRequest<ErrorOr<int>>
+{
+    /// <summary>
+    /// Ip address of the one reserving the seat.
+    /// </summary>
+    public string IpAddress { get; set; } = null!;
+
+    /// <summary>
+    /// Locked seats and their authorization keys.
+    /// </summary>
+    public IDictionary<int, string> SeatLocks { get; set; } = null!;
+
+    /// <summary>
+    /// Name of the person reserving the seat.
+    /// </summary>
+    public string Name { get; set; } = null!;
+
+    /// <summary>
+    /// Email of the person reserving the seat.
+    /// </summary>
+    public string Email { get; set; } = null!;
+
+    /// <summary>
+    /// Optional phone number of the person reserving the seat.
+    /// </summary>
+    public string? PhoneNumber { get; set; }
+
+    /// <summary>
+    /// Preferred langauge of the person reserving the seat.
+    /// </summary>
+    public string PreferredLanguage { get; set; } = null!;
+
+    internal IdentityModel Identity => new()
+    {
+        Email = Email,
+        IsStaff = false,
+        IpAddress = IpAddress,
+        Name = Name,
+        PhoneNumber = PhoneNumber,
+        PreferredLanguage = PreferredLanguage,
+    };
+}
