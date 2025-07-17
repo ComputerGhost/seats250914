@@ -97,7 +97,8 @@ internal class ReservationService : IReservationService
             return null;
         }
 
-        await _reservationsDatabase.AttachSeatsToReservation(reservationId.Value, seatNumbers);
+        var count = await _seatLocksDatabase.AttachLocksToReservation(seatNumbers, reservationId.Value);
+        Debug.Assert(count == seatNumbers.Count, "Attaching locks to reservation should not fail here.");
 
         foreach (var seatNumber in seatNumbers)
         {

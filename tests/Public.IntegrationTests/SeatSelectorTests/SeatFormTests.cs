@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace Public.IntegrationTests.SeatSelectorTests;
 
@@ -14,7 +14,7 @@ public class SeatFormTests
     private IMediator _mediator = null!;
 
     private IWebElement Section => _driver.FindElement(By.Id("reserve-seats"));
-    private SelectElement Select => new(Section.FindElement(By.ClassName("form-select")));
+    private IList<SelectElement> Selects => [.. Section.FindElements(By.ClassName("form-select")).Select(x => new SelectElement(x))];
     private IWebElement Submit => Section.FindElement(By.ClassName("btn-primary"));
 
     [TestInitialize]
@@ -45,12 +45,34 @@ public class SeatFormTests
         var expected = Enumerable.Range(1, 100).Select(x => x.ToString());
 
         // Act
-        var actual = Select.Options.Select(option => option.Text);
+        var actual = Selects[0].Options.Select(option => option.Text);
 
         // Assert
         Assert.AreEqual(101, actual.Count());
         Assert.AreEqual("", actual.First());
         Assert.IsTrue(Enumerable.SequenceEqual(expected, actual.Skip(1)));
+    }
+
+    [TestMethod]
+    public void Select_WhenSelected_AlsoSelectsOnMap()
+    {
+        // Arrange
+        var getMapSelections = () => Section.FindElements(By.CssSelector(".audience .selected"));
+
+        // Act
+        var count = 0;
+        foreach (var select in Selects)
+        {
+            var seatNumber = count + 1;
+            Selects[count++].SelectByValue(seatNumber.ToString());
+        }
+
+        // Assert
+        var selectedSeats = getMapSelections().Select(x => x.Text);
+        for (int i = 1; i <= count; ++i)
+        {
+            Assert.Contains(i.ToString(), selectedSeats);
+        }
     }
 
     [TestMethod]
@@ -60,7 +82,7 @@ public class SeatFormTests
         const string reservationPath = "/reservation/new";
 
         // Act 1: Fill out and submit form
-        Select.SelectByIndex(1);
+        Selects[0].SelectByIndex(1);
         _driver.ScrollTo(Submit);
         Submit.Click();
 
@@ -78,10 +100,10 @@ public class SeatFormTests
         const string reservationPath = "/reservation/new";
 
         // Act 1: Fill out form
-        Select.SelectByIndex(1);
+        Selects[0].SelectByIndex(1);
 
         // Act 2: Submit the form twice...
-        // The website is too damn fast to use `Submit.Click()` for this.
+        // The website is too fast to use `Submit.Click()` for this.
         var clickScript = "$('#reserve-seats .btn-primary').click();";
         _driver.ExecuteScript($"{clickScript}{clickScript}");
 

@@ -23,7 +23,7 @@
     <h1>@Localizer["Seat Reservation"]</h1>
 
     @if (Model.FailureReason == AuthorizationRejectionReason.KeyIsInvalid
-        // This shouldn't happen either because it means the cookie is wrong.
+        || Model.FailureReason == AuthorizationRejectionReason.SeatIsNotLocked
         || Model.FailureReason == AuthorizationRejectionReason.KeyIsExpired)
     {
         <div>@Localizer["<!-- AuthorizationResult.KeyIsInvalid -->"]</div>

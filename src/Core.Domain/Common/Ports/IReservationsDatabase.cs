@@ -4,13 +4,6 @@ namespace Core.Domain.Common.Ports;
 public interface IReservationsDatabase
 {
     /// <summary>
-    /// Attaches a seat to a reservation.
-    /// </summary>
-    /// <param name="reservationId">Id of the reservation to attach to.</param>
-    /// <param name="seatNumbers">Numbers of the seats to attach.</param>
-    public Task AttachSeatsToReservation(int reservationId, IEnumerable<int> seatNumbers);
-
-    /// <summary>
     /// Count the number of approved or pending (not rejected) reservations for the email.
     /// </summary>
     public Task<int> CountActiveReservationsForEmailAddress(string emailAddress);

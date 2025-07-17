@@ -17,6 +17,7 @@ internal class TestDataSetup
         ForceOpenReservations = true,
         MaxSeatsPerIPAddress = int.MaxValue,
         MaxSeatsPerPerson = int.MaxValue,
+        MaxSeatsPerReservation = 4, // int.MaxValue will render a huge page.
         MaxSecondsToConfirmSeat = 3600,
         ScheduledCloseTimeZone = "UTC",
         ScheduledOpenTimeZone = "UTC",
@@ -30,6 +31,7 @@ internal class TestDataSetup
         using (var connection = new SqlConnection(ConnectionString))
         {
             var sql = """
+                DELETE FROM SeatLocks;
                 DELETE FROM Reservations;
                 DELETE FROM EmailQueue;
                 """;

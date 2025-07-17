@@ -111,8 +111,8 @@ function SeatSelector($root, errorMap) {
     const $form = $root.find("form");
     const $selects = $form.find(".form-select");
     const $error = $("<div>")
-        .addClass("form-text text-danger")
-        .insertAfter($selects);
+        .addClass("form-text text-danger d-hidden")
+        .insertBefore($form.find(".btn-primary"));
 
     // Load config
     const maxSelections = $root.data("max-seat-selections");
@@ -220,17 +220,19 @@ function SeatSelector($root, errorMap) {
             method: $form.attr("method").toUpperCase(),
             data: $form.serialize(),
         })
-            .done((responseJson) => {
-                const seatLocks = JSON.stringify(responseJson);
+            .done((responseJSON) => {
+                const seatLocks = JSON.stringify(responseJSON);
                 setCookie("seatLocks", seatLocks, seatLocks.lockExpiration);
                 document.location = reservationPageUrl;
             })
             .fail((xhr) => {
                 if (xhr.status === 403 /* unauthorized */) {
-                    $error.text(errorMap[403][xhr.responseJson.failureReason]);
+                    $error.text(errorMap[403][xhr.responseJSON.failureReason]);
+                    $error.removeClass("d-hidden");
                 } else if (xhr.status === 409 /* conflict */) {
-                    const seatNumber = xhr.responseJson.seatNumber;
+                    const seatNumber = xhr.responseJSON.seatNumber;
                     $error.text(errorMap[403].replace("{}", seatNumber));
+                    $error.removeClass("d-hidden");
                 }
             })
             .always(() => (isSubmitting = false));

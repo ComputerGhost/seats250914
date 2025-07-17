@@ -7,27 +7,25 @@ public class Migration_202507160516 : Migration
 {
     public override void Down()
     {
-        Delete.Table("ReservationSeatLocks");
+        Delete.Column("ReservationId")
+            .FromTable("SeatLocks");
     }
 
     public override void Up()
     {
-        Create.Table("ReservationSeatLocks")
-            .WithColumn("ReservationId").AsInt32()
-            .WithColumn("SeatLockId").AsInt32();
+        Create.Column("ReservationId")
+            .OnTable("SeatLocks")
+            .AsInt32().Nullable();
 
-        Create.ForeignKey("FK_ReservationSeatLocks_Reservations")
-            .FromTable("ReservationSeatLocks").ForeignColumn("ReservationId")
+        Create.ForeignKey("FK_SeatLocks_ReservationId")
+            .FromTable("SeatLocks").ForeignColumn("ReservationId")
             .ToTable("Reservations").PrimaryColumn("Id");
-        Create.ForeignKey("FK_ReservationSeatLocks_SeatLocks")
-            .FromTable("ReservationSeatLocks").ForeignColumn("SeatLockId")
-            .ToTable("SeatLocks").PrimaryColumn("Id");
 
-        Create.UniqueConstraint("UQ_ReservationSeatLocks")
-            .OnTable("ReservationSeatLocks")
-            .Columns("ReservationId", "SeatLockId");
-        Create.UniqueConstraint("UQ_ReservationSeatLocks_SeatLockId")
-            .OnTable("ReservationSeatLocks")
-            .Column("SeatLockId");
+        Execute.Sql("""
+            UPDATE SeatLocks
+            SET SeatLocks.ReservationId = Reservations.Id
+            FROM Reservations
+            WHERE Reservations.SeatLockId = SeatLocks.Id
+            """);
     }
 }

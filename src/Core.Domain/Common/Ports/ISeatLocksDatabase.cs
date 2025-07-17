@@ -13,6 +13,12 @@ public interface ISeatLocksDatabase
      */
 
     /// <summary>
+    /// Attaches a reservation to seat locks.
+    /// </summary>
+    /// <returns>The number of locks found and attached to.</returns>
+    Task<int> AttachLocksToReservation(IEnumerable<int> seatNumbers, int reservationId);
+
+    /// <summary>
     /// Marks a lock as not expiring.
     /// </summary>
     /// <remarks>

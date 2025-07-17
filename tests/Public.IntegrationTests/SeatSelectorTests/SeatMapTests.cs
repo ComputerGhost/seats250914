@@ -15,7 +15,7 @@ public class SeatMapTests
     private IWebElement Section => _driver.FindElement(By.Id("reserve-seats"));
     private IWebElement AvailableSeat => Section.FindElement(By.CssSelector(".audience .available"));
     private IWebElement ReservedSeat => Section.FindElement(By.CssSelector(".audience .reserved"));
-    private SelectElement Dropdown => new(Section.FindElement(By.ClassName("form-select")));
+    private IList<SelectElement> Dropdowns => [.. Section.FindElements(By.ClassName("form-select")).Select(x => new SelectElement(x))];
 
     [TestInitialize]
     public async Task Initialize()
@@ -36,19 +36,26 @@ public class SeatMapTests
     }
 
     [TestMethod]
-    public void AvailableSeat_WhenClicked_SelectsSeat()
+    public void AvailableSeats_WhenClicked_SelectsSeats()
     {
         // Arrange
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
-        var availableSeat = AvailableSeat;
 
-        // Act
-        _driver.ScrollTo(availableSeat);
-        availableSeat.Click();
+        // Act: Click the first seat
+        var seat1 = AvailableSeat;
+        _driver.ScrollTo(seat1);
+        seat1.Click();
+
+        // Act: Click the second seat
+        var seat2 = AvailableSeat;
+        _driver.ScrollTo(seat2);
+        seat2.Click();
 
         // Assert
-        Assert.IsTrue(availableSeat.GetAttribute("class")?.Contains("selected"));
-        Assert.AreEqual(availableSeat.Text, Dropdown.SelectedOption.Text);
+        Assert.IsTrue(seat1.GetAttribute("class")?.Contains("selected"));
+        Assert.AreEqual(seat1.Text, Dropdowns[0].SelectedOption.Text);
+        Assert.IsTrue(seat2.GetAttribute("class")?.Contains("selected"));
+        Assert.AreEqual(seat2.Text, Dropdowns[1].SelectedOption.Text);
     }
 
     [TestMethod]
@@ -58,14 +65,14 @@ public class SeatMapTests
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
         var availableSeat = AvailableSeat;
         _driver.ScrollTo(availableSeat);
-        availableSeat.Click(); // Make the seat selected
+        availableSeat.Click();
 
-        // Act
+        // Act: Unclick the first seat.
         availableSeat.Click();
 
         // Assert
         Assert.IsFalse(availableSeat.GetAttribute("class")?.Contains("selected"));
-        Assert.AreEqual("", Dropdown.SelectedOption.Text);
+        Assert.AreEqual("", Dropdowns[0].SelectedOption.Text);
     }
 
     [TestMethod]
@@ -88,21 +95,29 @@ public class SeatMapTests
 
         // Assert
         Assert.IsFalse(unavailableSeat.GetAttribute("class")?.Contains("selected"));
-        Assert.AreEqual("", Dropdown.SelectedOption.Text);
+        Assert.AreEqual("", Dropdowns[0].SelectedOption.Text);
     }
 
-    [TestMethod]
-    public void AvailableSeat_WhenOverSeatLimit_DeselectsFirstSeat()
+    [DataTestMethod]
+    [DataRow(1)]
+    [DataRow(2)]
+    [DataRow(3)]
+    [DataRow(4)]
+    public async Task AvailableSeat_WhenOverSeatLimit_DeselectsFirstSeat(int maxSeats)
     {
-        // Arrange
-        const int MAX_SEATS = 1;
+        // Arrange: Save new config.
+        var configuration = TestDataSetup.WorkingSaveConfigurationCommand;
+        configuration.MaxSeatsPerReservation = maxSeats;
+        await _mediator.Send(configuration);
+
+        // Arrange: Navigate to page.
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
         var firstSeat = AvailableSeat;
 
-        // Act
+        // Act: Select one more than the max seats.
         _driver.ScrollTo(firstSeat);
         firstSeat.Click();
-        for (int i = 1; i != MAX_SEATS + 1; ++i)
+        for (int i = 1; i != maxSeats + 1; ++i)
         {
             var nextSeat = AvailableSeat;
             _driver.ScrollTo(nextSeat);
@@ -111,6 +126,6 @@ public class SeatMapTests
 
         // Assert
         Assert.IsFalse(firstSeat.GetAttribute("class")?.Contains("selected"));
-        Assert.AreNotEqual(firstSeat.Text, Dropdown.SelectedOption.Text);
+        Assert.AreNotEqual(firstSeat.Text, Dropdowns[0].SelectedOption.Text);
     }
 }

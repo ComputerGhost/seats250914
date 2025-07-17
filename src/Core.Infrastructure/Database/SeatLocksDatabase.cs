@@ -10,6 +10,20 @@ namespace Core.Infrastructure.Database;
 [ServiceImplementation]
 internal class SeatLocksDatabase(IDbConnection connection) : ISeatLocksDatabase
 {
+    public async Task<int> AttachLocksToReservation(IEnumerable<int> seatNumbers, int reservationId)
+    {
+        var sql = """
+            UPDATE SeatLocks
+            SET ReservationId = @reservationId
+            WHERE SeatId IN (SELECT Id FROM Seats WHERE Number IN @seatNumbers)
+            """;
+        return await connection.ExecuteAsync(sql, new
+        {
+            seatNumbers,
+            reservationId,
+        });
+    }
+
     public async Task ClearLockExpiration(int seatNumber)
     {
         var sql = """
