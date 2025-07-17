@@ -101,26 +101,32 @@ public class AuthorizationCheckerTests
     }
 
     [TestMethod]
-    public async Task GetReserveSeatAuthorization_WithTestInitializeDefaults_ReturnsSuccess()
+    public async Task GetReserveSeatsAuthorization_WithTestInitializeDefaults_ReturnsSuccess()
     {
         // Arrange
+        var seatLocks = new Dictionary<int, string> {
+            { SeatLock.SeatNumber, SeatLock.Key }
+        };
 
         // Act
-        var result = await Subject.GetReserveSeatAuthorization(MinimalIdentity, 0, SeatLock.Key);
+        var result = await Subject.GetReserveSeatsAuthorization(MinimalIdentity, seatLocks);
 
         // Assert
         Assert.IsTrue(result.IsAuthorized);
     }
 
     [TestMethod]
-    public async Task GetReserveSeatAuthorization_WhenTooManyReservations_ReturnsTooManyReservations()
+    public async Task GetReserveSeatsAuthorization_WhenTooManyReservations_ReturnsTooManyReservations()
     {
         // Arrange
+        var seatLocks = new Dictionary<int, string> {
+            { SeatLock.SeatNumber, SeatLock.Key }
+        };
         MinimalIdentity.IsStaff = false;
         Configuration.MaxSeatsPerPerson = 0;
 
         // Act
-        var result = await Subject.GetReserveSeatAuthorization(MinimalIdentity, 0, SeatLock.Key);
+        var result = await Subject.GetReserveSeatsAuthorization(MinimalIdentity, seatLocks);
 
         // Assert
         Assert.IsFalse(result.IsAuthorized);
@@ -128,15 +134,18 @@ public class AuthorizationCheckerTests
     }
 
     [TestMethod]
-    public async Task GetReserveSeatAuthorization_WhenLockDoesNotExist_ReturnsSeatIsNotLocked()
+    public async Task GetReserveSeatsAuthorization_WhenLockDoesNotExist_ReturnsSeatIsNotLocked()
     {
         // Arrange
+        var seatLocks = new Dictionary<int, string> {
+            { SeatLock.SeatNumber, SeatLock.Key }
+        };
         MockSeatLocksDatabase
             .Setup(m => m.FetchSeatLock(It.IsAny<int>()))
             .ReturnsAsync((SeatLockEntityModel?)null);
 
         // Act
-        var result = await Subject.GetReserveSeatAuthorization(MinimalIdentity, 0, SeatLock.Key);
+        var result = await Subject.GetReserveSeatsAuthorization(MinimalIdentity, seatLocks);
 
         // Assert
         Assert.IsFalse(result.IsAuthorized);
@@ -144,14 +153,15 @@ public class AuthorizationCheckerTests
     }
 
     [TestMethod]
-    public async Task GetReserveSeatAuthorization_WhenKeyIsInvalid_ReturnsKeyIsInvalid()
+    public async Task GetReserveSeatsAuthorization_WhenKeyIsInvalid_ReturnsKeyIsInvalid()
     {
         // Arrange
-        SeatLock.Key = "key";
-        var invalidKey = "invalid key";
+        var seatLocks = new Dictionary<int, string> {
+            { SeatLock.SeatNumber, "invalid" }
+        };
 
         // Act
-        var result = await Subject.GetReserveSeatAuthorization(MinimalIdentity, 0, invalidKey);
+        var result = await Subject.GetReserveSeatsAuthorization(MinimalIdentity, seatLocks);
 
         // Assert
         Assert.IsFalse(result.IsAuthorized);
@@ -159,13 +169,16 @@ public class AuthorizationCheckerTests
     }
 
     [TestMethod]
-    public async Task GetReserveSeatAuthorization_WhenKeyIsExpired_ReturnsKeyIsExpired()
+    public async Task GetReserveSeatsAuthorization_WhenKeyIsExpired_ReturnsKeyIsExpired()
     {
         // Arrange
+        var seatLocks = new Dictionary<int, string> {
+            { SeatLock.SeatNumber, SeatLock.Key }
+        };
         SeatLock.Expiration = DateTime.UtcNow.AddYears(-1);
 
         // Act
-        var result = await Subject.GetReserveSeatAuthorization(MinimalIdentity, 0, SeatLock.Key);
+        var result = await Subject.GetReserveSeatsAuthorization(MinimalIdentity, seatLocks);
 
         // Assert
         Assert.IsFalse(result.IsAuthorized);
@@ -173,14 +186,17 @@ public class AuthorizationCheckerTests
     }
 
     [TestMethod]
-    public async Task GetReserveSeatAuthorization_WhenKeyIsExpired_ButWithinGracePeriod_ReturnsSuccess()
+    public async Task GetReserveSeatsAuthorization_WhenKeyIsExpired_ButWithinGracePeriod_ReturnsSuccess()
     {
         // Arrange
+        var seatLocks = new Dictionary<int, string> {
+            { SeatLock.SeatNumber, SeatLock.Key }
+        };
         SeatLock.Expiration = DateTime.UtcNow.AddMinutes(-1);
         Configuration.GracePeriodSeconds = (int)TimeSpan.FromDays(1).TotalSeconds;
 
         // Act
-        var result = await Subject.GetReserveSeatAuthorization(MinimalIdentity, 0, SeatLock.Key);
+        var result = await Subject.GetReserveSeatsAuthorization(MinimalIdentity, seatLocks);
 
         // Assert
         Assert.IsTrue(result.IsAuthorized);

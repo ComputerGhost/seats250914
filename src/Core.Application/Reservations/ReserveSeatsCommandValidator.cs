@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 
 namespace Core.Application.Reservations;
-public class ReserveSeatCommandValidator : AbstractValidator<ReserveSeatCommand>
+public class ReserveSeatsCommandValidator : AbstractValidator<ReserveSeatsCommand>
 {
-    public ReserveSeatCommandValidator()
+    public ReserveSeatsCommandValidator()
     {
         RuleFor(p => p.Email)
             .MaximumLength(254)
@@ -24,7 +24,7 @@ public class ReserveSeatCommandValidator : AbstractValidator<ReserveSeatCommand>
             .MaximumLength(50)
             .NotEmpty();
 
-        RuleFor(p => p.SeatKey)
+        RuleFor(p => p.SeatLocks)
             .NotEmpty();
     }
 }

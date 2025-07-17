@@ -31,9 +31,7 @@ public class SeatSelectorViewModel
         OpenTimeZone = systemStatus.ScheduledOpenTimeZone;
     }
 
-    public required string UrlForReservationPage { get; init; }
-    public required string UrlForLockSeat { get; init; }
-    public required string IdPrefix { get; init; }
+    public required int MaxSeatSelections { get; set; }
 
     public string CloseTimeDisplay { get; init; }
     public string CloseTimeParameter { get; init; }

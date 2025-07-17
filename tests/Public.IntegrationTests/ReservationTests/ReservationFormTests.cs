@@ -14,9 +14,13 @@ public class ReservationFormTests
 {
     private SeleniumWrapper _driver = null!;
     private IMediator _mediator = null!;
+    private int _lockedSeatsCount = 0;
+
+    private int AvailableSeat => ++_lockedSeatsCount;
 
     private ReadOnlyCollection<IWebElement> Alerts => _driver.FindElements(By.ClassName("alert"));
     private IWebElement Heading => _driver.FindElement(By.TagName("h1"));
+    private IWebElement SeatNumbersJoined => _driver.FindElement(By.Id("SeatNumbersJoined"));
     private IWebElement Cancel => _driver.FindElement(By.ClassName("btn-secondary"));
     private IWebElement Submit => _driver.FindElement(By.ClassName("btn-primary"));
 
@@ -32,7 +36,7 @@ public class ReservationFormTests
 
         // Lock a seat and navigate to the page.
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
-        SetLockCookie(await LockSeat(1));
+        SetLocksCookie(await LockSeats([AvailableSeat]));
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl + "/reservation/new");
     }
 
@@ -58,19 +62,30 @@ public class ReservationFormTests
     }
 
     [TestMethod]
-    public void Page_WhenValidLoad_RendersNormally()
+    public async Task Page_WhenValidLoad_RendersDataWithNoAlerts()
     {
+        // Arrange: Lock multiple seats.
+        var seats = new[] { AvailableSeat, AvailableSeat };
+        var seatLocks = await LockSeats(seats);
+        SetLocksCookie(seatLocks);
+
+        // Act: Refresh the page to load our new cookie.
+        _driver.Navigate().Refresh();
+        Assert.AreEqual(0, Alerts.Count);
+
         // Assert
         Assert.AreEqual(0, Alerts.Count);
+        Assert.AreEqual(string.Join(", ", seats), SeatNumbersJoined.GetAttribute("value"));
     }
 
     [TestMethod]
     public async Task Submit_WhenKeyIsInvalid_RendersKeyIsInvalid()
     {
         // Arrange 1: Set up an invalid key
-        var seatLock =await LockSeat(2);
-        seatLock.SeatKey = "invalid";
-        SetLockCookie(seatLock);
+        var seatNumber = AvailableSeat;
+        var seatLocks = await LockSeats([seatNumber]);
+        seatLocks.SeatLocks[seatNumber] = "invalid";
+        SetLocksCookie(seatLocks);
 
         // Act 1: Refresh the page, but it trusts the user key at first.
         _driver.Navigate().Refresh();
@@ -89,10 +104,12 @@ public class ReservationFormTests
     [TestMethod]
     public async Task Submit_WhenSeatIsWrong_RendersKeyIsInvalid()
     {
-        // Arrange 1: Set up an invalid key
-        var seatLock = await LockSeat(2);
-        seatLock.SeatNumber = 1;
-        SetLockCookie(seatLock);
+        // Arrange 1: Set up an invalid seat in the key
+        var seatNumber = AvailableSeat;
+        var seatLocks = await LockSeats([seatNumber]);
+        seatLocks.SeatLocks[seatNumber + 1] = seatLocks.SeatLocks[seatNumber];
+        seatLocks.SeatLocks.Remove(seatNumber);
+        SetLocksCookie(seatLocks);
 
         // Act 1: Refresh the page, but it trusts the user key at first.
         _driver.Navigate().Refresh();
@@ -159,7 +176,7 @@ public class ReservationFormTests
         await _mediator.Send(saveConfigurationCommand);
 
         // Arrange 2: Expired lock
-        SetLockCookie(await LockSeat(2));
+        SetLocksCookie(await LockSeats([AvailableSeat]));
 
         // Act
         _driver.Navigate().Refresh();
@@ -186,14 +203,14 @@ public class ReservationFormTests
         Assert.AreEqual(EXPECTED_TITLE, _driver.Title);
     }
 
-    private async Task<LockSeatCommandResponse> LockSeat(int seatNumber)
+    private async Task<LockSeatsCommandResponse> LockSeats(IEnumerable<int> seatNumbers)
     {
-        var seatLock = await _mediator.Send(new LockSeatCommand
+        var seatLocks = await _mediator.Send(new LockSeatsCommand
         {
             IpAddress = "-",
-            SeatNumber = seatNumber,
+            SeatNumbers = seatNumbers,
         });
-        return seatLock.Value;
+        return seatLocks.Value;
     }
 
     private void PopulateForm()
@@ -208,11 +225,11 @@ public class ReservationFormTests
         agreeToTerms.Click();
     }
 
-    private void SetLockCookie(LockSeatCommandResponse seatLock)
+    private void SetLocksCookie(LockSeatsCommandResponse seatLock)
     {
         var serialized = JsonConvert.SerializeObject(seatLock);
         var encoded = HttpUtility.UrlEncode(serialized);
-        var cookie = new Cookie("seatLock", encoded, "/", seatLock.LockExpiration.UtcDateTime);
+        var cookie = new Cookie("seatLocks", encoded, "/", seatLock.LockExpiration.UtcDateTime);
         _driver.Manage().Cookies.AddCookie(cookie);
     }
 }

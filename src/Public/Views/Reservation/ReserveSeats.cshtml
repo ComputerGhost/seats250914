@@ -1,6 +1,6 @@
 ﻿@using Core.Domain.Authorization
 @inject IViewLocalizer Localizer;
-@model ReserveSeatViewModel;
+@model ReserveSeatsViewModel;
 
 @{
     ViewData["Title"] = Localizer["Seat Reservation"].Value;
@@ -23,7 +23,7 @@
     <h1>@Localizer["Seat Reservation"]</h1>
 
     @if (Model.FailureReason == AuthorizationRejectionReason.KeyIsInvalid
-        // This shouldn't happen either because it means the cookie is wrong.
+        || Model.FailureReason == AuthorizationRejectionReason.SeatIsNotLocked
         || Model.FailureReason == AuthorizationRejectionReason.KeyIsExpired)
     {
         <div>@Localizer["<!-- AuthorizationResult.KeyIsInvalid -->"]</div>
@@ -40,7 +40,7 @@
     {
         <section>
             @Localizer["<!-- seat information -->",
-                Model.SeatNumber,
+                Model.SeatNumbersJoined,
                 Model.TimeUntilExpirationText,
                 Model.TimeUntilExpirationPeriod,
                 Model.OrganizerEmail
@@ -51,8 +51,8 @@
     <form method="post">
         <section>
             <div class="mb-3">
-                <label asp-for="SeatNumber" class="form-label">Seat</label>
-                <input asp-for="SeatNumber" class="form-control" disabled>
+                <label asp-for="SeatNumbersJoined" class="form-label">Seat</label>
+                <input asp-for="SeatNumbersJoined" class="form-control" disabled>
             </div>
         </section>
 

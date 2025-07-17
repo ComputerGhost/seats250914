@@ -50,6 +50,12 @@ internal class ReservationsDatabase(IDbConnection connection) : IReservationsDat
         }
     }
 
+    public async Task DeleteReservation(int reservationId)
+    {
+        var sql = "DELETE FROM Reservations WHERE Id = @reservationId";
+        await connection.ExecuteAsync(sql, new { reservationId });
+    }
+
     public async Task<ReservationEntityModel?> FetchReservation(int reservationId)
     {
         var sql = """

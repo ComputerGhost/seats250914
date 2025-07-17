@@ -10,19 +10,19 @@ using Moq;
 namespace Core.Application.UnitTests.Reservations;
 
 [TestClass]
-public class ReserveSeatCommandHandlerTests
+public class ReserveSeatsCommandHandlerTests
 {
     private Mock<IAuthorizationChecker> MockAuthorizationChecker { get; set; } = null!;
     private Mock<IEmailsDatabase> MockEmailsDatabase { get; set; } = null!;
     private Mock<IReservationService> MockReservationService { get; set; } = null!;
-    private ReserveSeatCommandHandler Subject { get; set; } = null!;
+    private ReserveSeatsCommandHandler Subject { get; set; } = null!;
 
     [TestInitialize]
     public void Initialize()
     {
         MockAuthorizationChecker = new();
         MockAuthorizationChecker
-            .Setup(m => m.GetReserveSeatAuthorization(It.IsAny<IdentityModel>(), It.IsAny<int>(), It.IsAny<string>()))
+            .Setup(m => m.GetReserveSeatsAuthorization(It.IsAny<IdentityModel>(), It.IsAny<IDictionary<int, string>>()))
             .ReturnsAsync(AuthorizationResult.Success);
 
         MockEmailsDatabase = new();
@@ -36,11 +36,11 @@ public class ReserveSeatCommandHandlerTests
     {
         // Arrange
         MockAuthorizationChecker
-            .Setup(m => m.GetReserveSeatAuthorization(It.IsAny<IdentityModel>(), It.IsAny<int>(), It.IsAny<string>()))
+            .Setup(m => m.GetReserveSeatsAuthorization(It.IsAny<IdentityModel>(), It.IsAny<IDictionary<int, string>>()))
             .ReturnsAsync(AuthorizationResult.KeyIsInvalid);
 
         // Act
-        var result = await Subject.Handle(new ReserveSeatCommand(), CancellationToken.None);
+        var result = await Subject.Handle(new ReserveSeatsCommand(), CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.IsError);
@@ -52,15 +52,32 @@ public class ReserveSeatCommandHandlerTests
     {
         // Arrange
         MockAuthorizationChecker
-            .Setup(m => m.GetReserveSeatAuthorization(It.IsAny<IdentityModel>(), It.IsAny<int>(), It.IsAny<string>()))
+            .Setup(m => m.GetReserveSeatsAuthorization(It.IsAny<IdentityModel>(), It.IsAny<IDictionary<int, string>>()))
             .ReturnsAsync(AuthorizationResult.KeyIsInvalid);
 
         // Act
-        var result = await Subject.Handle(new ReserveSeatCommand(), CancellationToken.None);
+        var result = await Subject.Handle(new ReserveSeatsCommand(), CancellationToken.None);
 
         // Assert
         MockReservationService.Verify(
-            m => m.ReserveSeat(It.IsAny<int>(), It.IsAny<IdentityModel>()),
+            m => m.ReserveSeats(It.IsAny<IList<int>>(), It.IsAny<IdentityModel>()),
+            Times.Never);
+    }
+
+    [TestMethod]
+    public async Task Handle_WhenNotAuthorizedForLockedSeat_DoesNotEnqueueEmail()
+    {
+        // Arrange
+        MockAuthorizationChecker
+            .Setup(m => m.GetReserveSeatsAuthorization(It.IsAny<IdentityModel>(), It.IsAny<IDictionary<int, string>>()))
+            .ReturnsAsync(AuthorizationResult.KeyIsInvalid);
+
+        // Act
+        var result = await Subject.Handle(new ReserveSeatsCommand(), CancellationToken.None);
+
+        // Assert
+        MockEmailsDatabase.Verify(
+            m => m.EnqueueEmail(It.IsAny<string>(), It.IsAny<int>()),
             Times.Never);
     }
 
@@ -75,11 +92,11 @@ public class ReserveSeatCommandHandlerTests
     {
         // Arrange
         MockAuthorizationChecker
-            .Setup(m => m.GetReserveSeatAuthorization(It.IsAny<IdentityModel>(), It.IsAny<int>(), It.IsAny<string>()))
+            .Setup(m => m.GetReserveSeatsAuthorization(It.IsAny<IdentityModel>(), It.IsAny<IDictionary<int, string>>()))
             .ReturnsAsync(AuthorizationResult.Failure(rejectionReason));
 
         // Act
-        var result = await Subject.Handle(new ReserveSeatCommand(), CancellationToken.None);
+        var result = await Subject.Handle(new ReserveSeatsCommand(), CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.IsError);
@@ -99,7 +116,7 @@ public class ReserveSeatCommandHandlerTests
             .ReturnsAsync(RESERVATION_ID);
 
         // Act
-        var result = await Subject.Handle(new ReserveSeatCommand(), CancellationToken.None);
+        var result = await Subject.Handle(new ReserveSeatsCommand(), CancellationToken.None);
 
         // Assert
         MockEmailsDatabase.Verify(

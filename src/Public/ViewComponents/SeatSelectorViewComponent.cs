@@ -14,15 +14,18 @@ namespace Public.ViewComponents;
 /// </remarks>
 public class SeatSelectorViewComponent(IMediator mediator) : ViewComponent
 {
+    // In case we save a stupid value for the seat selections.
+    const int INSANITY_LIMIT = 100;
+
     public async Task<IViewComponentResult> InvokeAsync(string idPrefix)
     {
+        var config = await mediator.Send(new FetchConfigurationQuery());
         var seatsList = await mediator.Send(new ListSeatsQuery());
         var systemStatus = await mediator.Send(new FetchReservationsStatusQuery());
+
         return View(new SeatSelectorViewModel(seatsList, systemStatus)
         {
-            IdPrefix = idPrefix,
-            UrlForLockSeat = Url.Action("LockSeat", "Api")!,
-            UrlForReservationPage = Url.Action("ReserveSeat", "Reservation")!,
+            MaxSeatSelections = Math.Min(INSANITY_LIMIT, config.MaxSeatsPerReservation),
         });
     }
 }

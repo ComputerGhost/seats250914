@@ -44,7 +44,7 @@ internal class AuthorizationChecker: IAuthorizationChecker
         return AuthorizationResult.Success;
     }
 
-    public async Task<AuthorizationResult> GetReserveSeatAuthorization(IdentityModel identity, int seatNumber, string key)
+    public async Task<AuthorizationResult> GetReserveSeatsAuthorization(IdentityModel identity, IDictionary<int, string> seatLocks)
     {
         var configuration = await _configurationDatabase.FetchConfiguration();
 
@@ -67,20 +67,23 @@ internal class AuthorizationChecker: IAuthorizationChecker
             }
         }
 
-        var lockEntity = await _seatLocksDatabase.FetchSeatLock(seatNumber);
-        if (lockEntity == null)
+        foreach (var seatLock in seatLocks)
         {
-            return AuthorizationResult.SeatIsNotLocked;
-        }
+            var lockEntity = await _seatLocksDatabase.FetchSeatLock(seatLock.Key);
+            if (lockEntity == null)
+            {
+                return AuthorizationResult.SeatIsNotLocked;
+            }
 
-        if (!SeatKeyUtilities.VerifyKey(lockEntity.Key, key))
-        {
-            return AuthorizationResult.KeyIsInvalid;
-        }
+            if (!SeatKeyUtilities.VerifyKey(lockEntity.Key, seatLock.Value))
+            {
+                return AuthorizationResult.KeyIsInvalid;
+            }
 
-        if (lockEntity.Expiration.AddSeconds(configuration.GracePeriodSeconds) <= DateTime.UtcNow)
-        {
-            return AuthorizationResult.KeyIsExpired;
+            if (lockEntity.Expiration.AddSeconds(configuration.GracePeriodSeconds) <= DateTime.UtcNow)
+            {
+                return AuthorizationResult.KeyIsExpired;
+            }
         }
 
         return AuthorizationResult.Success;
