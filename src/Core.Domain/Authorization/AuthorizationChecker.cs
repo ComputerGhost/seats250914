@@ -44,48 +44,6 @@ internal class AuthorizationChecker: IAuthorizationChecker
         return AuthorizationResult.Success;
     }
 
-    public async Task<AuthorizationResult> GetReserveSeatAuthorization(IdentityModel identity, int seatNumber, string key)
-    {
-        var configuration = await _configurationDatabase.FetchConfiguration();
-
-        var openChecker = OpenChecker.FromConfiguration(configuration);
-        if (!openChecker.AreReservationsOpen())
-        {
-            return AuthorizationResult.ReservationsAreClosed;
-        }
-
-        if (!identity.IsStaff)
-        {
-            if (identity.Email == null)
-            {
-                throw new Exception("Email address is required in authorization check.");
-            }
-
-            if (await _reservationsDatabase.CountActiveReservationsForEmailAddress(identity.Email) >= configuration.MaxSeatsPerPerson)
-            {
-                return AuthorizationResult.TooManyReservationsForEmail;
-            }
-        }
-
-        var lockEntity = await _seatLocksDatabase.FetchSeatLock(seatNumber);
-        if (lockEntity == null)
-        {
-            return AuthorizationResult.SeatIsNotLocked;
-        }
-
-        if (!SeatKeyUtilities.VerifyKey(lockEntity.Key, key))
-        {
-            return AuthorizationResult.KeyIsInvalid;
-        }
-
-        if (lockEntity.Expiration.AddSeconds(configuration.GracePeriodSeconds) <= DateTime.UtcNow)
-        {
-            return AuthorizationResult.KeyIsExpired;
-        }
-
-        return AuthorizationResult.Success;
-    }
-
     public async Task<AuthorizationResult> GetReserveSeatsAuthorization(IdentityModel identity, IDictionary<int, string> seatLocks)
     {
         var configuration = await _configurationDatabase.FetchConfiguration();

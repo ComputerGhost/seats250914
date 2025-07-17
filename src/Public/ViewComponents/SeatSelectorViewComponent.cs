@@ -26,8 +26,6 @@ public class SeatSelectorViewComponent(IMediator mediator) : ViewComponent
         return View(new SeatSelectorViewModel(seatsList, systemStatus)
         {
             MaxSeatSelections = Math.Min(INSANITY_LIMIT, config.MaxSeatsPerReservation),
-            UrlForLockSeat = Url.Action("LockSeats", "Api")!,
-            UrlForReservationPage = Url.Action("ReserveSeat", "Reservation")!,
         });
     }
 }

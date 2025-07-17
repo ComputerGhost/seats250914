@@ -32,8 +32,6 @@ public class SeatSelectorViewModel
     }
 
     public required int MaxSeatSelections { get; set; }
-    public required string UrlForReservationPage { get; init; }
-    public required string UrlForLockSeat { get; init; }
 
     public string CloseTimeDisplay { get; init; }
     public string CloseTimeParameter { get; init; }

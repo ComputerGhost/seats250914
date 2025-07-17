@@ -25,7 +25,7 @@ public class ReservationController(IMediator mediator) : Controller
     }
 
     [HttpGet("new")]
-    public IActionResult ReserveSeat([FromServices] IOptions<Config> config)
+    public IActionResult ReserveSeats([FromServices] IOptions<Config> config)
     {
         var seatLock = GetSeatLocksFromCookie();
         if (seatLock == null || seatLock.LockExpiration < DateTime.UtcNow)
@@ -35,7 +35,7 @@ public class ReservationController(IMediator mediator) : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        return View(new ReserveSeatViewModel
+        return View(new ReserveSeatsViewModel
         {
             OrganizerEmail = config.Value.OrganizerEmail,
             SeatNumbers = seatLock.SeatLocks.Keys,
@@ -44,17 +44,17 @@ public class ReservationController(IMediator mediator) : Controller
 
     [HttpPost("new")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ReserveSeat([FromForm] ReserveSeatViewModel model)
+    public async Task<IActionResult> ReserveSeats([FromForm] ReserveSeatsViewModel model)
     {
         return model.Action switch
         {
-            "submit" => await ReserveSeat_Submit(model),
-            "cancel" => await ReserveSeat_Cancel(),
+            "submit" => await ReserveSeats_Submit(model),
+            "cancel" => await ReserveSeats_Cancel(),
             _ => throw new NotImplementedException(),
         };
     }
 
-    private async Task<IActionResult> ReserveSeat_Cancel()
+    private async Task<IActionResult> ReserveSeats_Cancel()
     {
         var seatLocks = GetSeatLocksFromCookie();
         if (seatLocks != null)
@@ -70,7 +70,7 @@ public class ReservationController(IMediator mediator) : Controller
         return RedirectToAction("Index", "Home");
     }
 
-    private async Task<IActionResult> ReserveSeat_Submit(ReserveSeatViewModel model)
+    private async Task<IActionResult> ReserveSeats_Submit(ReserveSeatsViewModel model)
     {
         // Frontend should've handled this, but double-check here.
         if (!model.AgreeToTerms)

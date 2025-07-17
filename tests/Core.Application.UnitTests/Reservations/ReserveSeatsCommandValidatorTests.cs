@@ -3,21 +3,21 @@
 namespace Core.Application.UnitTests.Reservations;
 
 [TestClass]
-public class ReserveSeatCommandValidatorTests
+public class ReserveSeatsCommandValidatorTests
 {
-    private ReserveSeatCommand Command { get; set; } = null!;
-    private ReserveSeatCommandValidator Subject { get; set; } = null!;
+    private ReserveSeatsCommand Command { get; set; } = null!;
+    private ReserveSeatsCommandValidator Subject { get; set; } = null!;
 
     [TestInitialize]
     public void Initialize()
     {
-        Command = new ReserveSeatCommand
+        Command = new ReserveSeatsCommand
         {
             Email = "email",
             IpAddress = "-",
             Name = "name",
             PreferredLanguage = "language",
-            SeatKey = new string('a', 44),
+            SeatLocks = new Dictionary<int, string> { { 1, "" } },
         };
 
         Subject = new();
@@ -300,24 +300,10 @@ public class ReserveSeatCommandValidatorTests
     }
 
     [TestMethod]
-    public void SeatKey_WhenCorrectLength_Passes()
+    public void SeatLocks_WhenEmpty_Fails()
     {
         // Arrange
-        const int CORRECT_LENGTH = 44;
-        Command.SeatKey = new string('a', CORRECT_LENGTH);
-
-        // Act
-        var result = Subject.Validate(Command);
-
-        // Assert
-        Assert.IsTrue(result.IsValid);
-    }
-
-    [TestMethod]
-    public void SeatKey_WhenEmpty_Fails()
-    {
-        // Arrange
-        Command.SeatKey = "";
+        Command.SeatLocks.Clear();
 
         // Act
         var result = Subject.Validate(Command);
@@ -331,7 +317,7 @@ public class ReserveSeatCommandValidatorTests
     {
         // Arrange
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-        Command.SeatKey = null;
+        Command.SeatLocks = null;
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
         // Act

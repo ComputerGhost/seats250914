@@ -122,7 +122,6 @@ else if (Model.SystemStatus == SystemStatus.ClosedManually)
     data-onload="loadSeatingWidget"
     data-priority="1"
     data-max-seat-selections="@Model.MaxSeatSelections"
-    data-reservation-page-url="@Model.UrlForReservationPage"
 >
 
     @{ var mapClass = Model.IsOpen ? "col-lg-10 col-md-9" : "col-12"; }
@@ -314,7 +313,7 @@ else if (Model.SystemStatus == SystemStatus.ClosedManually)
             </noscript>
 
             <div class="lazy-loaded d-none" data-onload="showIfScriptsEnabled">
-                <form action="@Model.UrlForLockSeat" method="post">
+                <form>
                     <div class="d-flex flex-column">
                         <label for="seat-1" class="form-label w-100">
                             @Localizer["Seat"]

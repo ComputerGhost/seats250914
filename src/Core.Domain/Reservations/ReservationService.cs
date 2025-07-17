@@ -94,6 +94,7 @@ internal class ReservationService : IReservationService
         {
             Log.Warning("A reservation could not be made for seats {seatNumbers} because the locks expired before processing completed.");
             await _seatLocksDatabase.DeleteLocks(seatNumbers);
+            await _reservationsDatabase.DeleteReservation(reservationId.Value);
             return null;
         }
 

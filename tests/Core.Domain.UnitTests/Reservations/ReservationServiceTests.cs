@@ -5,7 +5,6 @@ using Core.Domain.Common.Ports;
 using Core.Domain.Reservations;
 using MediatR;
 using Moq;
-using System.Formats.Asn1;
 
 namespace Core.Domain.UnitTests.Reservations;
 
@@ -40,6 +39,12 @@ public class ReservationServiceTests
         MockSeatLocksDatabase
             .Setup(m => m.FetchSeatLock(It.IsAny<int>()))
             .ReturnsAsync(new SeatLockEntityModel());
+        MockSeatLocksDatabase
+            .Setup(m => m.ClearLockExpirations(It.IsAny<IEnumerable<int>>()))
+            .ReturnsAsync((IEnumerable<int> numbers) => numbers.Count());
+        MockSeatLocksDatabase
+            .Setup(m => m.AttachLocksToReservation(It.IsAny<IEnumerable<int>>(), It.IsAny<int>()))
+            .ReturnsAsync((IEnumerable<int> numbers, int _) => numbers.Count());
 
         MockSeatsDatabase = new();
         MockSeatsDatabase
@@ -332,6 +337,100 @@ public class ReservationServiceTests
 
         // Act
         var result = await Subject.ReserveSeat(1, MinimalIdentity);
+
+        // Assert
+        MockSeatsDatabase.Verify(
+            m => m.UpdateSeatStatus(It.IsAny<int>(), It.IsAny<string>()),
+            Times.Never);
+        MockMediator.Verify(
+            m => m.Publish(It.IsAny<SeatStatusChangedNotification>(), It.IsAny<CancellationToken>()),
+            Times.Never);
+    }
+
+    [TestMethod]
+    public async Task ReserveSeats_WhenSuccessful_ClearsLockExpirations()
+    {
+        // Arrange
+        int[] seatNumbers = [1, 2];
+
+        // Act
+        var result = await Subject.ReserveSeats(seatNumbers, MinimalIdentity);
+
+        // Assert
+        Assert.IsNotNull(result);
+        MockSeatLocksDatabase.Verify(m => m.ClearLockExpirations(It.IsAny<IEnumerable<int>>()));
+    }
+
+    [TestMethod]
+    public async Task ReserveSeats_WhenSuccessful_UpdatesSeatStatus()
+    {
+        // Arrange
+        int[] seatNumbers = [1, 2];
+
+        // Act
+        var result = await Subject.ReserveSeats(seatNumbers, MinimalIdentity);
+
+        // Assert
+        Assert.IsNotNull(result);
+        foreach (var seatNumber in seatNumbers)
+        {
+            MockSeatsDatabase.Verify(m => m.UpdateSeatStatus(
+                It.Is<int>(p => p == seatNumber),
+                It.Is<string>(p => p == SeatStatus.AwaitingPayment.ToString())));
+        }
+        MockMediator.Verify(
+            m => m.Publish(It.IsAny<SeatStatusChangedNotification>(), It.IsAny<CancellationToken>()),
+            Times.Exactly(seatNumbers.Length));
+    }
+
+    [TestMethod]
+    public async Task ReserveSeats_WhenLockDeletedBeforeExpirationCleared_ReturnsNull()
+    {
+        // Arrange
+        int[] seatNumbers = [1, 2];
+        MockSeatLocksDatabase
+            .Setup(m => m.ClearLockExpirations(It.IsAny<IEnumerable<int>>()))
+            .ReturnsAsync(seatNumbers.Length - 1);
+
+        // Act
+        var result = await Subject.ReserveSeats(seatNumbers, MinimalIdentity);
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    public async Task ReserveSeats_WhenLockDeletedBeforeExpirationCleared_DoesNotCreateReservation()
+    {
+        // Arrange
+        int[] seatNumbers = [1, 2];
+        MockSeatLocksDatabase
+            .Setup(m => m.ClearLockExpirations(It.IsAny<IEnumerable<int>>()))
+            .ReturnsAsync(seatNumbers.Length - 1);
+
+        // Act
+        var result = await Subject.ReserveSeats(seatNumbers, MinimalIdentity);
+
+        // Assert
+        MockReservationsDatabase.Verify(
+            m => m.CreateReservation(It.IsAny<ReservationEntityModel>()),
+            Times.Exactly(1)); // But it will be deleted.
+        MockReservationsDatabase.Verify(
+            m => m.DeleteReservation(It.IsAny<int>()),
+            Times.Exactly(1));
+    }
+
+    [TestMethod]
+    public async Task ReserveSeats_WhenLockDeletedBeforeExpirationCleared_DoesNotUpdateSeatStatus()
+    {
+        // Arrange
+        int[] seatNumbers = [1, 2];
+        MockSeatLocksDatabase
+            .Setup(m => m.ClearLockExpirations(It.IsAny<IEnumerable<int>>()))
+            .ReturnsAsync(seatNumbers.Length - 1);
+
+        // Act
+        var result = await Subject.ReserveSeats(seatNumbers, MinimalIdentity);
 
         // Assert
         MockSeatsDatabase.Verify(

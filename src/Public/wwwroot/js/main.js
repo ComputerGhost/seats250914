@@ -116,12 +116,11 @@ function SeatSelector($root, errorMap) {
 
     // Load config
     const maxSelections = $root.data("max-seat-selections");
-    const reservationPageUrl = $root.data("reservation-page-url");
     const idealMapWidth = $seatMap.data("scaled-for-parent-width");
     const initialMapFontSize = parseFloat($seatMap.css("font-size"));
 
     // Wire up events
-    $(window).resize(handleWindowResize);
+    $(window).on("pageshow", handlePageShow).resize(handleWindowResize);
     handleWindowResize();
     $selects.change(handleSelectChange);
     $form.on("submit", handleFormSubmit);
@@ -154,6 +153,18 @@ function SeatSelector($root, errorMap) {
         });
     });
 
+    // Start the live updates
+    try {
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/api/watch-seats")
+            .build();
+        connection.on("SEATS_UPDATED", refreshSeatStatuses);
+        connection.start();
+        console.log("Started live updates feature.");
+    } catch (err) {
+        console.error("Unable to start live updates feature.");
+    }
+
     /* Helper functions */
 
     function deselectSeat(targetSeat) {
@@ -168,6 +179,46 @@ function SeatSelector($root, errorMap) {
                 $select.val("").data("value", "");
                 return false;
             }
+        });
+    }
+
+    function fixDuplicates() {
+        $selects.each((ai, a) => {
+            $selects.each((bi, b) => {
+                if (ai !== bi) {
+                    const $b = $(b);
+                    if ($(a).val() === $b.val()) {
+                        $b.val("").data("value", "");
+                    }
+                }
+            });
+        });
+    }
+
+    function refreshSeatStatuses(statuses) {
+        Object.entries(statuses).forEach(([seatNumber, newStatus]) => {
+            const seat = seats[seatNumber - 1];
+
+            const unchanged =
+                seat.status === newStatus ||
+                (seat.status === "selected" && newStatus === "available");
+            if (unchanged) return;
+
+            if (seat.status === "selected") {
+                deselectSeat(seat);
+            }
+
+            seat.status = newStatus;
+            seat.$element.attr("class", "seat " + newStatus);
+
+            const isAvailable = seat.status === "available";
+            $selects.each((_, selectElement) => {
+                const $option = $(selectElement).find(`[value=${seatNumber}]`);
+                $option
+                    .data("status", newStatus)
+                    .prop("disabled", !isAvailable)
+                    .prop("hidden", !isAvailable);
+            });
         });
     }
 
@@ -190,19 +241,6 @@ function SeatSelector($root, errorMap) {
         });
     }
 
-    function fixDuplicates() {
-        $selects.each((ai, a) => {
-            $selects.each((bi, b) => {
-                if (ai !== bi) {
-                    const $b = $(b);
-                    if ($(a).val() === $b.val()) {
-                        $b.val("").data("value", "");
-                    }
-                }
-            });
-        });
-    }
-
     /* Event handling */
 
     function handleFormSubmit(e) {
@@ -216,14 +254,14 @@ function SeatSelector($root, errorMap) {
         isSubmitting = true;
 
         $.ajax({
-            url: $form.attr("action"),
-            method: $form.attr("method").toUpperCase(),
+            url: "/api/lock-seats",
+            method: "POST",
             data: $form.serialize(),
         })
             .done((responseJSON) => {
                 const seatLocks = JSON.stringify(responseJSON);
                 setCookie("seatLocks", seatLocks, seatLocks.lockExpiration);
-                document.location = reservationPageUrl;
+                document.location = "/reservation/new";
             })
             .fail((xhr) => {
                 if (xhr.status === 403 /* unauthorized */) {
@@ -236,6 +274,10 @@ function SeatSelector($root, errorMap) {
                 }
             })
             .always(() => (isSubmitting = false));
+    }
+
+    function handlePageShow() {
+        $.getJSON("/api/seat-statuses", refreshSeatStatuses);
     }
 
     function handleSeatClick() {

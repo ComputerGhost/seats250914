@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Presentation.Shared.FrameworkEnhancements.Extensions;
 using Presentation.Shared.LockCleanup;
 using Public.Extensions;
-using Public.Models.DTOs;
 using System.Diagnostics;
 
 namespace Public.Controllers;
@@ -23,37 +22,6 @@ public class ApiController(IMediator mediator) : Controller
             v => v.SeatNumber,
             v => v.Status.ToCssClass());
         return Results.Ok(statuses);
-    }
-
-    [HttpPost("lock-seat")]
-    public async Task<IResult> LockSeat([FromBody] LockSeatRequest request)
-    {
-        var ipAddress = Request.GetClientIpAddress();
-        var lockResult = await mediator.Send(new LockSeatCommand
-        {
-            IpAddress = ipAddress,
-            SeatNumber = request.SeatNumber,
-        });
-
-        if (lockResult.IsError)
-        {
-            var error = lockResult.FirstError;
-            return error.Type switch
-            {
-                ErrorType.Conflict => Results.Conflict(),
-                ErrorType.NotFound => Results.NotFound(),
-                ErrorType.Unauthorized => Unauthorized(error),
-                _ => throw new NotImplementedException(),
-            };
-        }
-
-        var cleanupScheduler = HttpContext.RequestServices
-            .GetServices<IHostedService>()
-            .OfType<CleanupScheduler>()
-            .Single();
-        await cleanupScheduler.ScheduleCleanup();
-
-        return Results.Ok(lockResult.Value);
     }
 
     [HttpPost("lock-seats")]

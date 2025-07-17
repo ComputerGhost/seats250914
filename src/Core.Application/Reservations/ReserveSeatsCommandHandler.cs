@@ -47,7 +47,9 @@ internal class ReserveSeatsCommandHandler : IRequestHandler<ReserveSeatsCommand,
     {
         var reason = authResult.FailureReason.ToString();
         Log.Information("User is not authorized to reserve seats {seatNumbers} because {reason}.", seatNumbers, reason);
-        return Error.Unauthorized(metadata: new Dictionary<string, object> { { "details", authResult } });
+        return Error.Unauthorized(metadata: new Dictionary<string, object> {
+            { "details", authResult }
+        });
     }
 
     private static Error UnauthorizedJustNow(IEnumerable<int> seatNumbers)
