@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Presentation.Shared.Localization.CultureProviders;
 using Presentation.Shared.Localization.Models;
 
 namespace Presentation.Shared.Localization.Extensions;
@@ -25,6 +26,12 @@ public static class WebApplicationExtensions
             // In almost every situation, these should be set to the same thing.
             SupportedCultures = myOptions.SupportedCultures, // Parsing and rendering data like numbers and currency
             SupportedUICultures = myOptions.SupportedCultures, // Language to use
+
+            RequestCultureProviders = [
+                new ChineseCultureNormalizer(),
+                new CookieRequestCultureProvider(),
+                new AcceptLanguageHeaderRequestCultureProvider(),
+            ],
         };
 
         app.UseRequestLocalization(netOptions);

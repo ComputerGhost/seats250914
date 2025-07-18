@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Available" xml:space="preserve">
+    <value>可预约</value>
+  </data>
+  <data name="On hold" xml:space="preserve">
+    <value>预留中</value>
+  </data>
+  <data name="Reservations will close soon!" xml:space="preserve">
+    <value>预约即将截止！</value>
+  </data>
+  <data name="Reservations will open soon!" xml:space="preserve">
+    <value>预约即将开放！</value>
+  </data>
+  <data name="Reserve Seat" xml:space="preserve">
+    <value>立即预约</value>
+  </data>
+  <data name="Reserved" xml:space="preserve">
+    <value>已预约</value>
+  </data>
+  <data name="Seat" xml:space="preserve">
+    <value>座位</value>
+  </data>
+  <data name="Selected" xml:space="preserve">
+    <value>已选择</value>
+  </data>
+  <data name="We're out of seats!" xml:space="preserve">
+    <value>座位已售罄！</value>
+  </data>
+  <data name="Reservations are closed!" xml:space="preserve">
+    <value>预约已结束！</value>
+  </data>
+  <data name="&lt;!--details:OpeningSoon--&gt;" xml:space="preserve">
+    <value>预约将于 &lt;time datetime="{0}" data-timezone="{1}"&gt;{2}&lt;/time&gt;开放</value>
+  </data>
+  <data name="&lt;!--details:ClosingSoon--&gt;" xml:space="preserve">
+    <value>预约将于 &lt;time datetime="{0}" data-timezone="{1}"&gt;{2}&lt;/time&gt;截止，请尽快完成预约！</value>
+  </data>
+  <data name="&lt;!--details:OutOfSeatsTemporarily--&gt;" xml:space="preserve">
+    <value>部分预约正在处理中，请稍后查看是否有空位开放。</value>
+  </data>
+  <data name="&lt;!--details:OutOfSeatsPermanently--&gt;" xml:space="preserve">
+    <value>所有座位均已预约完毕，很抱歉我们没有空余座位。</value>
+  </data>
+  <data name="&lt;!--details:ClosedPerSchedule--&gt;" xml:space="preserve">
+    <value>感谢所有预约成功的观众，我们活动现场见！</value>
+  </data>
+  <data name="&lt;!--details:ClosedManually--&gt;" xml:space="preserve">
+    <value>当前预约通道已关闭，请稍后再试。</value>
+  </data>
+  <data name="Seat {} is no longer available." xml:space="preserve">
+    <value>{}号座位已不可用</value>
+  </data>
+  <data name="Stage" xml:space="preserve">
+    <value>舞台</value>
+  </data>
+  <data name="&lt;!-- reserve seat disclosure --&gt;" xml:space="preserve">
+    <value>点击"{0}"即表示您同意我们收集和使用您的信息来完成预约。详情请参阅&lt;a href="/legal/privacy-policy"&gt;隐私条款&lt;/a&gt;</value>
+  </data>
+  <data name="&lt;!--unauthorized:ReservationsAreClosed--&gt;" xml:space="preserve">
+    <value>预约已结束。</value>
+  </data>
+  <data name="&lt;!--unauthorized:TooManySeatLocksForIpAddress--&gt;" xml:space="preserve">
+    <value>当前IP地址提交过多预约请求</value>
+  </data>
+  <data name="JavaScript is disabled!" xml:space="preserve">
+    <value>JavaScript未启用！</value>
+  </data>
+  <data name="Your browser doesn't support JavaScript or has disabled scripts on this page." xml:space="preserve">
+    <value>您的浏览器不支持JavaScript或已禁用脚本功能</value>
+  </data>
+</root>

@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="&lt;!-- AuthorizationResult.KeyIsInvalid --&gt;" xml:space="preserve">
+    <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"&gt;&lt;/button&gt;
+    &lt;p&gt;
+  您的座位未能成功预约！技术原因是您的浏览器尝试使用错误的密钥访问座位。请返回&lt;a asp-controller="Home" asp-index="Index"&gt;首页&lt;/a&gt;重试。
+    &lt;/p&gt;
+    &lt;hr&gt;
+    &lt;p class="mb-0"&gt;
+        &lt;i class="bi bi-bug"&gt;&lt;/i&gt;
+        这属于异常情况，我们已记录该问题并将进行调查。
+    &lt;/p&gt;
+&lt;/section&gt;</value>
+  </data>
+  <data name="&lt;!-- AuthorizationResult.TooManyReservationsForEmail --&gt;" xml:space="preserve">
+    <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"&gt;&lt;/button&gt;
+ 您的座位未能成功预约！该邮箱地址提交的预约次数已达上限。为保证让每个人都能有机会见到慧潾，我们限制每人可购票数。
+&lt;/section&gt;</value>
+  </data>
+  <data name="&lt;!-- form disclosures --&gt;" xml:space="preserve">
+    <value>&lt;p&gt;提交本表单即构成您与我们之间的有效合约。另外，我们将保存并使用您的数据以提供服务。详情请阅读&lt;a href="/legal/terms-of-service"&gt;服务条款&lt;/a&gt;和&lt;a href="/legal/privacy-policy"&gt;隐私条款&lt;/a&gt;。&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;!-- seat information --&gt;" xml:space="preserve">
+    <value>&lt;p&gt;您已选择{0}号座位。&lt;/p&gt;
+&lt;p&gt;提交本表单后，系统将自动发送座位确认邮件，并跳转至WitchForm支付平台。您需通过Kakaotalk或Apple ID（苹果账号）创建WitchForm账号。&lt;/p&gt;
+&lt;p&gt;如需无障碍设施协助，请在提交本表前联系我们。预约过程中遇到任何问题也可邮件咨询&lt;a href="mailto:{3}"&gt;{3}&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;若未在&lt;time class="countdown" datetime="{2}"&gt;{1}&lt;/time&gt;内完成本表，该座位将开放给其他粉丝预约。</value>
+  </data>
+  <data name="&lt;!-- AuthorizationResult.ReservationsAreClosed --&gt;" xml:space="preserve">
+    <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"&gt;&lt;/button&gt;
+ 您的座位未能成功预约！当前预约通道已关闭。请返回&lt;a asp-controller="Home" asp-index="Index"&gt;首页&lt;/a&gt;查看时间安排和通知。
+&lt;/section&gt;</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>邮箱</value>
+  </data>
+  <data name="I accept the terms of service and privacy policy linked above." xml:space="preserve">
+    <value>我接受上述服务条款和隐私条款</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>姓名</value>
+  </data>
+  <data name="Phone number" xml:space="preserve">
+    <value>手机号码</value>
+  </data>
+  <data name="Please provide a Korean phone number if possible." xml:space="preserve">
+    <value>请尽量提供韩国电话号码</value>
+  </data>
+  <data name="Preferred language" xml:space="preserve">
+    <value>首选语言</value>
+  </data>
+  <data name="Seat Reservation" xml:space="preserve">
+    <value>座位预约</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>提交</value>
+  </data>
+</root>

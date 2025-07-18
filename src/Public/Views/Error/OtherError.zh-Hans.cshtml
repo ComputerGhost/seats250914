@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "Layouts/_BareLayout";
+    ViewData["Title"] = "错误提示";
+    var statusCode = Context.Response.StatusCode;
+}
+
+<div class="container py-3 text-center">
+    <div class="display-1">@statusCode</div>
+    <h1>错误提示</h1>
+    <p>发生意外错误，我们将尽快处理。</p>
+    <div>
+        <a asp-controller="Home" asp-action="Index">返回主页</a>
+    </div>
+</div>

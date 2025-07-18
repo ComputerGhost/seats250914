@@ -30,6 +30,7 @@ builder.Services.AddMyLocalization(options =>
     [
         new CultureInfo("en"),
         new CultureInfo("ko"),
+        new CultureInfo("zh-Hans"),
     ];
     options.DefaultCulture = new CultureInfo("en");
 });

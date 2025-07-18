@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="&lt;!-- event information --&gt;" xml:space="preserve">
+    <value>&lt;p&gt;粉丝见面会将于2025年9月14日（周日）在H-STAGE HONGDAE举行。活动从下午3点开始，时长120分钟。门票价格为50,000韩元/人。&lt;/p&gt;
+&lt;p&gt;您可以在活动开始前30分钟入场。最迟请在活动开始前10分钟入场。每人需持票入场。&lt;/p&gt;
+&lt;p&gt;如有任何疑问，请联系我们： &lt;a href="mailto:{0}"&gt;{0}&lt;/a&gt;。&lt;/p&gt;
+&lt;h3&gt;粉丝信件和礼物&lt;/h3&gt;
+&lt;p&gt;在粉丝见面会当天，您可在活动开始前递交粉丝信件或礼物。这些将在见面会结束后转交给艺人。请勿递交现金、花环、花束、易腐物品等类似物品。&lt;/p&gt;
+&lt;p&gt;如需组织粉丝应援活动，请通过邮件联系我们。&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;!-- hero content --&gt;" xml:space="preserve">
+    <value>&lt;p&gt;诚邀您参加2025年9月14日的慧潾派对。&lt;/p&gt;
+&lt;p&gt;&lt;q&gt;希望这是一场属于你我的小派对，让我们能彼此互动。&lt;/q&gt;&lt;/p&gt;
+&lt;p&gt;在这个秋天，爱上慧潾吧。&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;!-- seat instructions --&gt;" xml:space="preserve">
+    <value>&lt;p&gt;您可通过本网站购买本次粉丝见面会的门票。若有余票，也可现场购票。&lt;/p&gt;
+&lt;p&gt;请在见面会开始前1小时到达现场取票（will call）窗口领取门票。需出示身份证明（带照片的身份证件）及购票信息。实体票一经领取，遗失后无法重新打印。&lt;/p&gt;
+&lt;p&gt;如需无障碍设施协助，请在预订门票前通过邮件联系我们。&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;!--venue address--&gt;" xml:space="preserve">
+    <value>首尔特别市麻浦区卧牛山路97号地下2层</value>
+  </data>
+  <data name="&lt;!--venue directions--&gt;" xml:space="preserve">
+    <value>&lt;p&gt;H-STAGE位于弘益大学正门前的韩亚银行大楼地下2层。请寻找停车场入口旁的“H-STAGE”标志，沿楼梯下行两层至外部休息区及入口。&lt;/p&gt;
+&lt;p&gt;活动不提供观众停车位，请使用公共交通。如需驾车，请自行寻找附近付费停车场。&lt;/p&gt;
+&lt;dl&gt;
+    &lt;dt&gt;地铁：&lt;/dt&gt; &lt;dd&gt;弘大入口站或上水站&lt;/dd&gt;
+    &lt;dt&gt;公交站：&lt;/dt&gt; &lt;dd&gt;弘益大学（正门），首尔公交273、7011、麻浦08、麻浦09&lt;/dd&gt;
+&lt;/dl&gt;</value>
+  </data>
+  <data name="&lt;!--venue picture credit--&gt;" xml:space="preserve">
+    <value>H-STAGE大楼外观。图片来自&lt;a href="https://theplay.or.kr/소극장/"&gt;H-STAGE webpage&lt;/a&gt;.</value>
+  </data>
+  <data name="Address:" xml:space="preserve">
+    <value>地址：</value>
+  </data>
+  <data name="Event Information" xml:space="preserve">
+    <value>活动信息</value>
+  </data>
+  <data name="Fall in Hyelin" xml:space="preserve">
+    <value>Fall in Hyelin</value>
+  </data>
+  <data name="Reserve a Seat" xml:space="preserve">
+    <value>预定座位</value>
+  </data>
+  <data name="Reserve Your Seat" xml:space="preserve">
+    <value>预定座位</value>
+  </data>
+  <data name="Venue Information" xml:space="preserve">
+    <value>场馆信息</value>
+  </data>
+  <data name="Website:" xml:space="preserve">
+    <value>官网：</value>
+  </data>
+</root>
