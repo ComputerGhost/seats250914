@@ -1,0 +1,31 @@
+﻿@using Core.Application.Reservations
+@model FetchReservationQueryResponse;
+<!DOCTYPE html>
+<html lang="zh-Hans">
+    <head>
+        <meta charset="utf-8">
+        <title>2025 Hyelin 粉丝见面会预约请求</title>
+    </head>
+    <body style="font-family: sans-serif; font-size: 16px; line-height: 1.5em; color: #333;">
+        <p>你好，@Model.Name：</p>
+
+        <p>感谢您提交预约请求！</p>
+
+        <p>
+            您的座位号是 <strong>@Model.SeatNumber</strong>。
+            在等待您的付款确认期间，该座位将为您保留。
+        </p>
+
+        <p>
+            一旦付款成功，您将收到另一封确认邮件，告知您的座位已正式批准。
+        </p>
+
+        <p>
+            如果您有任何疑问，请随时发送邮件至 <a href="mailto:hyelinikid@gmail.com">hyelinikid@gmail.com</a> 与我们联系。
+        </p>
+
+        <p>
+            谢谢！
+        </p>
+    </body>
+</html>
