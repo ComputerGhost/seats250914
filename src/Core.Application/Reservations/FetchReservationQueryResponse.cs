@@ -32,9 +32,9 @@ public class FetchReservationQueryResponse
     public DateTimeOffset ReservedAt { get; set; }
 
     /// <summary>
-    /// Number of the seat reserved.
+    /// Numbers of the seats reserved.
     /// </summary>
-    public int SeatNumber { get; set; }
+    public IEnumerable<int> SeatNumbers { get; set; } = null!;
 
     /// <summary>
     /// Status of the reservation.

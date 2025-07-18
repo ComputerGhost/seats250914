@@ -12,7 +12,7 @@ public class ReservationEditViewModel
     public ReservationEditViewModel(int reservationId, FetchReservationQueryResponse queryResponse)
     {
         ReservationId = reservationId;
-        SeatNumber = queryResponse.SeatNumber;
+        SeatNumbers = string.Join(", ", queryResponse.SeatNumbers);
         Email = queryResponse.Email;
         Name = queryResponse.Name;
         PhoneNumber = queryResponse.PhoneNumber;
@@ -23,7 +23,7 @@ public class ReservationEditViewModel
 
     public int ReservationId { get; set; }
 
-    public int SeatNumber { get; set; }
+    public string SeatNumbers { get; set; } = null!;
 
     /* Form inputs */
 
@@ -46,7 +46,6 @@ public class ReservationEditViewModel
             PhoneNumber = PhoneNumber,
             PreferredLanguage = PreferredLanguage,
             ReservationId = reservationId,
-            SeatNumber = SeatNumber,
         };
     }
 }

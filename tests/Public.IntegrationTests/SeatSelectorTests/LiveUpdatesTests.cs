@@ -42,10 +42,10 @@ public class LiveUpdatesTests
         var availableSeat = AvailableSeat;
 
         // Act: Reserve seat as other user
-        _mediator.Send(new LockSeatCommand
+        _mediator.Send(new LockSeatsCommand
         {
             IpAddress = "-",
-            SeatNumber = int.Parse(availableSeat.Text),
+            SeatNumbers = [int.Parse(availableSeat.Text)],
         });
 
         // Act: Wait for UI update.

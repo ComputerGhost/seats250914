@@ -15,7 +15,7 @@ public class ReservationListViewModel
             ReservedAtDisplay = source.ReservedAt.ToNormalizedString(),
             ReservedAtParameter = source.ReservedAt.ToString("s"),
             ReservationStatus = source.Status,
-            SeatNumber = source.SeatNumber,
+            SeatNumbers = string.Join(", ", source.SeatNumbers),
         });
     }
 
@@ -33,6 +33,6 @@ public class ReservationListViewModel
         public string ReservedAtDisplay { get; set; }
         public string ReservedAtParameter { get; set; }
         public ReservationStatus ReservationStatus { get; set; }
-        public int SeatNumber { get; set; }
+        public string SeatNumbers { get; set; }
     }
 }

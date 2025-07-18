@@ -21,7 +21,7 @@ public class ListReservationsQueryResponseItem
     /// <summary>
     /// Number of the seat reserved.
     /// </summary>
-    public required int SeatNumber { get; set; }
+    public required IEnumerable<int> SeatNumbers { get; set; }
 
     /// <summary>
     /// Status of the reservation.

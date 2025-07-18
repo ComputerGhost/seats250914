@@ -168,10 +168,10 @@ public class StatusNotificationTests
         var listSeatsResponse = await _mediator.Send(new ListSeatsQuery());
         foreach (var seat in listSeatsResponse.Data)
         {
-            await _mediator.Send(new LockSeatCommand
+            await _mediator.Send(new LockSeatsCommand
             {
                 IpAddress = "-",
-                SeatNumber = seat.SeatNumber,
+                SeatNumbers = [seat.SeatNumber],
             });
         }
 
@@ -192,10 +192,10 @@ public class StatusNotificationTests
         var listSeatsResponse = await _mediator.Send(new ListSeatsQuery());
         foreach (var seat in listSeatsResponse.Data)
         {
-            await _mediator.Send(new LockSeatCommand
+            await _mediator.Send(new LockSeatsCommand
             {
                 IpAddress = "-",
-                SeatNumber = seat.SeatNumber,
+                SeatNumbers = [seat.SeatNumber],
             });
         }
 

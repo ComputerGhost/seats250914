@@ -58,29 +58,61 @@ internal class ReservationsDatabase(IDbConnection connection) : IReservationsDat
 
     public async Task<ReservationEntityModel?> FetchReservation(int reservationId)
     {
+        ReservationEntityModel? reservation = null;
+
         var sql = """
-            SELECT Reservations.*, Seats.Number SeatNumber, ReservationStatuses.Status
+            SELECT Reservations.*, ReservationStatuses.Status, Seats.Number SeatNumber
             FROM Reservations
-            LEFT JOIN Seats ON Seats.Id = Reservations.SeatId
+            LEFT JOIN SeatLocks ON SeatLocks.ReservationId = Reservations.Id
+            LEFT JOIN Seats ON Seats.Id = SeatLocks.SeatId
             LEFT JOIN ReservationStatuses ON ReservationStatuses.Id = Reservations.ReservationStatusId
             WHERE Reservations.Id = @reservationId
             """;
-        return await connection.QuerySingleOrDefaultAsync<ReservationEntityModel>(sql, new
-        {
-            reservationId,
-        });
+        await connection.QueryAsync<ReservationEntityModel, int, ReservationEntityModel>(
+            sql,
+            (res, seatNumber) =>
+            {
+                reservation ??= res;
+                reservation.SeatNumbers.Add(seatNumber);
+                return res;
+            },
+            new { reservationId },
+            splitOn: "SeatNumber"
+        );
+
+        return reservation;
     }
 
     public async Task<IEnumerable<ReservationEntityModel>> ListReservations()
     {
+        var reservations = new Dictionary<int, ReservationEntityModel>();
+
         var sql = """
-            SELECT Reservations.*, Seats.Number SeatNumber, ReservationStatuses.Status
+            SELECT Reservations.*, ReservationStatuses.Status, Seats.Number SeatNumber
             FROM Reservations
-            LEFT JOIN Seats ON Seats.Id = Reservations.SeatId
+            LEFT JOIN SeatLocks ON SeatLocks.ReservationId = Reservations.Id
+            LEFT JOIN Seats ON Seats.Id = SeatLocks.SeatId
             LEFT JOIN ReservationStatuses ON ReservationStatuses.Id = Reservations.ReservationStatusId
             ORDER BY Reservations.ReservedAt ASC
             """;
-        return await connection.QueryAsync<ReservationEntityModel>(sql);
+
+        await connection.QueryAsync<ReservationEntityModel, int, ReservationEntityModel>(
+            sql,
+            (reservation, seatNumber) =>
+            {
+                if (!reservations.TryGetValue(reservation.Id, out var entry))
+                {
+                    entry = reservation;
+                    reservations.Add(entry.Id, entry);
+                }
+
+                entry.SeatNumbers.Add(seatNumber);
+                return entry;
+            },
+            splitOn: "SeatNumber"
+        );
+
+        return reservations.Values;
     }
 
     public async Task<bool> UpdateReservation(ReservationEntityModel reservation)

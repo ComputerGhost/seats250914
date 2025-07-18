@@ -15,7 +15,7 @@ public class ReservationViewViewModel
         ReservationStatus = fetchReservationQueryResponse.Status;
         ReservedAtDisplay = fetchReservationQueryResponse.ReservedAt.ToNormalizedString();
         ReservedAtParameter = fetchReservationQueryResponse.ReservedAt.ToString("s");
-        SeatNumber = fetchReservationQueryResponse.SeatNumber;
+        SeatNumbers = string.Join(", ", fetchReservationQueryResponse.SeatNumbers);
 
         ReservationId = reservationId;
     }
@@ -51,9 +51,9 @@ public class ReservationViewViewModel
     public string ReservedAtParameter { get; set; } = null!;
 
     /// <summary>
-    /// Number of the seat reserved.
+    /// Numbers of the seats reserved.
     /// </summary>
-    public int SeatNumber { get; set; }
+    public string SeatNumbers { get; set; } = null!;
 
     /// <summary>
     /// Display only. Id of the reservation.
