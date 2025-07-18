@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="&lt;!-- event information --&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Sự kiện fan meeting sẽ diễn ra tại H-STAGE HONGDAE vào Chủ Nhật, ngày 14 tháng 9 năm 2025. Sự kiện bắt đầu lúc 15h00 và kéo dài 120 phút. Giá vé: 50.000 KRW.&lt;/p&gt;
+&lt;p&gt;Bạn có thể vào địa điểm tổ chức từ 30 phút trước sự kiện. Vui lòng có mặt trước khi chương trình bắt đầu ít nhất 10 phút. Một vé chỉ dành cho một người.&lt;/p&gt;
+&lt;p&gt;Mọi thắc mắc vui lòng liên hệ qua email &lt;a href="mailto:{0}"&gt;{0}&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Thư tay và quà tặng&lt;/h3&gt;
+&lt;p&gt;Vào ngày tổ chức fan meeting, bạn có thể gửi thư tay hoặc quà tặng cho nghệ sĩ trước khi sự kiện bắt đầu. Những món quà này sẽ được chuyển đến nghệ sĩ sau khi sự kiện kết thúc. Vui lòng không gửi tiền mặt, vòng hoa, bó hoa, thực phẩm dễ hỏng hoặc các vật phẩm tương tự.&lt;/p&gt;
+&lt;p&gt;Nếu bạn muốn tổ chức fan support "hỗ trợ nghệ sĩ từ tâm", vui lòng liên hệ qua email của chúng tôi.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;!-- hero content --&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Bạn được mời đến bữa tiệc của Hyelin vào ngày 14 tháng 9 năm 2025.&lt;/p&gt;
+&lt;p&gt;&lt;q&gt;Mình muốn đây là một buổi tiệc nhỏ giữa bạn và mình, nơi chúng ta có thể gặp gỡ nhau.&lt;/q&gt;&lt;/p&gt;
+&lt;p&gt;Hãy cùng "rơi vào" Hyelin trong mùa thu này.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;!-- seat instructions --&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Bạn có thể mua vé tham dự fan meeting trên trang web này. Bạn cũng có thể mua trực tiếp tại sự kiện nếu vẫn còn vé.&lt;/p&gt;
+&lt;p&gt;Vui lòng nhận vé ở quầy Will Call trước khi sự kiện bắt đầu 1 tiếng. Bạn phải xuất trình giấy tờ tùy thân có ảnh và thông tin mua vé. Sau khi nhận vé giấy, nếu bạn làm mất sẽ không thể in lại.&lt;/p&gt;
+&lt;p&gt;Nếu bạn cần hỗ trợ dành cho người khuyết tật, vui lòng liên hệ với chúng tôi qua email trước khi đặt vé.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;!--venue address--&gt;" xml:space="preserve">
+    <value>Tầng B2, 97 Wausan-ro, Mapo-gu, Seoul</value>
+  </data>
+  <data name="&lt;!--venue directions--&gt;" xml:space="preserve">
+    <value>&lt;p&gt;H-STAGE nằm ở tầng hầm thứ hai của tòa nhà Hana Bank, trước cổng chính Đại học Hongik. Hãy tìm biển hiệu “H-STAGE” bên cạnh lối vào bãi đậu xe, sau đó đi xuống hai tầng để đến khu vực sảnh chờ và cổng vào.&lt;/p&gt;
+&lt;p&gt;Không có chỗ đậu xe dành cho người tham dự, vui lòng sử dụng phương tiện công cộng. Nếu bạn đi xe riêng, hãy kiểm tra các bãi đậu xe trả phí gần đó.&lt;/p&gt;
+&lt;dl&gt;
+    &lt;dt&gt;Tàu điện ngầm:&lt;/dt&gt; &lt;dd&gt;Ga Hongdae hoặc Sangsu&lt;/dd&gt;
+    &lt;dt&gt;Trạm xe buýt:&lt;/dt&gt; &lt;dd&gt;Cổng chính Đại học Hongik&lt;/dd&gt;
+    &lt;dt&gt;Tuyến xe buýt:&lt;/dt&gt; &lt;dd&gt;273, 7011, Mapo08, Mapo09&lt;/dd&gt;
+&lt;/dl&gt;</value>
+  </data>
+  <data name="&lt;!--venue picture credit--&gt;" xml:space="preserve">
+    <value>Phía trước toà nhà H-STAGE. Hình ảnh từ &lt;a href="https://theplay.or.kr/소극장/"&gt;trang web H-STAGE&lt;/a&gt;.</value>
+  </data>
+  <data name="Address:" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="Event Information" xml:space="preserve">
+    <value>Thông tin sự kiện</value>
+  </data>
+  <data name="Fall in Hyelin" xml:space="preserve">
+    <value>Fall in Hyelin</value>
+  </data>
+  <data name="Reserve a Seat" xml:space="preserve">
+    <value>Đặt chỗ</value>
+  </data>
+  <data name="Reserve Your Seat" xml:space="preserve">
+    <value>Đặt chỗ</value>
+  </data>
+  <data name="Venue Information" xml:space="preserve">
+    <value>Thông tin địa điểm</value>
+  </data>
+  <data name="Website:" xml:space="preserve">
+    <value>Website:</value>
+  </data>
+</root>

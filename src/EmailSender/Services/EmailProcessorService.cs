@@ -99,6 +99,7 @@ internal partial class EmailProcessorService(
             // code or english or korean or native => code
             "en" or "english" or "영어" => "en",
             "ko" or "korean" or "한국어" => "ko",
+            "vi" or "vietnamese" or "베트남어" or "Tiếng Việt" => "vi",
             "zh-Hans" or "chinese" or "chinese (simplified)" or "중국어" or "中文（简体）" or "简体中文" => "zh-Hans",
             _ => "en",
         };
