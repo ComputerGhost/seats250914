@@ -22,7 +22,7 @@ public class FetchReservationQueryHandler(IReservationsDatabase reservationsData
         return new FetchReservationQueryResponse
         {
             ReservedAt = reservationEntity.ReservedAt,
-            SeatNumber = reservationEntity.SeatNumber,
+            SeatNumbers = reservationEntity.SeatNumbers,
             Name = reservationEntity.Name,
             Email = reservationEntity.Email,
             PhoneNumber = reservationEntity.PhoneNumber,

@@ -56,12 +56,12 @@ public class ReservationCreateTests
             PhoneNumber = "555-0000",
             PreferredLanguage = "English",
             ReservedAt = DateTimeOffset.Now,
-            SeatNumber = 1,
+            SeatNumbers = [1],
             Status = ReservationStatus.ReservationConfirmed
         };
 
         // Act: Fill out the form
-        SeatNumber.SelectByValue(expectedData.SeatNumber.ToString());
+        SeatNumber.SelectByValue(expectedData.SeatNumbers.First().ToString());
         Name.SendKeys(expectedData.Name);
         Email.SendKeys(expectedData.Email);
         PhoneNumber.SendKeys(expectedData.PhoneNumber);
@@ -84,7 +84,8 @@ public class ReservationCreateTests
         Assert.AreEqual(expectedData.PhoneNumber, result.Value.PhoneNumber);
         Assert.AreEqual(expectedData.PreferredLanguage, result.Value.PreferredLanguage);
         Assert.AreEqual(expectedData.ReservedAt, result.Value.ReservedAt, new CloseEnough());
-        Assert.AreEqual(expectedData.SeatNumber, result.Value.SeatNumber);
+        Assert.AreEqual(expectedData.SeatNumbers.Count(), result.Value.SeatNumbers.Count());
+        Assert.AreEqual(expectedData.SeatNumbers.First(), result.Value.SeatNumbers.First());
         Assert.AreEqual(expectedData.Status, result.Value.Status);
     }
 

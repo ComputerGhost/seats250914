@@ -10,11 +10,6 @@ public class UpdateReservationCommand : IRequest<ErrorOr<Updated>>
     public int ReservationId { get; set; }
 
     /// <summary>
-    /// Number of the seat reserved.
-    /// </summary>
-    public int SeatNumber { get; set; }
-
-    /// <summary>
     /// Name of the person reserving the seat.
     /// </summary>
     public string Name { get; set; } = null!;

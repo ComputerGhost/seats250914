@@ -19,7 +19,7 @@ internal class ListReservationsQueryHandler(IReservationsDatabase reservationsDa
                 Name = reservationEntity.Name,
                 ReservationId = reservationEntity.Id,
                 ReservedAt = reservationEntity.ReservedAt,
-                SeatNumber = reservationEntity.SeatNumber,
+                SeatNumbers = reservationEntity.SeatNumbers,
                 Status = Enum.Parse<ReservationStatus>(reservationEntity.Status),
             })
         };

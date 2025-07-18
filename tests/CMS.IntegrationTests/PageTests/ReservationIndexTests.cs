@@ -51,9 +51,9 @@ public class ReservationIndexTests
         const int TARGET_INDEX1 = 0;
         const int TARGET_INDEX2 = 1;
         const int IGNORED_INDEX = 2;
-        await CreateReservation(1);
-        await CreateReservation(2);
-        await CreateReservation(3);
+        await CreateReservation([1]);
+        await CreateReservation([2]);
+        await CreateReservation([3]);
 
         // Act: Go to page with random parameter so we can later detect navigation.
         _driver.Navigate().GoToUrl(pageUrl + "?test");
@@ -77,9 +77,9 @@ public class ReservationIndexTests
     public async Task SelectAll_WhenClicked_OnlySelectsVisibleRows()
     {
         // Arrange
-        await CreateReservation(1);
-        await CreateReservation(2, "bob");
-        await CreateReservation(3);
+        await CreateReservation([1]);
+        await CreateReservation([2], "bob");
+        await CreateReservation([3]);
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl + "/reservations");
 
         // Act 1: Filter then select all
@@ -116,9 +116,9 @@ public class ReservationIndexTests
         Assert.AreEqual(EMPTY_TEXT, Rows[0].Text);
 
         // Arrange 2: Create some reservations
-        await CreateReservation(1);
-        await CreateReservation(2);
-        await CreateReservation(3);
+        await CreateReservation([1]);
+        await CreateReservation([2]);
+        await CreateReservation([3]);
 
         // Act 2: Refresh then Filter to show nothing
         _driver.Navigate().GoToUrl(pageUrl);
@@ -137,9 +137,9 @@ public class ReservationIndexTests
         const int SEAT1 = 10;
         const int SEAT2 = 5;
         const int SEAT3 = 1;
-        await CreateReservation(SEAT1);
-        await CreateReservation(SEAT2);
-        await CreateReservation(SEAT3);
+        await CreateReservation([SEAT1]);
+        await CreateReservation([SEAT2]);
+        await CreateReservation([SEAT3]);
 
         // Act
         _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl + "/reservations");
@@ -158,9 +158,9 @@ public class ReservationIndexTests
         const int PENDING_INDEX = 0;
         const int APPROVED_INDEX = 1;
         const int REJECTED_INDEX = 2;
-        var pendingId = await CreateReservation(PENDING_INDEX + 1);
-        var approvedId = await CreateReservation(APPROVED_INDEX + 1);
-        var rejectedId = await CreateReservation(REJECTED_INDEX + 1);
+        var pendingId = await CreateReservation([PENDING_INDEX + 1]);
+        var approvedId = await CreateReservation([APPROVED_INDEX + 1]);
+        var rejectedId = await CreateReservation([REJECTED_INDEX + 1]);
         await _mediator.Send(new ApproveReservationCommand(approvedId));
         await _mediator.Send(new RejectReservationCommand(rejectedId));
 
@@ -192,22 +192,21 @@ public class ReservationIndexTests
         Assert.AreEqual("승인 대기 중", Status(0).Text);
     }
 
-    private async Task<int> CreateReservation(int seatNumber, string name = "alice")
+    private async Task<int> CreateReservation(IEnumerable<int> seatNumbers, string name = "alice")
     {
-        var lockResult = await _mediator.Send(new LockSeatCommand
+        var lockResult = await _mediator.Send(new LockSeatsCommand
         {
             IpAddress = "-",
-            SeatNumber = seatNumber,
+            SeatNumbers = seatNumbers,
         });
 
-        var result = await _mediator.Send(new ReserveSeatCommand
+        var result = await _mediator.Send(new ReserveSeatsCommand
         {
             Email = "alice@example.com",
             Name = name,
             IpAddress = "-",
             PreferredLanguage = "English",
-            SeatKey = lockResult.Value.SeatKey,
-            SeatNumber = seatNumber,
+            SeatLocks = lockResult.Value.SeatLocks,
         });
 
         return result.Value;

@@ -20,7 +20,6 @@ internal class UpdateReservationCommandHandler(IReservationsDatabase reservation
             Name = request.Name,
             PhoneNumber = request.PhoneNumber,
             PreferredLanguage = request.PreferredLanguage,
-            SeatNumber = request.SeatNumber,
         };
         if (await reservationsDatabase.UpdateReservation(reservationEntity))
         {

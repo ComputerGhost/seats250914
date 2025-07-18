@@ -28,7 +28,7 @@ public class FetchReservationQueryHandlerTests
             .Setup(m => m.FetchReservation(It.IsAny<int>()))
             .ReturnsAsync(new ReservationEntityModel
             {
-                SeatNumber = 1,
+                Name = "alice",
                 Status = ReservationStatus.AwaitingPayment.ToString(),
             });
 
@@ -38,7 +38,7 @@ public class FetchReservationQueryHandlerTests
 
         // Assert
         Assert.IsFalse(result.IsError);
-        Assert.AreEqual(1, result.Value.SeatNumber);
+        Assert.AreEqual("alice", result.Value.Name);
     }
 
     [TestMethod]

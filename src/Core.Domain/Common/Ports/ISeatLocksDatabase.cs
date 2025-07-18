@@ -59,14 +59,6 @@ public interface ISeatLocksDatabase
     Task<int> DeleteLocks(IEnumerable<int> seatNumbers);
 
     /// <summary>
-    /// Applies a lock to a seat. Only one lock per seat is possible, which 
-    /// makes it impossible for multiple people to lock the same seat.
-    /// </summary>
-    /// <param name="seatLockEntity">Information for the lock to create.</param>
-    /// <returns>True if successful; false if the seat doesn't exist or is already locked.</returns>
-    Task<bool> LockSeat(SeatLockEntityModel seatLockEntity);
-
-    /// <summary>
     /// Fetches locks from the database that have expired.
     /// </summary>
     /// <remarks>
@@ -79,4 +71,12 @@ public interface ISeatLocksDatabase
     /// </summary>
     /// <returns>The seat lock; null if the lock was not found.</returns>
     Task<SeatLockEntityModel?> FetchSeatLock(int seatNumber);
+
+    /// <summary>
+    /// Applies a lock to a seat. Only one lock per seat is possible, which 
+    /// makes it impossible for multiple people to lock the same seat.
+    /// </summary>
+    /// <param name="seatLockEntity">Information for the lock to create.</param>
+    /// <returns>True if successful; false if the seat doesn't exist or is already locked.</returns>
+    Task<bool> LockSeat(SeatLockEntityModel seatLockEntity);
 }
