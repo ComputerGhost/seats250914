@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="&lt;!-- AuthorizationResult.KeyIsInvalid --&gt;" xml:space="preserve">
+    <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"&gt;&lt;/button&gt;
+    &lt;p&gt;
+  Chỗ ngồi của bạn không thể đặt!
+  Trình duyệt của bạn cố sử dụng sai mã để truy cập vào chỗ ngồi.
+  Vui lòng quay về &lt;a asp-controller="Home" asp-index="Index"&gt;trang chủ&lt;/a&gt; và thử lại.
+        Your seat was not reserved!
+    &lt;/p&gt;
+    &lt;hr&gt;
+    &lt;p class="mb-0"&gt;
+        &lt;i class="bi bi-bug"&gt;&lt;/i&gt;
+        Đây là lỗi không nên xảy ra, vì vậy chúng tôi đã ghi nhận và sẽ kiểm tra vấn đề này.
+    &lt;/p&gt;
+&lt;/section&gt;</value>
+  </data>
+  <data name="&lt;!-- AuthorizationResult.TooManyReservationsForEmail --&gt;" xml:space="preserve">
+    <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"&gt;&lt;/button&gt;
+    Chỗ ngồi của bạn không thể đặt!
+ Đã có quá nhiều lượt đặt chỗ được gửi từ địa chỉ email của bạn.
+ Chúng tôi phải giới hạn số lượng vé mỗi người có thể đặt để đảm bảo ai cũng có cơ hội gặp Hyelin.
+&lt;/section&gt;</value>
+  </data>
+  <data name="&lt;!-- form disclosures --&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Việc đặt chỗ này sẽ trở thành hợp đồng có giá trị pháp lý giữa bạn và chúng tôi. Ngoài ra, chúng tôi sẽ lưu và sử dụng dữ liệu của bạn để cung cấp dịch vụ chất lượng. Để biết thêm thông tin, vui lòng xem &lt;a href="/legal/terms-of-service"&gt;Điều khoản dịch vụ&lt;/a&gt; và &lt;a href="/legal/privacy-policy"&gt;Chính sách bảo mật&lt;/a&gt;.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;!-- seat information --&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Bạn đã chọn ghế {0}.&lt;/p&gt;
+&lt;p&gt;
+    Sau khi hoàn tất bước này, email xác nhận số ghế được gửi đến bạn, và được chuyển đến nền tảng thanh toán WitchForm. Bạn sẽ cần tạo tài khoản WitchForm thông qua KakaoTalk hoặc Apple ID.
+&lt;/p&gt;
+&lt;p&gt;
+ Nếu bạn cần hỗ trợ cho người khuyết tật, vui lòng liên hệ với chúng tôi trước khi đặt chỗ.
+ Nếu gặp bất kỳ khó khăn nào trong quá trình mua vé, bạn có thể gửi email đến &lt;a href="mailto:{3}"&gt;{3}&lt;/a&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+ Nếu bạn không hoàn tất trong &lt;time class="countdown" datetime="{2}"&gt;{1}&lt;/time&gt;, chỗ ngồi sẽ được nhường lại cho fan khác.
+&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;!-- AuthorizationResult.ReservationsAreClosed --&gt;" xml:space="preserve">
+    <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"&gt;&lt;/button&gt;
+    Chỗ ngồi của bạn không thể đặt!
+ Thời gian mua vé đã kết thúc.
+ Vui lòng quay về &lt;a asp-controller="Home" asp-index="Index"&gt;trang chủ&lt;/a&gt; để theo dõi lịch trình và thông báo.
+&lt;/section&gt;</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Huỷ</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="I accept the terms of service and privacy policy linked above." xml:space="preserve">
+    <value>Tôi đồng ý với điều khoản sử dụng và chính sách bảo mật nêu trên.</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="Phone number" xml:space="preserve">
+    <value>Số điện thoại</value>
+  </data>
+  <data name="Please provide a Korean phone number if possible." xml:space="preserve">
+    <value>Vui lòng cung cấp số điện thoại Hàn Quốc nếu có thể.</value>
+  </data>
+  <data name="Preferred language" xml:space="preserve">
+    <value>Ngôn ngữ ưu tiên</value>
+  </data>
+  <data name="Seat Reservation" xml:space="preserve">
+    <value>Đặt chỗ</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Hoàn tất</value>
+  </data>
+</root>

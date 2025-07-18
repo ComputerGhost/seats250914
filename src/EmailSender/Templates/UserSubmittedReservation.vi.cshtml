@@ -1,0 +1,31 @@
+﻿@using Core.Application.Reservations
+@model FetchReservationQueryResponse;
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="utf-8">
+        <title>Yêu Cầu Đặt Vé Fanmeeting Hyelin 2025</title>
+    </head>
+    <body style="font-family: sans-serif; font-size: 16px; line-height: 1.5em; color: #333;">
+        <p>Chào @Model.Name,</p>
+
+        <p>Cảm ơn bạn đã gửi yêu cầu đặt vé!</p>
+
+        <p>
+            Số ghế của bạn là <strong>@Model.SeatNumber</strong>.
+            Ghế này sẽ được giữ cho bạn trong khi chúng tôi chờ xác nhận thanh toán.
+        </p>
+
+        <p>
+            Sau khi thanh toán thành công, bạn sẽ nhận được một email khác xác nhận rằng ghế của bạn đã được chấp nhận chính thức.
+        </p>
+
+        <p>
+            Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua email <a href="mailto:fallinhyelin@gmail.com">fallinhyelin@gmail.com</a>.
+        </p>
+
+        <p>
+            Xin cảm ơn.
+        </p>
+    </body>
+</html>

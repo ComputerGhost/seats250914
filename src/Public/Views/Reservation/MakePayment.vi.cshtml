@@ -1,0 +1,28 @@
+﻿@model MakePaymentViewModel;
+
+@{
+    ViewData["Title"] = "Thanh toán";
+}
+
+@section Scripts
+{
+    <script>
+        window.addEventListener("load", function () {
+            window.location = $(".auto-redirect").attr("href");
+        });
+    </script>
+}
+
+<section class="container py-3">
+    <h1>Thanh toán</h1>
+
+    <p>
+        Trang thanh toán sẽ được mở tự động. Nếu không, hãy 
+        <a class="auto-redirect" href="@Model.PaymentFormUrl">nhấn vào đây</a>
+        để tiếp tục.
+    </p>
+
+    <p>
+        Nếu thanh toán không thành công, đặt chỗ của bạn sẽ không được xác nhận và chỗ ngồi của bạn sẽ nhường lại cho một fan khác.
+    </p>
+</section>
