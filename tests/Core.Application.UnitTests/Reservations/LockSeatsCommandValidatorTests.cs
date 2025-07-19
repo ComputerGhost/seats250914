@@ -3,17 +3,17 @@
 namespace Core.Application.UnitTests.Reservations;
 
 [TestClass]
-public class LockSeatCommandValidatorTests
+public class LockSeatsCommandValidatorTests
 {
-    private LockSeatCommand Command { get; set; } = null!;
-    private LockSeatCommandValidator Subject { get; set; } = null!;
+    private LockSeatsCommand Command { get; set; } = null!;
+    private LockSeatsCommandValidator Subject { get; set; } = null!;
 
     [TestInitialize]
     public void Initialize()
     {
-        Command = new LockSeatCommand
+        Command = new LockSeatsCommand
         {
-            SeatNumber = 1,
+            SeatNumbers = [1],
             IpAddress = "ip address",
         };
 
@@ -67,6 +67,44 @@ public class LockSeatCommandValidatorTests
         // Arrange
         const int MAX_LENGTH = 45;
         Command.IpAddress = new string('a', MAX_LENGTH + 1);
+
+        // Act
+        var result = Subject.Validate(Command);
+
+        // Assert
+        Assert.IsFalse(result.IsValid);
+    }
+
+    public void SeatNumbers_WhenNotEmpty_Passes()
+    {
+        // Arrange
+        Command.SeatNumbers = [1];
+
+        // Act
+        var result = Subject.Validate(Command);
+
+        // Assert
+        Assert.IsTrue(result.IsValid);
+    }
+
+    public void SeatNumbers_WhenEmpty_Fails()
+    {
+        // Arrange
+        Command.SeatNumbers = [];
+
+        // Act
+        var result = Subject.Validate(Command);
+
+        // Assert
+        Assert.IsFalse(result.IsValid);
+    }
+
+    public void SeatNumbers_WhenNull_Fails()
+    {
+        // Arrange
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+        Command.SeatNumbers = null;
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
         // Act
         var result = Subject.Validate(Command);

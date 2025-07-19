@@ -18,12 +18,12 @@ public class ReservationEntityModel
     public DateTimeOffset ReservedAt { get; set; }
 
     /// <summary>
-    /// Number of the seat reserved.
+    /// Numbers of the seats reserved.
     /// </summary>
     /// <remarks>
-    /// This can only be set on reservation creation. It is ignored on update.
+    /// This is only used when pulling data. It is ignored on create and update.
     /// </remarks>
-    public int SeatNumber { get; set; }
+    public IList<int> SeatNumbers { get; set; } = [];
 
     /// <summary>
     /// Name of the person reserving the seat.

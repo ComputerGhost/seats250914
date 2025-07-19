@@ -13,7 +13,7 @@ public class ReservationViewTests
     private SeleniumWrapper _driver = null!;
     private IMediator _mediator = null!;
 
-    private IWebElement SeatNumber => _driver.FindElement(By.Id("SeatNumber"));
+    private IWebElement SeatNumbers => _driver.FindElement(By.Id("SeatNumbers"));
     private IWebElement Name => _driver.FindElement(By.Id("Name"));
     private IWebElement Email => _driver.FindElement(By.Id("Email"));
     private IWebElement PhoneNumber => _driver.FindElement(By.Id("PhoneNumber"));
@@ -65,7 +65,7 @@ public class ReservationViewTests
         Assert.AreEqual(expectedData.Name, Name.Text);
         Assert.AreEqual(expectedData.PhoneNumber, PhoneNumber.Text);
         Assert.AreEqual(expectedData.PreferredLanguage, PreferredLanguage.Text);
-        Assert.AreEqual(expectedData.SeatNumber.ToString(), SeatNumber.Text);
+        Assert.AreEqual(expectedData.SeatNumber.ToString(), SeatNumbers.Text);
         var renderedTime = DateTimeOffset.Parse(ReservedAt.GetAttribute("datetime") + "z");
         Assert.AreEqual(DateTimeOffset.UtcNow, renderedTime, new CloseEnough());
     }

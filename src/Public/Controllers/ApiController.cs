@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Presentation.Shared.FrameworkEnhancements.Extensions;
 using Presentation.Shared.LockCleanup;
 using Public.Extensions;
-using Public.Models.DTOs;
 using System.Diagnostics;
 
 namespace Public.Controllers;
@@ -25,14 +24,14 @@ public class ApiController(IMediator mediator) : Controller
         return Results.Ok(statuses);
     }
 
-    [HttpPost("lock-seat")]
-    public async Task<IResult> LockSeat([FromBody] LockSeatRequest request)
+    [HttpPost("lock-seats")]
+    public async Task<IResult> LockSeats([FromForm] IEnumerable<int> seatNumbers)
     {
         var ipAddress = Request.GetClientIpAddress();
-        var lockResult = await mediator.Send(new LockSeatCommand
+        var lockResult = await mediator.Send(new LockSeatsCommand
         {
-            IpAddress = ipAddress,
-            SeatNumber = request.SeatNumber,
+            IpAddress= ipAddress,
+            SeatNumbers = seatNumbers,
         });
 
         if (lockResult.IsError)
@@ -40,7 +39,7 @@ public class ApiController(IMediator mediator) : Controller
             var error = lockResult.FirstError;
             return error.Type switch
             {
-                ErrorType.Conflict => Results.Conflict(),
+                ErrorType.Conflict => Results.Conflict(error.Metadata),
                 ErrorType.NotFound => Results.NotFound(),
                 ErrorType.Unauthorized => Unauthorized(error),
                 _ => throw new NotImplementedException(),

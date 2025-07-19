@@ -1,5 +1,5 @@
-﻿@using Core.Application.Reservations
-@model FetchReservationQueryResponse;
+﻿@using EmailSender.Models
+@model UserSubmittedReservationViewModel;
 <!DOCTYPE html>
 <html lang="ko">
     <head>
@@ -12,7 +12,7 @@
         <p>자리를 예약해주셔서 감사합니다!</p>
 
         <p>
-            배정된 좌석 번호는 <strong>@Model.SeatNumber</strong>번입니다.
+            배정된 좌석 번호는 <strong>@(Model.SeatNumbers)번</strong>입니다.
             이 좌석은 결제 확인이 완료될 때까지 임시로 예약된 상태입니다.
         </p>
 

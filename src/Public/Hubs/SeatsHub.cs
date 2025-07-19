@@ -1,6 +1,5 @@
 ﻿using Core.Application.Seats;
 using Core.Application.Seats.Events;
-using Core.Domain.Common.Enumerations;
 using Core.Domain.DependencyInjection;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
@@ -14,7 +13,7 @@ public class SeatsHub : Hub
     public const string SEATS_UPDATED = nameof(SEATS_UPDATED);
 
     private static int _activeConnections = 0;
-    private static readonly object _lock = new();
+    private static readonly Lock _lock = new();
 
     public override Task OnConnectedAsync()
     {
@@ -44,7 +43,7 @@ public class SeatsHub : Hub
             _mediator = mediator;
         }
 
-        public async Task OnSeatStatusChanged(int seatNumber, SeatStatus newStatus)
+        public async Task OnSeatStatusesChanged()
         {
             var allSeats = await _mediator.Send(new ListSeatsQuery());
             var newStatuses = allSeats.Data.ToDictionary(

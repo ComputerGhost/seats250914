@@ -10,16 +10,30 @@ namespace Core.Infrastructure.Database;
 [ServiceImplementation]
 internal class SeatLocksDatabase(IDbConnection connection) : ISeatLocksDatabase
 {
-    public async Task ClearLockExpiration(int seatNumber)
+    public async Task<int> AttachLocksToReservation(IEnumerable<int> seatNumbers, int reservationId)
+    {
+        var sql = """
+            UPDATE SeatLocks
+            SET ReservationId = @reservationId
+            WHERE SeatId IN (SELECT Id FROM Seats WHERE Number IN @seatNumbers)
+            """;
+        return await connection.ExecuteAsync(sql, new
+        {
+            seatNumbers,
+            reservationId,
+        });
+    }
+
+    public async Task<int> ClearLockExpirations(IEnumerable<int> seatNumbers)
     {
         var sql = """
             UPDATE SeatLocks
             SET Expiration = NULL
-            WHERE SeatId = (SELECT Id FROM Seats WHERE Number = @seatNumber)
+            WHERE SeatId IN (SELECT Id FROM Seats WHERE Number IN @seatNumbers)
             """;
-        await connection.ExecuteAsync(sql, new
+        return await connection.ExecuteAsync(sql, new
         {
-            seatNumber,
+            seatNumbers,
         });
     }
 
@@ -32,16 +46,16 @@ internal class SeatLocksDatabase(IDbConnection connection) : ISeatLocksDatabase
         });
     }
 
-    public async Task<bool> DeleteLock(int seatNumber)
+    public async Task<int> DeleteLocks(IEnumerable<int> seatNumbers)
     {
         var sql = """
             DELETE FROM SeatLocks
-            WHERE SeatId = (SELECT Id FROM Seats WHERE Number = @seatNumber)
+            WHERE SeatId IN (SELECT Id FROM Seats WHERE Number IN @seatNumbers)
             """;
         return await connection.ExecuteAsync(sql, new
         {
-            seatNumber,
-        }) > 0;
+            seatNumbers,
+        });
     }
 
     public async Task<IEnumerable<SeatLockEntityModel>> FetchExpiredLocks(DateTimeOffset beforeTime)

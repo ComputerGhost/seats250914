@@ -14,7 +14,7 @@ namespace Core.Application.Reservations;
 /// If `Error.Unauthorized` is returned, then the metadata will have an 
 /// `AuthorizationResult` under the "details" key.
 /// </remarks>
-public class ReserveSeatCommand : IRequest<ErrorOr<int>>
+public class ReserveSeatsCommand : IRequest<ErrorOr<int>>
 {
     /// <summary>
     /// Ip address of the one reserving the seat.
@@ -22,14 +22,9 @@ public class ReserveSeatCommand : IRequest<ErrorOr<int>>
     public string IpAddress { get; set; } = null!;
 
     /// <summary>
-    /// The number identifier of the seat to reserve.
+    /// Locked seats and their authorization keys.
     /// </summary>
-    public int SeatNumber { get; set; }
-
-    /// <summary>
-    /// Key to authorize reserving the seat.
-    /// </summary>
-    public string SeatKey { get; set; } = null!;
+    public IDictionary<int, string> SeatLocks { get; set; } = null!;
 
     /// <summary>
     /// Name of the person reserving the seat.

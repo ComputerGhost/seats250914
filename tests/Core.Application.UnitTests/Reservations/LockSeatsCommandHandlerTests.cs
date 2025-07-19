@@ -8,11 +8,12 @@ using Moq;
 namespace Core.Application.UnitTests.Reservations;
 
 [TestClass]
-public class LockSeatCommandHandlerTests
+public class LockSeatsCommandHandlerTests
 {
     private Mock<IAuthorizationChecker> MockAuthorizationChecker { get; set; } = null!;
     private Mock<ISeatLockService> MockSeatLockService { get; set; } = null!;
-    private LockSeatCommandHandler Subject { get; set; } = null!;
+    private LockSeatsCommandHandler Subject { get; set; } = null!;
+    private LockSeatsCommand Command = null!;
 
     [TestInitialize]
     public void Initialize()
@@ -21,6 +22,12 @@ public class LockSeatCommandHandlerTests
         MockSeatLockService = new();
 
         Subject = new(MockAuthorizationChecker.Object, MockSeatLockService.Object);
+
+        Command = new LockSeatsCommand
+        {
+            IpAddress = "-",
+            SeatNumbers = [1],
+        };
     }
 
     [TestMethod]
@@ -32,7 +39,7 @@ public class LockSeatCommandHandlerTests
             .ReturnsAsync(AuthorizationResult.ReservationsAreClosed);
 
         // Act
-        var result = await Subject.Handle(new LockSeatCommand(), CancellationToken.None);
+        var result = await Subject.Handle(Command, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.IsError);
@@ -48,7 +55,7 @@ public class LockSeatCommandHandlerTests
             .ReturnsAsync(AuthorizationResult.ReservationsAreClosed);
 
         // Act
-        var result = await Subject.Handle(new LockSeatCommand(), CancellationToken.None);
+        var result = await Subject.Handle(Command, CancellationToken.None);
 
         // Assert
         MockSeatLockService.Verify(
@@ -71,7 +78,7 @@ public class LockSeatCommandHandlerTests
             .ReturnsAsync(AuthorizationResult.Failure(rejectionReason));
 
         // Act
-        var result = await Subject.Handle(new LockSeatCommand(), CancellationToken.None);
+        var result = await Subject.Handle(Command, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.IsError);

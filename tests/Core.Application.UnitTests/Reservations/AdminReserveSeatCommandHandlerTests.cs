@@ -24,7 +24,7 @@ public class AdminReserveSeatCommandHandlerTests
 
         MockReservationService = new();
         MockReservationService
-            .Setup(m => m.ReserveSeat(It.IsAny<int>(), It.IsAny<IdentityModel>()))
+            .Setup(m => m.ReserveSeats(It.IsAny<IList<int>>(), It.IsAny<IdentityModel>()))
             .ReturnsAsync(1);
 
         Subject = new(MockReservationService.Object, MockSeatLockService.Object);

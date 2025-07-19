@@ -7,11 +7,11 @@ using System.Diagnostics;
 
 namespace Public.Models.ViewModels;
 
-public class ReserveSeatViewModel
+public class ReserveSeatsViewModel
 {
     private TimeSpan _timeUntilExpiration;
 
-    public ReserveSeatViewModel()
+    public ReserveSeatsViewModel()
     {
         var culture = Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
         PreferredLanguageAbbreviated = culture;
@@ -30,7 +30,9 @@ public class ReserveSeatViewModel
     public required string OrganizerEmail { get; set; } = null!;
 
     [BindNever]
-    public required int SeatNumber { get; set; }
+    public required IEnumerable<int> SeatNumbers { get; set; }
+
+    public string SeatNumbersJoined => string.Join(", ", SeatNumbers ?? []);
 
     /* Form fields */
 
@@ -48,7 +50,7 @@ public class ReserveSeatViewModel
 
     public string PreferredLanguageAbbreviated { get; set; }
 
-    public ReserveSeatCommand ToReserveSeatCommand(string ipAddress, LockSeatCommandResponse seatLock)
+    public ReserveSeatsCommand ToReserveSeatsCommand(string ipAddress, LockSeatsCommandResponse seatLocks)
     {
         var preferredLangauge = PreferredLanguageAbbreviated switch
         {
@@ -57,19 +59,18 @@ public class ReserveSeatViewModel
             _ => throw new NotImplementedException($"Language abbreviation ${PreferredLanguageAbbreviated} is not valid."),
         };
 
-        return new ReserveSeatCommand
+        return new ReserveSeatsCommand
         {
             IpAddress = ipAddress,
             Email = Email,
             Name = Name,
             PhoneNumber = PhoneNumber,
             PreferredLanguage = preferredLangauge,
-            SeatKey = seatLock.SeatKey,
-            SeatNumber = seatLock.SeatNumber,
+            SeatLocks = seatLocks.SeatLocks,
         };
     }
 
-    public ReserveSeatViewModel WithError(Error error)
+    public ReserveSeatsViewModel WithError(Error error)
     {
         Debug.Assert(error.Metadata != null);
         Debug.Assert(error.Metadata["details"] != null);
@@ -79,7 +80,7 @@ public class ReserveSeatViewModel
         return this;
     }
 
-    public ReserveSeatViewModel WithExpiration(DateTimeOffset expiration)
+    public ReserveSeatsViewModel WithExpiration(DateTimeOffset expiration)
     {
         _timeUntilExpiration = expiration - DateTimeOffset.UtcNow;
         return this;

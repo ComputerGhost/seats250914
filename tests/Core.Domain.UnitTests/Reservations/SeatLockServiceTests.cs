@@ -35,8 +35,8 @@ public class SeatLockServiceTests
 
         MockSeatsDatabase = new();
         MockSeatsDatabase
-            .Setup(m => m.UpdateSeatStatus(It.IsAny<int>(), It.IsAny<string>()))
-            .ReturnsAsync(true);
+            .Setup(m => m.UpdateSeatStatuses(It.IsAny<IEnumerable<int>>(), It.IsAny<string>()))
+            .ReturnsAsync((IEnumerable<int> seatNumbers, string status) => seatNumbers.Count());
 
         Subject = new(
             MockMediator.Object,
@@ -73,8 +73,8 @@ public class SeatLockServiceTests
         await Subject.ClearExpiredLocks();
 
         // Assert
-        MockSeatLocksDatabase.Verify(m => m.DeleteLock(
-            It.Is<int>(p => p == expiredLock.SeatNumber)));
+        MockSeatLocksDatabase.Verify(m => m.DeleteLocks(
+            It.Is<IEnumerable<int>>(p => p.Contains(expiredLock.SeatNumber))));
     }
 
     [TestMethod]
@@ -90,11 +90,11 @@ public class SeatLockServiceTests
         await Subject.ClearExpiredLocks();
 
         // Assert
-        MockSeatsDatabase.Verify(m => m.UpdateSeatStatus(
-            It.Is<int>(p => p == expiredLock.SeatNumber),
+        MockSeatsDatabase.Verify(m => m.UpdateSeatStatuses(
+            It.Is<IEnumerable<int>>(p => p.Contains(expiredLock.SeatNumber)),
             It.Is<string>(p => p == SeatStatus.Available.ToString())));
         MockMediator.Verify(m => m.Publish(
-            It.IsAny<SeatStatusChangedNotification>(),
+            It.IsAny<SeatStatusesChangedNotification>(),
             It.IsAny<CancellationToken>()));
     }
 
@@ -133,11 +133,11 @@ public class SeatLockServiceTests
         await Subject.LockSeat(SEAT_NUMBER, "");
 
         // Assert
-        MockSeatsDatabase.Verify(m => m.UpdateSeatStatus(
-            It.Is<int>(p => p == SEAT_NUMBER),
+        MockSeatsDatabase.Verify(m => m.UpdateSeatStatuses(
+            It.Is<IEnumerable<int>>(p => p.Contains(SEAT_NUMBER)),
             It.Is<string>(p => p == SeatStatus.Locked.ToString())));
         MockMediator.Verify(m => m.Publish(
-            It.IsAny<SeatStatusChangedNotification>(),
+            It.IsAny<SeatStatusesChangedNotification>(),
             It.IsAny<CancellationToken>()));
     }
 
@@ -192,34 +192,34 @@ public class SeatLockServiceTests
     }
 
     [TestMethod]
-    public async Task UnlockSeat_DeletesLock()
+    public async Task UnlockSeats_DeletesLock()
     {
         // Arrange
         const int SEAT_NUMBER = 1;
 
         // Act
-        await Subject.UnlockSeat(SEAT_NUMBER);
+        await Subject.UnlockSeats([SEAT_NUMBER]);
 
         // Assert
-        MockSeatLocksDatabase.Verify(m => m.DeleteLock(
-            It.Is<int>(p => p == SEAT_NUMBER)));
+        MockSeatLocksDatabase.Verify(m => m.DeleteLocks(
+            It.Is<IEnumerable<int>>(p => p.Contains(SEAT_NUMBER))));
     }
 
     [TestMethod]
-    public async Task UnlockSeat_UpdatesSeatStatus()
+    public async Task UnlockSeats_UpdatesSeatStatus()
     {
         // Arrange
         const int SEAT_NUMBER = 1;
 
         // Act
-        await Subject.UnlockSeat(SEAT_NUMBER);
+        await Subject.UnlockSeats([SEAT_NUMBER]);
 
         // Assert
-        MockSeatsDatabase.Verify(m => m.UpdateSeatStatus(
-            It.Is<int>(p => p == SEAT_NUMBER),
+        MockSeatsDatabase.Verify(m => m.UpdateSeatStatuses(
+            It.Is<IEnumerable<int>>(p => p.Contains(SEAT_NUMBER)),
             It.Is<string>(p => p == SeatStatus.Available.ToString())));
         MockMediator.Verify(m => m.Publish(
-            It.IsAny<SeatStatusChangedNotification>(),
+            It.IsAny<SeatStatusesChangedNotification>(),
             It.IsAny<CancellationToken>()));
     }
 }
