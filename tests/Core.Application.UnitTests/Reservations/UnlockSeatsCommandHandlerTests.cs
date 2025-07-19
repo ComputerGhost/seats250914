@@ -7,13 +7,13 @@ using Moq;
 namespace Core.Application.UnitTests.Reservations;
 
 [TestClass]
-public class UnlockSeatCommandHandlerTests
+public class UnlockSeatsCommandHandlerTests
 {
     private Mock<IAuthorizationChecker> MockAuthorizationChecker { get; set; } = null!;
     private Mock<ISeatLockService> MockSeatLockService { get; set; } = null!;
-    private UnlockSeatCommandHandler Subject { get; set; } = null!;
+    private UnlockSeatsCommandHandler Subject { get; set; } = null!;
 
-    private UnlockSeatCommand MinimalCommand { get; set; } = null!;
+    private UnlockSeatsCommand MinimalCommand { get; set; } = null!;
 
     [TestInitialize]
     public void Initialize()
@@ -22,10 +22,9 @@ public class UnlockSeatCommandHandlerTests
         MockSeatLockService = new();
         Subject = new(MockAuthorizationChecker.Object, MockSeatLockService.Object);
 
-        MinimalCommand = new UnlockSeatCommand
+        MinimalCommand = new UnlockSeatsCommand
         {
-            SeatKey = "",
-            SeatNumber = 1,
+            SeatLocks = new Dictionary<int, string>() { { 1, "" } },
         };
     }
 
@@ -56,7 +55,7 @@ public class UnlockSeatCommandHandlerTests
 
         // Assert
         MockSeatLockService.Verify(
-            m => m.UnlockSeat(It.IsAny<int>()),
+            m => m.UnlockSeats(It.IsAny<IEnumerable<int>>()),
             Times.Never);
     }
 }

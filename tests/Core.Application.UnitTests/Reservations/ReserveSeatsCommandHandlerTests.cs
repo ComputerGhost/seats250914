@@ -17,6 +17,8 @@ public class ReserveSeatsCommandHandlerTests
     private Mock<IReservationService> MockReservationService { get; set; } = null!;
     private ReserveSeatsCommandHandler Subject { get; set; } = null!;
 
+    private ReserveSeatsCommand MinimalCommand { get; set; } = null!;
+
     [TestInitialize]
     public void Initialize()
     {
@@ -29,6 +31,11 @@ public class ReserveSeatsCommandHandlerTests
         MockReservationService = new();
 
         Subject = new(MockAuthorizationChecker.Object, MockEmailsDatabase.Object, MockReservationService.Object);
+
+        MinimalCommand = new ReserveSeatsCommand
+        {
+            SeatLocks = new Dictionary<int, string>() { { 1, "" } }
+        };
     }
 
     [TestMethod]
@@ -40,7 +47,7 @@ public class ReserveSeatsCommandHandlerTests
             .ReturnsAsync(AuthorizationResult.KeyIsInvalid);
 
         // Act
-        var result = await Subject.Handle(new ReserveSeatsCommand(), CancellationToken.None);
+        var result = await Subject.Handle(MinimalCommand, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.IsError);
@@ -56,7 +63,7 @@ public class ReserveSeatsCommandHandlerTests
             .ReturnsAsync(AuthorizationResult.KeyIsInvalid);
 
         // Act
-        var result = await Subject.Handle(new ReserveSeatsCommand(), CancellationToken.None);
+        var result = await Subject.Handle(MinimalCommand, CancellationToken.None);
 
         // Assert
         MockReservationService.Verify(
@@ -73,7 +80,7 @@ public class ReserveSeatsCommandHandlerTests
             .ReturnsAsync(AuthorizationResult.KeyIsInvalid);
 
         // Act
-        var result = await Subject.Handle(new ReserveSeatsCommand(), CancellationToken.None);
+        var result = await Subject.Handle(MinimalCommand, CancellationToken.None);
 
         // Assert
         MockEmailsDatabase.Verify(
@@ -96,7 +103,7 @@ public class ReserveSeatsCommandHandlerTests
             .ReturnsAsync(AuthorizationResult.Failure(rejectionReason));
 
         // Act
-        var result = await Subject.Handle(new ReserveSeatsCommand(), CancellationToken.None);
+        var result = await Subject.Handle(MinimalCommand, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.IsError);
@@ -112,11 +119,11 @@ public class ReserveSeatsCommandHandlerTests
         // Arrange
         const int RESERVATION_ID = 1;
         MockReservationService
-            .Setup(m => m.ReserveSeat(It.IsAny<int>(), It.IsAny<IdentityModel>()))
+            .Setup(m => m.ReserveSeats(It.IsAny<IList<int>>(), It.IsAny<IdentityModel>()))
             .ReturnsAsync(RESERVATION_ID);
 
         // Act
-        var result = await Subject.Handle(new ReserveSeatsCommand(), CancellationToken.None);
+        var result = await Subject.Handle(MinimalCommand, CancellationToken.None);
 
         // Assert
         MockEmailsDatabase.Verify(

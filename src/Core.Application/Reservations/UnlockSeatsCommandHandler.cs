@@ -31,10 +31,7 @@ internal class UnlockSeatsCommandHandler : IRequestHandler<UnlockSeatsCommand, E
             }
         }
 
-        foreach (var seatLock in request.SeatLocks)
-        {
-            await _seatLockService.UnlockSeat(seatLock.Key);
-        }
+        await _seatLockService.UnlockSeats(seatNumbers);
 
         return Result.Success;
     }

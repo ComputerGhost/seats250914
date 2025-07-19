@@ -29,7 +29,7 @@ internal class AdminReserveSeatCommandHandler : IRequestHandler<AdminReserveSeat
 
         Log.Information("Reserving seat {SeatNumber} for admin identity {@Identity}.", request.SeatNumber, request.Identity);
 
-        var reservationId = await _reservationService.ReserveSeat(request.SeatNumber, request.Identity);
+        var reservationId = await _reservationService.ReserveSeats([request.SeatNumber], request.Identity);
         Debug.Assert(reservationId != null, "Reservation should not fail here.");
 
         await _reservationService.ApproveReservation(reservationId.Value);

@@ -7,7 +7,5 @@ public interface IReservationService
 
     Task<bool> RejectReservation(int reservationId);
 
-    Task<int?> ReserveSeat(int seatNumber, IdentityModel identity);
-
     Task<int?> ReserveSeats(IList<int> seatNumbers, IdentityModel identity);
 }

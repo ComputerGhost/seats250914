@@ -11,7 +11,9 @@ internal class RejectReservationCommandHandler(IReservationService reservationSe
         Log.Information("Rejecting reservation {ReservationId}.", request.ReservationId);
 
         if (await reservationService.RejectReservation(request.ReservationId))
+        {
             return Result.Success;
+        }
 
         Log.Warning("Could not reject reservation {ReservationId} becuase it does not exist.", request.ReservationId);
         return Error.NotFound();

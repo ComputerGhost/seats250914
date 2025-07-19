@@ -5,5 +5,5 @@ public interface ISeatLockService
 {
     Task ClearExpiredLocks();
     Task<SeatLockEntityModel?> LockSeat(int seatNumber, string ipAddress);
-    Task UnlockSeat(int seatNumber);
+    Task UnlockSeats(IEnumerable<int> seatNumber);
 }
