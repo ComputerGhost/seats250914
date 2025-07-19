@@ -92,17 +92,15 @@ internal partial class EmailProcessorService(
     /// </summary>
     /// <param name="language"></param>
     /// <returns></returns>
-    private string NormalizeLanguage(string language)
+    private static string NormalizeLanguage(string language)
     {
-        if (language.Length == 2)
-        {
-            return language.ToLower();
-        }
-
         return language.ToLower() switch
         {
-            "english" or "영어" => "en",
-            "korean" or "한국어" => "ko",
+            // code or english or korean or native => code
+            "en" or "english" or "영어" => "en",
+            "ko" or "korean" or "한국어" => "ko",
+            "vi" or "vietnamese" or "베트남어" or "Tiếng Việt" => "vi",
+            "zh-Hans" or "chinese" or "chinese (simplified)" or "중국어" or "中文（简体）" or "简体中文" => "zh-Hans",
             _ => "en",
         };
     }

@@ -117,57 +117,79 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="&lt;!-- event information --&gt;" xml:space="preserve">
-      <value>&lt;p&gt;팬미팅은 2025년 9월 14일 일요일, H-STAGE 홍대에서 열립니다. 오후 3시에 시작되며 약 120분간 진행됩니다. 좌석당 티켓 가격은 50,000원입니다.&lt;/p&gt;
-      &lt;p&gt;행사 시작 30분 전부터 입장이 가능하며, 시작 최소 10분 전까지는 입장해 주세요. 모든 참석자는 티켓을 소지해야 입장할 수 있습니다.&lt;/p&gt;
-      &lt;p&gt;문의 사항이 있으시면 &lt;a href="mailto:{0}"&gt;{0}&lt;/a&gt; 로 연락 주세요.&lt;/p&gt;
-      &lt;h3&gt;팬레터 및 선물&lt;/h3&gt;
-      &lt;p&gt;팬미팅 당일에는 행사 시작 전까지 팬레터나 선물을 제출하실 수 있습니다. 선물은 팬미팅 종료 후 아티스트에게 전달됩니다. 현금, 화환, 꽃다발, 부패하기 쉬운 물품 등은 삼가해 주세요.&lt;/p&gt;
-      &lt;p&gt;팬 서포트 이벤트를 기획하실 경우, 이메일로 사전 문의해 주세요.&lt;/p&gt;</value>
+  <data name="&lt;!-- AuthorizationResult.KeyIsInvalid --&gt;" xml:space="preserve">
+    <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"&gt;&lt;/button&gt;
+    &lt;p&gt;
+  Chỗ ngồi của bạn không thể đặt!
+  Trình duyệt của bạn cố sử dụng sai mã để truy cập vào chỗ ngồi.
+  Vui lòng quay về &lt;a asp-controller="Home" asp-index="Index"&gt;trang chủ&lt;/a&gt; và thử lại.
+        Your seat was not reserved!
+    &lt;/p&gt;
+    &lt;hr&gt;
+    &lt;p class="mb-0"&gt;
+        &lt;i class="bi bi-bug"&gt;&lt;/i&gt;
+        Đây là lỗi không nên xảy ra, vì vậy chúng tôi đã ghi nhận và sẽ kiểm tra vấn đề này.
+    &lt;/p&gt;
+&lt;/section&gt;</value>
   </data>
-  <data name="&lt;!-- hero content --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;2025년 9월 14일, 혜린이의 특별한 파티에 여러분을 초대합니다.&lt;/p&gt;
-&lt;p&gt;&lt;q&gt;이건 너와 나만의 작은 파티야. 서로 소통하고 함께 즐기는 시간이 되기를 바래.&lt;/q&gt;&lt;/p&gt;
-&lt;p&gt;올가을, 혜린이에게 푹 빠져보세요!&lt;/p&gt;</value>
+  <data name="&lt;!-- AuthorizationResult.TooManyReservationsForEmail --&gt;" xml:space="preserve">
+    <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"&gt;&lt;/button&gt;
+    Chỗ ngồi của bạn không thể đặt!
+ Đã có quá nhiều lượt đặt chỗ được gửi từ địa chỉ email của bạn.
+ Chúng tôi phải giới hạn số lượng vé mỗi người có thể đặt để đảm bảo ai cũng có cơ hội gặp Hyelin.
+&lt;/section&gt;</value>
   </data>
-  <data name="&lt;!-- seat instructions --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;이 팬미팅 티켓은 본 웹사이트에서 구매하실 수 있습니다. 잔여 좌석이 있을 경우 현장에서도 구매 가능합니다.&lt;/p&gt;
-    &lt;p&gt;티켓은 팬미팅 시작 1시간 전부터 현장 매표소에서 수령하실 수 있습니다. 정부에서 인정하는 신분증과 구매 정보를 반드시 지참해 주세요. 실물 티켓을 수령한 이후 분실 시 재발급은 불가능합니다.&lt;/p&gt;
-    &lt;p&gt;접근성 지원이 필요하신 경우, 티켓 예약 전에 이메일로 문의해 주세요.&lt;/p&gt;</value>
+  <data name="&lt;!-- form disclosures --&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Việc đặt chỗ này sẽ trở thành hợp đồng có giá trị pháp lý giữa bạn và chúng tôi. Ngoài ra, chúng tôi sẽ lưu và sử dụng dữ liệu của bạn để cung cấp dịch vụ chất lượng. Để biết thêm thông tin, vui lòng xem &lt;a href="/legal/terms-of-service"&gt;Điều khoản dịch vụ&lt;/a&gt; và &lt;a href="/legal/privacy-policy"&gt;Chính sách bảo mật&lt;/a&gt;.&lt;/p&gt;</value>
   </data>
-  <data name="&lt;!--venue address--&gt;" xml:space="preserve">
-    <value>서울특별시 마포구 와우산로 97 지하 2층</value>
+  <data name="&lt;!-- seat information --&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Bạn đã chọn ghế {0}.&lt;/p&gt;
+&lt;p&gt;
+    Sau khi hoàn tất bước này, email xác nhận số ghế được gửi đến bạn, và được chuyển đến nền tảng thanh toán WitchForm. Bạn sẽ cần tạo tài khoản WitchForm thông qua KakaoTalk hoặc Apple ID.
+&lt;/p&gt;
+&lt;p&gt;
+ Nếu bạn cần hỗ trợ cho người khuyết tật, vui lòng liên hệ với chúng tôi trước khi đặt chỗ.
+ Nếu gặp bất kỳ khó khăn nào trong quá trình mua vé, bạn có thể gửi email đến &lt;a href="mailto:{3}"&gt;{3}&lt;/a&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+ Nếu bạn không hoàn tất trong &lt;time class="countdown" datetime="{2}"&gt;{1}&lt;/time&gt;, chỗ ngồi sẽ được nhường lại cho fan khác.
+&lt;/p&gt;</value>
   </data>
-  <data name="&lt;!--venue directions--&gt;" xml:space="preserve">
-      <value>&lt;p&gt;H-STAGE는 홍익대학교 정문 앞 하나은행 건물의 지하 2층에 위치해 있습니다. 주차장 입구 옆에 있는 "H-STAGE" 간판을 찾은 후, 외부 계단을 따라 두 층 내려가면 입구가 나옵니다.&lt;/p&gt;
-    &lt;p&gt;행사 참석자를 위한 주차 공간은 제공되지 않으므로 대중교통 이용을 권장합니다. 차량을 이용하실 경우 주변 유료 주차장을 이용해 주세요.&lt;/p&gt;
-    &lt;dl&gt;
-      &lt;dt&gt;지하철:&lt;/dt&gt; &lt;dd&gt;홍대입구역 또는 상수역&lt;/dd&gt;
-      &lt;dt&gt;버스 정류장:&lt;/dt&gt; &lt;dd&gt;홍익대학교(정문) — 서울 버스 273, 7011, 마포08, 마포09&lt;/dd&gt;
-    &lt;/dl&gt;</value>
+  <data name="&lt;!-- AuthorizationResult.ReservationsAreClosed --&gt;" xml:space="preserve">
+    <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"&gt;&lt;/button&gt;
+    Chỗ ngồi của bạn không thể đặt!
+ Thời gian mua vé đã kết thúc.
+ Vui lòng quay về &lt;a asp-controller="Home" asp-index="Index"&gt;trang chủ&lt;/a&gt; để theo dõi lịch trình và thông báo.
+&lt;/section&gt;</value>
   </data>
-  <data name="&lt;!--venue picture credit--&gt;" xml:space="preserve">
-    <value>H-STAGE 건물 정면. 사진 출처: &lt;a href="https://theplay.or.kr/소극장/"&gt;H-STAGE 웹페이지&lt;/a&gt;.</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Huỷ</value>
   </data>
-  <data name="Address:" xml:space="preserve">
-    <value>주소:</value>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
   </data>
-  <data name="Event Information" xml:space="preserve">
-    <value>팬미팅 정보</value>
+  <data name="I accept the terms of service and privacy policy linked above." xml:space="preserve">
+    <value>Tôi đồng ý với điều khoản sử dụng và chính sách bảo mật nêu trên.</value>
   </data>
-  <data name="Fall in Hyelin" xml:space="preserve">
-    <value>Fall in Hyelin</value>
+  <data name="Name" xml:space="preserve">
+    <value>Tên</value>
   </data>
-  <data name="Reserve a Seat" xml:space="preserve">
-    <value>좌석 예약</value>
+  <data name="Phone number" xml:space="preserve">
+    <value>Số điện thoại</value>
   </data>
-  <data name="Reserve Your Seat" xml:space="preserve">
-    <value>좌석 예약하기</value>
+  <data name="Please provide a Korean phone number if possible." xml:space="preserve">
+    <value>Vui lòng cung cấp số điện thoại Hàn Quốc nếu có thể.</value>
   </data>
-  <data name="Venue Information" xml:space="preserve">
-    <value>행사 장소 안내</value>
+  <data name="Preferred language" xml:space="preserve">
+    <value>Ngôn ngữ ưu tiên</value>
   </data>
-  <data name="Website:" xml:space="preserve">
-    <value>웹사이트:</value>
+  <data name="Seat Reservation" xml:space="preserve">
+    <value>Đặt chỗ</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Hoàn tất</value>
   </data>
 </root>

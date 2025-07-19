@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "Layouts/_BareLayout";
+    ViewData["Title"] = "Lỗi";
+    var statusCode = Context.Response.StatusCode;
+}
+
+<div class="container py-3 text-center">
+    <div class="display-1">@statusCode</div>
+    <h1>Lỗi</h1>
+    <p>Đây là sự cố ngoài mong đợi. Chúng tôi sẽ cố gắng khắc phục.</p>
+    <div>
+        <a asp-controller="Home" asp-action="Index">Trở về trang chủ</a>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+﻿@model MakePaymentViewModel;
+
+@{
+    ViewData["Title"] = "支付";
+}
+
+@section Scripts
+{
+    <script>
+        window.addEventListener("load", function () {
+            window.location = $(".auto-redirect").attr("href");
+        });
+    </script>
+}
+
+<section class="container py-3">
+    <h1>支付</h1>
+
+    <p>支付页面将自动跳转。若未自动跳转，请<a class="auto-redirect" href="@Model.PaymentFormUrl">点击此处</a>打开。</p>
+
+    <p>如未完成支付，您的预约将无法确认，该席位将开放给其他粉丝预订。</p>
+</section>
