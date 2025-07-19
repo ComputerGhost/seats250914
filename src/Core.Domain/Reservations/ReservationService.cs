@@ -38,7 +38,7 @@ internal class ReservationService : IReservationService
         }
 
         await UpdateReservationStatus(reservationId, ReservationStatus.ReservationConfirmed);
-        await UpdateSeatStatus(reservationEntity.SeatNumber, SeatStatus.ReservationConfirmed);
+        await UpdateSeatStatuses(reservationEntity.SeatNumbers, SeatStatus.ReservationConfirmed);
 
         return true;
     }
@@ -52,39 +52,21 @@ internal class ReservationService : IReservationService
         }
 
         await UpdateReservationStatus(reservationId, ReservationStatus.ReservationRejected);
-        await UpdateSeatStatus(reservationEntity.SeatNumber, SeatStatus.Available);
-        await _seatLocksDatabase.DeleteLock(reservationEntity.SeatNumber);
+        await UpdateSeatStatuses(reservationEntity.SeatNumbers, SeatStatus.Available);
+        await _seatLocksDatabase.DeleteLocks(reservationEntity.SeatNumbers);
 
         return true;
     }
 
-    public async Task<int?> ReserveSeat(int seatNumber, IdentityModel identity)
+    public async Task<int?> ReserveSeats(IList<int> seatNumbers, IdentityModel identity)
     {
-        await _seatLocksDatabase.ClearLockExpiration(seatNumber);
-
-        // Race condition check -- make sure the lock didn't just expire.
-        if (await _seatLocksDatabase.FetchSeatLock(seatNumber) == null)
+        if (seatNumbers.Count == 0)
         {
+            Log.Warning("A reservation could not be made because no seats were listed for it.");
             return null;
         }
 
-        var reservationId = await CreateReservation(seatNumber, identity);
-
-        if (reservationId != null)
-        {
-            await UpdateSeatStatus(seatNumber, SeatStatus.AwaitingPayment);
-        }
-
-        return reservationId;
-    }
-
-    public async Task<int?> ReserveSeats(IList<int> seatNumbers, IdentityModel identity)
-    {
-        // Note the first seat for backwards compatibility.
-        // This can be deleted nearer the end of the sprint.
-        var compatSeat = seatNumbers.First();
-
-        var reservationId = await CreateReservation(compatSeat, identity);
+        var reservationId = await CreateReservation(identity);
         if (reservationId == null)
         {
             return null;
@@ -101,15 +83,12 @@ internal class ReservationService : IReservationService
         var count = await _seatLocksDatabase.AttachLocksToReservation(seatNumbers, reservationId.Value);
         Debug.Assert(count == seatNumbers.Count, "Attaching locks to reservation should not fail here.");
 
-        foreach (var seatNumber in seatNumbers)
-        {
-            await UpdateSeatStatus(seatNumber, SeatStatus.AwaitingPayment);
-        }
+        await UpdateSeatStatuses(seatNumbers, SeatStatus.AwaitingPayment);
 
         return reservationId;
     }
 
-    private async Task<int?> CreateReservation(int seatNumber, IdentityModel identity)
+    private async Task<int?> CreateReservation(IdentityModel identity)
     {
         Debug.Assert(identity.Name != null);
         Debug.Assert(identity.Email != null);
@@ -118,7 +97,6 @@ internal class ReservationService : IReservationService
         var entityModel = new ReservationEntityModel
         {
             ReservedAt = DateTimeOffset.UtcNow,
-            SeatNumber = seatNumber,
             Name = identity.Name,
             Email = identity.Email,
             PhoneNumber = identity.PhoneNumber,
@@ -141,11 +119,14 @@ internal class ReservationService : IReservationService
         Debug.Assert(result, $"Updating the status of reservation {reservationId} should not have failed here");
     }
 
-    private async Task UpdateSeatStatus(int seatNumber, SeatStatus status)
+    private async Task UpdateSeatStatuses(IEnumerable<int> seatNumbers, SeatStatus status)
     {
-        var result = await _seatsDatabase.UpdateSeatStatus(seatNumber, status.ToString());
-        Debug.Assert(result, $"Updating the status of seat {seatNumber} should not have failed here.");
+        var result = await _seatsDatabase.UpdateSeatStatuses(seatNumbers, status.ToString());
+        Debug.Assert(result == seatNumbers.Count(), $"Updating the statuses of seats {string.Join(", ", seatNumbers)} should not have failed here.");
 
-        await _mediator.Publish(new SeatStatusChangedNotification(seatNumber, status));
+        foreach (var seatNumber in seatNumbers)
+        {
+            await _mediator.Publish(new SeatStatusChangedNotification(seatNumber, status));
+        }
     }
 }

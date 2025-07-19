@@ -63,17 +63,17 @@ internal class SeatsDatabase(IDbConnection connection) : ISeatsDatabase
         });
     }
 
-    public async Task<bool> UpdateSeatStatus(int seatNumber, string seatStatus)
+    public async Task<int> UpdateSeatStatuses(IEnumerable<int> seatNumbers, string seatStatus)
     {
         var sql = """
             UPDATE Seats
             SET SeatStatusId = (SELECT Id FROM SeatStatuses WHERE Status = @seatStatus)
-            WHERE Seats.Number = @seatNumber
+            WHERE Seats.Number IN @seatNumbers
             """;
         return await connection.ExecuteAsync(sql, new
         {
-            seatNumber,
+            seatNumbers,
             seatStatus,
-        }) > 0;
+        });
     }
 }

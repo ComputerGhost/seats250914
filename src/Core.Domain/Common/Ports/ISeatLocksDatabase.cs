@@ -19,15 +19,6 @@ public interface ISeatLocksDatabase
     Task<int> AttachLocksToReservation(IEnumerable<int> seatNumbers, int reservationId);
 
     /// <summary>
-    /// Marks a lock as not expiring.
-    /// </summary>
-    /// <remarks>
-    /// A nonexpiring lock is associated with reservation.
-    /// </remarks>
-    /// <param name="seatNumber">The seat number of the lock to alter.</param>
-    Task ClearLockExpiration(int seatNumber);
-
-    /// <summary>
     /// Marks locks as not expiring.
     /// </summary>
     /// <remarks>
@@ -41,14 +32,6 @@ public interface ISeatLocksDatabase
     /// Count the number of locks active for the IP address.
     /// </summary>
     public Task<int> CountLocksForIpAddress(string ipAddress);
-
-    /// <summary>
-    /// Deletes a seat lock.
-    /// If there is an associated reservation: the reservation remains, but its reference to the lock is removed.
-    /// </summary>
-    /// <param name="seatNumber">The seat number of the lock to delete.</param>
-    /// <returns>True if successful; false if the lock was not found.</returns>
-    Task<bool> DeleteLock(int seatNumber);
 
     /// <summary>
     /// Deletes a seat lock.

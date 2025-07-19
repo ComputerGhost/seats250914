@@ -37,7 +37,7 @@ internal class LockSeatsCommandHandler : IRequestHandler<LockSeatsCommand, Error
             var lockEntity = await _seatLockService.LockSeat(seatNumber, request.IpAddress);
             if (lockEntity == null)
             {
-                await UndoLocks(response.SeatLocks);
+                await _seatLockService.UnlockSeats(response.SeatLocks.Keys);
                 return SeatTaken(seatNumber);
             }
 
@@ -59,13 +59,5 @@ internal class LockSeatsCommandHandler : IRequestHandler<LockSeatsCommand, Error
         var reason = authResult.FailureReason.ToString();
         Log.Information("User is not authorized to lock seats because {reason}.", reason);
         return Error.Unauthorized(metadata: new Dictionary<string, object> { { "details", authResult } });
-    }
-
-    private async Task UndoLocks(IDictionary<int, string> seatKeys)
-    {
-        foreach (var seatNumber in seatKeys.Keys)
-        {
-            await _seatLockService.UnlockSeat(seatNumber);
-        }
     }
 }

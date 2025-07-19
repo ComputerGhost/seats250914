@@ -25,10 +25,10 @@ public interface ISeatsDatabase
     Task<IEnumerable<SeatEntityModel>> ListSeats(string status);
 
     /// <summary>
-    /// Updates the status of the seat.
+    /// Updates the statuses of the seats.
     /// </summary>
     /// <returns>
-    /// True if successful; false if the seat was not found.
+    /// The number of seats updated.
     /// </returns>
-    Task<bool> UpdateSeatStatus(int seatNumber, string seatStatus);
+    Task<int> UpdateSeatStatuses(IEnumerable<int> seatNumber, string seatStatus);
 }

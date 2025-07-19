@@ -3,42 +3,27 @@
 namespace Core.Application.UnitTests.Reservations;
 
 [TestClass]
-public class UnlockSeatCommandValidatorTests
+public class UnlockSeatsCommandValidatorTests
 {
-    private UnlockSeatCommand Command { get; set; } = null!;
-    private UnlockSeatCommandValidator Subject { get; set; } = null!;
+    private UnlockSeatsCommand Command { get; set; } = null!;
+    private UnlockSeatsCommandValidator Subject { get; set; } = null!;
 
     [TestInitialize]
     public void Initialize()
     {
-        Command = new UnlockSeatCommand
+        Command = new UnlockSeatsCommand
         {
-            SeatKey = new string('a', 44),
-            SeatNumber = 1,
+            SeatLocks = new Dictionary<int, string>() { { 1, "" } },
         };
 
         Subject = new();
     }
 
     [TestMethod]
-    public void SeatKey_WhenCorrectLength_Passes()
-    {
-        // Arrange
-        const int CORRECT_LENGTH = 44;
-        Command.SeatKey = new string('a', CORRECT_LENGTH);
-
-        // Act
-        var result = Subject.Validate(Command);
-
-        // Assert
-        Assert.IsTrue(result.IsValid);
-    }
-
-    [TestMethod]
     public void SeatKey_WhenEmpty_Fails()
     {
         // Arrange
-        Command.SeatKey = "";
+        Command.SeatLocks.Clear();
 
         // Act
         var result = Subject.Validate(Command);
@@ -52,7 +37,7 @@ public class UnlockSeatCommandValidatorTests
     {
         // Arrange
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-        Command.SeatKey = null;
+        Command.SeatLocks = null;
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
         // Act

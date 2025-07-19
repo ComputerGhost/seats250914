@@ -24,19 +24,6 @@ internal class SeatLocksDatabase(IDbConnection connection) : ISeatLocksDatabase
         });
     }
 
-    public async Task ClearLockExpiration(int seatNumber)
-    {
-        var sql = """
-            UPDATE SeatLocks
-            SET Expiration = NULL
-            WHERE SeatId = (SELECT Id FROM Seats WHERE Number = @seatNumber)
-            """;
-        await connection.ExecuteAsync(sql, new
-        {
-            seatNumber,
-        });
-    }
-
     public async Task<int> ClearLockExpirations(IEnumerable<int> seatNumbers)
     {
         var sql = """
@@ -59,23 +46,11 @@ internal class SeatLocksDatabase(IDbConnection connection) : ISeatLocksDatabase
         });
     }
 
-    public async Task<bool> DeleteLock(int seatNumber)
-    {
-        var sql = """
-            DELETE FROM SeatLocks
-            WHERE SeatId = (SELECT Id FROM Seats WHERE Number = @seatNumber)
-            """;
-        return await connection.ExecuteAsync(sql, new
-        {
-            seatNumber,
-        }) > 0;
-    }
-
     public async Task<int> DeleteLocks(IEnumerable<int> seatNumbers)
     {
         var sql = """
             DELETE FROM SeatLocks
-            WHERE SeatId = (SELECT Id FROM Seats WHERE Number IN @seatNumbers)
+            WHERE SeatId IN (SELECT Id FROM Seats WHERE Number IN @seatNumbers)
             """;
         return await connection.ExecuteAsync(sql, new
         {

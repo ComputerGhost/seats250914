@@ -34,11 +34,9 @@ internal class SeatLockService : ISeatLockService
         var gracePeriod = TimeSpan.FromSeconds(configuration.GracePeriodSeconds);
 
         var expiredLocks = await _seatLocksDatabase.FetchExpiredLocks(DateTimeOffset.UtcNow + gracePeriod);
-        foreach (var expiredLock in expiredLocks)
-        {
-            await _seatLocksDatabase.DeleteLock(expiredLock.SeatNumber);
-            await UpdateSeatStatus(expiredLock.SeatNumber, SeatStatus.Available);
-        }
+        var expiredSeatNumbers = expiredLocks.Select(x => x.SeatNumber);
+        await _seatLocksDatabase.DeleteLocks(expiredSeatNumbers);
+        await UpdateSeatStatuses(expiredSeatNumbers, SeatStatus.Available);
     }
 
     public async Task<SeatLockEntityModel?> LockSeat(int seatNumber, string ipAddress)
@@ -49,15 +47,15 @@ internal class SeatLockService : ISeatLockService
             return null;
         }
 
-        await UpdateSeatStatus(seatNumber, SeatStatus.Locked);
+        await UpdateSeatStatuses([seatNumber], SeatStatus.Locked);
 
         return lockEntity;
     }
 
-    public async Task UnlockSeat(int seatNumber)
+    public async Task UnlockSeats(IEnumerable<int> seatNumbers)
     {
-        await _seatLocksDatabase.DeleteLock(seatNumber);
-        await UpdateSeatStatus(seatNumber, SeatStatus.Available);
+        await _seatLocksDatabase.DeleteLocks(seatNumbers);
+        await UpdateSeatStatuses(seatNumbers, SeatStatus.Available);
     }
 
     private async Task<SeatLockEntityModel?> CreateLock(int seatNumber, string ipAddress)
@@ -78,11 +76,14 @@ internal class SeatLockService : ISeatLockService
         return (await _seatLocksDatabase.LockSeat(lockEntity)) ? lockEntity : null;
     }
 
-    private async Task UpdateSeatStatus(int seatNumber, SeatStatus status)
+    private async Task UpdateSeatStatuses(IEnumerable<int> seatNumbers, SeatStatus status)
     {
-        var result = await _seatsDatabase.UpdateSeatStatus(seatNumber, status.ToString());
-        Debug.Assert(result, "Updating the seat status should not have failed here.");
+        var result = await _seatsDatabase.UpdateSeatStatuses(seatNumbers, status.ToString());
+        Debug.Assert(result == seatNumbers.Count(), $"Updating the statuses of seats {string.Join(", ", seatNumbers)} should not have failed here.");
 
-        await _mediator.Publish(new SeatStatusChangedNotification(seatNumber, status));
+        foreach (var seatNumber in seatNumbers)
+        {
+            await _mediator.Publish(new SeatStatusChangedNotification(seatNumber, status));
+        }
     }
 }

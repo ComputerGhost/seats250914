@@ -47,6 +47,7 @@ internal static class TestDataSetup
         using (var connection = new SqlConnection(ConnectionString))
         {
             var sql = """
+                DELETE FROM SeatLocks;
                 DELETE FROM Reservations;
                 DELETE FROM EmailQueue;
                 """;
@@ -55,10 +56,7 @@ internal static class TestDataSetup
 
         var seatLockService = ConfigurationAccessor.Instance.Services.GetService<ISeatLockService>()!;
         var seats = await Mediator.Send(new ListSeatsQuery());
-        foreach (var seat in seats.Data)
-        {
-            await seatLockService.UnlockSeat(seat.SeatNumber);
-        }
+        await seatLockService.UnlockSeats(seats.Data.Select(x => x.SeatNumber));
     }
 
     public static async Task DeleteTestAccount()

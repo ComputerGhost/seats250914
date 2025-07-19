@@ -40,9 +40,6 @@ internal class TestDataSetup
 
         var seatLockService = ConfigurationAccessor.Instance.Services.GetService<ISeatLockService>()!;
         var seats = await Mediator.Send(new ListSeatsQuery());
-        foreach (var seat in seats.Data)
-        {
-            await seatLockService.UnlockSeat(seat.SeatNumber);
-        }
+        await seatLockService.UnlockSeats(seats.Data.Select(x => x.SeatNumber));
     }
 }

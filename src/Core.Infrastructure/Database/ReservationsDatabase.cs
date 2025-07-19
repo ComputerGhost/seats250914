@@ -26,17 +26,13 @@ internal class ReservationsDatabase(IDbConnection connection) : IReservationsDat
     {
         // This assumes that the seat number and status exist.
         var sql = """
-            INSERT INTO Reservations (ReservationStatusId, SeatId, SeatLockId, ReservedAt, Name, Email, PhoneNumber, PreferredLanguage)
+            INSERT INTO Reservations (ReservationStatusId, ReservedAt, Name, Email, PhoneNumber, PreferredLanguage)
             OUTPUT INSERTED.Id
             SELECT
                 ReservationStatuses.Id,
-                Seats.Id,
-                SeatLocks.Id,
                 @reservedAt, @name, @email, @phoneNumber, @preferredLanguage
-            FROM Seats
-            LEFT JOIN SeatLocks ON SeatLocks.SeatId = Seats.Id
-            LEFT JOIN ReservationStatuses ON ReservationStatuses.Status = @status
-            WHERE Seats.Number = @seatNumber
+            FROM ReservationStatuses
+            WHERE ReservationStatuses.Status = @status
             """;
 
         try
@@ -68,12 +64,17 @@ internal class ReservationsDatabase(IDbConnection connection) : IReservationsDat
             LEFT JOIN ReservationStatuses ON ReservationStatuses.Id = Reservations.ReservationStatusId
             WHERE Reservations.Id = @reservationId
             """;
-        await connection.QueryAsync<ReservationEntityModel, int, ReservationEntityModel>(
+        await connection.QueryAsync<ReservationEntityModel, int?, ReservationEntityModel>(
             sql,
             (res, seatNumber) =>
             {
                 reservation ??= res;
-                reservation.SeatNumbers.Add(seatNumber);
+
+                if (seatNumber != null)
+                {
+                    reservation.SeatNumbers.Add(seatNumber.Value);
+                }
+
                 return res;
             },
             new { reservationId },
@@ -96,7 +97,7 @@ internal class ReservationsDatabase(IDbConnection connection) : IReservationsDat
             ORDER BY Reservations.ReservedAt ASC
             """;
 
-        await connection.QueryAsync<ReservationEntityModel, int, ReservationEntityModel>(
+        await connection.QueryAsync<ReservationEntityModel, int?, ReservationEntityModel>(
             sql,
             (reservation, seatNumber) =>
             {
@@ -106,7 +107,11 @@ internal class ReservationsDatabase(IDbConnection connection) : IReservationsDat
                     reservations.Add(entry.Id, entry);
                 }
 
-                entry.SeatNumbers.Add(seatNumber);
+                if (seatNumber != null)
+                {
+                    entry.SeatNumbers.Add(seatNumber.Value);
+                }
+
                 return entry;
             },
             splitOn: "SeatNumber"
