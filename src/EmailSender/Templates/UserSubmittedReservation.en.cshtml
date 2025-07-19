@@ -1,5 +1,5 @@
-@using Core.Application.Reservations
-@model FetchReservationQueryResponse;
+@using EmailSender.Models
+@model UserSubmittedReservationViewModel;
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -11,17 +11,27 @@
 
         <p>Thank you for submitting your reservation request!</p>
 
-        <p>
-            Your seat number is <strong>@Model.SeatNumber</strong>.
-			This number is reserved for you while we wait for your payment to be confirmed.
-        </p>
+        @if (Model.HasMultipleSeats)
+        {
+            <p>
+                Your seat numbers are <strong>@Model.SeatNumbers</strong>.
+			    This number is reserved for you while we wait for your payment to be confirmed.
+            </p>
+        }
+        else
+        {
+            <p>
+                Your seat number is <strong>@Model.SeatNumbers</strong>.
+			    This number is reserved for you while we wait for your payment to be confirmed.
+            </p>
+        }
 
         <p>
             Once your payment is successful, you'll receive a separate email confirming that your seat has been officially approved.
         </p>
 		
 		<p>
-			If you have any questions, feel free to contact us at <a href="mailto:hyelinikid@gmail.com">hyelinikid@gmail.com</a>.
+			If you have any questions, feel free to contact us at <a href="mailto:fallinhyelin@gmail.com">hyelinikid@gmail.com</a>.
 		</p>
 
 		<p>

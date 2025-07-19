@@ -1,6 +1,7 @@
 ﻿using Core.Application.Emails;
 using Core.Application.Reservations;
 using Core.Domain.Common.Enumerations;
+using EmailSender.Models;
 using MediatR;
 using Serilog;
 using System.Text.RegularExpressions;
@@ -71,20 +72,19 @@ internal partial class EmailProcessorService(
         const EmailType type = EmailType.UserSubmittedReservation;
         Log.Information("Email #{Id} was resolved as type {type}.", email.Id, type);
 
-        var result = await mediator.Send(new FetchReservationQuery(email.ReferenceId), cancellationToken);
-        if (result.IsError)
+        var reservation = await mediator.Send(new FetchReservationQuery(email.ReferenceId), cancellationToken);
+        if (reservation.IsError)
         {
             throw new Exception($"Reservation #{email.ReferenceId} could not be loaded.");
         }
 
-        var reservation = result.Value;
-
         const string TEMPLATE_NAME = "UserSubmittedReservation";
-        var languageId = NormalizeLanguage(result.Value.PreferredLanguage);
-        var body = await templateService.Render(TEMPLATE_NAME, languageId, reservation);
+        var languageId = NormalizeLanguage(reservation.Value.PreferredLanguage);
+        var viewModel = new UserSubmittedReservationViewModel(reservation.Value);
+        var body = await templateService.Render(TEMPLATE_NAME, languageId, viewModel);
         var subject = TitleRegex().Match(body).Groups[1].Value;
 
-        await sender.SendEmail(reservation.Email, subject, body, cancellationToken);
+        await sender.SendEmail(reservation.Value.Email, subject, body, cancellationToken);
     }
 
     /// <summary>
