@@ -107,7 +107,7 @@ public class ReservationServiceTests
             It.Is<IEnumerable<int>>(p => p.Contains(SEAT_NUMBER)),
             It.Is<string>(p => p == SeatStatus.ReservationConfirmed.ToString())));
         MockMediator.Verify(m => m.Publish(
-            It.IsAny<SeatStatusChangedNotification>(),
+            It.IsAny<SeatStatusesChangedNotification>(),
             It.IsAny<CancellationToken>()));
     }
 
@@ -179,7 +179,7 @@ public class ReservationServiceTests
             It.Is<IEnumerable<int>>(p => p.Contains(SEAT_NUMBER)),
             It.Is<string>(p => p == SeatStatus.Available.ToString())));
         MockMediator.Verify(m => m.Publish(
-            It.IsAny<SeatStatusChangedNotification>(),
+            It.IsAny<SeatStatusesChangedNotification>(),
             It.IsAny<CancellationToken>()));
     }
 
@@ -235,8 +235,8 @@ public class ReservationServiceTests
                 It.Is<string>(p => p == SeatStatus.AwaitingPayment.ToString())));
         }
         MockMediator.Verify(
-            m => m.Publish(It.IsAny<SeatStatusChangedNotification>(), It.IsAny<CancellationToken>()),
-            Times.Exactly(seatNumbers.Length));
+            m => m.Publish(It.IsAny<SeatStatusesChangedNotification>(), It.IsAny<CancellationToken>()),
+            Times.Exactly(1));
     }
 
     [TestMethod]
@@ -303,7 +303,7 @@ public class ReservationServiceTests
             m => m.UpdateSeatStatuses(It.IsAny<IEnumerable<int>>(), It.IsAny<string>()),
             Times.Never);
         MockMediator.Verify(
-            m => m.Publish(It.IsAny<SeatStatusChangedNotification>(), It.IsAny<CancellationToken>()),
+            m => m.Publish(It.IsAny<SeatStatusesChangedNotification>(), It.IsAny<CancellationToken>()),
             Times.Never);
     }
 
@@ -323,7 +323,7 @@ public class ReservationServiceTests
             m => m.UpdateSeatStatuses(It.IsAny<IEnumerable<int>>(), It.IsAny<string>()),
             Times.Never);
         MockMediator.Verify(
-            m => m.Publish(It.IsAny<SeatStatusChangedNotification>(), It.IsAny<CancellationToken>()),
+            m => m.Publish(It.IsAny<SeatStatusesChangedNotification>(), It.IsAny<CancellationToken>()),
             Times.Never);
     }
 
