@@ -2,13 +2,13 @@
 using MediatR;
 
 namespace Core.Application.Seats.Events;
-internal class SeatStatusChangedEventHandler(ISeatChangeHandler? handler = null) : INotificationHandler<SeatStatusChangedNotification>
+internal class SeatStatusChangedEventHandler(ISeatChangeHandler? handler = null) : INotificationHandler<SeatStatusesChangedNotification>
 {
-    public async Task Handle(SeatStatusChangedNotification notification, CancellationToken cancellationToken)
+    public async Task Handle(SeatStatusesChangedNotification notification, CancellationToken cancellationToken)
     {
         if (handler != null)
         {
-            await handler.OnSeatStatusChanged(notification.SeatNumber, notification.NewStatus);
+            await handler.OnSeatStatusesChanged();
         }
     }
 }

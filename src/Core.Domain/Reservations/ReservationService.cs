@@ -124,9 +124,6 @@ internal class ReservationService : IReservationService
         var result = await _seatsDatabase.UpdateSeatStatuses(seatNumbers, status.ToString());
         Debug.Assert(result == seatNumbers.Count(), $"Updating the statuses of seats {string.Join(", ", seatNumbers)} should not have failed here.");
 
-        foreach (var seatNumber in seatNumbers)
-        {
-            await _mediator.Publish(new SeatStatusChangedNotification(seatNumber, status));
-        }
+        await _mediator.Publish(new SeatStatusesChangedNotification());
     }
 }

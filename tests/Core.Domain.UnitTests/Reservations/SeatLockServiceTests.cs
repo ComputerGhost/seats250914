@@ -94,7 +94,7 @@ public class SeatLockServiceTests
             It.Is<IEnumerable<int>>(p => p.Contains(expiredLock.SeatNumber)),
             It.Is<string>(p => p == SeatStatus.Available.ToString())));
         MockMediator.Verify(m => m.Publish(
-            It.IsAny<SeatStatusChangedNotification>(),
+            It.IsAny<SeatStatusesChangedNotification>(),
             It.IsAny<CancellationToken>()));
     }
 
@@ -137,7 +137,7 @@ public class SeatLockServiceTests
             It.Is<IEnumerable<int>>(p => p.Contains(SEAT_NUMBER)),
             It.Is<string>(p => p == SeatStatus.Locked.ToString())));
         MockMediator.Verify(m => m.Publish(
-            It.IsAny<SeatStatusChangedNotification>(),
+            It.IsAny<SeatStatusesChangedNotification>(),
             It.IsAny<CancellationToken>()));
     }
 
@@ -219,7 +219,7 @@ public class SeatLockServiceTests
             It.Is<IEnumerable<int>>(p => p.Contains(SEAT_NUMBER)),
             It.Is<string>(p => p == SeatStatus.Available.ToString())));
         MockMediator.Verify(m => m.Publish(
-            It.IsAny<SeatStatusChangedNotification>(),
+            It.IsAny<SeatStatusesChangedNotification>(),
             It.IsAny<CancellationToken>()));
     }
 }
