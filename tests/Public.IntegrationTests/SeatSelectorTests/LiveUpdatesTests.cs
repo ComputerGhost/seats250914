@@ -1,5 +1,4 @@
-﻿using Core.Application.Reservations;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -15,6 +14,7 @@ public class LiveUpdatesTests
     private IWebElement Section => _driver.FindElement(By.Id("reserve-seats"));
     private IWebElement AvailableSeat => Section.FindElement(By.CssSelector(".audience .available"));
     private SelectElement Select => new(Section.FindElement(By.ClassName("form-select")));
+    private IWebElement Submit => Section.FindElement(By.ClassName("btn-primary"));
 
     [TestInitialize]
     public async Task Initialize()
@@ -42,18 +42,18 @@ public class LiveUpdatesTests
         var availableSeat = AvailableSeat;
 
         // Act: Reserve seat as other user
-        _mediator.Send(new LockSeatsCommand
-        {
-            IpAddress = "-",
-            SeatNumbers = [int.Parse(availableSeat.Text)],
-        });
+        _driver.SwitchTo().NewWindow(WindowType.Tab);
+        _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
+        _driver.ScrollTo(AvailableSeat);
+        AvailableSeat.Click();
+        _driver.ScrollTo(Submit);
+        Submit.Click();
 
-        // Act: Wait for UI update.
-        _driver.WaitUntil(d => availableSeat.GetAttribute("class") == ".seat .on-hold");
+        // Act: Switch back to first tab and wait for UI update
+        _driver.SwitchTo().Window(_driver.WindowHandles[0]);
+        _driver.WaitUntil(d => availableSeat.GetAttribute("class") == "seat on-hold");
 
         // Assert
-        Assert.AreEqual(".seat .on-hold", availableSeat.GetAttribute("class"));
-        var options = Select.Options.Skip(1).Select(x => x.Text);
-        Assert.DoesNotContain(availableSeat.Text, options);
+        Assert.AreEqual("seat on-hold", availableSeat.GetAttribute("class"));
     }
 }

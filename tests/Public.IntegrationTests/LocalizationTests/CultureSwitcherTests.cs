@@ -33,7 +33,7 @@ public class CultureSwitcherTests
         // Assert initial state
         Assert.AreEqual("Hyelin Fanmeeting 2025", _driver.Title);
         Assert.IsTrue(DropdownToggle.Displayed);
-        Assert.AreEqual(2, DropdownOptions.Count);
+        Assert.AreEqual(4, DropdownOptions.Count);
         Assert.IsFalse(DropdownOptions[0].Displayed);
 
         // Act 1: Swap to Korean
@@ -59,7 +59,7 @@ public class CultureSwitcherTests
         // Assert initial state
         Assert.AreEqual("혜린 팬미팅 2025", _driver.Title);
         Assert.IsTrue(DropdownToggle.Displayed);
-        Assert.AreEqual(2, DropdownOptions.Count);
+        Assert.AreEqual(4, DropdownOptions.Count);
         Assert.IsFalse(DropdownOptions[0].Displayed);
 
         // Act 1: Swap to English
