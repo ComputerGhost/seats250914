@@ -17,7 +17,7 @@ internal class SmtpEmailSender(IOptions<EmailOptions> options)
         var username = options.Value.Username;
         var password = options.Value.Password;
 
-        Log.Information("Sending email to {senderEmail}.", senderEmail);
+        Log.Information("Sending email to {recipientEmail}.", recipientEmail);
 
         var message = new MimeMessage();
         message.From.Add(new MailboxAddress(senderName, senderEmail));
