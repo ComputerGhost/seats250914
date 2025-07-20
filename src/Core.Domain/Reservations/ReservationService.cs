@@ -83,6 +83,9 @@ internal class ReservationService : IReservationService
         var count = await _seatLocksDatabase.AttachLocksToReservation(seatNumbers, reservationId.Value);
         Debug.Assert(count == seatNumbers.Count, "Attaching locks to reservation should not fail here.");
 
+        count = await _seatsDatabase.AttachSeatsToReservation(seatNumbers, reservationId.Value);
+        Debug.Assert(count == seatNumbers.Count, "Attaching seats to reservation should not fail here.");
+
         await UpdateSeatStatuses(seatNumbers, SeatStatus.AwaitingPayment);
 
         return reservationId;

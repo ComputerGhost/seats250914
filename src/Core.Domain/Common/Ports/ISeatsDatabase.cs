@@ -4,6 +4,12 @@ namespace Core.Domain.Common.Ports;
 public interface ISeatsDatabase
 {
     /// <summary>
+    /// Attaches seats to a reservation.
+    /// </summary>
+    /// <returns>The number of seats found and attached.</returns>
+    Task<int> AttachSeatsToReservation(IEnumerable<int> seatNumbers, int reservationId);
+
+    /// <summary>
     /// Counts the number of seats with a specified status.
     /// </summary>
     Task<int> CountSeats(string seatStatus);

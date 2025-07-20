@@ -9,6 +9,21 @@ namespace Core.Infrastructure.Database;
 [ServiceImplementation]
 internal class SeatsDatabase(IDbConnection connection) : ISeatsDatabase
 {
+    public async Task<int> AttachSeatsToReservation(IEnumerable<int> seatNumbers, int reservationId)
+    {
+        var sql = """
+            INSERT INTO ReservationSeats (ReservationId, SeatId)
+            SELECT @reservationid, Seats.Id
+            FROM Seats
+            WHERE Number IN @seatNumbers
+            """;
+        return await connection.ExecuteAsync(sql, new
+        {
+            reservationId,
+            seatNumbers,
+        });
+    }
+
     public async Task<int> CountSeats(string seatStatus)
     {
         var sql = """

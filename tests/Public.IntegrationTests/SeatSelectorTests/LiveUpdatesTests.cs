@@ -13,7 +13,6 @@ public class LiveUpdatesTests
 
     private IWebElement Section => _driver.FindElement(By.Id("reserve-seats"));
     private IWebElement AvailableSeat => Section.FindElement(By.CssSelector(".audience .available"));
-    private SelectElement Select => new(Section.FindElement(By.ClassName("form-select")));
     private IWebElement Submit => Section.FindElement(By.ClassName("btn-primary"));
 
     [TestInitialize]
