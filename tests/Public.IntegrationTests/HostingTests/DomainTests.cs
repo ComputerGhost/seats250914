@@ -7,8 +7,6 @@ namespace Public.IntegrationTests.HostingTests;
 [TestClass]
 public class DomainTests
 {
-    private SeleniumWrapper _driver = null!;
-
     [TestMethod]
     public async Task WwwSubdomain_RedirectsToNoSubdomain()
     {
@@ -37,10 +35,10 @@ public class DomainTests
         using var driver = new SeleniumWrapper(languageId: "en");
 
         // Act
-        _driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
+        driver.Navigate().GoToUrl(ConfigurationAccessor.Instance.TargetUrl);
 
         // Assert
-        Assert.AreEqual("Hyelin Fanmeeting 2025", _driver.Title);
+        Assert.AreEqual("Hyelin Fanmeeting 2025", driver.Title);
     }
 
     [TestMethod]
