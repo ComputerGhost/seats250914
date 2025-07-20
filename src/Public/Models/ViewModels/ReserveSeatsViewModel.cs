@@ -54,8 +54,10 @@ public class ReserveSeatsViewModel
     {
         var preferredLangauge = PreferredLanguageAbbreviated switch
         {
-            "en" => "English",
+            "en" => "영어",
             "ko" => "한국어",
+            "vi" => "베트남어",
+            "zh-Hans" => "중국어",
             _ => throw new NotImplementedException($"Language abbreviation ${PreferredLanguageAbbreviated} is not valid."),
         };
 

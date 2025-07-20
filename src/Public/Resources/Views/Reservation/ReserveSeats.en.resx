@@ -119,77 +119,76 @@
   </resheader>
   <data name="&lt;!-- AuthorizationResult.KeyIsInvalid --&gt;" xml:space="preserve">
     <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
-    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"&gt;&lt;/button&gt;
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"&gt;&lt;/button&gt;
     &lt;p&gt;
-  Chỗ ngồi của bạn không thể đặt!
-  Trình duyệt của bạn cố sử dụng sai mã để truy cập vào chỗ ngồi.
-  Vui lòng quay về &lt;a asp-controller="Home" asp-index="Index"&gt;trang chủ&lt;/a&gt; và thử lại.
         Your seat was not reserved!
+        The technical reason is your browser tried to use the wrong key to access your seat.
+        Please return to the &lt;a href="/"&gt;home page&lt;/a&gt; and try again.
     &lt;/p&gt;
     &lt;hr&gt;
     &lt;p class="mb-0"&gt;
         &lt;i class="bi bi-bug"&gt;&lt;/i&gt;
-        Đây là lỗi không nên xảy ra, vì vậy chúng tôi đã ghi nhận và sẽ kiểm tra vấn đề này.
+        This should never happen, so we have logged this issue and will look into it.
     &lt;/p&gt;
 &lt;/section&gt;</value>
   </data>
   <data name="&lt;!-- AuthorizationResult.TooManyReservationsForEmail --&gt;" xml:space="preserve">
     <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
-    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"&gt;&lt;/button&gt;
-    Chỗ ngồi của bạn không thể đặt!
- Đã có quá nhiều lượt đặt chỗ được gửi từ địa chỉ email của bạn.
- Chúng tôi phải giới hạn số lượng vé mỗi người có thể đặt để đảm bảo ai cũng có cơ hội gặp Hyelin.
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"&gt;&lt;/button&gt;
+    Your seat was not reserved!
+    Too many reservations have been submitted for your email address.
+    We have to limit the number of seats that each person can buy so that everyone has a chance to see Hyelin.
 &lt;/section&gt;</value>
   </data>
   <data name="&lt;!-- form disclosures --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;Việc đặt chỗ này sẽ trở thành hợp đồng có giá trị pháp lý giữa bạn và chúng tôi. Ngoài ra, chúng tôi sẽ lưu và sử dụng dữ liệu của bạn để cung cấp dịch vụ chất lượng. Để biết thêm thông tin, vui lòng xem &lt;a href="/legal/terms-of-service"&gt;Điều khoản dịch vụ&lt;/a&gt; và &lt;a href="/legal/privacy-policy"&gt;Chính sách bảo mật&lt;/a&gt;.&lt;/p&gt;</value>
+    <value>&lt;p&gt;Submitting this form creates a bindable contract between you and us. Additionally, we will save and use your data in order to provide quality service. For more information, please read our &lt;a href="/legal/terms-of-service"&gt;Terms of Service&lt;/a&gt; and &lt;a href="/legal/privacy-policy"&gt;Privacy Policy&lt;/a&gt;.&lt;/p&gt;</value>
   </data>
   <data name="&lt;!-- seat information --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;Bạn đã chọn ghế {0}.&lt;/p&gt;
+    <value>&lt;p&gt;You have selected seat {0}.&lt;/p&gt;
 &lt;p&gt;
-    Sau khi hoàn tất bước này, email xác nhận số ghế được gửi đến bạn, và được chuyển đến nền tảng thanh toán WitchForm. Bạn sẽ cần tạo tài khoản WitchForm thông qua KakaoTalk hoặc Apple ID.
+    Once you submit this form, an automatic email will be sent to you confirming the seat number, and you will be redirected to the WitchForm payment platform.
+    You will need to create an account with WithForm via Kakaotalk or Apple ID.
 &lt;/p&gt;
 &lt;p&gt;
- Nếu bạn cần hỗ trợ cho người khuyết tật, vui lòng liên hệ với chúng tôi trước khi đặt chỗ.
- Nếu gặp bất kỳ khó khăn nào trong quá trình mua vé, bạn có thể gửi email đến &lt;a href="mailto:{3}"&gt;{3}&lt;/a&gt;.
+    If you need accessibility accommodations, please reach out to us before submitting this form.
+    Please also reach out to us if you encounter any difficulties with the reservation process.
+    You can email us at &lt;a href="mailto:{3}"&gt;{3}&lt;/a&gt;.
 &lt;/p&gt;
-&lt;p&gt;
- Nếu bạn không hoàn tất trong &lt;time class="countdown" datetime="{2}"&gt;{1}&lt;/time&gt;, chỗ ngồi sẽ được nhường lại cho fan khác.
-&lt;/p&gt;</value>
+&lt;p&gt;If this form is not completed in &lt;time class="countdown" datetime="{2}"&gt;{1}&lt;/time&gt;, then your seat will be made available for another fan to claim it.&lt;/p&gt;</value>
   </data>
   <data name="&lt;!-- AuthorizationResult.ReservationsAreClosed --&gt;" xml:space="preserve">
     <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
-    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"&gt;&lt;/button&gt;
-    Chỗ ngồi của bạn không thể đặt!
- Thời gian mua vé đã kết thúc.
- Vui lòng quay về &lt;a asp-controller="Home" asp-index="Index"&gt;trang chủ&lt;/a&gt; để theo dõi lịch trình và thông báo.
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"&gt;&lt;/button&gt;
+    Your seat was not reserved!
+    Reservations have been closed.
+    Please return to the &lt;a href="/"&gt;home page&lt;/a&gt; to view the schedule and alerts.
 &lt;/section&gt;</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Huỷ</value>
+    <value>Cancel</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>
   </data>
   <data name="I accept the terms of service and privacy policy linked above." xml:space="preserve">
-    <value>Tôi đồng ý với điều khoản sử dụng và chính sách bảo mật nêu trên.</value>
+    <value>I accept the terms of service and privacy policy linked above.</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Tên</value>
+    <value>Name</value>
   </data>
   <data name="Phone number" xml:space="preserve">
-    <value>Số điện thoại</value>
+    <value>Phone number</value>
   </data>
   <data name="Please provide a Korean phone number if possible." xml:space="preserve">
-    <value>Vui lòng cung cấp số điện thoại Hàn Quốc nếu có thể.</value>
+    <value>Please provide a Korean phone number if possible.</value>
   </data>
   <data name="Preferred language" xml:space="preserve">
-    <value>Ngôn ngữ ưu tiên</value>
+    <value>Preferred language</value>
   </data>
   <data name="Seat Reservation" xml:space="preserve">
-    <value>Đặt chỗ</value>
+    <value>Seat Reservation</value>
   </data>
   <data name="Submit" xml:space="preserve">
-    <value>Hoàn tất</value>
+    <value>Submit</value>
   </data>
 </root>

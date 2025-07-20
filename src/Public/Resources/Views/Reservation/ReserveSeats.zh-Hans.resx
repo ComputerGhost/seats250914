@@ -119,77 +119,63 @@
   </resheader>
   <data name="&lt;!-- AuthorizationResult.KeyIsInvalid --&gt;" xml:space="preserve">
     <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
-    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="닫기"&gt;&lt;/button&gt;
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"&gt;&lt;/button&gt;
     &lt;p&gt;
-        좌석이 예약되지 않았습니다!
-        기술적인 이유는 브라우저가 잘못된 키를 사용하여 좌석에 접근하려고 했기 때문입니다.
-        &lt;a asp-controller="Home" asp-index="Index"&gt;홈으로&lt;/a&gt; 돌아가서 다시 시도해 주세요.
+  您的座位未能成功预约！技术原因是您的浏览器尝试使用错误的密钥访问座位。请返回&lt;a href="/"&gt;首页&lt;/a&gt;重试。
     &lt;/p&gt;
     &lt;hr&gt;
     &lt;p class="mb-0"&gt;
         &lt;i class="bi bi-bug"&gt;&lt;/i&gt;
-        정상적으로 발생할 수 없는 상황이며, 해당 문제는 로그에 기록되었고 곧 확인하겠습니다.
+        这属于异常情况，我们已记录该问题并将进行调查。
     &lt;/p&gt;
 &lt;/section&gt;</value>
   </data>
   <data name="&lt;!-- AuthorizationResult.TooManyReservationsForEmail --&gt;" xml:space="preserve">
     <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
-    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="닫기"&gt;&lt;/button&gt;
-    좌석이 예약되지 않았습니다!
-    해당 이메일 주소로 너무 많은 예약이 접수되었습니다.
-    모든 분들이 혜린을 볼 수 있는 기회를 가질 수 있도록, 1인당 구매 가능한 좌석 수에 제한을 두고 있습니다.
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"&gt;&lt;/button&gt;
+ 您的座位未能成功预约！该邮箱地址提交的预约次数已达上限。为保证让每个人都能有机会见到慧潾，我们限制每人可购票数。
 &lt;/section&gt;</value>
   </data>
   <data name="&lt;!-- form disclosures --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;이 양식을 제출하면 귀하와 저희 간에 법적 효력을 지닌 계약이 체결됩니다. 또한, 양질의 서비스를 제공하기 위해 귀하의 정보를 저장하고 활용하게 됩니다. 자세한 내용은 &lt;a href="/legal/terms-of-service"&gt;이용약관&lt;/a&gt; 및 &lt;a href="/legal/privacy-policy"&gt;개인정보처리방침&lt;/a&gt;을 참고해주세요.&lt;/p&gt;</value>
+    <value>&lt;p&gt;提交本表单即构成您与我们之间的有效合约。另外，我们将保存并使用您的数据以提供服务。详情请阅读&lt;a href="/legal/terms-of-service"&gt;服务条款&lt;/a&gt;和&lt;a href="/legal/privacy-policy"&gt;隐私条款&lt;/a&gt;。&lt;/p&gt;</value>
   </data>
   <data name="&lt;!-- seat information --&gt;" xml:space="preserve">
-  <value>&lt;p&gt;선택하신 좌석은 {0}번입니다.&lt;/p&gt;
-&lt;p&gt;
-    이 양식을 제출하면 좌석 번호가 포함된 자동 확인 이메일이 발송되며, WitchForm 결제 플랫폼으로 이동됩니다.
-    결제를 위해 Kakaotalk 또는 Apple ID로 WithForm 계정을 생성하셔야 합니다.
-&lt;/p&gt;
-&lt;p&gt;
-    접근성 지원이 필요하신 경우, 양식을 제출하기 전에 미리 연락해 주세요.
-    예약 과정에서 어려움이 있으시면 언제든지 문의 바랍니다.
-    문의는 &lt;a href="mailto:{3}"&gt;{3}&lt;/a&gt; 으로 이메일을 보내주세요.
-&lt;/p&gt;
-&lt;p&gt;&lt;time class="countdown" datetime="{2}"&gt;{1}&lt;/time&gt; 내에 이 양식을 완료하지 않으면, 해당 좌석은 다른 팬에게 배정될 수 있습니다.&lt;/p&gt;
-  </value>
-</data>
+    <value>&lt;p&gt;您已选择{0}号座位。&lt;/p&gt;
+&lt;p&gt;提交本表单后，系统将自动发送座位确认邮件，并跳转至WitchForm支付平台。您需通过Kakaotalk或Apple ID（苹果账号）创建WitchForm账号。&lt;/p&gt;
+&lt;p&gt;如需无障碍设施协助，请在提交本表前联系我们。预约过程中遇到任何问题也可邮件咨询&lt;a href="mailto:{3}"&gt;{3}&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;若未在&lt;time class="countdown" datetime="{2}"&gt;{1}&lt;/time&gt;内完成本表，该座位将开放给其他粉丝预约。</value>
+  </data>
   <data name="&lt;!-- AuthorizationResult.ReservationsAreClosed --&gt;" xml:space="preserve">
     <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
-    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="닫기"&gt;&lt;/button&gt;
-    좌석이 예약되지 않았습니다!
-    예약이 마감되었습니다.
-    일정 및 알림을 보려면 &lt;a asp-controller="Home" asp-index="Index"&gt;홈으로&lt;/a&gt; 돌아가 주세요.
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"&gt;&lt;/button&gt;
+ 您的座位未能成功预约！当前预约通道已关闭。请返回&lt;a href="/"&gt;首页&lt;/a&gt;查看时间安排和通知。
 &lt;/section&gt;</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>취소</value>
+    <value>取消</value>
   </data>
   <data name="Email" xml:space="preserve">
-    <value>이메일</value>
+    <value>邮箱</value>
   </data>
   <data name="I accept the terms of service and privacy policy linked above." xml:space="preserve">
-    <value>위에 링크된 이용약관 및 개인정보처리방침에 동의합니다.</value>
+    <value>我接受上述服务条款和隐私条款</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>예약자 이름</value>
+    <value>姓名</value>
   </data>
   <data name="Phone number" xml:space="preserve">
-    <value>전화번호</value>
+    <value>手机号码</value>
   </data>
   <data name="Please provide a Korean phone number if possible." xml:space="preserve">
-    <value>가능하다면 한국 전화번호를 입력해주세요.</value>
+    <value>请尽量提供韩国电话号码</value>
   </data>
   <data name="Preferred language" xml:space="preserve">
-    <value>선호 언어</value>
+    <value>首选语言</value>
   </data>
   <data name="Seat Reservation" xml:space="preserve">
-    <value>좌석 예약</value>
+    <value>座位预约</value>
   </data>
   <data name="Submit" xml:space="preserve">
-    <value>제출</value>
+    <value>提交</value>
   </data>
 </root>

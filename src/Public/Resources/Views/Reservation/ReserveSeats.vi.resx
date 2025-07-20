@@ -119,63 +119,76 @@
   </resheader>
   <data name="&lt;!-- AuthorizationResult.KeyIsInvalid --&gt;" xml:space="preserve">
     <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
-    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"&gt;&lt;/button&gt;
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"&gt;&lt;/button&gt;
     &lt;p&gt;
-  您的座位未能成功预约！技术原因是您的浏览器尝试使用错误的密钥访问座位。请返回&lt;a asp-controller="Home" asp-index="Index"&gt;首页&lt;/a&gt;重试。
+  Chỗ ngồi của bạn không thể đặt!
+  Trình duyệt của bạn cố sử dụng sai mã để truy cập vào chỗ ngồi.
+  Vui lòng quay về &lt;a href="/"&gt;trang chủ&lt;/a&gt; và thử lại.
     &lt;/p&gt;
     &lt;hr&gt;
     &lt;p class="mb-0"&gt;
         &lt;i class="bi bi-bug"&gt;&lt;/i&gt;
-        这属于异常情况，我们已记录该问题并将进行调查。
+        Đây là lỗi không nên xảy ra, vì vậy chúng tôi đã ghi nhận và sẽ kiểm tra vấn đề này.
     &lt;/p&gt;
 &lt;/section&gt;</value>
   </data>
   <data name="&lt;!-- AuthorizationResult.TooManyReservationsForEmail --&gt;" xml:space="preserve">
     <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
-    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"&gt;&lt;/button&gt;
- 您的座位未能成功预约！该邮箱地址提交的预约次数已达上限。为保证让每个人都能有机会见到慧潾，我们限制每人可购票数。
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"&gt;&lt;/button&gt;
+    Chỗ ngồi của bạn không thể đặt!
+ Đã có quá nhiều lượt đặt chỗ được gửi từ địa chỉ email của bạn.
+ Chúng tôi phải giới hạn số lượng vé mỗi người có thể đặt để đảm bảo ai cũng có cơ hội gặp Hyelin.
 &lt;/section&gt;</value>
   </data>
   <data name="&lt;!-- form disclosures --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;提交本表单即构成您与我们之间的有效合约。另外，我们将保存并使用您的数据以提供服务。详情请阅读&lt;a href="/legal/terms-of-service"&gt;服务条款&lt;/a&gt;和&lt;a href="/legal/privacy-policy"&gt;隐私条款&lt;/a&gt;。&lt;/p&gt;</value>
+    <value>&lt;p&gt;Việc đặt chỗ này sẽ trở thành hợp đồng có giá trị pháp lý giữa bạn và chúng tôi. Ngoài ra, chúng tôi sẽ lưu và sử dụng dữ liệu của bạn để cung cấp dịch vụ chất lượng. Để biết thêm thông tin, vui lòng xem &lt;a href="/legal/terms-of-service"&gt;Điều khoản dịch vụ&lt;/a&gt; và &lt;a href="/legal/privacy-policy"&gt;Chính sách bảo mật&lt;/a&gt;.&lt;/p&gt;</value>
   </data>
   <data name="&lt;!-- seat information --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;您已选择{0}号座位。&lt;/p&gt;
-&lt;p&gt;提交本表单后，系统将自动发送座位确认邮件，并跳转至WitchForm支付平台。您需通过Kakaotalk或Apple ID（苹果账号）创建WitchForm账号。&lt;/p&gt;
-&lt;p&gt;如需无障碍设施协助，请在提交本表前联系我们。预约过程中遇到任何问题也可邮件咨询&lt;a href="mailto:{3}"&gt;{3}&lt;/a&gt;。&lt;/p&gt;
-&lt;p&gt;若未在&lt;time class="countdown" datetime="{2}"&gt;{1}&lt;/time&gt;内完成本表，该座位将开放给其他粉丝预约。</value>
+    <value>&lt;p&gt;Bạn đã chọn ghế {0}.&lt;/p&gt;
+&lt;p&gt;
+    Sau khi hoàn tất bước này, email xác nhận số ghế được gửi đến bạn, và được chuyển đến nền tảng thanh toán WitchForm. Bạn sẽ cần tạo tài khoản WitchForm thông qua KakaoTalk hoặc Apple ID.
+&lt;/p&gt;
+&lt;p&gt;
+ Nếu bạn cần hỗ trợ cho người khuyết tật, vui lòng liên hệ với chúng tôi trước khi đặt chỗ.
+ Nếu gặp bất kỳ khó khăn nào trong quá trình mua vé, bạn có thể gửi email đến &lt;a href="mailto:{3}"&gt;{3}&lt;/a&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+ Nếu bạn không hoàn tất trong &lt;time class="countdown" datetime="{2}"&gt;{1}&lt;/time&gt;, chỗ ngồi sẽ được nhường lại cho fan khác.
+&lt;/p&gt;</value>
   </data>
   <data name="&lt;!-- AuthorizationResult.ReservationsAreClosed --&gt;" xml:space="preserve">
     <value>&lt;section class="alert alert-danger alert-dismissible" role="alert"&gt;
-    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"&gt;&lt;/button&gt;
- 您的座位未能成功预约！当前预约通道已关闭。请返回&lt;a asp-controller="Home" asp-index="Index"&gt;首页&lt;/a&gt;查看时间安排和通知。
+    &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"&gt;&lt;/button&gt;
+    Chỗ ngồi của bạn không thể đặt!
+ Thời gian mua vé đã kết thúc.
+ Vui lòng quay về &lt;a href="/"&gt;trang chủ&lt;/a&gt; để theo dõi lịch trình và thông báo.
 &lt;/section&gt;</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>取消</value>
+    <value>Huỷ</value>
   </data>
   <data name="Email" xml:space="preserve">
-    <value>邮箱</value>
+    <value>Email</value>
   </data>
   <data name="I accept the terms of service and privacy policy linked above." xml:space="preserve">
-    <value>我接受上述服务条款和隐私条款</value>
+    <value>Tôi đồng ý với điều khoản sử dụng và chính sách bảo mật nêu trên.</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>姓名</value>
+    <value>Tên</value>
   </data>
   <data name="Phone number" xml:space="preserve">
-    <value>手机号码</value>
+    <value>Số điện thoại</value>
   </data>
   <data name="Please provide a Korean phone number if possible." xml:space="preserve">
-    <value>请尽量提供韩国电话号码</value>
+    <value>Vui lòng cung cấp số điện thoại Hàn Quốc nếu có thể.</value>
   </data>
   <data name="Preferred language" xml:space="preserve">
-    <value>首选语言</value>
+    <value>Ngôn ngữ ưu tiên</value>
   </data>
   <data name="Seat Reservation" xml:space="preserve">
-    <value>座位预约</value>
+    <value>Đặt chỗ</value>
   </data>
   <data name="Submit" xml:space="preserve">
-    <value>提交</value>
+    <value>Hoàn tất</value>
   </data>
 </root>
