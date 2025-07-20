@@ -1,7 +1,7 @@
 ﻿using Core.Application.Reservations;
 
 namespace EmailSender.Models;
-internal class UserSubmittedReservationViewModel
+public class UserSubmittedReservationViewModel
 {
     public UserSubmittedReservationViewModel(FetchReservationQueryResponse queryResponse)
     {
