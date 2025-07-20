@@ -1,0 +1,39 @@
+﻿@using EmailSender.Models
+@model UserSubmittedReservationViewModel;
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>Hyelinファンミーティング2025 予約申請</title>
+    </head>
+    <body style="font-family: sans-serif; font-size: 16px; line-height: 1.5em; color: #333;">
+        <p>@Model.Name 様</p>
+
+        <p>チケット予約の申請をいただき、ありがとうございます。</p>
+
+        @if (Model.HasMultipleSeats)
+        {
+            <p>
+                ご予約いただいた座席番号は <strong>@Model.SeatNumbers</strong> です。
+                お支払いの確認が取れるまで、この座席は仮予約状態となります。
+            </p>
+        }
+        else
+        {
+            <p>
+                ご予約いただいた座席番号は <strong>@Model.SeatNumbers</strong> です。
+                お支払いの確認が取れるまで、この座席は仮予約状態となります。
+            </p>
+        }
+
+        <p>
+            お支払いが完了次第、座席が正式に承認されたことをお知らせする別のメールをお送りします。
+        </p>
+
+        <p>
+            ご不明な点がございましたら、<a href="mailto:fallinhyelin@gmail.com">fallinhyelin@gmail.com</a> までお気軽にご連絡ください。
+        </p>
+
+        <p>よろしくお願いいたします。</p>
+    </body>
+</html>

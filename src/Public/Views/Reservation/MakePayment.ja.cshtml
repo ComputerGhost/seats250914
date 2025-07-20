@@ -1,0 +1,26 @@
+﻿@model MakePaymentViewModel;
+
+@{
+    ViewData["Title"] = "お支払い";
+}
+
+@section Scripts
+{
+    <script>
+        window.addEventListener("load", function () {
+            window.location = $(".auto-redirect").attr("href");
+        });
+    </script>
+}
+
+<section class="container py-3">
+    <h1>お支払い</h1>
+
+    <p>
+        お支払いページは自動的に開きます。 開かない場合は<a class="auto-redirect" href="@Model.PaymentFormUrl">ここをクリック</a>して開いてください。
+    </p>
+
+    <p>
+        お支払いが確認できない場合、予約は確定されません。 席は他のファンの方が利用可能となります。
+    </p>
+</section>

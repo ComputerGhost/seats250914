@@ -117,58 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="&lt;!-- event information --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;The fan meeting event is at H-STAGE HONGDAE on Sunday, September 14, 2025. It starts at 3:00pm and will last for 120 minutes. Tickets are 50,000 KRW per seat.&lt;/p&gt;
-&lt;p&gt;You may enter the venue starting 30 minutes before the event. Please enter by at least 10 minutes before it begins. Each person must have a ticket to enter.&lt;/p&gt;
-&lt;p&gt;For any inquiries, please reach out to us at &lt;a href="mailto:{0}"&gt;{0}&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;Fan letters and gifts&lt;/h3&gt;
-&lt;p&gt;On the day of the fan meeting, a fan letter or gift may be submitted until the start of the event. These will be delivered to the artists after the fan meeting. Please do not submit cash, wreaths, flower bouquets, perishable goods, or similar materials.&lt;/p&gt;
-&lt;p&gt;If you wish to organize a fan support event, please reach out to us via email.&lt;/p&gt;</value>
-  </data>
-  <data name="&lt;!-- hero content --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;You are invited to Hyelin's party on September 14, 2025.&lt;/p&gt;
-&lt;p&gt;&lt;q&gt;I want this to be a little party between you and me, where we can interact with one another.&lt;/q&gt;&lt;/p&gt;
-&lt;p&gt;Fall in love with Hyelin this fall.&lt;/p&gt;</value>
-  </data>
-  <data name="&lt;!-- seat instructions --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;A ticket for this fan meeting may be purchased from this website. You may purchase a ticket on the spot if there is a seat left.&lt;/p&gt;
-&lt;p&gt;Please pick up your tickets at the Will Call window starting 1 hour before the fan meeting. You must have a proof of ID (government photo ID) and purchase information. After claiming a physical ticket, it cannot be reprinted if you lost it.&lt;/p&gt;
-&lt;p&gt;If you need accessibility accommodations, please reach out to us via email before reserving your ticket.&lt;/p&gt;</value>
-  </data>
-  <data name="&lt;!--venue address--&gt;" xml:space="preserve">
-    <value>Floor B2, 97 Wausan-ro, Mapo-gu, Seoul</value>
-  </data>
-  <data name="&lt;!--venue directions--&gt;" xml:space="preserve">
-    <value>&lt;p&gt;H-STAGE is located on the second basement floor of the Hana Bank building in front of the main gate of Hongik University. Look for the "H-STAGE" sign next to the parking entrance, then take the stairs down two flights to the external rest area and entrance.&lt;/p&gt;
-&lt;p&gt;Parking is not provided for attendees, so please use public transit. Please check for other paid parking spaces nearby if you will be driving.&lt;/p&gt;
-&lt;dl&gt;
-    &lt;dt&gt;Subway:&lt;/dt&gt; &lt;dd&gt;Hongdae Station or Sangsu Station&lt;/dd&gt;
-    &lt;dt&gt;Bus stop:&lt;/dt&gt; &lt;dd&gt;Hongik University (Front Gate)&lt;/dd&gt;
- &lt;dt&gt;Bus route:&lt;/dt&gt; &lt;dd&gt;273, 7011, Mapo08, Mapo09&lt;/dd&gt;
-&lt;/dl&gt;</value>
-  </data>
-  <data name="&lt;!--venue picture credit--&gt;" xml:space="preserve">
-    <value>Front of H-STAGE Building. Photo from &lt;a href="https://theplay.or.kr/소극장/"&gt;H-STAGE webpage&lt;/a&gt;.</value>
-  </data>
-  <data name="Address:" xml:space="preserve">
-    <value>Address:</value>
-  </data>
-  <data name="Event Information" xml:space="preserve">
-    <value>Event Information</value>
-  </data>
-  <data name="Fall in Hyelin" xml:space="preserve">
-    <value>Fall in Hyelin</value>
-  </data>
-  <data name="Reserve a Seat" xml:space="preserve">
-    <value>Reserve a Seat</value>
-  </data>
-  <data name="Reserve Your Seat" xml:space="preserve">
-    <value>Reserve Your Seat</value>
-  </data>
-  <data name="Venue Information" xml:space="preserve">
-    <value>Venue Information</value>
-  </data>
-  <data name="Website:" xml:space="preserve">
-    <value>Website:</value>
+  <data name="Change the language" xml:space="preserve">
+    <value>言語切り替え</value>
   </data>
 </root>

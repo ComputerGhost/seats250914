@@ -29,6 +29,7 @@ builder.Services.AddMyLocalization(options =>
     options.SupportedCultures =
     [
         new CultureInfo("en"),
+        new CultureInfo("ja"),
         new CultureInfo("ko"),
         new CultureInfo("vi"),
         new CultureInfo("zh-Hans"),
