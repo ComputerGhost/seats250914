@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "Layouts/_BareLayout";
+    ViewData["Title"] = "エラー";
+    var statusCode = Context.Response.StatusCode;
+}
+
+<div class="container py-3 text-center">
+    <div class="display-1">@statusCode</div>
+    <h1>エラー</h1>
+    <p>予期されていないエラーです。 原因を調査いたします。</p>
+    <div>
+        <a asp-controller="Home" asp-action="Index">ホームに戻る</a>
+    </div>
+</div>

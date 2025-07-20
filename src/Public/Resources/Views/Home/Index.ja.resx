@@ -118,57 +118,58 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="&lt;!-- event information --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;The fan meeting event is at H-STAGE HONGDAE on Sunday, September 14, 2025. It starts at 3:00pm and will last for 120 minutes. Tickets are 50,000 KRW per seat.&lt;/p&gt;
-&lt;p&gt;You may enter the venue starting 30 minutes before the event. Please enter by at least 10 minutes before it begins. Each person must have a ticket to enter.&lt;/p&gt;
-&lt;p&gt;For any inquiries, please reach out to us at &lt;a href="mailto:{0}"&gt;{0}&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;Fan letters and gifts&lt;/h3&gt;
-&lt;p&gt;On the day of the fan meeting, a fan letter or gift may be submitted until the start of the event. These will be delivered to the artists after the fan meeting. Please do not submit cash, wreaths, flower bouquets, perishable goods, or similar materials.&lt;/p&gt;
-&lt;p&gt;If you wish to organize a fan support event, please reach out to us via email.&lt;/p&gt;</value>
+    <value>&lt;p&gt;ファンミーティングは2025年9月14日(日)H-STAGE HONGDAEにて開催されます。開始時間は午後3時、上演時間は120分です。チケットは1席50,000ウォンです。&lt;/p&gt;
+&lt;p&gt;イベント開始30分前からご入場いただけます。開始10分前までにご入場ください。お一人様につきチケット1枚が必要です。&lt;/p&gt;
+&lt;p&gt;お問い合わせは&lt;a href="mailto:{0}"&gt;{0}&lt;/a&gt;までご連絡ください。&lt;/p&gt;
+&lt;h3&gt;ファンレターとプレゼント&lt;/h3&gt;
+&lt;p&gt;ファンミーティング当日、イベント開始までファンレターまたはプレゼントをお預けいただけます。ファンミーティング終了後にアーティストにお渡しいたします。現金、花輪、花束、生の食品、その他これらに類するものはご遠慮ください。&lt;/p&gt;
+&lt;p&gt;ファンサポートイベントを開催したい場合は、メールにてご連絡ください。&lt;/p&gt;
+</value>
   </data>
   <data name="&lt;!-- hero content --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;You are invited to Hyelin's party on September 14, 2025.&lt;/p&gt;
-&lt;p&gt;&lt;q&gt;I want this to be a little party between you and me, where we can interact with one another.&lt;/q&gt;&lt;/p&gt;
-&lt;p&gt;Fall in love with Hyelin this fall.&lt;/p&gt;</value>
+    <value>&lt;p&gt;2025年9月14日、ヘリンのパーティーにご招待します。&lt;/p&gt;
+&lt;p&gt;「あなたと私の、お互いに交流できる小さなパーティーにしたいんです。」&lt;/p&gt;
+&lt;p&gt;この秋、ヘリンに恋してみませんか。&lt;/p&gt;</value>
   </data>
   <data name="&lt;!-- seat instructions --&gt;" xml:space="preserve">
-    <value>&lt;p&gt;A ticket for this fan meeting may be purchased from this website. You may purchase a ticket on the spot if there is a seat left.&lt;/p&gt;
-&lt;p&gt;Please pick up your tickets at the Will Call window starting 1 hour before the fan meeting. You must have a proof of ID (government photo ID) and purchase information. After claiming a physical ticket, it cannot be reprinted if you lost it.&lt;/p&gt;
-&lt;p&gt;If you need accessibility accommodations, please reach out to us via email before reserving your ticket.&lt;/p&gt;</value>
+    <value>&lt;p&gt;ファンミーティングのチケットはこのウェブサイトからご購入いただけます。残席がある場合は会場にてご購入いただけます。&lt;/p&gt;
+&lt;p&gt;ファンミーティング開始1時間前からWill Call窓口にてチケットをお受け取りください。身分証明書（政府発行の写真付き身分証明書）と購入情報が必要です。物理的なチケットをお受け取りの後にチケットを紛失された場合、再発行はできません。&lt;/p&gt;
+&lt;p&gt;バリアフリー対応をご希望の場合は、チケットご予約前にメールにてご連絡ください。&lt;/p&gt;</value>
   </data>
   <data name="&lt;!--venue address--&gt;" xml:space="preserve">
-    <value>Floor B2, 97 Wausan-ro, Mapo-gu, Seoul</value>
+    <value>ソウル市マポ区ワウサン路97 地下2階</value>
   </data>
   <data name="&lt;!--venue directions--&gt;" xml:space="preserve">
-    <value>&lt;p&gt;H-STAGE is located on the second basement floor of the Hana Bank building in front of the main gate of Hongik University. Look for the "H-STAGE" sign next to the parking entrance, then take the stairs down two flights to the external rest area and entrance.&lt;/p&gt;
-&lt;p&gt;Parking is not provided for attendees, so please use public transit. Please check for other paid parking spaces nearby if you will be driving.&lt;/p&gt;
+    <value>&lt;p&gt;H-STAGEはホンイク大学正門前のハナ銀行ビル地下2階にあります。駐車場入口横の「H-STAGE」の看板を目印に、階段を2階下りて外休憩所と入口へお越しください。&lt;/p&gt;
+&lt;p&gt;参加者用の駐車場の用意はございませんので、公共交通機関をご利用ください。お車でお越しの場合は、近隣の有料駐車場をご確認ください。&lt;/p&gt;
 &lt;dl&gt;
-    &lt;dt&gt;Subway:&lt;/dt&gt; &lt;dd&gt;Hongdae Station or Sangsu Station&lt;/dd&gt;
-    &lt;dt&gt;Bus stop:&lt;/dt&gt; &lt;dd&gt;Hongik University (Front Gate)&lt;/dd&gt;
- &lt;dt&gt;Bus route:&lt;/dt&gt; &lt;dd&gt;273, 7011, Mapo08, Mapo09&lt;/dd&gt;
+    &lt;dt&gt;地下鉄：&lt;/dt&gt; &lt;dd&gt;ホンデ(弘大)駅またはサンス(上水)駅&lt;/dd&gt;
+ &lt;dt&gt;バス停：&lt;/dt&gt; &lt;dd&gt;ホンイク(弘益)大学（正門）&lt;/dd&gt;
+ &lt;dt&gt;バス路線：&lt;/dt&gt; &lt;dd&gt;ソウルバス273、7011、マポ08、マポ09&lt;/dd&gt;
 &lt;/dl&gt;</value>
   </data>
   <data name="&lt;!--venue picture credit--&gt;" xml:space="preserve">
-    <value>Front of H-STAGE Building. Photo from &lt;a href="https://theplay.or.kr/소극장/"&gt;H-STAGE webpage&lt;/a&gt;.</value>
+    <value>H-STAGEビル正面。写真は&lt;a href="https://theplay.or.kr/소극장/"&gt;H-STAGEウェブページ&lt;/a&gt;より。</value>
   </data>
   <data name="Address:" xml:space="preserve">
-    <value>Address:</value>
+    <value>住所:</value>
   </data>
   <data name="Event Information" xml:space="preserve">
-    <value>Event Information</value>
+    <value>イベント情報</value>
   </data>
   <data name="Fall in Hyelin" xml:space="preserve">
-    <value>Fall in Hyelin</value>
+    <value>ヘリンに恋して</value>
   </data>
   <data name="Reserve a Seat" xml:space="preserve">
-    <value>Reserve a Seat</value>
+    <value>席を予約</value>
   </data>
   <data name="Reserve Your Seat" xml:space="preserve">
-    <value>Reserve Your Seat</value>
+    <value>席を予約</value>
   </data>
   <data name="Venue Information" xml:space="preserve">
-    <value>Venue Information</value>
+    <value>会場情報</value>
   </data>
   <data name="Website:" xml:space="preserve">
-    <value>Website:</value>
+    <value>ウェブサイト:</value>
   </data>
 </root>
