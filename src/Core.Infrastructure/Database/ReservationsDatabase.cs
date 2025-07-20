@@ -59,8 +59,8 @@ internal class ReservationsDatabase(IDbConnection connection) : IReservationsDat
         var sql = """
             SELECT Reservations.*, ReservationStatuses.Status, Seats.Number SeatNumber
             FROM Reservations
-            LEFT JOIN SeatLocks ON SeatLocks.ReservationId = Reservations.Id
-            LEFT JOIN Seats ON Seats.Id = SeatLocks.SeatId
+            LEFT JOIN ReservationSeats ON ReservationSeats.ReservationId = Reservations.Id
+            LEFT JOIN Seats ON Seats.Id = ReservationSeats.SeatId
             LEFT JOIN ReservationStatuses ON ReservationStatuses.Id = Reservations.ReservationStatusId
             WHERE Reservations.Id = @reservationId
             """;
@@ -91,8 +91,8 @@ internal class ReservationsDatabase(IDbConnection connection) : IReservationsDat
         var sql = """
             SELECT Reservations.*, ReservationStatuses.Status, Seats.Number SeatNumber
             FROM Reservations
-            LEFT JOIN SeatLocks ON SeatLocks.ReservationId = Reservations.Id
-            LEFT JOIN Seats ON Seats.Id = SeatLocks.SeatId
+            LEFT JOIN ReservationSeats ON ReservationSeats.ReservationId = Reservations.Id
+            LEFT JOIN Seats ON Seats.Id = ReservationSeats.SeatId
             LEFT JOIN ReservationStatuses ON ReservationStatuses.Id = Reservations.ReservationStatusId
             ORDER BY Reservations.ReservedAt ASC
             """;

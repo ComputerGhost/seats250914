@@ -50,6 +50,9 @@ public class ReservationServiceTests
         MockSeatsDatabase
             .Setup(m => m.UpdateSeatStatuses(It.IsAny<IEnumerable<int>>(), It.IsAny<string>()))
             .ReturnsAsync((IEnumerable<int> seatNumbers, string status) => seatNumbers.Count());
+        MockSeatsDatabase
+            .Setup(m => m.AttachSeatsToReservation(It.IsAny<IEnumerable<int>>(), It.IsAny<int>()))
+            .ReturnsAsync((IEnumerable<int> numbers, int _) => numbers.Count());
 
         Subject = new(
             MockMediator.Object,
