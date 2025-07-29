@@ -5,7 +5,7 @@ using Dapper;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data;
 
-namespace Core.Infrastructure.Adapters;
+namespace Core.Infrastructure.Database;
 
 [ServiceImplementation(Lifetime = ServiceLifetime.Scoped)]
 internal class ConfigurationDatabase(IDbConnection connection) : IConfigurationDatabase

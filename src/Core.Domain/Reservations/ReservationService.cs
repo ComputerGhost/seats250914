@@ -10,52 +10,45 @@ using System.Diagnostics;
 namespace Core.Domain.Reservations;
 
 [ServiceImplementation]
-internal class ReservationService : IReservationService
+internal class ReservationService(IMediator mediator, IUnitOfWork unitOfWork) : IReservationService
 {
-    private readonly IMediator _mediator;
-    private readonly IReservationsDatabase _reservationsDatabase;
-    private readonly ISeatLocksDatabase _seatLocksDatabase;
-    private readonly ISeatsDatabase _seatsDatabase;
-
-    public ReservationService(
-        IMediator mediator,
-        IReservationsDatabase reservationsDatabase,
-        ISeatLocksDatabase seatLocksDatabase,
-        ISeatsDatabase seatsDatabase)
-    {
-        _mediator = mediator;
-        _reservationsDatabase = reservationsDatabase;
-        _seatLocksDatabase = seatLocksDatabase;
-        _seatsDatabase = seatsDatabase;
-    }
-
     public async Task<bool> ApproveReservation(int reservationId)
     {
-        var reservationEntity = await _reservationsDatabase.FetchReservation(reservationId);
-        if (reservationEntity == null)
+        return await unitOfWork.RunInTransaction(async () =>
         {
-            return false;
-        }
+            var reservationEntity = await unitOfWork.Reservations.FetchReservation(reservationId);
+            if (reservationEntity == null)
+            {
+                return false;
+            }
 
-        await UpdateReservationStatus(reservationId, ReservationStatus.ReservationConfirmed);
-        await UpdateSeatStatuses(reservationEntity.SeatNumbers, SeatStatus.ReservationConfirmed);
+            await UpdateReservationStatus(reservationId, ReservationStatus.ReservationConfirmed);
+            await UpdateSeatStatuses(reservationEntity.SeatNumbers, SeatStatus.ReservationConfirmed);
 
-        return true;
+            await mediator.Publish(new SeatStatusesChangedNotification());
+
+            return true;
+        });
     }
 
     public async Task<bool> RejectReservation(int reservationId)
     {
-        var reservationEntity = await _reservationsDatabase.FetchReservation(reservationId);
-        if (reservationEntity == null)
+        return await unitOfWork.RunInTransaction(async () =>
         {
-            return false;
-        }
+            var reservationEntity = await unitOfWork.Reservations.FetchReservation(reservationId);
+            if (reservationEntity == null)
+            {
+                return false;
+            }
 
-        await UpdateReservationStatus(reservationId, ReservationStatus.ReservationRejected);
-        await UpdateSeatStatuses(reservationEntity.SeatNumbers, SeatStatus.Available);
-        await _seatLocksDatabase.DeleteLocks(reservationEntity.SeatNumbers);
+            await UpdateReservationStatus(reservationId, ReservationStatus.ReservationRejected);
+            await UpdateSeatStatuses(reservationEntity.SeatNumbers, SeatStatus.Available);
+            await unitOfWork.SeatLocks.DeleteLocks(reservationEntity.SeatNumbers);
 
-        return true;
+            await mediator.Publish(new SeatStatusesChangedNotification());
+
+            return true;
+        });
     }
 
     public async Task<int?> ReserveSeats(IList<int> seatNumbers, IdentityModel identity)
@@ -66,29 +59,29 @@ internal class ReservationService : IReservationService
             return null;
         }
 
-        var reservationId = await CreateReservation(identity);
-        if (reservationId == null)
+        return await unitOfWork.RunInTransaction(async () =>
         {
-            return null;
-        }
+            var reservationId = await CreateReservation(identity);
+            if (reservationId == null)
+            {
+                return null;
+            }
 
-        if (await _seatLocksDatabase.ClearLockExpirations(seatNumbers) != seatNumbers.Count)
-        {
-            Log.Warning("A reservation could not be made for seats {seatNumbers} because the locks expired before processing completed.");
-            await _seatLocksDatabase.DeleteLocks(seatNumbers);
-            await _reservationsDatabase.DeleteReservation(reservationId.Value);
-            return null;
-        }
+            if (await unitOfWork.SeatLocks.ClearLockExpirations(seatNumbers) != seatNumbers.Count)
+            {
+                Log.Warning("A reservation could not be made for seats {seatNumbers} because the locks expired before processing completed.");
+                unitOfWork.Rollback();
+                return null;
+            }
 
-        var count = await _seatLocksDatabase.AttachLocksToReservation(seatNumbers, reservationId.Value);
-        Debug.Assert(count == seatNumbers.Count, "Attaching locks to reservation should not fail here.");
+            await AttachLocksToReservation(seatNumbers, reservationId.Value);
+            await AttachSeatsToReservation(seatNumbers, reservationId.Value);
+            await UpdateSeatStatuses(seatNumbers, SeatStatus.AwaitingPayment);
 
-        count = await _seatsDatabase.AttachSeatsToReservation(seatNumbers, reservationId.Value);
-        Debug.Assert(count == seatNumbers.Count, "Attaching seats to reservation should not fail here.");
+            await mediator.Publish(new SeatStatusesChangedNotification());
 
-        await UpdateSeatStatuses(seatNumbers, SeatStatus.AwaitingPayment);
-
-        return reservationId;
+            return reservationId;
+        });
     }
 
     private async Task<int?> CreateReservation(IdentityModel identity)
@@ -107,7 +100,7 @@ internal class ReservationService : IReservationService
             Status = ReservationStatus.AwaitingPayment.ToString(),
         };
 
-        var result = await _reservationsDatabase.CreateReservation(entityModel);
+        var result = await unitOfWork.Reservations.CreateReservation(entityModel);
         if (result == null)
         {
             Log.Error("Reservation creation failed for seat {seatNumber}. It's likely that the seat key is already used.");
@@ -116,17 +109,27 @@ internal class ReservationService : IReservationService
         return result;
     }
 
+    private async Task AttachLocksToReservation(IList<int> seatNumbers, int reservationId)
+    {
+        var count = await unitOfWork.SeatLocks.AttachLocksToReservation(seatNumbers, reservationId);
+        Debug.Assert(count == seatNumbers.Count, "Attaching locks to reservation should not fail here.");
+    }
+
+    private async Task AttachSeatsToReservation(IList<int> seatNumbers, int reservationId)
+    {
+        var count = await unitOfWork.Seats.AttachSeatsToReservation(seatNumbers, reservationId);
+        Debug.Assert(count == seatNumbers.Count, "Attaching seats to reservation should not fail here.");
+    }
+
     private async Task UpdateReservationStatus(int reservationId, ReservationStatus status)
     {
-        var result = await _reservationsDatabase.UpdateReservationStatus(reservationId, status.ToString());
+        var result = await unitOfWork.Reservations.UpdateReservationStatus(reservationId, status.ToString());
         Debug.Assert(result, $"Updating the status of reservation {reservationId} should not have failed here");
     }
 
-    private async Task UpdateSeatStatuses(IEnumerable<int> seatNumbers, SeatStatus status)
+    private async Task UpdateSeatStatuses(IList<int> seatNumbers, SeatStatus status)
     {
-        var result = await _seatsDatabase.UpdateSeatStatuses(seatNumbers, status.ToString());
-        Debug.Assert(result == seatNumbers.Count(), $"Updating the statuses of seats {string.Join(", ", seatNumbers)} should not have failed here.");
-
-        await _mediator.Publish(new SeatStatusesChangedNotification());
+        var count = await unitOfWork.Seats.UpdateSeatStatuses(seatNumbers, status.ToString());
+        Debug.Assert(count == seatNumbers.Count, $"Updating the statuses of seats {string.Join(", ", seatNumbers)} should not have failed here.");
     }
 }
