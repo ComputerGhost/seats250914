@@ -15,6 +15,7 @@ public class ReservationServiceTests
     private Mock<IReservationsDatabase> MockReservationsDatabase { get; set; } = null!;
     private Mock<ISeatLocksDatabase> MockSeatLocksDatabase { get; set; } = null!;
     private Mock<ISeatsDatabase> MockSeatsDatabase { get; set; } = null!;
+    private Mock<IUnitOfWork> MockUnitOfWork { get; set; } = null!;
     private ReservationService Subject { get; set; } = null!;
 
     private IdentityModel MinimalIdentity { get; set; } = null!;
@@ -42,9 +43,6 @@ public class ReservationServiceTests
         MockSeatLocksDatabase
             .Setup(m => m.ClearLockExpirations(It.IsAny<IEnumerable<int>>()))
             .ReturnsAsync((IEnumerable<int> numbers) => numbers.Count());
-        MockSeatLocksDatabase
-            .Setup(m => m.FetchSeatLock(It.IsAny<int>()))
-            .ReturnsAsync(new SeatLockEntityModel());
 
         MockSeatsDatabase = new();
         MockSeatsDatabase
@@ -54,11 +52,18 @@ public class ReservationServiceTests
             .Setup(m => m.AttachSeatsToReservation(It.IsAny<IEnumerable<int>>(), It.IsAny<int>()))
             .ReturnsAsync((IEnumerable<int> numbers, int _) => numbers.Count());
 
-        Subject = new(
-            MockMediator.Object,
-            MockReservationsDatabase.Object, 
-            MockSeatLocksDatabase.Object, 
-            MockSeatsDatabase.Object);
+        MockUnitOfWork = new();
+        MockUnitOfWork.Setup(m => m.Reservations).Returns(() => MockReservationsDatabase.Object);
+        MockUnitOfWork.Setup(m => m.SeatLocks).Returns(() => MockSeatLocksDatabase.Object);
+        MockUnitOfWork.Setup(m => m.Seats).Returns(() => MockSeatsDatabase.Object);
+        MockUnitOfWork
+            .Setup(m => m.RunInTransaction(It.IsAny<Func<Task<int?>>>()))
+            .Returns((Func<Task<int?>> operation) => operation());
+        MockUnitOfWork
+            .Setup(m => m.RunInTransaction(It.IsAny<Func<Task<bool>>>()))
+            .Returns((Func<Task<bool>> operation) => operation());
+
+        Subject = new(MockMediator.Object, MockUnitOfWork.Object);
 
         MinimalIdentity = new()
         {
@@ -187,6 +192,27 @@ public class ReservationServiceTests
     }
 
     [TestMethod]
+    public async Task RejectReservation_WhenReservationExists_DeletesLocks()
+    {
+        // Arrange
+        const int SEAT_NUMBER = 1;
+        MockReservationsDatabase
+            .Setup(m => m.FetchReservation(It.IsAny<int>()))
+            .ReturnsAsync(new ReservationEntityModel
+            {
+                SeatNumbers = [SEAT_NUMBER],
+            });
+
+        // Act
+        var result = await Subject.RejectReservation(1);
+
+        // Assert
+        Assert.IsTrue(result);
+        MockSeatLocksDatabase.Verify(m => m.DeleteLocks(
+            It.Is<IEnumerable<int>>(p => p.Contains(SEAT_NUMBER))));
+    }
+
+    [TestMethod]
     public async Task ReserveSeats_WhenSuccessful_ClearsLockExpiration()
     {
         // Arrange
@@ -253,7 +279,7 @@ public class ReservationServiceTests
     }
 
     [TestMethod]
-    public async Task ReserveSeats_WhenLockDeletedBeforeExpirationCleared_ReturnsNull()
+    public async Task ReserveSeats_WhenLockDeletedBeforeExpirationCleared_ReturnsNullAndRollsBackChanges()
     {
         // Arrange
         int[] seatNumbers = [1, 2];
@@ -266,52 +292,11 @@ public class ReservationServiceTests
 
         // Assert
         Assert.IsNull(result);
+        MockUnitOfWork.Verify(m => m.Rollback());
     }
 
     [TestMethod]
-    public async Task ReserveSeats_WhenLockDeletedBeforeExpirationCleared_DoesNotCreateReservation()
-    {
-        // Arrange
-        int[] seatNumbers = [1, 2];
-        MockSeatLocksDatabase
-            .Setup(m => m.ClearLockExpirations(It.IsAny<IEnumerable<int>>()))
-            .ReturnsAsync(seatNumbers.Length - 1);
-
-        // Act
-        var result = await Subject.ReserveSeats(seatNumbers, MinimalIdentity);
-
-        // Assert
-        MockReservationsDatabase.Verify(
-            m => m.CreateReservation(It.IsAny<ReservationEntityModel>()),
-            Times.Exactly(1)); // But it will be deleted.
-        MockReservationsDatabase.Verify(
-            m => m.DeleteReservation(It.IsAny<int>()),
-            Times.Exactly(1));
-    }
-
-    [TestMethod]
-    public async Task ReserveSeats_WhenLockDeletedBeforeExpirationCleared_DoesNotUpdateSeatStatus()
-    {
-        // Arrange
-        int[] seatNumbers = [1, 2];
-        MockSeatLocksDatabase
-            .Setup(m => m.ClearLockExpirations(It.IsAny<IEnumerable<int>>()))
-            .ReturnsAsync(seatNumbers.Length - 1);
-
-        // Act
-        var result = await Subject.ReserveSeats(seatNumbers, MinimalIdentity);
-
-        // Assert
-        MockSeatsDatabase.Verify(
-            m => m.UpdateSeatStatuses(It.IsAny<IEnumerable<int>>(), It.IsAny<string>()),
-            Times.Never);
-        MockMediator.Verify(
-            m => m.Publish(It.IsAny<SeatStatusesChangedNotification>(), It.IsAny<CancellationToken>()),
-            Times.Never);
-    }
-
-    [TestMethod]
-    public async Task ReserveSeats_WhenDatabaseConflict_DoesNotUpdateSeatStatus()
+    public async Task ReserveSeats_WhenDatabaseConflict_ReturnsNullAndDoesNotClearLockExpirationsOrUpdateSeatStatus()
     {
         // Arrange
         MockReservationsDatabase
@@ -322,6 +307,10 @@ public class ReservationServiceTests
         var result = await Subject.ReserveSeats([1], MinimalIdentity);
 
         // Assert
+        Assert.IsNull(result);
+        MockSeatLocksDatabase.Verify(
+            m => m.ClearLockExpirations(It.IsAny<IEnumerable<int>>()),
+            Times.Never);
         MockSeatsDatabase.Verify(
             m => m.UpdateSeatStatuses(It.IsAny<IEnumerable<int>>(), It.IsAny<string>()),
             Times.Never);
