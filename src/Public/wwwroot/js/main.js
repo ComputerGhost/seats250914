@@ -195,6 +195,14 @@ function SeatSelector($root, errorMap) {
         });
     }
 
+    // Pack selects so that the values start at the first one.
+    function packSelects() {
+        $selects.each((i, selectElement) => {
+            const seatNumber = selected[i] ? selected[i].number : "";
+            $(selectElement).val(seatNumber).data("value", seatNumber);
+        });
+    }
+
     function refreshSeatStatuses(statuses) {
         Object.entries(statuses).forEach(([seatNumber, newStatus]) => {
             const seat = seats[seatNumber - 1];
@@ -206,6 +214,7 @@ function SeatSelector($root, errorMap) {
 
             if (seat.status === "selected") {
                 deselectSeat(seat);
+                packSelects();
             }
 
             seat.status = newStatus;
@@ -269,7 +278,7 @@ function SeatSelector($root, errorMap) {
                     $error.removeClass("d-hidden");
                 } else if (xhr.status === 409 /* conflict */) {
                     const seatNumber = xhr.responseJSON.seatNumber;
-                    $error.text(errorMap[403].replace("{}", seatNumber));
+                    $error.text(errorMap[409].replace("{}", seatNumber));
                     $error.removeClass("d-hidden");
                 }
             })
@@ -284,6 +293,7 @@ function SeatSelector($root, errorMap) {
         const seat = seats[$(this).data("number") - 1];
         if (seat.status === "selected") {
             deselectSeat(seat);
+            packSelects();
         } else if (seat.status === "available") {
             selectSeat(seat);
         }
@@ -300,6 +310,7 @@ function SeatSelector($root, errorMap) {
             fixDuplicates();
         } else if (previousValue) {
             deselectSeat(seats[previousValue - 1]);
+            packSelects();
         }
 
         $select.data("value", newValue);
