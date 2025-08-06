@@ -14,7 +14,7 @@ internal partial class EmailProcessorService(
 {
     public async Task<bool> Process(ListPendingEmailsQueryResponseItem email, CancellationToken cancellationToken)
     {
-        if (CalculateNextAttemptTime(email.AttemptCount) > DateTimeOffset.Now)
+        if (CalculateNextAttemptTime(email.LastAttempt, email.AttemptCount) > DateTimeOffset.Now)
         {
             return false;
         }
@@ -49,11 +49,16 @@ internal partial class EmailProcessorService(
     [GeneratedRegex(@"<title>(.*?)<\/title>")]
     private static partial Regex TitleRegex();
 
-    private DateTimeOffset CalculateNextAttemptTime(int attemptCount)
+    private DateTimeOffset CalculateNextAttemptTime(DateTimeOffset? lastAttempt, int attemptCount)
     {
+        if (lastAttempt == null)
+        {
+            return DateTimeOffset.Now.AddSeconds(-1);
+        }
+
         List<int> delays = [0, 600, 1800];
         var delay = (attemptCount < delays.Count) ? delays[attemptCount] : delays[^1];
-        return DateTimeOffset.Now.AddSeconds(delay);
+        return lastAttempt.Value.AddSeconds(delay);
     }
 
     private Task CreateAndSend(ListPendingEmailsQueryResponseItem email, CancellationToken cancellationToken)

@@ -8,7 +8,7 @@ internal class ClearExpiredLocksCommandHandler(ISeatLockService seatLockService)
 {
     public Task Handle(ClearExpiredLocksCommand request, CancellationToken cancellationToken)
     {
-        Log.Information("Clearing expired logs.");
+        Log.Information("Clearing expired locks.");
         return seatLockService.ClearExpiredLocks();
     }
 }

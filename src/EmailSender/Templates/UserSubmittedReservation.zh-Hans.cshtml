@@ -1,5 +1,5 @@
-﻿@using Core.Application.Reservations
-@model FetchReservationQueryResponse;
+﻿@using EmailSender.Models
+@model UserSubmittedReservationViewModel;
 <!DOCTYPE html>
 <html lang="zh-Hans">
     <head>
@@ -12,7 +12,7 @@
         <p>感谢您提交预约请求！</p>
 
         <p>
-            您的座位号是 <strong>@Model.SeatNumber</strong>。
+            您的座位号是 <strong>@Model.SeatNumbers</strong>。
             在等待您的付款确认期间，该座位将为您保留。
         </p>
 

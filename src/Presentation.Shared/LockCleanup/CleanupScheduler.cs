@@ -51,9 +51,16 @@ public class CleanupScheduler : BackgroundService
 
             // Adding a new schedule will get here too,
             // so check if we're here because it's time.
-            if (nextSchedule < DateTimeOffset.UtcNow)
+            if (nextSchedule <= DateTimeOffset.UtcNow)
             {
                 await CleanExpiredLocks(stoppingToken);
+            }
+            else
+            {
+                lock (_scheduleLock)
+                {
+                    _schedule.Enqueue(nextSchedule, nextSchedule);
+                }
             }
         }
     }
