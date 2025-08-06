@@ -48,6 +48,7 @@
                 <form asp-action="Approve" method="post">
                     <input id="reservationIds" name="reservationIds" type="hidden">
                     <button id="approve" type="submit" class="btn btn-success">선택한 예약 승인</button>
+                    <a href="/reservations/bulk-reject" class="btn btn-danger float-end ms-1">Reject...</a>
                 </form>
             </div>
 
@@ -192,6 +193,11 @@
                 var selectedRows = table.rows({ selected: true }).data().toArray();
                 var selectedIds = selectedRows.map(row => parseInt($(row[0]).text()));
                 $("#reservationIds").val(selectedIds);
+
+                if (selectedIds.length === 0) {
+                    e.preventDefault();
+                    return false;
+                }
             });
 
             window.table = table;

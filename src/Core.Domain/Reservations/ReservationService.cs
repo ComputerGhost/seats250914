@@ -41,6 +41,12 @@ internal class ReservationService(IMediator mediator, IUnitOfWork unitOfWork) : 
                 return false;
             }
 
+            // We only support rejecting reservations in a pending status.
+            if (reservationEntity.Status != ReservationStatus.AwaitingPayment.ToString())
+            {
+                return false;
+            }
+
             await UpdateReservationStatus(reservationId, ReservationStatus.ReservationRejected);
             await UpdateSeatStatuses(reservationEntity.SeatNumbers, SeatStatus.Available);
             await unitOfWork.SeatLocks.DeleteLocks(reservationEntity.SeatNumbers);

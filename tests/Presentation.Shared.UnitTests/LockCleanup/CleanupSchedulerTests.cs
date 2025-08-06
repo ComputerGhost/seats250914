@@ -35,6 +35,7 @@ public class CleanupSchedulerTests
         };
 
         await Subject.StartAsync(new CancellationToken());
+        await Task.Delay(TimeSpan.FromMilliseconds(250));
     }
 
     [TestCleanup]
