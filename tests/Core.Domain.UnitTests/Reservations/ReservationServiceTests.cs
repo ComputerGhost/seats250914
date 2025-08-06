@@ -155,6 +155,12 @@ public class ReservationServiceTests
     {
         // Arrange
         const int RESERVATION_ID = 1;
+        MockReservationsDatabase
+            .Setup(m => m.FetchReservation(It.IsAny<int>()))
+            .ReturnsAsync(new ReservationEntityModel
+            {
+                Status = ReservationStatus.AwaitingPayment.ToString(),
+            });
 
         // Act
         var result = await Subject.RejectReservation(RESERVATION_ID);
@@ -176,6 +182,7 @@ public class ReservationServiceTests
             .ReturnsAsync(new ReservationEntityModel
             {
                 SeatNumbers = [SEAT_NUMBER],
+                Status = ReservationStatus.AwaitingPayment.ToString(),
             });
 
         // Act
@@ -201,6 +208,7 @@ public class ReservationServiceTests
             .ReturnsAsync(new ReservationEntityModel
             {
                 SeatNumbers = [SEAT_NUMBER],
+                Status = ReservationStatus.AwaitingPayment.ToString(),
             });
 
         // Act

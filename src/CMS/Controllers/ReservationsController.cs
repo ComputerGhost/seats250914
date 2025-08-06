@@ -29,7 +29,7 @@ public class ReservationsController(IMediator mediator, IStringLocalizer<Reserva
     [HttpPost("approve")]
     public async Task<IActionResult> Approve(string reservationIds)
     {
-        Log.Information("Approving reservations in batch: {reservationIds", reservationIds);
+        Log.Information("Approving reservations in batch: {reservationIds}", reservationIds);
 
         var parsedIds = reservationIds.Split(',').Select(id =>
         {
@@ -45,6 +45,43 @@ public class ReservationsController(IMediator mediator, IStringLocalizer<Reserva
         foreach (var reservationId in parsedIds)
         {
             var command = new ApproveReservationCommand(reservationId);
+            var result = await mediator.Send(command);
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpGet("bulk-reject")]
+    public async Task<IActionResult> BulkReject()
+    {
+        // Quick and dirty because we have a super short timeframe to release this new feature.
+        var reservations = await mediator.Send(new ListReservationsQuery());
+        reservations = new ListReservationsQueryResponse
+        {
+            Data = reservations.Data.Where(x => x.Status == ReservationStatus.AwaitingPayment)
+        };
+        return View(new ReservationListViewModel(reservations) { Search = "" });
+    }
+
+    [HttpPost("bulk-reject")]
+    public async Task<IActionResult> BulkReject(string reservationIds)
+    {
+        Log.Information("Rejecting reservations in batch: {reservationIds}", reservationIds);
+
+        var parsedIds = reservationIds.Split(',').Select(id =>
+        {
+            if (!int.TryParse(id, out int parsedId))
+            {
+                Log.Warning("Reservation id {id} is not valid. Aborting batch rejection.", id);
+                throw new HttpRequestException("Reservation ids must be integers.", null, HttpStatusCode.BadRequest);
+            }
+
+            return parsedId;
+        });
+
+        foreach (var reservationId in parsedIds)
+        {
+            var command = new RejectReservationCommand(reservationId);
             var result = await mediator.Send(command);
         }
 

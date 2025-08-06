@@ -84,15 +84,17 @@ public class CleanupScheduler : BackgroundService
 
     private DateTimeOffset GetNextSchedule()
     {
+        var maxSchedule = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(MaxWaitSeconds);
+
         lock (_scheduleLock)
         {
-            if (_schedule.TryPeek(out var when, out _))
+            if (_schedule.TryPeek(out var when, out _) && when < maxSchedule)
             {
                 _schedule.Dequeue();
                 return when;
             }
         }
 
-        return DateTimeOffset.UtcNow + TimeSpan.FromSeconds(MaxWaitSeconds);
+        return maxSchedule;
     }
 }
