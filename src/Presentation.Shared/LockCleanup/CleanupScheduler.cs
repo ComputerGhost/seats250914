@@ -47,6 +47,11 @@ public class CleanupScheduler : BackgroundService
         {
             var nextSchedule = GetNextSchedule();
             var waitTime = nextSchedule - DateTimeOffset.UtcNow;
+            if (waitTime < TimeSpan.Zero)
+            {
+                waitTime = TimeSpan.Zero;
+            }
+
             await _signal.WaitAsync(waitTime, stoppingToken);
 
             // Adding a new schedule will get here too,
